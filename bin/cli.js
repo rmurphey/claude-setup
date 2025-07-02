@@ -4,6 +4,7 @@ const inquirer = require('inquirer');
 const chalk = require('chalk');
 const fs = require('fs-extra');
 const path = require('path');
+const { execSync } = require('child_process');
 
 console.log(chalk.blue.bold('\n🤖 Claude Code Project Setup\n'));
 
@@ -64,9 +65,11 @@ async function main() {
     
     console.log(chalk.green.bold('🎉 Project setup complete!\n'));
     console.log(chalk.blue('Next steps:'));
-    console.log('1. Run quality check: npm run lint (or equivalent)');
-    console.log('2. Review CLAUDE.md for AI collaboration guidelines');
-    console.log('3. Start coding with professional standards in place\n');
+    console.log('1. Install dependencies as shown above');
+    console.log('2. Connect to remote repository (if desired)');
+    console.log('3. Run quality check: npm run lint (or equivalent)');
+    console.log('4. Review CLAUDE.md for AI collaboration guidelines');
+    console.log('5. Start coding with professional standards in place\n');
     
   } catch (error) {
     console.error(chalk.red('❌ Setup failed:'), error.message);
@@ -76,6 +79,9 @@ async function main() {
 
 async function setupProject(config) {
   console.log(chalk.blue('📁 Creating project structure...'));
+  
+  // Initialize git repository first
+  await initializeGitRepository();
   
   // Create basic documentation
   await createDocumentation(config);
@@ -90,6 +96,9 @@ async function setupProject(config) {
   if (config.cicd) {
     await setupCICD(config);
   }
+  
+  // Create initial commit
+  await createInitialCommit(config);
 }
 
 async function createDocumentation(config) {
@@ -214,6 +223,77 @@ async function setupCICD(config) {
   const workflow = generateGitHubActions(config);
   await fs.writeFile('.github/workflows/quality.yml', workflow);
   console.log(chalk.gray('   Created GitHub Actions workflow'));
+}
+
+async function initializeGitRepository() {
+  console.log(chalk.blue('🔄 Initializing git repository...'));
+  
+  try {
+    // Check if already a git repository
+    try {
+      execSync('git rev-parse --git-dir', { stdio: 'ignore' });
+      console.log(chalk.gray('   Git repository already exists'));
+      return;
+    } catch {
+      // Not a git repository, continue with initialization
+    }
+    
+    // Initialize git repository
+    execSync('git init', { stdio: 'ignore' });
+    console.log(chalk.gray('   Initialized git repository'));
+    
+    // Set up initial branch as main
+    try {
+      execSync('git branch -M main', { stdio: 'ignore' });
+    } catch {
+      // Ignore if already on main or no commits yet
+    }
+    
+  } catch (error) {
+    console.log(chalk.yellow('   Warning: Could not initialize git repository'));
+    console.log(chalk.yellow('   Please run "git init" manually'));
+  }
+}
+
+async function createInitialCommit(config) {
+  console.log(chalk.blue('📝 Creating initial commit...'));
+  
+  try {
+    // Add all files
+    execSync('git add .', { stdio: 'ignore' });
+    
+    // Create initial commit
+    const commitMessage = `Initial Claude Code project setup
+
+Project Type: ${config.projectType}
+Quality Level: ${config.qualityLevel}
+Team Size: ${config.teamSize}
+CI/CD: ${config.cicd ? 'Yes' : 'No'}
+
+Setup includes:
+- Quality tools and configuration
+- Custom Claude commands
+- Documentation templates
+- ${config.cicd ? 'GitHub Actions workflows' : 'Local development tools'}
+
+🤖 Generated with [Claude Code](https://claude.ai/code)
+
+Co-Authored-By: Claude <noreply@anthropic.com>`;
+
+    execSync(`git commit -m "${commitMessage}"`, { stdio: 'ignore' });
+    console.log(chalk.gray('   Created initial commit'));
+    
+    // Show next steps for git
+    console.log(chalk.blue('\n📡 Git repository ready!'));
+    console.log(chalk.gray('   To connect to remote repository:'));
+    console.log(chalk.gray('   git remote add origin <your-repo-url>'));
+    console.log(chalk.gray('   git push -u origin main'));
+    
+  } catch (error) {
+    console.log(chalk.yellow('   Warning: Could not create initial commit'));
+    console.log(chalk.yellow('   Files created but not committed to git'));
+    console.log(chalk.gray('   Run "git add . && git commit -m \'Initial setup\'" manually'));
+  }
 }
 
 function generateClaudeTemplate(config) {
