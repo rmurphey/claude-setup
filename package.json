@@ -1,0 +1,44 @@
+{
+  "name": "claude-project-setup",
+  "version": "1.0.0",
+  "description": "Interactive CLI to set up Claude Code projects with professional development standards",
+  "main": "index.js",
+  "bin": {
+    "claude-setup": "./bin/cli.js"
+  },
+  "scripts": {
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "lint:changed": "eslint $(git diff --name-only --diff-filter=ACMR HEAD | grep '\\.js$' | xargs)",
+    "lint:changed:fix": "eslint $(git diff --name-only --diff-filter=ACMR HEAD | grep '\\.js$' | xargs) --fix"
+  },
+  "keywords": [
+    "claude",
+    "claude-code",
+    "project-setup",
+    "development-standards",
+    "quality-tools"
+  ],
+  "author": "Claude Code Setup System",
+  "license": "MIT",
+  "dependencies": {
+    "inquirer": "^9.2.0",
+    "chalk": "^5.3.0",
+    "fs-extra": "^11.1.1"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "@types/jest": "^29.5.5",
+    "eslint": "^8.57.0"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-username/claude-project-setup.git"
+  }
+}
