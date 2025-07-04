@@ -103,10 +103,36 @@ This tool sets up a complete professional development environment through 4 simp
 - **Initial commit** - Professional setup committed automatically
 
 ### 📋 Documentation Templates
-- **CLAUDE.md** - AI collaboration guidelines
-- **ACTIVE_WORK.md** - Session management and priorities
-- **COMMANDS.md** - Custom command documentation
-- **README.md** - Project overview (for new projects)
+
+Creates an **ongoing development record system** that maintains project memory across sessions:
+
+#### **CLAUDE.md** - AI Collaboration Guidelines
+- **Quality Standards**: Configurable thresholds (0 warnings for strict, <10 for standard)
+- **Development Workflow**: Pre-commit quality checks, command usage patterns
+- **Architecture Principles**: Complexity limits (<15 per function, <400 lines per file)
+- **Collaboration Guidelines**: Co-author commits, hygiene checks before AI assistance
+- **Project Standards**: Coverage targets, documentation requirements, error handling
+
+#### **ACTIVE_WORK.md** - Session Management & Continuity
+- **Next Session Priorities**: Immediate tasks with checkboxes
+- **Current Sprint Goals**: Broader iteration objectives
+- **Quality Status**: Real-time lint/test/coverage/build metrics
+- **Quick Capture**: Rapid task entry via `/todo` command with timestamps
+- **Deferred Items**: Postponed work via `/defer` command with reasons
+- **Learning Log**: Development insights captured via `/learn` command
+- **Session History**: Chronological record of all development activities
+
+#### **COMMANDS.md** - Custom Command Documentation
+- **Implementation Details**: How each command works and what it does
+- **Usage Examples**: Practical examples for all 14 custom commands
+- **Integration Patterns**: How commands update documentation files
+- **Command Philosophy**: Structured interaction, quality automation, learning capture
+
+#### **README.md** - Project Overview
+- Created for new projects only (preserves existing README)
+- Professional project description template
+- Setup and usage instructions
+- Contributing guidelines
 
 ### ⚡ Custom Commands
 Creates 14 custom Claude Code commands in `.claude/commands/`:
@@ -227,6 +253,44 @@ npx github:rmurphey/claude-setup
 - 30% test coverage minimum
 - Only errors block commits
 - Suitable for rapid prototyping
+
+## Ongoing Development Record System
+
+### How It Works Together
+
+The documentation templates and custom commands create a **persistent development intelligence system**:
+
+1. **Session Continuity**: `ACTIVE_WORK.md` maintains state between Claude Code sessions
+2. **Progressive Intelligence**: Commands update documentation files, building project knowledge over time
+3. **Quality Automation**: `/hygiene` provides real-time project health based on accumulated metrics
+4. **Learning Capture**: `/learn` and `/reflect` commands document insights and patterns
+5. **Adaptive Recommendations**: `/next` suggests priorities based on project history and current state
+
+### Development Flow Example
+
+```bash
+# Start development session
+/hygiene                    # Check current project health
+/todo "implement user auth" # Add task to ACTIVE_WORK.md
+
+# During development
+/learn "API mocking reduces test complexity"  # Capture insight
+/commit                     # Quality-checked commit with co-author
+
+# End of session
+/reflect                    # Weekly development review
+/defer "mobile optimization" # Move non-critical items
+```
+
+### Intelligence Accumulation
+
+Over time, your project builds:
+- **Pattern Recognition**: What causes issues in your specific project
+- **Quality Trends**: How metrics change over development cycles
+- **Collaboration Insights**: How AI assistance patterns evolve
+- **Technical Debt Tracking**: Deferred items and their impact on velocity
+
+This transforms Claude Code from a one-time conversation tool into a **persistent development partner** that maintains context, learns from your project's evolution, and provides increasingly intelligent recommendations.
 
 ## After Setup
 
