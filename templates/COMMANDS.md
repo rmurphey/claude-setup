@@ -167,6 +167,39 @@ Updates DEVELOPMENT_LOG.md with structured entry
 
 **Implementation**: Adds to quick capture section in ACTIVE_WORK.md with "idea" tag
 
+## 🏥 Codebase Recovery Commands
+
+### `/recovery-assess`
+**Purpose**: Comprehensive codebase health assessment
+
+**Implementation**: Analyzes code quality, test coverage, architecture, and documentation. Generates scored report (0-100) with critical issues, quick wins, and recovery recommendations.
+
+**Output Example**:
+```
+🏥 CODEBASE HEALTH ASSESSMENT
+📊 OVERALL SCORE: 65/100 - NEEDS IMPROVEMENT
+🚨 CRITICAL ISSUES: No test coverage, 45 lint warnings
+💡 QUICK WINS: Setup linting, add pre-commit hooks
+```
+
+### `/recovery-plan`
+**Purpose**: Generate prioritized improvement roadmap
+
+**Implementation**: Creates `RECOVERY_PLAN.md` with phased approach:
+- Phase 1: Quick wins (0-2 weeks)
+- Phase 2: Foundation (2-8 weeks) 
+- Phase 3: Structural (2-6 months)
+- Phase 4: Evolution (6+ months)
+
+### `/recovery-execute`
+**Purpose**: Execute automated recovery improvements safely
+
+**Implementation**: 
+- Creates backup branch automatically
+- Executes improvements incrementally with validation
+- Provides rollback capability if issues arise
+- Updates progress in RECOVERY_PLAN.md
+
 ## 📁 Command Structure
 
 Commands are stored in `.claude/commands/` directory:

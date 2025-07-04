@@ -64,6 +64,20 @@ This project includes a complete set of Claude Code commands for structured deve
 **Purpose**: Quick capture of ideas for future consideration  
 **Usage**: `/idea "implement dark mode theme"`
 
+## 🏥 Recovery Commands
+
+### `/recovery-assess`
+**Purpose**: Comprehensive codebase health assessment  
+**Output**: Scored analysis across code quality, tests, architecture, documentation
+
+### `/recovery-plan`
+**Purpose**: Generate prioritized improvement roadmap  
+**Output**: Phased recovery plan with timelines and risk assessment
+
+### `/recovery-execute`
+**Purpose**: Execute automated recovery improvements safely  
+**Process**: Safe, incremental improvements with rollback capability
+
 ## 📁 Command Structure
 
 Commands are stored in `.claude/commands/` as Markdown files with YAML frontmatter:

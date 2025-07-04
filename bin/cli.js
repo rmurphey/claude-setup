@@ -8,6 +8,16 @@ const { execSync } = require('child_process');
 
 console.log(chalk.blue.bold('\n🤖 Claude Code Project Setup\n'));
 
+const modeQuestion = {
+  type: 'list',
+  name: 'mode',
+  message: 'What would you like to do?',
+  choices: [
+    { name: '🚀 Set up new project infrastructure', value: 'setup' },
+    { name: '🏥 Assess and recover existing codebase', value: 'recovery' },
+  ]
+};
+
 const questions = [
   {
     type: 'list',
@@ -52,29 +62,55 @@ const questions = [
 
 async function main() {
   try {
-    const answers = await inquirer.prompt(questions);
+    // First ask what mode they want
+    const modeAnswer = await inquirer.prompt([modeQuestion]);
     
-    console.log(chalk.green('\n✅ Configuration complete!\n'));
-    console.log(chalk.yellow('📋 Your setup:'));
-    console.log(`   Project Type: ${answers.projectType}`);
-    console.log(`   Quality Level: ${answers.qualityLevel}`);
-    console.log(`   Team Size: ${answers.teamSize}`);
-    console.log(`   CI/CD: ${answers.cicd ? 'Yes' : 'No'}\n`);
-    
-    await setupProject(answers);
-    
-    console.log(chalk.green.bold('🎉 Project setup complete!\n'));
-    console.log(chalk.blue('Next steps:'));
-    console.log('1. Install dependencies as shown above');
-    console.log('2. Connect to remote repository (if desired)');
-    console.log('3. Run quality check: npm run lint (or equivalent)');
-    console.log('4. Review CLAUDE.md for AI collaboration guidelines');
-    console.log('5. Start coding with professional standards in place\n');
+    if (modeAnswer.mode === 'recovery') {
+      await handleRecoveryMode();
+    } else {
+      await handleSetupMode();
+    }
     
   } catch (error) {
-    console.error(chalk.red('❌ Setup failed:'), error.message);
+    console.error(chalk.red('❌ Operation failed:'), error.message);
     process.exit(1);
   }
+}
+
+async function handleSetupMode() {
+  const answers = await inquirer.prompt(questions);
+  
+  console.log(chalk.green('\n✅ Configuration complete!\n'));
+  console.log(chalk.yellow('📋 Your setup:'));
+  console.log(`   Project Type: ${answers.projectType}`);
+  console.log(`   Quality Level: ${answers.qualityLevel}`);
+  console.log(`   Team Size: ${answers.teamSize}`);
+  console.log(`   CI/CD: ${answers.cicd ? 'Yes' : 'No'}\n`);
+  
+  await setupProject(answers);
+  
+  console.log(chalk.green.bold('🎉 Project setup complete!\n'));
+  console.log(chalk.blue('Next steps:'));
+  console.log('1. Install dependencies as shown above');
+  console.log('2. Connect to remote repository (if desired)');
+  console.log('3. Run quality check: npm run lint (or equivalent)');
+  console.log('4. Review CLAUDE.md for AI collaboration guidelines');
+  console.log('5. Start coding with professional standards in place\n');
+}
+
+async function handleRecoveryMode() {
+  console.log(chalk.blue.bold('\n🏥 Codebase Recovery Mode\n'));
+  
+  // Add recovery commands to the project
+  await setupRecoveryCommands();
+  
+  console.log(chalk.green.bold('🎉 Recovery system installed!\n'));
+  console.log(chalk.blue('Next steps:'));
+  console.log('1. Run `/recovery-assess` to analyze codebase health');
+  console.log('2. Use `/recovery-plan` to generate improvement roadmap');
+  console.log('3. Execute `/recovery-execute` for automated improvements');
+  console.log('4. Track progress with regular assessments\n');
+  console.log(chalk.yellow('💡 Pro tip: Start with assessment to understand current state\n'));
 }
 
 async function setupProject(config) {
@@ -146,17 +182,81 @@ async function setupCommands() {
   const commands = [
     'hygiene', 'todo', 'design', 'commit', 'next',
     'learn', 'docs', 'estimate', 'reflect', 'defer',
-    'push', 'version-tag', 'maintainability', 'idea'
+    'push', 'version-tag', 'maintainability', 'idea',
+    'recovery-assess', 'recovery-plan', 'recovery-execute'
   ];
   
   for (const cmd of commands) {
-    const content = `#!/bin/bash
-# ${cmd} - Custom Claude Code command
-echo "Running ${cmd} command..."
-# Add command logic here
+    // Copy command template from our templates directory
+    const templatePath = path.join(__dirname, '..', 'templates', 'commands', `${cmd}.md`);
+    const targetPath = `.claude/commands/${cmd}.md`;
+    
+    try {
+      if (await fs.pathExists(templatePath)) {
+        await fs.copy(templatePath, targetPath);
+        console.log(chalk.gray(`   Created command: ${cmd}.md`));
+      } else {
+        // Fallback for commands without templates yet
+        const content = `---
+allowed-tools: [Bash]
+description: ${cmd} command
+---
+
+# ${cmd.charAt(0).toUpperCase() + cmd.slice(1)} Command
+
+## Context
+- Project status: !git status --porcelain
+
+## Your task
+Implement ${cmd} functionality.
+
+## Output
+Provide helpful output for the ${cmd} command.
 `;
-    await fs.writeFile(`.claude/commands/${cmd}`, content);
-    console.log(chalk.gray(`   Created command: ${cmd}`));
+        await fs.writeFile(targetPath, content);
+        console.log(chalk.gray(`   Created command template: ${cmd}.md`));
+      }
+    } catch (error) {
+      console.log(chalk.yellow(`   Warning: Could not create ${cmd} command`));
+    }
+  }
+}
+
+async function setupRecoveryCommands() {
+  console.log(chalk.blue('🏥 Installing recovery system...'));
+  
+  await fs.ensureDir('.claude/commands');
+  
+  const recoveryCommands = ['recovery-assess', 'recovery-plan', 'recovery-execute'];
+  
+  for (const cmd of recoveryCommands) {
+    const sourcePath = path.join(__dirname, '..', '.claude', 'commands', `${cmd}.md`);
+    const targetPath = `.claude/commands/${cmd}.md`;
+    
+    try {
+      await fs.copy(sourcePath, targetPath);
+      console.log(chalk.gray(`   Installed: ${cmd}.md`));
+    } catch (error) {
+      console.log(chalk.yellow(`   Warning: Could not install ${cmd} command`));
+    }
+  }
+  
+  // Also copy the basic commands if .claude doesn't exist
+  if (!await fs.pathExists('.claude/commands/hygiene.md')) {
+    console.log(chalk.blue('📋 Installing basic command suite...'));
+    const basicCommands = ['hygiene', 'todo', 'learn', 'commit', 'push', 'next'];
+    
+    for (const cmd of basicCommands) {
+      const sourcePath = path.join(__dirname, '..', '.claude', 'commands', `${cmd}.md`);
+      const targetPath = `.claude/commands/${cmd}.md`;
+      
+      try {
+        await fs.copy(sourcePath, targetPath);
+        console.log(chalk.gray(`   Installed: ${cmd}.md`));
+      } catch (error) {
+        console.log(chalk.yellow(`   Warning: Could not install ${cmd} command`));
+      }
+    }
   }
 }
 
