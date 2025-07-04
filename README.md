@@ -289,13 +289,42 @@ claude-project-setup/
 
 **Command-Driven Development**: Custom commands enable consistent Claude Code interaction patterns.
 
+## Development & CI/CD
+
+### Running Tests Locally
+```bash
+npm test                 # Run test suite
+npm run test:watch       # Watch mode for development
+npm run test:coverage    # Generate coverage report
+```
+
+### Continuous Integration
+- **GitHub Actions**: Automated testing on push/PR to main branch
+- **Node.js Compatibility**: Tests across Node.js 16.x, 18.x, and 20.x
+- **Test Coverage**: Automated coverage reporting via Codecov
+- **Quality Gates**: ESLint and Jest must pass before merge
+
+### Coverage Reports
+- **Local**: Run `npm run test:coverage` then open `coverage/lcov-report/index.html`
+- **Online**: View coverage at [Codecov.io](https://codecov.io/gh/rmurphey/claude-setup)
+- **Status**: ![Coverage Status](https://codecov.io/gh/rmurphey/claude-setup/branch/main/graph/badge.svg)
+
+### Quality Commands
+```bash
+npm run lint             # Check code quality
+npm run lint:fix         # Auto-fix issues
+npm run lint:changed     # Check only changed files
+npm run lint:changed:fix # Fix only changed files
+```
+
 ## Contributing
 
 1. Fork the repository
 2. Create a feature branch
 3. Add tests for new functionality
-4. Ensure all tests pass
-5. Submit a pull request
+4. Ensure all tests pass (`npm test`)
+5. Run quality checks (`npm run lint`)
+6. Submit a pull request
 
 ## License
 

@@ -81,3 +81,4 @@ After setup completion:
 - Quality infrastructure needed before any application code
 - Interactive approach scales better than complex instructions
 - Prevention architecture exponentially cheaper than reactive fixes
+- This is a weird project that needs to both provide capabilities, but also have those same capabilities internal to the project. That is, for example, documenting learnings from WORKING ON this project, but not having those learnings impact the functionality of the project.
