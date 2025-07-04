@@ -22,7 +22,7 @@
 
 ## Architecture Principles
 - Keep functions under 15 complexity
-- Files under 400 lines
+- Code files under 400 lines
 - Comprehensive error handling
 - Prefer functional programming patterns
 - Avoid mutation where possible
@@ -38,4 +38,4 @@
 - Test coverage: {{COVERAGE_TARGET}}% minimum
 - Documentation: All features documented
 - Error handling: Graceful failures with clear messages
-- Performance: Monitor complexity and file sizes
+- Performance: Monitor code complexity and file sizes

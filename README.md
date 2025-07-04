@@ -1,86 +1,22 @@
 # Claude Code Project Setup
 
-Interactive CLI tool to set up professional development projects with Claude Code integration, quality infrastructure, and custom commands.
-
-## Prerequisites
-
-Before using this tool, you need these programs installed on your computer:
-
-### Required (Must Have)
-- **Node.js** (version 16 or newer)
-  - Download from: https://nodejs.org
-  - Choose the "LTS" (Long Term Support) version
-  - This includes `npm` and `npx` commands automatically
-- **Git** (any recent version)
-  - Download from: https://git-scm.com
-  - On Mac: Often pre-installed, or install via Xcode Command Line Tools
-  - On Windows: Download Git for Windows
-  - On Linux: Install via your package manager (`sudo apt install git`)
-
-### How to Check if You Have Them
-Open your terminal/command prompt and run:
-```bash
-node --version    # Should show v16.0.0 or higher
-npm --version     # Should show some version number
-git --version     # Should show some version number
-```
-
-If any command says "command not found" or "not recognized", you need to install that program.
-
-### For Specific Project Types
-After running the setup tool, you may need to install additional tools:
-
-- **JavaScript/TypeScript**: Node.js covers this (already required above)
-- **Python**: Install Python 3.8+ from https://python.org
-- **Go**: Install from https://golang.org
-- **Rust**: Install from https://rustup.rs
-- **Java**: Install JDK 11+ from https://adoptium.net
-
-Don't worry - the tool will tell you exactly what to install for your specific project type!
-
-## Getting Started for Beginners
-
-### What is a Terminal/Command Prompt?
-- **Windows**: Search for "Command Prompt" or "PowerShell" in Start Menu
-- **Mac**: Search for "Terminal" in Spotlight (Cmd+Space)
-- **Linux**: Look for "Terminal" in your applications
-
-### Step-by-Step First Use
-1. **Install Node.js and Git** (see Prerequisites above)
-2. **Open your terminal/command prompt**
-3. **Navigate to where you want your project**:
-   ```bash
-   cd Desktop                    # Go to Desktop
-   mkdir my-new-project         # Create a new folder
-   cd my-new-project           # Go into that folder
-   ```
-4. **Run the setup tool**:
-   ```bash
-   npx github:rmurphey/claude-setup
-   ```
-5. **Answer the 4 questions** that appear
-6. **Follow the instructions** the tool gives you
-7. **Start coding!** All the professional tools are set up for you
-
-### What the Tool Does for You
-- ✅ Creates all the configuration files your project needs
-- ✅ Sets up quality checking tools (finds bugs and formatting issues)
-- ✅ Creates documentation templates
-- ✅ Initializes version control (Git) so you can track changes
-- ✅ Sets up helpful commands for working with Claude Code
-- ✅ Makes your project look professional from day one
+Interactive CLI tool to set up professional development projects with Claude Code integration, quality infrastructure, and ongoing development record system.
 
 ## Quick Start
 
-```bash
-# Run directly with npx (recommended)
-npx github:rmurphey/claude-setup
+**Prerequisites**: Node.js 16+ and Git ([beginner setup guide](#beginner-setup-guide))
 
-# Or clone and run locally
-git clone https://github.com/rmurphey/claude-setup.git
-cd claude-setup && npm link
-claude-setup
+```bash
+# Run in your project directory
+npx github:rmurphey/claude-setup
 ```
+
+Answer 4 questions and get a complete professional development environment with:
+- ✅ Quality tools (linters, formatters, tests) configured for your language
+- ✅ Documentation templates that maintain project memory across sessions
+- ✅ 14 custom Claude Code commands for structured development workflow
+- ✅ Git repository initialization with professional setup committed
+- ✅ Ongoing development record system that learns from your project
 
 ## What It Does
 
@@ -90,8 +26,6 @@ This tool sets up a complete professional development environment through 4 simp
 2. **Quality Level** - Strict (0 warnings), Standard (<10 warnings), or Relaxed (<50 warnings)  
 3. **Team Size** - Solo, Small team, or Large team
 4. **CI/CD** - Whether to create GitHub Actions workflows
-
-**Always includes git repository initialization and initial commit.**
 
 ## Features
 
@@ -109,7 +43,7 @@ Creates an **ongoing development record system** that maintains project memory a
 #### **CLAUDE.md** - AI Collaboration Guidelines
 - **Quality Standards**: Configurable thresholds (0 warnings for strict, <10 for standard)
 - **Development Workflow**: Pre-commit quality checks, command usage patterns
-- **Architecture Principles**: Complexity limits (<15 per function, <400 lines per file)
+- **Architecture Principles**: Code complexity limits (<15 per function, <400 lines per code file)
 - **Collaboration Guidelines**: Co-author commits, hygiene checks before AI assistance
 - **Project Standards**: Coverage targets, documentation requirements, error handling
 
@@ -369,42 +303,68 @@ MIT License - see LICENSE file for details.
 
 ## Troubleshooting
 
-### "npx: command not found"
-- **Solution**: Install Node.js from https://nodejs.org (includes npx)
-- **Check**: Run `node --version` to verify installation
+**Common issues?** See the [Beginner Setup Guide](#beginner-setup-guide) for detailed solutions.
 
-### "git: command not found" 
-- **Solution**: Install Git from https://git-scm.com
-- **Mac users**: Try `xcode-select --install` first
-- **Check**: Run `git --version` to verify installation
+**Still having trouble?**
+1. Clear NPX cache: `npx clear-npx-cache`
+2. Try the local installation method (see Installation section)
+3. Check internet connection and verify you're in the correct directory
 
-### "Permission denied" errors
-- **Windows**: Try running command prompt as Administrator
-- **Mac/Linux**: Try adding `sudo` before the command (be careful!)
-- **Alternative**: Use the local installation method instead
+## Beginner Setup Guide
 
-### "Module not found" or weird errors
-- **Solution**: Clear NPX cache and try again:
-  ```bash
-  npx clear-npx-cache
-  npx github:rmurphey/claude-setup
-  ```
+### Prerequisites Installation
 
-### Setup seems to hang or freeze
-- **Solution**: Press `Ctrl+C` to cancel, then try again
-- **Check**: Make sure you have a stable internet connection
+**Required Programs:**
+- **Node.js** (version 16+) - Download from https://nodejs.org (choose LTS version)
+- **Git** - Download from https://git-scm.com
 
-### "Failed to create initial commit"
-- **Solution**: Configure git first:
+**Check if installed:**
+```bash
+node --version    # Should show v16.0.0 or higher
+npm --version     # Should show some version number  
+git --version     # Should show some version number
+```
+
+**Additional tools** (install after setup based on your project type):
+- **Python**: https://python.org (3.8+)
+- **Go**: https://golang.org  
+- **Rust**: https://rustup.rs
+- **Java**: https://adoptium.net (JDK 11+)
+
+### Using the Terminal
+
+**Open terminal/command prompt:**
+- **Windows**: Search for "Command Prompt" or "PowerShell"
+- **Mac**: Search for "Terminal" in Spotlight (Cmd+Space)
+- **Linux**: Look for "Terminal" in applications
+
+**Navigate to your project location:**
+```bash
+cd Desktop                    # Go to Desktop
+mkdir my-new-project         # Create new folder
+cd my-new-project           # Enter that folder
+npx github:rmurphey/claude-setup  # Run setup
+```
+
+### Common Issues
+
+**"npx: command not found"**
+- Install Node.js from https://nodejs.org
+
+**"git: command not found"**  
+- Install Git from https://git-scm.com
+- Mac: Try `xcode-select --install` first
+
+**"Permission denied"**
+- Windows: Run as Administrator
+- Mac/Linux: Try `sudo` before command
+
+**"Failed to create initial commit"**
+- Configure git first:
   ```bash
   git config --global user.name "Your Name"
   git config --global user.email "your.email@example.com"
   ```
-
-### Still having trouble?
-1. Try the local installation method (see Installation section)
-2. Check that your terminal can access the internet
-3. Make sure you're in the directory where you want to create your project
 
 ## Support
 
