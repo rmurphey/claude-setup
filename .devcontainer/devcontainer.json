@@ -1,0 +1,24 @@
+{
+  "name": "JavaScript/TypeScript Development",
+  "image": "mcr.microsoft.com/devcontainers/javascript-node:18",
+  "features": {
+    "ghcr.io/devcontainers/features/node:1": {
+      "version": "18"
+    }
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "esbenp.prettier-vscode",
+        "dbaeumer.vscode-eslint",
+        "ms-vscode.vscode-typescript-next"
+      ]
+    }
+  },
+  "forwardPorts": [
+    3000,
+    8080
+  ],
+  "postCreateCommand": "npm install",
+  "remoteUser": "codespace"
+}
