@@ -11,6 +11,11 @@
 ## Architecture Decisions
 *Document decisions about the setup tool itself*
 
+## Quick Capture
+
+- [ ] [2025-01-04 22:15] add support for github codespaces
+- [x] [2025-01-04 22:16] create a command for working on a specific github issue - PLANNED
+
 ## Session History
 - **2025-01-04**: Implemented dual directory structure to separate internal development records from user templates
 ## Ideas

@@ -1,17 +1,17 @@
 #!/usr/bin/env node
 
-const inquirer = require('inquirer');
-const chalk = require('chalk');
-const fs = require('fs-extra');
-const path = require('path');
-const { execSync } = require('child_process');
+import inquirer from 'inquirer';
+import chalk from 'chalk';
+import fs from 'fs-extra';
+import path from 'path';
+import { execSync } from 'child_process';
 
 // Language setup modules
-const javascript = require('../lib/languages/javascript');
-const python = require('../lib/languages/python');
-const go = require('../lib/languages/go');
-const rust = require('../lib/languages/rust');
-const java = require('../lib/languages/java');
+import javascript from '../lib/languages/javascript.js';
+import python from '../lib/languages/python.js';
+import go from '../lib/languages/go.js';
+import rust from '../lib/languages/rust.js';
+import java from '../lib/languages/java.js';
 
 console.log(chalk.blue.bold('\n🤖 Claude Code Project Setup\n'));
 
@@ -453,8 +453,15 @@ jobs:
 `;
 }
 
-if (require.main === module) {
+// In ES modules, check if script is run directly
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+if (import.meta.url === `file://${process.argv[1]}`) {
   main();
 }
 
-module.exports = { main };
+export { main };
