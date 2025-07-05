@@ -476,7 +476,7 @@ function getDevContainerConfig(projectType) {
     },
     forwardPorts: [],
     postCreateCommand: "",
-    remoteUser: "codespace"
+    remoteUser: "vscode"
   };
   
   switch (projectType) {
@@ -500,7 +500,8 @@ function getDevContainerConfig(projectType) {
           }
         },
         forwardPorts: [3000, 8080],
-        postCreateCommand: "npm install"
+        postCreateCommand: "npm install",
+        remoteUser: "node"
       };
     
     case 'python':
@@ -523,7 +524,8 @@ function getDevContainerConfig(projectType) {
           }
         },
         forwardPorts: [8000, 5000],
-        postCreateCommand: "pip install -e ."
+        postCreateCommand: "pip install -e .",
+        remoteUser: "vscode"
       };
     
     case 'go':
@@ -544,7 +546,8 @@ function getDevContainerConfig(projectType) {
           }
         },
         forwardPorts: [8080],
-        postCreateCommand: "go mod download"
+        postCreateCommand: "go mod download",
+        remoteUser: "vscode"
       };
     
     case 'rust':
@@ -563,7 +566,8 @@ function getDevContainerConfig(projectType) {
           }
         },
         forwardPorts: [8080],
-        postCreateCommand: "cargo build"
+        postCreateCommand: "cargo build",
+        remoteUser: "vscode"
       };
     
     case 'java':
@@ -584,7 +588,8 @@ function getDevContainerConfig(projectType) {
           }
         },
         forwardPorts: [8080],
-        postCreateCommand: "mvn clean compile"
+        postCreateCommand: "mvn clean compile",
+        remoteUser: "vscode"
       };
     
     default:
