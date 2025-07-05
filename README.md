@@ -11,10 +11,10 @@ Interactive CLI tool to set up professional development projects with Claude Cod
 npx github:rmurphey/claude-setup
 ```
 
-Choose from 3 modes:
+Choose from 2 main modes plus DevContainer generation:
 - **🚀 Set up new project infrastructure** - Complete development environment setup
 - **🏥 Assess and recover existing codebase** - Analysis and improvement system
-- **📦 Generate DevContainer configuration** - GitHub Codespaces and VS Code dev containers
+- **📦 Generate DevContainer configuration** - Quick utility for GitHub Codespaces
 
 Answer 4 questions and get a complete professional development environment with:
 - ✅ Quality tools (linters, formatters, tests) configured for your language
@@ -25,12 +25,113 @@ Answer 4 questions and get a complete professional development environment with:
 
 ## What It Does
 
-This tool sets up a complete professional development environment through 4 simple questions:
+Claude Setup provides two main modes plus DevContainer generation for different development scenarios:
+
+## 🚀 Project Setup Mode
+
+Creates complete professional development environments through 4 simple questions:
 
 1. **Project Type** - JavaScript, Python, Go, Rust, Java, or Mixed
 2. **Quality Level** - Strict (0 warnings), Standard (<10 warnings), or Relaxed (<50 warnings)  
 3. **Team Size** - Solo, Small team, or Large team
 4. **CI/CD** - Whether to create GitHub Actions workflows
+
+### What You Get
+- ✅ **Quality Infrastructure** - Linters, formatters, tests configured for your language
+- ✅ **Documentation System** - CLAUDE.md, ACTIVE_WORK.md, and project templates
+- ✅ **14 Custom Commands** - `/hygiene`, `/todo`, `/commit`, `/learn`, etc.
+- ✅ **Git Repository** - Initialized with professional setup committed
+- ✅ **CI/CD Workflows** - GitHub Actions for quality checks (optional)
+
+### Use Cases
+- **New projects** starting from scratch
+- **Existing projects** needing professional infrastructure
+- **Teams** establishing consistent development standards
+- **Solo developers** wanting professional-grade setup
+
+## 🏥 Codebase Recovery Mode
+
+Comprehensive analysis and improvement system for projects with technical debt or maintenance challenges.
+
+### Recovery Commands
+
+**`/recovery-assess`** - **Codebase Health Analysis**
+- Analyzes code complexity, test coverage, documentation quality
+- Generates comprehensive health score (0-100)
+- Identifies technical debt hotspots and improvement priorities
+- Creates detailed assessment reports
+
+**`/recovery-plan`** - **Improvement Roadmap Generation**
+- Creates prioritized improvement plan based on assessment
+- Estimates effort and impact for each improvement
+- Provides step-by-step implementation guidance
+- Tracks progress across multiple improvement cycles
+
+**`/recovery-execute`** - **Automated Improvements**
+- Implements automated fixes for common issues
+- Sets up quality infrastructure (linting, testing, formatting)
+- Creates missing documentation templates
+- Establishes development standards and workflows
+
+### Recovery Workflow
+1. **Assessment** → Run `/recovery-assess` to understand current state
+2. **Planning** → Use `/recovery-plan` to create improvement roadmap  
+3. **Execution** → Apply `/recovery-execute` for automated improvements
+4. **Iteration** → Repeat cycle to continuously improve codebase health
+
+### Use Cases
+- **Legacy codebases** with accumulated technical debt
+- **Inherited projects** without clear standards
+- **Rapid prototypes** that need production-ready infrastructure
+- **Team transitions** requiring consistent development practices
+
+## 📦 DevContainer Generation
+
+Quick utility to generate optimized `.devcontainer/devcontainer.json` configurations for GitHub Codespaces and VS Code dev containers.
+
+### Language-Specific Templates
+
+**JavaScript/TypeScript**
+- **Base Image**: `mcr.microsoft.com/devcontainers/javascript-node:18`
+- **Extensions**: Prettier, ESLint, TypeScript
+- **Ports**: 3000, 8080
+- **Setup**: `npm ci --prefer-offline`
+
+**Python**
+- **Base Image**: `mcr.microsoft.com/devcontainers/python:3.11`
+- **Extensions**: Python, Flake8, Ruff
+- **Ports**: 8000, 5000
+- **Setup**: `pip install --cache-dir /tmp/pip-cache -e .`
+
+**Go**
+- **Base Image**: `mcr.microsoft.com/devcontainers/go:1.21`
+- **Extensions**: Go extension
+- **Ports**: 8080
+- **Setup**: `go mod download`
+
+**Rust**
+- **Base Image**: `mcr.microsoft.com/devcontainers/rust:latest`
+- **Extensions**: rust-analyzer
+- **Ports**: 8080
+- **Setup**: `cargo fetch`
+
+**Java**
+- **Base Image**: `mcr.microsoft.com/devcontainers/java:17`
+- **Extensions**: Java extension pack
+- **Ports**: 8080
+- **Setup**: `mvn dependency:go-offline`
+
+### Performance Optimizations
+- **Parallel Execution** - `onCreateCommand` runs alongside other setup tasks
+- **Caching** - Optimized package manager configurations
+- **Minimal Features** - No redundant installations
+- **Error Resilience** - Graceful handling of missing config files
+
+### Use Cases
+- **GitHub Codespaces** development environments
+- **VS Code Dev Containers** for consistent local development
+- **Team collaboration** with identical development environments
+- **Onboarding** new developers with zero-config setup
 
 ## Features
 
