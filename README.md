@@ -107,7 +107,7 @@ npx github:rmurphey/claude-setup
 # Then run: /recovery-assess → /recovery-plan → /recovery-execute
 ```
 
-### DevContainer for GitHub Codespaces Only
+
 ```bash
 cd existing-project
 npx github:rmurphey/claude-setup
@@ -219,7 +219,7 @@ The tool creates a **persistent memory system** that maintains project knowledge
 
 ### Custom Commands Suite
 
-18 specialized commands for structured development:
+19 specialized commands for structured development:
 
 **Core Workflow**
 - `/hygiene` - Project health check

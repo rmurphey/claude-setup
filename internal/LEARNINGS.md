@@ -39,5 +39,18 @@ test('function works', () => {
 
 **Status**: Basic tests working (~200ms, 3 tests), 6 test files need conversion.
 
+### 2025-07-05 - Automated Documentation Synchronization
+**Problem**: README command count manually maintained, can drift out of sync with actual commands.
+
+**Solution**: 
+- Created `lib/readme-updater.js` to automatically scan `.claude/commands/` directory
+- Added `/update-readme` command for manual synchronization
+- Added `npm run update-readme` script for easy maintenance
+- Updater dynamically counts commands and updates README section
+
+**Key Pattern**: Documentation should be generated from source of truth (actual files) rather than manually maintained.
+
+**Automation**: Now when commands are added/removed, run `npm run update-readme` to sync documentation automatically.
+
 ## User Experience Patterns
 *Document what works/doesn't work for setup tools*

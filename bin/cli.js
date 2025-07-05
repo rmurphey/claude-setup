@@ -235,7 +235,7 @@ async function setupCommands() {
     'hygiene', 'todo', 'design', 'commit', 'next',
     'learn', 'docs', 'estimate', 'reflect', 'defer',
     'push', 'version-tag', 'maintainability', 'idea', 'ideation',
-    'recovery-assess', 'recovery-plan', 'recovery-execute'
+    'recovery-assess', 'recovery-plan', 'recovery-execute', 'update-readme'
   ];
   
   for (const cmd of commands) {

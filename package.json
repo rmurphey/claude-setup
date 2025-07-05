@@ -14,7 +14,8 @@
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "lint:changed": "eslint $(git diff --name-only --diff-filter=ACMR HEAD | grep '\\.js$' | xargs)",
-    "lint:changed:fix": "eslint $(git diff --name-only --diff-filter=ACMR HEAD | grep '\\.js$' | xargs) --fix"
+    "lint:changed:fix": "eslint $(git diff --name-only --diff-filter=ACMR HEAD | grep '\\.js$' | xargs) --fix",
+    "update-readme": "node -e \"import('./lib/readme-updater.js').then(m => m.updateReadme().then(r => console.log('README updated:', r.commandCount, 'commands')))\""
   },
   "keywords": [
     "claude",
