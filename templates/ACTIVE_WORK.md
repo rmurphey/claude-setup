@@ -14,6 +14,13 @@
 - Coverage: Unknown
 - Build: Not tested
 
+## Claude Usage Tracking
+*Track actual vs estimated Claude interactions*
+
+| Task | Estimated | Actual | Efficiency |
+|------|-----------|--------|------------|
+| Initial setup | 20 messages | - | - |
+
 ## Quick Capture
 *Use `/todo "task description"` to quickly add items here*
 

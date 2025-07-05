@@ -21,6 +21,8 @@ Examples of honest responses:
 - Always run quality checks before commits
 - Use custom commands for common tasks
 - Document insights and decisions
+- Estimate Claude usage before starting tasks
+- Track actual vs estimated Claude interactions
 
 ## Quality Standards
 - Quality Level: {{QUALITY_LEVEL}}
@@ -33,6 +35,7 @@ Examples of honest responses:
 - `/todo` - Task management
 - `/commit` - Quality-checked commits
 - `/design` - Feature planning
+- `/estimate` - Claude usage cost estimation
 - `/next` - AI-recommended priorities
 - `/learn` - Capture insights
 - `/docs` - Update documentation
@@ -43,6 +46,18 @@ Examples of honest responses:
 - Comprehensive error handling
 - Prefer functional programming patterns
 - Avoid mutation where possible
+
+## Claude Usage Guidelines
+- Use `/estimate` before starting any non-trivial task
+- Track actual Claude interactions vs estimates
+- Optimize for message efficiency in complex tasks
+- Budget Claude usage for different project phases
+
+**Typical Usage Patterns**:
+- **Bug Fix**: 10-30 messages
+- **Small Feature**: 30-80 messages  
+- **Major Feature**: 100-300 messages
+- **Architecture Change**: 200-500 messages
 
 ## Collaboration Guidelines
 - Always add Claude as co-author on commits

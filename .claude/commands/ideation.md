@@ -80,13 +80,14 @@ Based on AST analysis results and project context, generate 3-5 development idea
 
 **Format each idea as**:
 ```
-💡 [Category/Effort/Impact] Brief description
+💡 [Category/Claude Usage/Impact] Brief description
    Analysis: What AST analysis revealed that supports this idea
    Details: Specific implementation notes
+   Claude Cost: Estimated messages and interaction pattern
    Value: Why this would benefit users
 ```
 
-**Effort Levels**: Small (1-2 hours), Medium (1-2 days), Large (1+ weeks)
+**Claude Usage Levels**: Light (10-50 messages), Moderate (50-150), Heavy (150-400), Intensive (400+)
 **Impact Levels**: Low, Medium, High (based on user benefit)
 
 ### 4. Interactive Review Process
@@ -135,25 +136,29 @@ Next: Review accepted ideas and prioritize in your development workflow
 Examples of analysis-driven development ideas:
 
 **High Complexity Functions Detected**:
-- 💡 [Quality/Medium/High] Refactor complex CLI setup logic into composable functions
+- 💡 [Quality/Moderate/High] Refactor complex CLI setup logic into composable functions
   Analysis: AST found 3 functions with complexity > 15 in cli.js
   Details: Extract language setup, command generation, and git operations into separate modules
+  Claude Cost: ~80 messages (analysis, refactoring, testing)
   Value: Improves maintainability and testability
 
 **Limited Test Coverage**:
-- 💡 [Quality/Medium/High] Add comprehensive unit tests for language modules
+- 💡 [Quality/Heavy/High] Add comprehensive unit tests for language modules
   Analysis: AST found 0 test files for lib/languages/* modules
   Details: Create Jest tests for each language setup function with mocked file operations
+  Claude Cost: ~200 messages (test design, implementation, debugging)
   Value: Prevents regressions and improves confidence in refactoring
 
 **Architectural Patterns**:
-- 💡 [Feature/Large/High] Plugin architecture for extensible language support
+- 💡 [Feature/Intensive/High] Plugin architecture for extensible language support
   Analysis: AST analysis shows repeated patterns in language modules
   Details: Create plugin interface allowing third-party language support
+  Claude Cost: ~350 messages (architecture design, implementation, documentation)
   Value: Community can add support for new languages without core changes
 
 **API Pattern Detection**:
-- 💡 [Feature/Medium/Medium] CLI progress reporting with structured output
+- 💡 [Feature/Moderate/Medium] CLI progress reporting with structured output
   Analysis: AST shows multiple console.log calls without structured logging
   Details: Implement progress reporting system with JSON output mode
+  Claude Cost: ~120 messages (design, implementation, testing)
   Value: Better integration with CI/CD and programmatic usage
