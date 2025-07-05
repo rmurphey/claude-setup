@@ -188,6 +188,9 @@ async function createDocumentation(config) {
     await fs.writeFile(filename, content);
     console.log(chalk.gray(`   Created ${filename}`));
   }
+  
+  // Copy utility libraries for project maintenance
+  await copyUtilityLibraries();
 }
 
 async function setupLanguage(config) {
@@ -223,6 +226,30 @@ async function setupLanguage(config) {
       break;
     default:
       console.log(chalk.yellow('   Manual setup required for this project type'));
+  }
+}
+
+async function copyUtilityLibraries() {
+  console.log(chalk.blue('📚 Installing utility libraries...'));
+  
+  await fs.ensureDir('lib');
+  
+  const libraries = [
+    'readme-updater.js'
+  ];
+  
+  for (const lib of libraries) {
+    try {
+      const templatePath = path.join(__dirname, '..', 'templates', 'lib', lib);
+      const targetPath = `lib/${lib}`;
+      
+      if (await fs.pathExists(templatePath)) {
+        await fs.copy(templatePath, targetPath);
+        console.log(chalk.gray(`   Created lib/${lib}`));
+      }
+    } catch (error) {
+      console.log(chalk.yellow(`   Warning: Could not create lib/${lib}`));
+    }
   }
 }
 
