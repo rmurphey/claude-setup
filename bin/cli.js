@@ -503,6 +503,90 @@ function getDevContainerConfig(projectType) {
         postCreateCommand: "npm install"
       };
     
+    case 'python':
+      return {
+        ...baseConfig,
+        name: "Python Development",
+        image: "mcr.microsoft.com/devcontainers/python:3.11",
+        features: {
+          "ghcr.io/devcontainers/features/python:1": {
+            version: "3.11"
+          }
+        },
+        customizations: {
+          vscode: {
+            extensions: [
+              "ms-python.python",
+              "ms-python.flake8",
+              "charliermarsh.ruff"
+            ]
+          }
+        },
+        forwardPorts: [8000, 5000],
+        postCreateCommand: "pip install -e ."
+      };
+    
+    case 'go':
+      return {
+        ...baseConfig,
+        name: "Go Development",
+        image: "mcr.microsoft.com/devcontainers/go:1.21",
+        features: {
+          "ghcr.io/devcontainers/features/go:1": {
+            version: "1.21"
+          }
+        },
+        customizations: {
+          vscode: {
+            extensions: [
+              "golang.go"
+            ]
+          }
+        },
+        forwardPorts: [8080],
+        postCreateCommand: "go mod download"
+      };
+    
+    case 'rust':
+      return {
+        ...baseConfig,
+        name: "Rust Development", 
+        image: "mcr.microsoft.com/devcontainers/rust:latest",
+        features: {
+          "ghcr.io/devcontainers/features/rust:1": {}
+        },
+        customizations: {
+          vscode: {
+            extensions: [
+              "rust-lang.rust-analyzer"
+            ]
+          }
+        },
+        forwardPorts: [8080],
+        postCreateCommand: "cargo build"
+      };
+    
+    case 'java':
+      return {
+        ...baseConfig,
+        name: "Java Development",
+        image: "mcr.microsoft.com/devcontainers/java:17",
+        features: {
+          "ghcr.io/devcontainers/features/java:1": {
+            version: "17"
+          }
+        },
+        customizations: {
+          vscode: {
+            extensions: [
+              "vscjava.vscode-java-pack"
+            ]
+          }
+        },
+        forwardPorts: [8080],
+        postCreateCommand: "mvn clean compile"
+      };
+    
     default:
       return baseConfig;
   }
