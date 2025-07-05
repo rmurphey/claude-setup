@@ -20,7 +20,7 @@ const modeQuestion = {
   choices: [
     { name: '🚀 Set up new project infrastructure', value: 'setup' },
     { name: '🏥 Assess and recover existing codebase', value: 'recovery' },
-    { name: '📦 Generate DevContainer configuration', value: 'devcontainer' },
+    { name: '📦 Generate GitHub Codespaces DevContainer only', value: 'devcontainer' },
   ]
 };
 
@@ -124,30 +124,33 @@ async function handleRecoveryMode() {
 }
 
 async function handleDevContainerMode() {
-  console.log(chalk.blue.bold('\n📦 DevContainer Configuration Mode\n'));
+  console.log(chalk.blue.bold('\n📦 GitHub Codespaces DevContainer Generator\n'));
+  console.log(chalk.gray('This creates .devcontainer/devcontainer.json for GitHub Codespaces'));
+  console.log(chalk.gray('For full project setup, use the main setup mode instead.\n'));
   
   const projectTypeAnswer = await inquirer.prompt([{
     type: 'list',
     name: 'projectType',
-    message: 'What type of project is this?',
+    message: 'What programming language will you use in Codespaces?',
     choices: [
       { name: 'JavaScript/TypeScript', value: 'js' },
       { name: 'Python', value: 'python' },
       { name: 'Go', value: 'go' },
       { name: 'Rust', value: 'rust' },
       { name: 'Java', value: 'java' },
-      { name: 'Mixed/Other', value: 'other' }
+      { name: 'Mixed/Other (basic configuration)', value: 'other' }
     ]
   }]);
   
   await generateDevContainer(projectTypeAnswer.projectType);
   
-  console.log(chalk.green.bold('🎉 DevContainer configuration generated!\n'));
+  console.log(chalk.green.bold('🎉 GitHub Codespaces DevContainer created!\n'));
   console.log(chalk.blue('Next steps:'));
   console.log('1. Commit the .devcontainer/ directory to your repository');
-  console.log('2. Open repository in GitHub Codespaces or VS Code with Dev Containers');
-  console.log('3. Container will automatically install tools and dependencies');
-  console.log('4. Start coding with a consistent development environment\n');
+  console.log('2. Open repository in GitHub Codespaces');
+  console.log('3. Codespaces will automatically use this configuration');
+  console.log('4. Dependencies and tools will be pre-installed\n');
+  console.log(chalk.yellow('💡 For complete project setup (linting, testing, etc.), run this tool again in setup mode'));
 }
 
 async function setupProject(config) {

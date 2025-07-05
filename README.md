@@ -13,10 +13,10 @@ Interactive CLI tool to set up professional development projects with Claude Cod
 npx github:rmurphey/claude-setup
 ```
 
-Choose from 2 main modes plus DevContainer generation:
+Choose from 2 main modes plus a GitHub Codespaces utility:
 - **🚀 Set up new project infrastructure** - Complete development environment setup
 - **🏥 Assess and recover existing codebase** - Analysis and improvement system
-- **📦 Generate DevContainer configuration** - Quick utility for GitHub Codespaces
+- **📦 Generate GitHub Codespaces DevContainer only** - Quick utility for .devcontainer/devcontainer.json
 
 ## Overview
 
@@ -73,17 +73,21 @@ Comprehensive analysis and improvement system for projects with technical debt o
 - Rapid prototypes that need production-ready infrastructure
 - Team transitions requiring consistent development practices
 
-## DevContainer Generation
+## GitHub Codespaces DevContainer Generator
 
-Quick utility to generate optimized `.devcontainer/devcontainer.json` configurations for GitHub Codespaces and VS Code dev containers.
+Quick utility to generate optimized `.devcontainer/devcontainer.json` configurations specifically for GitHub Codespaces.
+
+**Use Case:** When you just need a DevContainer configuration for GitHub Codespaces without full project setup.
 
 **Features:**
-- Language-specific base images and extensions
+- Language-specific base images and VS Code extensions
 - Optimized package manager configurations
 - Performance optimizations (parallel execution, caching)
 - Error-resilient setup commands
 
 **Supported Languages:** JavaScript/TypeScript, Python, Go, Rust, Java
+
+**Note:** For complete project setup (linting, testing, documentation), use the main setup mode instead.
 
 ## Usage Examples
 
@@ -103,12 +107,13 @@ npx github:rmurphey/claude-setup
 # Then run: /recovery-assess → /recovery-plan → /recovery-execute
 ```
 
-### DevContainer for GitHub Codespaces
+### DevContainer for GitHub Codespaces Only
 ```bash
-cd any-project
+cd existing-project
 npx github:rmurphey/claude-setup
-# Select: 📦 Generate DevContainer configuration → Python
-# Creates .devcontainer/devcontainer.json ready for Codespaces
+# Select: 📦 Generate GitHub Codespaces DevContainer only → Python
+# Creates .devcontainer/devcontainer.json optimized for Codespaces
+# Note: This doesn't set up linting, testing, or documentation
 ```
 
 ### Enterprise Setup
@@ -214,7 +219,7 @@ The tool creates a **persistent memory system** that maintains project knowledge
 
 ### Custom Commands Suite
 
-15 specialized commands for structured development:
+18 specialized commands for structured development:
 
 **Core Workflow**
 - `/hygiene` - Project health check
@@ -224,9 +229,14 @@ The tool creates a **persistent memory system** that maintains project knowledge
 
 **Planning & Design**
 - `/design` - Feature planning
-- `/estimate` - Work estimation
+- `/estimate` - Claude usage cost estimation
 - `/defer` - Postpone tasks with reasons
 - `/ideation` - AI-powered development idea generation
+
+**Codebase Analysis & Recovery**
+- `/recovery-assess` - Analyze codebase health (0-100 score)
+- `/recovery-plan` - Generate prioritized improvement roadmap
+- `/recovery-execute` - Apply automated improvements
 
 **Learning & Growth**
 - `/learn` - Capture insights
@@ -237,7 +247,7 @@ The tool creates a **persistent memory system** that maintains project knowledge
 - `/push` - Reviewed pushes
 - `/version-tag` - Release management
 - `/maintainability` - Code health analysis
-- `/idea` - Idea capture
+- `/idea` - Quick idea capture
 
 ### CI/CD Integration
 
