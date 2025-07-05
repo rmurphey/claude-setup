@@ -8,7 +8,7 @@
     "claude-setup": "./bin/cli.js"
   },
   "scripts": {
-    "test": "echo 'Tests temporarily disabled during ES module migration'",
+    "test": "node --experimental-vm-modules node_modules/.bin/jest",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
     "lint": "eslint .",

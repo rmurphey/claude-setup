@@ -13,8 +13,6 @@ import go from '../lib/languages/go.js';
 import rust from '../lib/languages/rust.js';
 import java from '../lib/languages/java.js';
 
-console.log(chalk.blue.bold('\n🤖 Claude Code Project Setup\n'));
-
 const modeQuestion = {
   type: 'list',
   name: 'mode',
@@ -70,6 +68,8 @@ const questions = [
 
 async function main() {
   try {
+    console.log(chalk.blue.bold('\n🤖 Claude Code Project Setup\n'));
+    
     // First ask what mode they want
     const modeAnswer = await inquirer.prompt([modeQuestion]);
     
@@ -628,7 +628,20 @@ import { dirname } from 'path';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-// Run main - CLI is always meant to be executed
-main();
+// Run main only if this file is executed directly
+if (import.meta.url === `file://${process.argv[1]}`) {
+  main();
+}
 
-export { main };
+export { 
+  main, 
+  setupProject, 
+  createDocumentation, 
+  setupLanguage, 
+  setupCommands, 
+  generateClaudeTemplate, 
+  generateActiveWorkTemplate, 
+  generateGitignore,
+  generateDevContainer,
+  getDevContainerConfig
+};

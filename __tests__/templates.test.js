@@ -1,10 +1,12 @@
-const fs = require('fs-extra');
+import fs from 'fs-extra';
 
 // Mock fs-extra
 jest.mock('fs-extra', () => ({
-  writeFile: jest.fn(),
-  ensureDir: jest.fn(),
-  pathExists: jest.fn(),
+  default: {
+    writeFile: jest.fn(),
+    ensureDir: jest.fn(),
+    pathExists: jest.fn(),
+  }
 }));
 
 // Mock console methods
@@ -33,7 +35,7 @@ describe('Template Generation Functions', () => {
         })
       }));
 
-      const { main } = require('../bin/cli.js');
+      const { main } = await import('../bin/cli.js');
       await main();
 
       const claudeMdCall = fs.writeFile.mock.calls.find(call => call[0] === 'CLAUDE.md');
@@ -59,7 +61,7 @@ describe('Template Generation Functions', () => {
         })
       }));
 
-      const { main } = require('../bin/cli.js');
+      const { main } = await import('../bin/cli.js');
       await main();
 
       const claudeMdCall = fs.writeFile.mock.calls.find(call => call[0] === 'CLAUDE.md');
@@ -78,7 +80,7 @@ describe('Template Generation Functions', () => {
         })
       }));
 
-      const { main } = require('../bin/cli.js');
+      const { main } = await import('../bin/cli.js');
       await main();
 
       const claudeMdCall = fs.writeFile.mock.calls.find(call => call[0] === 'CLAUDE.md');
@@ -99,7 +101,7 @@ describe('Template Generation Functions', () => {
         })
       }));
 
-      const { main } = require('../bin/cli.js');
+      const { main } = await import('../bin/cli.js');
       await main();
 
       const activeWorkCall = fs.writeFile.mock.calls.find(call => call[0] === 'ACTIVE_WORK.md');
@@ -125,7 +127,7 @@ describe('Template Generation Functions', () => {
         })
       }));
 
-      const { main } = require('../bin/cli.js');
+      const { main } = await import('../bin/cli.js');
       await main();
 
       const gitignoreCall = fs.writeFile.mock.calls.find(call => call[0] === '.gitignore');
@@ -152,7 +154,7 @@ describe('Template Generation Functions', () => {
         })
       }));
 
-      const { main } = require('../bin/cli.js');
+      const { main } = await import('../bin/cli.js');
       await main();
 
       const gitignoreCall = fs.writeFile.mock.calls.find(call => call[0] === '.gitignore');
@@ -178,7 +180,7 @@ describe('Template Generation Functions', () => {
         })
       }));
 
-      const { main } = require('../bin/cli.js');
+      const { main } = await import('../bin/cli.js');
       await main();
 
       const gitignoreCall = fs.writeFile.mock.calls.find(call => call[0] === '.gitignore');
@@ -206,7 +208,7 @@ describe('Template Generation Functions', () => {
         })
       }));
 
-      const { main } = require('../bin/cli.js');
+      const { main } = await import('../bin/cli.js');
       await main();
 
       const workflowCall = fs.writeFile.mock.calls.find(call => call[0] === '.github/workflows/quality.yml');
@@ -231,7 +233,7 @@ describe('Template Generation Functions', () => {
         })
       }));
 
-      const { main } = require('../bin/cli.js');
+      const { main } = await import('../bin/cli.js');
       await main();
 
       const workflowCall = fs.writeFile.mock.calls.find(call => call[0] === '.github/workflows/quality.yml');
