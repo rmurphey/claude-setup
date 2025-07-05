@@ -6,6 +6,13 @@ const fs = require('fs-extra');
 const path = require('path');
 const { execSync } = require('child_process');
 
+// Language setup modules
+const javascript = require('../lib/languages/javascript');
+const python = require('../lib/languages/python');
+const go = require('../lib/languages/go');
+const rust = require('../lib/languages/rust');
+const java = require('../lib/languages/java');
+
 console.log(chalk.blue.bold('\n🤖 Claude Code Project Setup\n'));
 
 const modeQuestion = {
@@ -153,21 +160,33 @@ async function createDocumentation(config) {
 async function setupLanguage(config) {
   console.log(chalk.blue('🔧 Setting up language-specific tools...'));
   
+  // Simple detection for existing files
+  const detection = {
+    existingFiles: {
+      packageJson: await fs.pathExists('package.json'),
+      pyprojectToml: await fs.pathExists('pyproject.toml'),
+      goMod: await fs.pathExists('go.mod'),
+      cargoToml: await fs.pathExists('Cargo.toml'),
+      pomXml: await fs.pathExists('pom.xml'),
+      buildGradle: await fs.pathExists('build.gradle')
+    }
+  };
+  
   switch (config.projectType) {
     case 'js':
-      await setupJavaScript(config);
+      await javascript.setup(config, detection);
       break;
     case 'python':
-      await setupPython(config);
+      await python.setup(config, detection);
       break;
     case 'go':
-      await setupGo(config);
+      await go.setup(config, detection);
       break;
     case 'rust':
-      await setupRust(config);
+      await rust.setup(config, detection);
       break;
     case 'java':
-      await setupJava(config);
+      await java.setup(config, detection);
       break;
     default:
       console.log(chalk.yellow('   Manual setup required for this project type'));
@@ -260,61 +279,6 @@ async function setupRecoveryCommands() {
   }
 }
 
-async function setupJavaScript(config) {
-  // Check if package.json exists, create if not
-  if (!await fs.pathExists('package.json')) {
-    const packageJson = {
-      name: path.basename(process.cwd()),
-      version: '1.0.0',
-      scripts: {
-        lint: 'eslint .',
-        'lint:fix': 'eslint . --fix',
-        format: 'prettier --write .',
-        test: 'jest'
-      }
-    };
-    await fs.writeFile('package.json', JSON.stringify(packageJson, null, 2));
-    console.log(chalk.gray('   Created package.json'));
-  }
-  
-  console.log(chalk.yellow('   Run: npm install --save-dev eslint prettier jest'));
-}
-
-async function setupPython(config) {
-  const pyprojectToml = `[tool.ruff]
-line-length = 88
-target-version = "py38"
-
-[tool.ruff.lint]
-select = ["E", "F", "W", "C90", "I", "N", "UP", "YTT", "S", "BLE", "FBT", "B", "A", "COM", "C4", "DTZ", "T10", "EM", "EXE", "ISC", "ICN", "G", "INP", "PIE", "T20", "PYI", "PT", "Q", "RSE", "RET", "SLF", "SIM", "TID", "TCH", "ARG", "PTH", "ERA", "PD", "PGH", "PL", "TRY", "NPY", "RUF"]
-ignore = []
-
-[tool.pytest.ini_options]
-testpaths = ["tests"]
-python_files = ["test_*.py"]
-`;
-  
-  await fs.writeFile('pyproject.toml', pyprojectToml);
-  console.log(chalk.gray('   Created pyproject.toml'));
-  console.log(chalk.yellow('   Run: pip install ruff pytest'));
-}
-
-async function setupGo(config) {
-  if (!await fs.pathExists('go.mod')) {
-    console.log(chalk.yellow('   Run: go mod init <module-name>'));
-  }
-  console.log(chalk.yellow('   Install: go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest'));
-}
-
-async function setupRust(config) {
-  if (!await fs.pathExists('Cargo.toml')) {
-    console.log(chalk.yellow('   Run: cargo init .'));
-  }
-}
-
-async function setupJava(config) {
-  console.log(chalk.yellow('   Run: gradle init (or maven setup)'));
-}
 
 async function setupCICD(config) {
   console.log(chalk.blue('🚀 Setting up CI/CD...'));
