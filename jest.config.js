@@ -1,7 +1,9 @@
-module.exports = {
+export default {
   testEnvironment: 'node',
+  transform: {},
   collectCoverageFrom: [
     'bin/**/*.js',
+    'lib/**/*.js',
     '!bin/**/*.test.js',
     '!**/node_modules/**'
   ],
