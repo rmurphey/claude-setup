@@ -54,3 +54,6 @@
 Quick capture of ideas for future consideration:
 
 - 💡 [2025-07-04 17:36] test command functionality
+- [ ] [2025-07-05 21:30] [AI-Generated] Reduce CLI complexity with command pattern - Extract command classes (SetupCommand, RecoveryCommand, DevContainerCommand) with shared base to improve maintainability and testability
+- [ ] [2025-07-05 21:30] [AI-Generated] Complete AST analysis system with tree-sitter integration - Fix tree-sitter dependencies, test each language parser, integrate with ideation command for accurate cross-language code analysis
+- [ ] [2025-07-05 21:30] [AI-Generated] Add integration tests for CLI modes - Create end-to-end tests for setup, recovery, and DevContainer modes in temp directories to prevent regressions in user-facing workflows
