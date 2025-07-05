@@ -4,7 +4,9 @@ Interactive CLI tool to set up professional development projects with Claude Cod
 
 ## Quick Start
 
-**Prerequisites**: Node.js 16+ and Git ([beginner setup guide](#beginner-setup-guide))
+**Prerequisites**: Node.js 16+ and Git 
+
+- [Beginner setup guide](#beginner-setup-guide)
 
 ```bash
 # Run in your project directory
