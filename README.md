@@ -11,6 +11,11 @@ Interactive CLI tool to set up professional development projects with Claude Cod
 npx github:rmurphey/claude-setup
 ```
 
+Choose from 3 modes:
+- **🚀 Set up new project infrastructure** - Complete development environment setup
+- **🏥 Assess and recover existing codebase** - Analysis and improvement system
+- **📦 Generate DevContainer configuration** - GitHub Codespaces and VS Code dev containers
+
 Answer 4 questions and get a complete professional development environment with:
 - ✅ Quality tools (linters, formatters, tests) configured for your language
 - ✅ Documentation templates that maintain project memory across sessions
@@ -167,6 +172,51 @@ cd enterprise-project
 npx github:rmurphey/claude-setup
 # Select: Java → Strict → Team → Yes CI/CD
 ```
+
+### DevContainer for GitHub Codespaces
+```bash
+cd any-project
+npx github:rmurphey/claude-setup
+# Select: 📦 Generate DevContainer configuration → JavaScript
+# Creates .devcontainer/devcontainer.json
+git add .devcontainer/
+git commit -m "Add DevContainer configuration"
+# Repository now works with GitHub Codespaces automatically
+```
+
+## DevContainer Support
+
+The DevContainer mode generates `.devcontainer/devcontainer.json` configurations optimized for GitHub Codespaces and VS Code dev containers. Each language template includes:
+
+### JavaScript/TypeScript
+- **Base Image**: `mcr.microsoft.com/devcontainers/javascript-node:18`
+- **Extensions**: Prettier, ESLint, TypeScript
+- **Ports**: 3000, 8080
+- **Setup**: `npm install`
+
+### Python
+- **Base Image**: `mcr.microsoft.com/devcontainers/python:3.11`
+- **Extensions**: Python, Flake8, Ruff
+- **Ports**: 8000, 5000
+- **Setup**: `pip install -e .`
+
+### Go
+- **Base Image**: `mcr.microsoft.com/devcontainers/go:1.21`
+- **Extensions**: Go extension
+- **Ports**: 8080
+- **Setup**: `go mod download`
+
+### Rust
+- **Base Image**: `mcr.microsoft.com/devcontainers/rust:latest`
+- **Extensions**: rust-analyzer
+- **Ports**: 8080
+- **Setup**: `cargo build`
+
+### Java
+- **Base Image**: `mcr.microsoft.com/devcontainers/java:17`
+- **Extensions**: Java extension pack
+- **Ports**: 8080
+- **Setup**: `mvn clean compile`
 
 ## Quality Levels
 
