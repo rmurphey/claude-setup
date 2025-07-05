@@ -460,8 +460,7 @@ import { dirname } from 'path';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-if (import.meta.url === `file://${process.argv[1]}`) {
-  main();
-}
+// Run main - CLI is always meant to be executed
+main();
 
 export { main };
