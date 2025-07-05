@@ -22,6 +22,7 @@ const modeQuestion = {
   choices: [
     { name: '🚀 Set up new project infrastructure', value: 'setup' },
     { name: '🏥 Assess and recover existing codebase', value: 'recovery' },
+    { name: '📦 Generate DevContainer configuration', value: 'devcontainer' },
   ]
 };
 
@@ -74,6 +75,8 @@ async function main() {
     
     if (modeAnswer.mode === 'recovery') {
       await handleRecoveryMode();
+    } else if (modeAnswer.mode === 'devcontainer') {
+      await handleDevContainerMode();
     } else {
       await handleSetupMode();
     }
@@ -118,6 +121,33 @@ async function handleRecoveryMode() {
   console.log('3. Execute `/recovery-execute` for automated improvements');
   console.log('4. Track progress with regular assessments\n');
   console.log(chalk.yellow('💡 Pro tip: Start with assessment to understand current state\n'));
+}
+
+async function handleDevContainerMode() {
+  console.log(chalk.blue.bold('\n📦 DevContainer Configuration Mode\n'));
+  
+  const projectTypeAnswer = await inquirer.prompt([{
+    type: 'list',
+    name: 'projectType',
+    message: 'What type of project is this?',
+    choices: [
+      { name: 'JavaScript/TypeScript', value: 'js' },
+      { name: 'Python', value: 'python' },
+      { name: 'Go', value: 'go' },
+      { name: 'Rust', value: 'rust' },
+      { name: 'Java', value: 'java' },
+      { name: 'Mixed/Other', value: 'other' }
+    ]
+  }]);
+  
+  await generateDevContainer(projectTypeAnswer.projectType);
+  
+  console.log(chalk.green.bold('🎉 DevContainer configuration generated!\n'));
+  console.log(chalk.blue('Next steps:'));
+  console.log('1. Commit the .devcontainer/ directory to your repository');
+  console.log('2. Open repository in GitHub Codespaces or VS Code with Dev Containers');
+  console.log('3. Container will automatically install tools and dependencies');
+  console.log('4. Start coding with a consistent development environment\n');
 }
 
 async function setupProject(config) {
@@ -420,6 +450,61 @@ htmlcov/
 `;
     default:
       return common;
+  }
+}
+
+async function generateDevContainer(projectType) {
+  console.log(chalk.blue('📦 Generating DevContainer configuration...'));
+  
+  await fs.ensureDir('.devcontainer');
+  
+  const devcontainerConfig = getDevContainerConfig(projectType);
+  await fs.writeFile('.devcontainer/devcontainer.json', JSON.stringify(devcontainerConfig, null, 2));
+  
+  console.log(chalk.gray('   Created .devcontainer/devcontainer.json'));
+}
+
+function getDevContainerConfig(projectType) {
+  const baseConfig = {
+    name: "Development Container",
+    image: "mcr.microsoft.com/devcontainers/universal:2",
+    features: {},
+    customizations: {
+      vscode: {
+        extensions: []
+      }
+    },
+    forwardPorts: [],
+    postCreateCommand: "",
+    remoteUser: "codespace"
+  };
+  
+  switch (projectType) {
+    case 'js':
+      return {
+        ...baseConfig,
+        name: "JavaScript/TypeScript Development",
+        image: "mcr.microsoft.com/devcontainers/javascript-node:18",
+        features: {
+          "ghcr.io/devcontainers/features/node:1": {
+            version: "18"
+          }
+        },
+        customizations: {
+          vscode: {
+            extensions: [
+              "esbenp.prettier-vscode",
+              "dbaeumer.vscode-eslint",
+              "ms-vscode.vscode-typescript-next"
+            ]
+          }
+        },
+        forwardPorts: [3000, 8080],
+        postCreateCommand: "npm install"
+      };
+    
+    default:
+      return baseConfig;
   }
 }
 
