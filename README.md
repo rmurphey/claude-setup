@@ -16,18 +16,24 @@ Choose from 2 main modes plus DevContainer generation:
 - **🏥 Assess and recover existing codebase** - Analysis and improvement system
 - **📦 Generate DevContainer configuration** - Quick utility for GitHub Codespaces
 
-Answer 4 questions and get a complete professional development environment with:
-- ✅ Quality tools (linters, formatters, tests) configured for your language
-- ✅ Documentation templates that maintain project memory across sessions
-- ✅ 14 custom Claude Code commands for structured development workflow
-- ✅ Git repository initialization with professional setup committed
-- ✅ Ongoing development record system that learns from your project
+## Overview
 
-## What It Does
+Claude Setup transforms any directory into a professional development environment with quality tools, documentation systems, and structured workflows. Perfect for new projects, legacy codebases, or teams establishing consistent standards.
 
-Claude Setup provides two main modes plus DevContainer generation for different development scenarios:
+**Key Benefits:**
+- ✅ **Zero Configuration** - Works out of the box for 5+ languages
+- ✅ **Professional Standards** - Industry-grade quality tools and workflows
+- ✅ **Team Consistency** - Standardized development practices across projects
+- ✅ **AI Integration** - 14 custom Claude Code commands for structured collaboration
+- ✅ **Memory System** - Documentation that maintains project knowledge across sessions
 
-## 🚀 Project Setup Mode
+**Who Should Use This:**
+- Developers starting new projects
+- Teams inheriting legacy codebases
+- Organizations standardizing development practices
+- Solo developers wanting professional-grade infrastructure
+
+## Setup Mode
 
 Creates complete professional development environments through 4 simple questions:
 
@@ -37,215 +43,45 @@ Creates complete professional development environments through 4 simple question
 4. **CI/CD** - Whether to create GitHub Actions workflows
 
 ### What You Get
-- ✅ **Quality Infrastructure** - Linters, formatters, tests configured for your language
-- ✅ **Documentation System** - CLAUDE.md, ACTIVE_WORK.md, and project templates
-- ✅ **14 Custom Commands** - `/hygiene`, `/todo`, `/commit`, `/learn`, etc.
-- ✅ **Git Repository** - Initialized with professional setup committed
-- ✅ **CI/CD Workflows** - GitHub Actions for quality checks (optional)
+- **Quality Infrastructure** - Linters, formatters, tests configured for your language
+- **Documentation System** - CLAUDE.md, ACTIVE_WORK.md, and project templates
+- **14 Custom Commands** - `/hygiene`, `/todo`, `/commit`, `/learn`, etc.
+- **Git Repository** - Initialized with professional setup committed
+- **CI/CD Workflows** - GitHub Actions for quality checks (optional)
 
 ### Use Cases
-- **New projects** starting from scratch
-- **Existing projects** needing professional infrastructure
-- **Teams** establishing consistent development standards
-- **Solo developers** wanting professional-grade setup
+- New projects starting from scratch
+- Existing projects needing professional infrastructure
+- Teams establishing consistent development standards
+- Solo developers wanting professional-grade setup
 
-## 🏥 Codebase Recovery Mode
+## Recovery Mode
 
 Comprehensive analysis and improvement system for projects with technical debt or maintenance challenges.
 
-### Recovery Commands
+### The 3-Command Workflow
 
-**`/recovery-assess`** - **Codebase Health Analysis**
-- Analyzes code complexity, test coverage, documentation quality
-- Generates comprehensive health score (0-100)
-- Identifies technical debt hotspots and improvement priorities
-- Creates detailed assessment reports
-
-**`/recovery-plan`** - **Improvement Roadmap Generation**
-- Creates prioritized improvement plan based on assessment
-- Estimates effort and impact for each improvement
-- Provides step-by-step implementation guidance
-- Tracks progress across multiple improvement cycles
-
-**`/recovery-execute`** - **Automated Improvements**
-- Implements automated fixes for common issues
-- Sets up quality infrastructure (linting, testing, formatting)
-- Creates missing documentation templates
-- Establishes development standards and workflows
-
-### Recovery Workflow
-1. **Assessment** → Run `/recovery-assess` to understand current state
-2. **Planning** → Use `/recovery-plan` to create improvement roadmap  
-3. **Execution** → Apply `/recovery-execute` for automated improvements
-4. **Iteration** → Repeat cycle to continuously improve codebase health
+**`/recovery-assess`** - Analyze codebase health (0-100 score)  
+**`/recovery-plan`** - Generate prioritized improvement roadmap  
+**`/recovery-execute`** - Apply automated improvements  
 
 ### Use Cases
-- **Legacy codebases** with accumulated technical debt
-- **Inherited projects** without clear standards
-- **Rapid prototypes** that need production-ready infrastructure
-- **Team transitions** requiring consistent development practices
+- Legacy codebases with accumulated technical debt
+- Inherited projects without clear standards
+- Rapid prototypes that need production-ready infrastructure
+- Team transitions requiring consistent development practices
 
-## 📦 DevContainer Generation
+## DevContainer Generation
 
 Quick utility to generate optimized `.devcontainer/devcontainer.json` configurations for GitHub Codespaces and VS Code dev containers.
 
-### Language-Specific Templates
+**Features:**
+- Language-specific base images and extensions
+- Optimized package manager configurations
+- Performance optimizations (parallel execution, caching)
+- Error-resilient setup commands
 
-**JavaScript/TypeScript**
-- **Base Image**: `mcr.microsoft.com/devcontainers/javascript-node:18`
-- **Extensions**: Prettier, ESLint, TypeScript
-- **Ports**: 3000, 8080
-- **Setup**: `npm ci --prefer-offline`
-
-**Python**
-- **Base Image**: `mcr.microsoft.com/devcontainers/python:3.11`
-- **Extensions**: Python, Flake8, Ruff
-- **Ports**: 8000, 5000
-- **Setup**: `pip install --cache-dir /tmp/pip-cache -e .`
-
-**Go**
-- **Base Image**: `mcr.microsoft.com/devcontainers/go:1.21`
-- **Extensions**: Go extension
-- **Ports**: 8080
-- **Setup**: `go mod download`
-
-**Rust**
-- **Base Image**: `mcr.microsoft.com/devcontainers/rust:latest`
-- **Extensions**: rust-analyzer
-- **Ports**: 8080
-- **Setup**: `cargo fetch`
-
-**Java**
-- **Base Image**: `mcr.microsoft.com/devcontainers/java:17`
-- **Extensions**: Java extension pack
-- **Ports**: 8080
-- **Setup**: `mvn dependency:go-offline`
-
-### Performance Optimizations
-- **Parallel Execution** - `onCreateCommand` runs alongside other setup tasks
-- **Caching** - Optimized package manager configurations
-- **Minimal Features** - No redundant installations
-- **Error Resilience** - Graceful handling of missing config files
-
-### Use Cases
-- **GitHub Codespaces** development environments
-- **VS Code Dev Containers** for consistent local development
-- **Team collaboration** with identical development environments
-- **Onboarding** new developers with zero-config setup
-
-## Features
-
-### 📁 Project Structure
-- **Git repository initialization** - Always sets up version control
-- Creates appropriate project files for your language
-- Sets up quality tools (linters, formatters, test frameworks)
-- Configures pre-commit hooks and scripts
-- **Initial commit** - Professional setup committed automatically
-
-### 📋 Documentation Templates
-
-Creates an **ongoing development record system** that maintains project memory across sessions:
-
-#### **CLAUDE.md** - AI Collaboration Guidelines
-- **Quality Standards**: Configurable thresholds (0 warnings for strict, <10 for standard)
-- **Development Workflow**: Pre-commit quality checks, command usage patterns
-- **Architecture Principles**: Code complexity limits (<15 per function, <400 lines per code file)
-- **Collaboration Guidelines**: Co-author commits, hygiene checks before AI assistance
-- **Project Standards**: Coverage targets, documentation requirements, error handling
-
-#### **ACTIVE_WORK.md** - Session Management & Continuity
-- **Next Session Priorities**: Immediate tasks with checkboxes
-- **Current Sprint Goals**: Broader iteration objectives
-- **Quality Status**: Real-time lint/test/coverage/build metrics
-- **Quick Capture**: Rapid task entry via `/todo` command with timestamps
-- **Deferred Items**: Postponed work via `/defer` command with reasons
-- **Learning Log**: Development insights captured via `/learn` command
-- **Session History**: Chronological record of all development activities
-
-#### **COMMANDS.md** - Custom Command Documentation
-- **Implementation Details**: How each command works and what it does
-- **Usage Examples**: Practical examples for all 14 custom commands
-- **Integration Patterns**: How commands update documentation files
-- **Command Philosophy**: Structured interaction, quality automation, learning capture
-
-#### **README.md** - Project Overview
-- Created for new projects only (preserves existing README)
-- Professional project description template
-- Setup and usage instructions
-- Contributing guidelines
-
-### ⚡ Custom Commands
-Creates 14 custom Claude Code commands in `.claude/commands/`:
-
-- `/hygiene` - Project health check
-- `/todo` - Quick task capture
-- `/design` - Feature planning
-- `/commit` - Quality-checked commits
-- `/next` - AI-recommended priorities
-- `/learn` - Capture insights
-- `/docs` - Update documentation
-- `/estimate` - Development cost estimation
-- `/reflect` - Weekly development review
-- `/defer` - Move items to later
-- `/push` - Create commits and push
-- `/version-tag` - Semantic versioning
-- `/maintainability` - Code quality assessment
-- `/idea` - Quick idea capture
-
-### 🔧 Language Support
-
-#### JavaScript/TypeScript
-- Creates `package.json` with quality scripts
-- Sets up ESLint, Prettier, Jest configuration
-- GitHub Actions workflow for Node.js
-
-#### Python
-- Creates `pyproject.toml` with Ruff and Pytest config
-- Sets up comprehensive linting rules
-- GitHub Actions workflow for Python
-
-#### Go
-- Provides setup instructions for `go mod` and `golangci-lint`
-- Creates basic project structure
-
-#### Rust
-- Provides setup instructions for `cargo init`
-- Creates Clippy configuration
-
-#### Java
-- Provides setup instructions for Gradle/Maven
-- Creates Checkstyle configuration
-
-## Installation
-
-### NPX Usage (Recommended)
-```bash
-# Run once in any project directory
-npx github:rmurphey/claude-setup
-```
-
-**Why NPX?**
-- ✅ Always runs the latest version
-- ✅ No global installation clutter  
-- ✅ Perfect for one-time project setup
-- ✅ Works in any directory immediately
-
-### Alternative Methods
-
-#### Global Installation
-```bash
-npm install -g github:rmurphey/claude-setup
-claude-setup
-```
-
-#### Local Development
-```bash
-git clone https://github.com/rmurphey/claude-setup.git
-cd claude-setup
-npm install
-npm link
-claude-setup
-```
+**Supported Languages:** JavaScript/TypeScript, Python, Go, Rust, Java
 
 ## Usage Examples
 
@@ -254,17 +90,23 @@ claude-setup
 mkdir my-new-project
 cd my-new-project
 npx github:rmurphey/claude-setup
-# Select: JavaScript/TypeScript → Standard → Solo → No CI/CD
-# Git repo initialized automatically with initial commit
-git remote add origin <your-repo-url>
-git push -u origin main
+# Select: JavaScript → Standard → Solo → No CI/CD
 ```
 
-### Existing Python Project
+### Legacy Codebase Recovery
 ```bash
-cd existing-python-project
+cd inherited-legacy-project
 npx github:rmurphey/claude-setup
-# Select: Python → Strict → Team → Yes CI/CD
+# Select: 🏥 Assess and recover existing codebase
+# Then run: /recovery-assess → /recovery-plan → /recovery-execute
+```
+
+### DevContainer for GitHub Codespaces
+```bash
+cd any-project
+npx github:rmurphey/claude-setup
+# Select: 📦 Generate DevContainer configuration → Python
+# Creates .devcontainer/devcontainer.json ready for Codespaces
 ```
 
 ### Enterprise Setup
@@ -273,107 +115,6 @@ cd enterprise-project
 npx github:rmurphey/claude-setup
 # Select: Java → Strict → Team → Yes CI/CD
 ```
-
-### Legacy Codebase Recovery
-```bash
-cd inherited-legacy-project
-npx github:rmurphey/claude-setup
-# Select: 🏥 Assess and recover existing codebase
-# Then run: /recovery-assess
-# Follow with: /recovery-plan
-# Execute: /recovery-execute
-```
-
-### DevContainer for GitHub Codespaces
-```bash
-cd any-project
-npx github:rmurphey/claude-setup
-# Select: 📦 Generate DevContainer configuration → JavaScript
-# Creates .devcontainer/devcontainer.json
-git add .devcontainer/
-git commit -m "Add DevContainer configuration"
-# Repository now works with GitHub Codespaces automatically
-```
-
-## DevContainer Support
-
-The DevContainer mode generates `.devcontainer/devcontainer.json` configurations optimized for GitHub Codespaces and VS Code dev containers. Each language template includes:
-
-### JavaScript/TypeScript
-- **Base Image**: `mcr.microsoft.com/devcontainers/javascript-node:18`
-- **Extensions**: Prettier, ESLint, TypeScript
-- **Ports**: 3000, 8080
-- **Setup**: `npm install`
-
-### Python
-- **Base Image**: `mcr.microsoft.com/devcontainers/python:3.11`
-- **Extensions**: Python, Flake8, Ruff
-- **Ports**: 8000, 5000
-- **Setup**: `pip install -e .`
-
-### Go
-- **Base Image**: `mcr.microsoft.com/devcontainers/go:1.21`
-- **Extensions**: Go extension
-- **Ports**: 8080
-- **Setup**: `go mod download`
-
-### Rust
-- **Base Image**: `mcr.microsoft.com/devcontainers/rust:latest`
-- **Extensions**: rust-analyzer
-- **Ports**: 8080
-- **Setup**: `cargo build`
-
-### Java
-- **Base Image**: `mcr.microsoft.com/devcontainers/java:17`
-- **Extensions**: Java extension pack
-- **Ports**: 8080
-- **Setup**: `mvn clean compile`
-
-## Codebase Recovery System
-
-The Recovery mode provides comprehensive analysis and improvement capabilities for existing projects with quality debt or maintenance challenges.
-
-### How Recovery Mode Works
-```bash
-cd existing-messy-project
-npx github:rmurphey/claude-setup
-# Select: 🏥 Assess and recover existing codebase
-# Installs recovery command suite
-```
-
-### Recovery Commands
-
-**`/recovery-assess`** - **Codebase Health Analysis**
-- Analyzes code complexity, test coverage, documentation quality
-- Generates comprehensive health score (0-100)
-- Identifies technical debt hotspots and improvement priorities
-- Creates detailed assessment reports
-
-**`/recovery-plan`** - **Improvement Roadmap Generation**
-- Creates prioritized improvement plan based on assessment
-- Estimates effort and impact for each improvement
-- Provides step-by-step implementation guidance
-- Tracks progress across multiple improvement cycles
-
-**`/recovery-execute`** - **Automated Improvements**
-- Implements automated fixes for common issues
-- Sets up quality infrastructure (linting, testing, formatting)
-- Creates missing documentation templates
-- Establishes development standards and workflows
-
-### Recovery Workflow
-1. **Assessment** → Run `/recovery-assess` to understand current state
-2. **Planning** → Use `/recovery-plan` to create improvement roadmap  
-3. **Execution** → Apply `/recovery-execute` for automated improvements
-4. **Iteration** → Repeat cycle to continuously improve codebase health
-
-### Use Cases
-- **Legacy codebases** with accumulated technical debt
-- **Inherited projects** without clear standards
-- **Rapid prototypes** that need production-ready infrastructure
-- **Team transitions** requiring consistent development practices
-
-The recovery system transforms chaotic codebases into maintainable, well-documented projects with professional development standards.
 
 ## Quality Levels
 
@@ -395,216 +136,179 @@ The recovery system transforms chaotic codebases into maintainable, well-documen
 - Only errors block commits
 - Suitable for rapid prototyping
 
-## Ongoing Development Record System
+## Language Support
 
-### How It Works Together
+### JavaScript/TypeScript
+- **Setup**: Creates `package.json` with quality scripts
+- **Tools**: ESLint, Prettier, Jest configuration
+- **DevContainer**: Node.js 18, npm ci with caching
+- **CI/CD**: GitHub Actions workflow for Node.js
 
-The documentation templates and custom commands create a **persistent development intelligence system**:
+### Python
+- **Setup**: Creates `pyproject.toml` with Ruff and Pytest config
+- **Tools**: Comprehensive linting rules, type checking
+- **DevContainer**: Python 3.11, pip with caching
+- **CI/CD**: GitHub Actions workflow for Python
 
-1. **Session Continuity**: `ACTIVE_WORK.md` maintains state between Claude Code sessions
-2. **Progressive Intelligence**: Commands update documentation files, building project knowledge over time
-3. **Quality Automation**: `/hygiene` provides real-time project health based on accumulated metrics
-4. **Learning Capture**: `/learn` and `/reflect` commands document insights and patterns
-5. **Adaptive Recommendations**: `/next` suggests priorities based on project history and current state
+### Go
+- **Setup**: Instructions for `go mod` and `golangci-lint`
+- **Tools**: Basic project structure, linting config
+- **DevContainer**: Go 1.21, mod download optimization
+- **CI/CD**: GitHub Actions workflow for Go
 
-### Development Flow Example
+### Rust
+- **Setup**: Instructions for `cargo init`
+- **Tools**: Clippy configuration, Cargo integration
+- **DevContainer**: Latest Rust, cargo fetch optimization
+- **CI/CD**: GitHub Actions workflow for Rust
 
+### Java
+- **Setup**: Instructions for Gradle/Maven
+- **Tools**: Checkstyle configuration, build integration
+- **DevContainer**: Java 17, dependency caching
+- **CI/CD**: GitHub Actions workflow for Java
+
+## Installation & Setup
+
+### NPX Usage (Recommended)
 ```bash
-# Start development session
-/hygiene                    # Check current project health
-/todo "implement user auth" # Add task to ACTIVE_WORK.md
-
-# During development
-/learn "API mocking reduces test complexity"  # Capture insight
-/commit                     # Quality-checked commit with co-author
-
-# End of session
-/reflect                    # Weekly development review
-/defer "mobile optimization" # Move non-critical items
+# Run once in any project directory
+npx github:rmurphey/claude-setup
 ```
 
-### Intelligence Accumulation
-
-Over time, your project builds:
-- **Pattern Recognition**: What causes issues in your specific project
-- **Quality Trends**: How metrics change over development cycles
-- **Collaboration Insights**: How AI assistance patterns evolve
-- **Technical Debt Tracking**: Deferred items and their impact on velocity
-
-This transforms Claude Code from a one-time conversation tool into a **persistent development partner** that maintains context, learns from your project's evolution, and provides increasingly intelligent recommendations.
-
-## After Setup
-
-### Verify Installation
+### Global Installation
 ```bash
-# Check project health
-/hygiene
-
-# View available commands
-cat COMMANDS.md
-
-# Review AI guidelines
-cat CLAUDE.md
+npm install -g github:rmurphey/claude-setup
+claude-setup
 ```
 
-### Next Steps
-1. Install language-specific dependencies as instructed
-2. Run initial quality checks
-3. Review and customize CLAUDE.md for your project
-4. Start development with `/todo "first task"`
-
-## Development
-
-### Running Tests
+### Local Development
 ```bash
-npm test                 # Run test suite
-npm run test:watch       # Watch mode
-npm run test:coverage    # With coverage report
+git clone https://github.com/rmurphey/claude-setup.git
+cd claude-setup
+npm install
+npm link
+claude-setup
 ```
 
-### Linting
-```bash
-npm run lint             # Check all files
-npm run lint:fix         # Fix auto-fixable issues
-npm run lint:changed     # Check only changed files
-npm run lint:changed:fix # Fix only changed files
-```
+### After Setup
+1. **Install dependencies** as shown by the tool
+2. **Connect to remote repository** (if desired)
+3. **Run quality check**: `npm run lint` (or equivalent)
+4. **Review CLAUDE.md** for AI collaboration guidelines
+5. **Start coding** with professional standards in place
 
-### Project Structure
-```
-claude-project-setup/
-├── bin/cli.js           # Main CLI script
-├── docs/                # System documentation
-│   ├── ARCHITECTURE.md  # System design and principles
-│   └── SETUP_GUIDE.md   # Detailed setup instructions
-├── templates/           # Template files for generated projects
-│   ├── CLAUDE.md        # AI collaboration guidelines template
-│   ├── ACTIVE_WORK.md   # Session management template
-│   └── COMMANDS.md      # Custom commands documentation template
-├── __tests__/           # Test suite
-├── CLAUDE.md            # This project's AI guidelines
-└── README.md            # This file
-```
+## Advanced Features
 
-## Philosophy
+### Ongoing Development Record System
 
-**Prevention Over Cure**: Setting up quality infrastructure from project start is exponentially cheaper than fixing quality debt later.
+The tool creates a **persistent memory system** that maintains project knowledge across sessions:
 
-**Universal Principles**: The same patterns work across all languages - complexity limits, documentation standards, and quality thresholds are language-agnostic.
+**CLAUDE.md** - AI collaboration guidelines with quality standards, architecture principles, and project-specific development workflows.
 
-**Interactive Over Manual**: Conversational setup is better than complex written instructions.
+**ACTIVE_WORK.md** - Session management with current priorities, quality metrics, quick task capture, and chronological development history.
 
-**Command-Driven Development**: Custom commands enable consistent Claude Code interaction patterns.
+**COMMANDS.md** - Custom command documentation with implementation details, usage examples, and integration patterns.
 
-## Development & CI/CD
+### Custom Commands Suite
 
-### Running Tests Locally
-```bash
-npm test                 # Run test suite
-npm run test:watch       # Watch mode for development
-npm run test:coverage    # Generate coverage report
-```
+14 specialized commands for structured development:
 
-### Continuous Integration
-- **GitHub Actions**: Automated testing on push/PR to main branch
-- **Node.js Compatibility**: Tests across Node.js 16.x, 18.x, and 20.x
-- **Test Coverage**: Automated coverage reporting via Codecov
-- **Quality Gates**: ESLint and Jest must pass before merge
+**Core Workflow**
+- `/hygiene` - Project health check
+- `/todo` - Quick task capture
+- `/commit` - Quality-checked commits
+- `/next` - AI-recommended priorities
 
-### Coverage Reports
-- **Local**: Run `npm run test:coverage` then open `coverage/lcov-report/index.html`
-- **Online**: View coverage at [Codecov.io](https://codecov.io/gh/rmurphey/claude-setup)
-- **Status**: ![Coverage Status](https://codecov.io/gh/rmurphey/claude-setup/branch/main/graph/badge.svg)
+**Planning & Design**
+- `/design` - Feature planning
+- `/estimate` - Work estimation
+- `/defer` - Postpone tasks with reasons
 
-### Quality Commands
-```bash
-npm run lint             # Check code quality
-npm run lint:fix         # Auto-fix issues
-npm run lint:changed     # Check only changed files
-npm run lint:changed:fix # Fix only changed files
-```
+**Learning & Growth**
+- `/learn` - Capture insights
+- `/reflect` - Session reflection
+- `/docs` - Documentation updates
 
-## Contributing
+**Maintenance**
+- `/push` - Reviewed pushes
+- `/version-tag` - Release management
+- `/maintainability` - Code health analysis
+- `/idea` - Idea capture
 
+### CI/CD Integration
+
+Optional GitHub Actions workflows with:
+- Quality checks on every push/PR
+- Language-specific testing and linting
+- Coverage reporting
+- Dependency security scanning
+
+## Contributing & Support
+
+### Contributing
 1. Fork the repository
 2. Create a feature branch
-3. Add tests for new functionality
-4. Ensure all tests pass (`npm test`)
-5. Run quality checks (`npm run lint`)
-6. Submit a pull request
+3. Run the setup tool on your branch: `npx github:rmurphey/claude-setup`
+4. Make your changes
+5. Submit a pull request
 
-## License
-
-MIT License - see LICENSE file for details.
+### Getting Help
+- **Documentation Issues**: Open an issue with the "documentation" label
+- **Feature Requests**: Open an issue with the "enhancement" label
+- **Bug Reports**: Include your platform, Node.js version, and error output
 
 ## Troubleshooting
 
-**Common issues?** See the [Beginner Setup Guide](#beginner-setup-guide) for detailed solutions.
+### Common Issues
 
-**Still having trouble?**
-1. Clear NPX cache: `npx clear-npx-cache`
-2. Try the local installation method (see Installation section)
-3. Check internet connection and verify you're in the correct directory
+**Command not found after installation**
+```bash
+# Try refreshing your shell or using full path
+source ~/.bashrc  # or ~/.zshrc
+npx github:rmurphey/claude-setup
+```
+
+**Permission errors on npm link**
+```bash
+# Fix npm permissions or use npx
+npm config set prefix ~/.npm
+export PATH=~/.npm/bin:$PATH
+```
+
+**Git initialization fails**
+```bash
+# Ensure git is configured
+git config --global user.name "Your Name"
+git config --global user.email "your@email.com"
+```
 
 ## Beginner Setup Guide
 
 ### Prerequisites Installation
 
-**Required Programs:**
-- **Node.js** (version 16+) - Download from https://nodejs.org (choose LTS version)
-- **Git** - Download from https://git-scm.com
+**Node.js Installation:**
+- **macOS**: `brew install node` or download from [nodejs.org](https://nodejs.org)
+- **Windows**: Download installer from [nodejs.org](https://nodejs.org)
+- **Linux**: `curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash - && sudo apt-get install -y nodejs`
 
-**Check if installed:**
+**Git Installation:**
+- **macOS**: `brew install git` or download from [git-scm.com](https://git-scm.com)
+- **Windows**: Download installer from [git-scm.com](https://git-scm.com)
+- **Linux**: `sudo apt-get install git`
+
+**Verify Installation:**
 ```bash
-node --version    # Should show v16.0.0 or higher
-npm --version     # Should show some version number  
-git --version     # Should show some version number
+node --version  # Should show v16.0.0 or higher
+git --version   # Should show git version info
 ```
 
-**Additional tools** (install after setup based on your project type):
-- **Python**: https://python.org (3.8+)
-- **Go**: https://golang.org  
-- **Rust**: https://rustup.rs
-- **Java**: https://adoptium.net (JDK 11+)
+### First Run
+1. Create or navigate to your project directory
+2. Run `npx github:rmurphey/claude-setup`
+3. Follow the interactive prompts
+4. Review generated files and run suggested commands
 
-### Using the Terminal
+## License
 
-**Open terminal/command prompt:**
-- **Windows**: Search for "Command Prompt" or "PowerShell"
-- **Mac**: Search for "Terminal" in Spotlight (Cmd+Space)
-- **Linux**: Look for "Terminal" in applications
-
-**Navigate to your project location:**
-```bash
-cd Desktop                    # Go to Desktop
-mkdir my-new-project         # Create new folder
-cd my-new-project           # Enter that folder
-npx github:rmurphey/claude-setup  # Run setup
-```
-
-### Common Issues
-
-**"npx: command not found"**
-- Install Node.js from https://nodejs.org
-
-**"git: command not found"**  
-- Install Git from https://git-scm.com
-- Mac: Try `xcode-select --install` first
-
-**"Permission denied"**
-- Windows: Run as Administrator
-- Mac/Linux: Try `sudo` before command
-
-**"Failed to create initial commit"**
-- Configure git first:
-  ```bash
-  git config --global user.name "Your Name"
-  git config --global user.email "your.email@example.com"
-  ```
-
-## Support
-
-- GitHub Issues: Report bugs and request features
-- Documentation: See `docs/SETUP_GUIDE.md` for advanced usage
-- Architecture: See `docs/ARCHITECTURE.md` for system design
-- Commands: See `templates/COMMANDS.md` for custom command details
+MIT License - see LICENSE file for details.
