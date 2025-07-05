@@ -1,5 +1,5 @@
 {
-  "name": "JavaScript/TypeScript Development",
+  "name": "Claude Setup CLI Development",
   "image": "mcr.microsoft.com/devcontainers/javascript-node:18",
   "customizations": {
     "vscode": {
@@ -7,19 +7,24 @@
         "esbenp.prettier-vscode",
         "dbaeumer.vscode-eslint",
         "ms-vscode.vscode-typescript-next"
-      ]
+      ],
+      "settings": {
+        "terminal.integrated.defaultProfile.linux": "bash",
+        "terminal.integrated.profiles.linux": {
+          "bash": {
+            "path": "/bin/bash"
+          }
+        }
+      }
     }
   },
-  "forwardPorts": [3000, 8080],
-  "portsAttributes": {
-    "3000": {
-      "label": "App"
-    },
-    "8080": {
-      "label": "Server"
-    }
-  },
-  "onCreateCommand": "npm ci --prefer-offline",
+  "forwardPorts": [],
+  "onCreateCommand": [
+    "npm ci --prefer-offline",
+    "npm link",
+    "echo 'Setup complete! Try: claude-setup --help'"
+  ],
+  "postAttachCommand": "echo 'Ready to develop! CLI available as: claude-setup'",
   "remoteUser": "node",
   "waitFor": "onCreateCommand"
 }
