@@ -47,7 +47,7 @@ Creates complete professional development environments through 4 simple question
 ### What You Get
 - **Quality Infrastructure** - Linters, formatters, tests configured for your language
 - **Documentation System** - CLAUDE.md, ACTIVE_WORK.md, and project templates
-- **14 Custom Commands** - `/hygiene`, `/todo`, `/commit`, `/learn`, etc.
+- **15 Custom Commands** - `/hygiene`, `/todo`, `/commit`, `/learn`, `/ideation`, etc.
 - **Git Repository** - Initialized with professional setup committed
 - **CI/CD Workflows** - GitHub Actions for quality checks (optional)
 
@@ -214,7 +214,7 @@ The tool creates a **persistent memory system** that maintains project knowledge
 
 ### Custom Commands Suite
 
-14 specialized commands for structured development:
+15 specialized commands for structured development:
 
 **Core Workflow**
 - `/hygiene` - Project health check
@@ -226,6 +226,7 @@ The tool creates a **persistent memory system** that maintains project knowledge
 - `/design` - Feature planning
 - `/estimate` - Work estimation
 - `/defer` - Postpone tasks with reasons
+- `/ideation` - AI-powered development idea generation
 
 **Learning & Growth**
 - `/learn` - Capture insights

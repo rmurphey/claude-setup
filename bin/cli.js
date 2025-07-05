@@ -231,7 +231,7 @@ async function setupCommands() {
   const commands = [
     'hygiene', 'todo', 'design', 'commit', 'next',
     'learn', 'docs', 'estimate', 'reflect', 'defer',
-    'push', 'version-tag', 'maintainability', 'idea',
+    'push', 'version-tag', 'maintainability', 'idea', 'ideation',
     'recovery-assess', 'recovery-plan', 'recovery-execute'
   ];
   
@@ -293,7 +293,7 @@ async function setupRecoveryCommands() {
   // Also copy the basic commands if .claude doesn't exist
   if (!await fs.pathExists('.claude/commands/hygiene.md')) {
     console.log(chalk.blue('📋 Installing basic command suite...'));
-    const basicCommands = ['hygiene', 'todo', 'learn', 'commit', 'push', 'next'];
+    const basicCommands = ['hygiene', 'todo', 'learn', 'commit', 'push', 'next', 'ideation'];
     
     for (const cmd of basicCommands) {
       const sourcePath = path.join(__dirname, '..', '.claude', 'commands', `${cmd}.md`);
