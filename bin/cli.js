@@ -482,14 +482,8 @@ function getDevContainerConfig(projectType) {
   switch (projectType) {
     case 'js':
       return {
-        ...baseConfig,
         name: "JavaScript/TypeScript Development",
         image: "mcr.microsoft.com/devcontainers/javascript-node:18",
-        features: {
-          "ghcr.io/devcontainers/features/node:1": {
-            version: "18"
-          }
-        },
         customizations: {
           vscode: {
             extensions: [
@@ -500,20 +494,19 @@ function getDevContainerConfig(projectType) {
           }
         },
         forwardPorts: [3000, 8080],
-        postCreateCommand: "npm install",
-        remoteUser: "node"
+        portsAttributes: {
+          "3000": { label: "App" },
+          "8080": { label: "Server" }
+        },
+        onCreateCommand: "npm ci --prefer-offline",
+        remoteUser: "node",
+        waitFor: "onCreateCommand"
       };
     
     case 'python':
       return {
-        ...baseConfig,
         name: "Python Development",
         image: "mcr.microsoft.com/devcontainers/python:3.11",
-        features: {
-          "ghcr.io/devcontainers/features/python:1": {
-            version: "3.11"
-          }
-        },
         customizations: {
           vscode: {
             extensions: [
@@ -524,20 +517,19 @@ function getDevContainerConfig(projectType) {
           }
         },
         forwardPorts: [8000, 5000],
-        postCreateCommand: "pip install -e .",
-        remoteUser: "vscode"
+        portsAttributes: {
+          "8000": { label: "Django" },
+          "5000": { label: "Flask" }
+        },
+        onCreateCommand: "pip install --cache-dir /tmp/pip-cache -e . || echo 'No setup.py found'",
+        remoteUser: "vscode",
+        waitFor: "onCreateCommand"
       };
     
     case 'go':
       return {
-        ...baseConfig,
         name: "Go Development",
         image: "mcr.microsoft.com/devcontainers/go:1.21",
-        features: {
-          "ghcr.io/devcontainers/features/go:1": {
-            version: "1.21"
-          }
-        },
         customizations: {
           vscode: {
             extensions: [
@@ -546,18 +538,18 @@ function getDevContainerConfig(projectType) {
           }
         },
         forwardPorts: [8080],
-        postCreateCommand: "go mod download",
-        remoteUser: "vscode"
+        portsAttributes: {
+          "8080": { label: "Go Server" }
+        },
+        onCreateCommand: "go mod download || echo 'No go.mod found'",
+        remoteUser: "vscode",
+        waitFor: "onCreateCommand"
       };
     
     case 'rust':
       return {
-        ...baseConfig,
         name: "Rust Development", 
         image: "mcr.microsoft.com/devcontainers/rust:latest",
-        features: {
-          "ghcr.io/devcontainers/features/rust:1": {}
-        },
         customizations: {
           vscode: {
             extensions: [
@@ -566,20 +558,18 @@ function getDevContainerConfig(projectType) {
           }
         },
         forwardPorts: [8080],
-        postCreateCommand: "cargo build",
-        remoteUser: "vscode"
+        portsAttributes: {
+          "8080": { label: "Rust Server" }
+        },
+        onCreateCommand: "cargo fetch || echo 'No Cargo.toml found'",
+        remoteUser: "vscode",
+        waitFor: "onCreateCommand"
       };
     
     case 'java':
       return {
-        ...baseConfig,
         name: "Java Development",
         image: "mcr.microsoft.com/devcontainers/java:17",
-        features: {
-          "ghcr.io/devcontainers/features/java:1": {
-            version: "17"
-          }
-        },
         customizations: {
           vscode: {
             extensions: [
@@ -588,8 +578,12 @@ function getDevContainerConfig(projectType) {
           }
         },
         forwardPorts: [8080],
-        postCreateCommand: "mvn clean compile",
-        remoteUser: "vscode"
+        portsAttributes: {
+          "8080": { label: "Java Server" }
+        },
+        onCreateCommand: "mvn dependency:go-offline || gradle build --refresh-dependencies || echo 'No build file found'",
+        remoteUser: "vscode",
+        waitFor: "onCreateCommand"
       };
     
     default:
