@@ -6,7 +6,7 @@
 - [x] Ensure clean npm package distribution
 - [x] Fix ERR_REQUIRE_ESM error by converting to ES modules
 - [x] Refactor CLI to modular architecture
-- [ ] Add support for GitHub Codespaces
+- [x] Add support for GitHub Codespaces
 - [ ] Implement GitHub issue command
 
 ## Development Insights
@@ -23,6 +23,12 @@
 - Reduced CLI complexity from 495 to 459 lines
 - Each language module exports default with setup function
 
+### GitHub Codespaces Support (2025-01-05)
+- Added DevContainer configuration mode to CLI
+- Created templates for all 5 supported languages
+- Each template includes proper base images, extensions, ports
+- Documentation added to README with usage examples
+
 ## Architecture Decisions
 *Document decisions about the setup tool itself*
 
@@ -34,10 +40,11 @@
 
 ## Quick Capture
 
-- [ ] [2025-01-04 22:15] add support for github codespaces
+- [x] [2025-01-04 22:15] add support for github codespaces - COMPLETED
 - [x] [2025-01-04 22:16] create a command for working on a specific github issue - PLANNED
 - [x] [2025-01-05 14:30] fix ERR_REQUIRE_ESM error - COMPLETED
 - [x] [2025-01-05 14:45] refactor CLI to modular architecture - COMPLETED
+- [x] [2025-01-05 16:35] implement devcontainer generation for all languages - COMPLETED
 
 ## Session History
 - **2025-01-04**: Implemented dual directory structure to separate internal development records from user templates
