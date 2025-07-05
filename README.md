@@ -173,6 +173,16 @@ npx github:rmurphey/claude-setup
 # Select: Java → Strict → Team → Yes CI/CD
 ```
 
+### Legacy Codebase Recovery
+```bash
+cd inherited-legacy-project
+npx github:rmurphey/claude-setup
+# Select: 🏥 Assess and recover existing codebase
+# Then run: /recovery-assess
+# Follow with: /recovery-plan
+# Execute: /recovery-execute
+```
+
 ### DevContainer for GitHub Codespaces
 ```bash
 cd any-project
@@ -217,6 +227,52 @@ The DevContainer mode generates `.devcontainer/devcontainer.json` configurations
 - **Extensions**: Java extension pack
 - **Ports**: 8080
 - **Setup**: `mvn clean compile`
+
+## Codebase Recovery System
+
+The Recovery mode provides comprehensive analysis and improvement capabilities for existing projects with quality debt or maintenance challenges.
+
+### How Recovery Mode Works
+```bash
+cd existing-messy-project
+npx github:rmurphey/claude-setup
+# Select: 🏥 Assess and recover existing codebase
+# Installs recovery command suite
+```
+
+### Recovery Commands
+
+**`/recovery-assess`** - **Codebase Health Analysis**
+- Analyzes code complexity, test coverage, documentation quality
+- Generates comprehensive health score (0-100)
+- Identifies technical debt hotspots and improvement priorities
+- Creates detailed assessment reports
+
+**`/recovery-plan`** - **Improvement Roadmap Generation**
+- Creates prioritized improvement plan based on assessment
+- Estimates effort and impact for each improvement
+- Provides step-by-step implementation guidance
+- Tracks progress across multiple improvement cycles
+
+**`/recovery-execute`** - **Automated Improvements**
+- Implements automated fixes for common issues
+- Sets up quality infrastructure (linting, testing, formatting)
+- Creates missing documentation templates
+- Establishes development standards and workflows
+
+### Recovery Workflow
+1. **Assessment** → Run `/recovery-assess` to understand current state
+2. **Planning** → Use `/recovery-plan` to create improvement roadmap  
+3. **Execution** → Apply `/recovery-execute` for automated improvements
+4. **Iteration** → Repeat cycle to continuously improve codebase health
+
+### Use Cases
+- **Legacy codebases** with accumulated technical debt
+- **Inherited projects** without clear standards
+- **Rapid prototypes** that need production-ready infrastructure
+- **Team transitions** requiring consistent development practices
+
+The recovery system transforms chaotic codebases into maintainable, well-documented projects with professional development standards.
 
 ## Quality Levels
 
