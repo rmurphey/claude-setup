@@ -278,16 +278,15 @@ describe('Claude Setup CLI Integration Tests', () => {
       expect(templateExists).toBe(true);
     });
 
-    test('internal issue command should exist and be executable', async () => {
+    test('internal issue command should exist as markdown file', async () => {
       const fs = await import('fs-extra');
-      const commandExists = await fs.default.pathExists('./.claude/commands/issue');
+      const commandExists = await fs.default.pathExists('./.claude/commands/issue.md');
       expect(commandExists).toBe(true);
       
-      // Check if it's executable (on Unix systems)
-      if (process.platform !== 'win32') {
-        const stats = await fs.default.stat('./.claude/commands/issue');
-        expect(stats.mode & parseInt('111', 8)).toBeTruthy(); // Check execute permissions
-      }
+      // Verify it's a markdown command file with proper format
+      const content = await fs.default.readFile('./.claude/commands/issue.md', 'utf8');
+      expect(content).toContain('---'); // YAML frontmatter
+      expect(content).toContain('# GitHub Issue Command'); // Command title
     });
   });
 
