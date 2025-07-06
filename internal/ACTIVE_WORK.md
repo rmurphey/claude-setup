@@ -19,6 +19,8 @@
 
 Quick capture of pending ideas for future consideration:
 
+- [ ] [2025-07-06 17:30] [User-Requested] Workspace multiplexing for parallel task development - Enable working on multiple tasks simultaneously with isolated workspaces (`claude-setup --workspace feature-auth --from main`). Each workspace gets separate git branch, full dev environment, independent Claude context (ACTIVE_WORK.md), and quality tools. Eliminates context switching overhead and enables parallel development streams when blocked on tasks.
+
 
 
 ---
