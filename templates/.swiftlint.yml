@@ -1,0 +1,95 @@
+# SwiftLint Configuration for Claude Code Projects
+# Quality Level: {{QUALITY_LEVEL}}
+
+# Disabled rules (can be enabled gradually)
+disabled_rules:
+  - line_length
+  - trailing_whitespace
+
+# Opt-in rules for higher quality
+opt_in_rules:
+  - empty_count
+  - force_unwrapping
+  - implicitly_unwrapped_optional
+  - sorted_imports
+  - unused_optional_binding
+  - unused_import
+  - closure_end_indentation
+  - closure_spacing
+  - empty_string
+  - fatal_error_message
+  - first_where
+  - identical_operands
+  - joined_default_parameter
+  - let_var_whitespace
+  - modifier_order
+  - number_separator
+  - operator_usage_whitespace
+  - overridden_super_call
+  - private_action
+  - private_outlet
+  - redundant_optional_initialization
+  - redundant_string_enum_value
+  - redundant_type_annotation
+  - redundant_void_return
+  - single_test_class
+  - unneeded_parentheses_in_closure_argument
+  - vertical_parameter_alignment_on_call
+  - vertical_whitespace_closing_braces
+  - vertical_whitespace_opening_braces
+  - weak_delegate
+  - yoda_condition
+
+# Included directories
+included:
+  - Sources
+  - Tests
+
+# Excluded directories  
+excluded:
+  - .build
+  - .swiftpm
+  - DerivedData
+  - Carthage
+  - Pods
+
+# Rule configurations
+type_body_length:
+  warning: 300
+  error: 400
+
+function_body_length:
+  warning: 50
+  error: 100
+
+file_length:
+  warning: 500
+  error: 1200
+
+identifier_name:
+  min_length: 1
+  max_length: 50
+  excluded:
+    - "id"
+    - "url"
+    - "uri"
+
+cyclomatic_complexity:
+  warning: 10
+  error: 20
+
+nesting:
+  type_level:
+    warning: 3
+    error: 6
+  statement_level:
+    warning: 5
+    error: 10
+
+large_tuple:
+  warning: 3
+  error: 4
+
+function_parameter_count:
+  warning: 5
+  error: 8
