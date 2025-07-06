@@ -3,6 +3,7 @@ import {
   generateClaudeTemplate, 
   generateActiveWorkTemplate, 
   generateGitignore,
+  getDevContainerConfig,
   main
 } from '../bin/cli.js';
 
@@ -100,6 +101,20 @@ describe('Claude Setup CLI Integration Tests', () => {
       expect(result).toContain('*.log');
     });
 
+    test('generateGitignore should handle Swift projects', () => {
+      const result = generateGitignore('swift');
+      
+      expect(result).toContain('.build/');
+      expect(result).toContain('.swiftpm/');
+      expect(result).toContain('*.xcodeproj/');
+      expect(result).toContain('*.xcworkspace/');
+      expect(result).toContain('xcuserdata/');
+      expect(result).toContain('DerivedData/');
+      expect(result).toContain('Carthage/');
+      expect(result).toContain('Pods/');
+      expect(result).toContain('*.dSYM');
+    });
+
     test('generateGitignore should handle Java projects with common patterns', () => {
       const result = generateGitignore('java');
       
@@ -192,6 +207,62 @@ describe('Claude Setup CLI Integration Tests', () => {
     });
   });
 
+  describe('Smart Language Detection', () => {
+    test('LanguageDetector should detect JavaScript projects', async () => {
+      const { LanguageDetector } = await import('../lib/language-detector.js');
+      const detector = new LanguageDetector();
+      
+      // This test runs in a project with package.json, so should detect JS
+      const detection = await detector.getBestGuess();
+      
+      expect(detection).toBeTruthy();
+      expect(detection.type).toBe('single');
+      expect(detection.language).toBe('js');
+      expect(detection.name).toBe('JavaScript/TypeScript');
+    });
+
+    test('LanguageDetector should format evidence properly', async () => {
+      const { LanguageDetector } = await import('../lib/language-detector.js');
+      const detector = new LanguageDetector();
+      
+      const evidence = {
+        foundFiles: ['package.json', 'package-lock.json'],
+        foundExtensions: ['.js', '.test.js'],
+        fileCount: 5
+      };
+      
+      const formatted = detector.formatEvidence(evidence);
+      expect(formatted).toContain('package.json');
+      expect(formatted).toContain('5 source files');
+      expect(formatted).toContain('.js');
+    });
+
+    test('LanguageDetector should handle no detection gracefully', async () => {
+      const { LanguageDetector } = await import('../lib/language-detector.js');
+      const detector = new LanguageDetector();
+      
+      // Mock empty directory
+      const originalReaddir = detector.findSourceFiles;
+      detector.findSourceFiles = async () => ({ extensions: [], count: 0 });
+      
+      const detections = await detector.detectLanguages();
+      expect(Array.isArray(detections)).toBe(true);
+    });
+
+    test('LanguageDetector should include Swift in detection patterns', async () => {
+      const { LanguageDetector } = await import('../lib/language-detector.js');
+      const detector = new LanguageDetector();
+      
+      // Check that Swift patterns are included
+      const swiftPattern = detector.detectionPatterns.find(p => p.language === 'swift');
+      expect(swiftPattern).toBeTruthy();
+      expect(swiftPattern.name).toBe('Swift');
+      expect(swiftPattern.files).toContain('Package.swift');
+      expect(swiftPattern.extensions).toContain('.swift');
+      expect(swiftPattern.confidence).toBe('high');
+    });
+  });
+
   describe('GitHub Issue Command', () => {
     test('issue command should be available in commands list', async () => {
       // Check that the issue command is included in the CLI commands
@@ -217,6 +288,34 @@ describe('Claude Setup CLI Integration Tests', () => {
         const stats = await fs.default.stat('./.claude/commands/issue');
         expect(stats.mode & parseInt('111', 8)).toBeTruthy(); // Check execute permissions
       }
+    });
+  });
+
+  describe('DevContainer Configuration', () => {
+    test('getDevContainerConfig should handle Swift projects', () => {
+      const config = getDevContainerConfig('swift');
+      
+      expect(config.name).toBe('Swift Development');
+      expect(config.image).toBe('mcr.microsoft.com/devcontainers/swift:latest');
+      expect(config.customizations.vscode.extensions).toContain('sswg.swift-lang');
+      expect(config.forwardPorts).toContain(8080);
+      expect(config.onCreateCommand).toContain('swift package resolve');
+    });
+
+    test('getDevContainerConfig should handle JavaScript projects', () => {
+      const config = getDevContainerConfig('js');
+      
+      expect(config.name).toBe('JavaScript/TypeScript Development');
+      expect(config.image).toBe('mcr.microsoft.com/devcontainers/javascript-node:18');
+      expect(config.customizations.vscode.extensions).toContain('esbenp.prettier-vscode');
+      expect(config.forwardPorts).toContain(3000);
+    });
+
+    test('getDevContainerConfig should handle unknown project types', () => {
+      const config = getDevContainerConfig('unknown');
+      
+      expect(config.name).toBe('Development Container');
+      expect(config.image).toBe('mcr.microsoft.com/devcontainers/universal:2');
     });
   });
 
