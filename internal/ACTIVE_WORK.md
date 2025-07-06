@@ -19,15 +19,19 @@
 
 Quick capture of pending ideas for future consideration:
 
-- 💡 [2025-07-04 17:36] test command functionality
-- [ ] [2025-07-05 21:30] [AI-Generated] Reduce CLI complexity with command pattern - Extract command classes (SetupCommand, RecoveryCommand, DevContainerCommand) with shared base to improve maintainability and testability
-- [ ] [2025-07-05 21:30] [AI-Generated] Complete AST analysis system with tree-sitter integration - Fix tree-sitter dependencies, test each language parser, integrate with ideation command for accurate cross-language code analysis
-- [ ] [2025-07-05 22:15] [AI-Generated] Add interactive command preview - Show users what commands will be created before installation with --preview flag
-- [ ] [2025-07-05 22:15] [AI-Generated] Project health dashboard - Enhance /hygiene command with color-coded metrics and visual project status
-- [ ] [2025-07-05 22:15] [AI-Generated] Plugin system foundation - Allow third-party extensions for custom languages/frameworks with registration API
-- [ ] [2025-07-05 22:15] [AI-Generated] Incremental setup mode - Add individual components to existing projects without full setup (CI/CD only, commands only, etc.)
-- [ ] [2025-07-05 22:15] [AI-Generated] Template system enhancement - Replace simple string replacement with proper template engine for more flexible generation
-- [ ] [2025-07-05 22:15] [AI-Generated] IDE integration - Generate IDE-specific configurations (.vscode, .idea) based on user choice during setup
+- [ ] [2025-07-06 16:45] [AI-Generated] Interactive setup preview with cost estimation - Show file tree preview, estimated setup time, and tool breakdown before execution to reduce setup anxiety and help users make informed decisions
+- [ ] [2025-07-06 16:45] [AI-Generated] One-command project recovery for broken setups - Add `claude-setup --fix` command that detects missing files and restores them to save hours of manual re-setup
+- [ ] [2025-07-06 16:45] [AI-Generated] Structured logging with progress indicators - Replace console.log with structured logger, add progress bars, JSON output mode for better CI/CD integration
+- [ ] [2025-07-06 16:45] [AI-Generated] Team workspace templates with role-based configurations - Frontend/backend/DevOps specific setups, shared configs, team onboarding guides to reduce onboarding time from days to hours
+
+
+---
+
+## Deferred Items
+
+- **[2025-07-06]** Multi-language project support with conflict resolution - Detect all languages, resolve tool conflicts (ESLint vs Prettier), create unified config for real-world polyglot projects
+  - **Reason**: Complex architectural change requiring significant refactoring of existing single-language assumption
+  - **Revisit**: After current architecture stabilizes and user feedback validates need
 
 ---
 
