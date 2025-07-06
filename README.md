@@ -36,6 +36,18 @@ Claude Setup transforms any directory into a professional development environmen
 - Organizations standardizing development practices
 - Solo developers wanting professional-grade infrastructure
 
+**When NOT to Use This:**
+- **Existing complex setups** - Projects with heavily customized build systems, unique tooling, or specialized workflows
+- **Learning/educational projects** - When you want to understand each tool individually rather than use opinionated defaults
+- **Minimal/lightweight projects** - Simple scripts or prototypes that don't need comprehensive development infrastructure
+- **Non-supported languages** - Languages beyond JavaScript, Python, Go, Rust, Java, and Swift
+- **Strict corporate environments** - When company policies require specific tools, versions, or configurations that conflict with our choices
+- **Experimental/cutting-edge projects** - Using bleeding-edge tools or frameworks that need custom configuration
+
+**Quick Decision Checklist:**
+✅ Use if: New project, supported language, want opinionated defaults, need AI collaboration tools  
+❌ Skip if: Complex existing setup, learning focus, minimal needs, unsupported language, strict requirements
+
 ## Setup Mode
 
 Creates complete professional development environments through 4 simple questions:
@@ -338,6 +350,26 @@ export PATH=~/.npm/bin:$PATH
 git config --global user.name "Your Name"
 git config --global user.email "your@email.com"
 ```
+
+**Conflicts with existing setup**
+If you have existing configuration files that conflict:
+```bash
+# Use dry-run mode to see what would change
+npx github:rmurphey/claude-setup --fix --dry-run
+
+# Backup your existing files first
+cp package.json package.json.backup
+cp .eslintrc.json .eslintrc.json.backup
+
+# Consider manual integration instead of full setup
+```
+
+**Tool version conflicts**
+If your project requires specific tool versions that differ from our defaults:
+- **ESLint**: Our setup uses latest ESLint with modern rules
+- **Node.js**: Requires Node.js 16+ (may conflict with older projects)
+- **Package managers**: Assumes npm (may conflict with Yarn/pnpm workflows)
+- **Test frameworks**: Sets up Jest (may conflict with Mocha/Vitest preferences)
 
 ## Beginner Setup Guide
 
