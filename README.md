@@ -26,7 +26,7 @@ Claude Setup transforms any directory into a professional development environmen
 - ✅ **Zero Configuration** - Works out of the box for 5+ languages
 - ✅ **Professional Standards** - Industry-grade quality tools and workflows
 - ✅ **Team Consistency** - Standardized development practices across projects
-- ✅ **AI Integration** - 14 custom Claude Code commands for structured collaboration
+- ✅ **AI Integration** - 20 custom Claude Code commands for structured collaboration
 - ✅ **Memory System** - Documentation that maintains project knowledge across sessions
 
 **Who Should Use This:**
@@ -39,7 +39,7 @@ Claude Setup transforms any directory into a professional development environmen
 
 Creates complete professional development environments through 4 simple questions:
 
-1. **Project Type** - JavaScript, Python, Go, Rust, Java, or Mixed
+1. **Project Type** - JavaScript, Python, Go, Rust, Java, Swift, or Mixed
 2. **Quality Level** - Strict (0 warnings), Standard (<10 warnings), or Relaxed (<50 warnings)  
 3. **Team Size** - Solo, Small team, or Large team
 4. **CI/CD** - Whether to create GitHub Actions workflows
@@ -47,7 +47,7 @@ Creates complete professional development environments through 4 simple question
 ### What You Get
 - **Quality Infrastructure** - Linters, formatters, tests configured for your language
 - **Documentation System** - CLAUDE.md, ACTIVE_WORK.md, and project templates
-- **15 Custom Commands** - `/hygiene`, `/todo`, `/commit`, `/learn`, `/ideation`, etc.
+- **20 Custom Commands** - `/hygiene`, `/todo`, `/commit`, `/learn`, `/ideation`, etc.
 - **Git Repository** - Initialized with professional setup committed
 - **CI/CD Workflows** - GitHub Actions for quality checks (optional)
 
@@ -85,7 +85,7 @@ Quick utility to generate optimized `.devcontainer/devcontainer.json` configurat
 - Performance optimizations (parallel execution, caching)
 - Error-resilient setup commands
 
-**Supported Languages:** JavaScript/TypeScript, Python, Go, Rust, Java
+**Supported Languages:** JavaScript/TypeScript, Python, Go, Rust, Java, Swift
 
 **Note:** For complete project setup (linting, testing, documentation), use the main setup mode instead.
 
@@ -175,6 +175,12 @@ npx github:rmurphey/claude-setup
 - **DevContainer**: Java 17, dependency caching
 - **CI/CD**: GitHub Actions workflow for Java
 
+### Swift
+- **Setup**: Creates `Package.swift` for Swift Package Manager
+- **Tools**: SwiftLint configuration, build integration
+- **DevContainer**: Latest Swift, package resolution
+- **CI/CD**: GitHub Actions workflow for Swift
+
 ## Installation & Setup
 
 ### NPX Usage (Recommended)
@@ -219,7 +225,7 @@ The tool creates a **persistent memory system** that maintains project knowledge
 
 ### Custom Commands Suite
 
-19 specialized commands for structured development:
+20 specialized commands for structured development:
 
 **Core Workflow**
 - `/hygiene` - Project health check
