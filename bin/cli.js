@@ -262,7 +262,8 @@ async function setupCommands() {
     'hygiene', 'todo', 'design', 'commit', 'next',
     'learn', 'docs', 'estimate', 'reflect', 'defer',
     'push', 'version-tag', 'maintainability', 'idea', 'ideation',
-    'recovery-assess', 'recovery-plan', 'recovery-execute', 'update-docs'
+    'recovery-assess', 'recovery-plan', 'recovery-execute', 'update-docs',
+    'issue'
   ];
   
   for (const cmd of commands) {
@@ -496,8 +497,8 @@ async function generateDevContainer(projectType) {
 
 function getDevContainerConfig(projectType) {
   const baseConfig = {
-    name: "Development Container",
-    image: "mcr.microsoft.com/devcontainers/universal:2",
+    name: 'Development Container',
+    image: 'mcr.microsoft.com/devcontainers/universal:2',
     features: {},
     customizations: {
       vscode: {
@@ -505,115 +506,115 @@ function getDevContainerConfig(projectType) {
       }
     },
     forwardPorts: [],
-    postCreateCommand: "",
-    remoteUser: "vscode"
+    postCreateCommand: '',
+    remoteUser: 'vscode'
   };
   
   switch (projectType) {
     case 'js':
       return {
-        name: "JavaScript/TypeScript Development",
-        image: "mcr.microsoft.com/devcontainers/javascript-node:18",
+        name: 'JavaScript/TypeScript Development',
+        image: 'mcr.microsoft.com/devcontainers/javascript-node:18',
         customizations: {
           vscode: {
             extensions: [
-              "esbenp.prettier-vscode",
-              "dbaeumer.vscode-eslint",
-              "ms-vscode.vscode-typescript-next"
+              'esbenp.prettier-vscode',
+              'dbaeumer.vscode-eslint',
+              'ms-vscode.vscode-typescript-next'
             ]
           }
         },
         forwardPorts: [3000, 8080],
         portsAttributes: {
-          "3000": { label: "App" },
-          "8080": { label: "Server" }
+          '3000': { label: 'App' },
+          '8080': { label: 'Server' }
         },
-        onCreateCommand: "npm ci --prefer-offline",
-        remoteUser: "node",
-        waitFor: "onCreateCommand"
+        onCreateCommand: 'npm ci --prefer-offline',
+        remoteUser: 'node',
+        waitFor: 'onCreateCommand'
       };
     
     case 'python':
       return {
-        name: "Python Development",
-        image: "mcr.microsoft.com/devcontainers/python:3.11",
+        name: 'Python Development',
+        image: 'mcr.microsoft.com/devcontainers/python:3.11',
         customizations: {
           vscode: {
             extensions: [
-              "ms-python.python",
-              "ms-python.flake8",
-              "charliermarsh.ruff"
+              'ms-python.python',
+              'ms-python.flake8',
+              'charliermarsh.ruff'
             ]
           }
         },
         forwardPorts: [8000, 5000],
         portsAttributes: {
-          "8000": { label: "Django" },
-          "5000": { label: "Flask" }
+          '8000': { label: 'Django' },
+          '5000': { label: 'Flask' }
         },
-        onCreateCommand: "pip install --cache-dir /tmp/pip-cache -e . || echo 'No setup.py found'",
-        remoteUser: "vscode",
-        waitFor: "onCreateCommand"
+        onCreateCommand: 'pip install --cache-dir /tmp/pip-cache -e . || echo \'No setup.py found\'',
+        remoteUser: 'vscode',
+        waitFor: 'onCreateCommand'
       };
     
     case 'go':
       return {
-        name: "Go Development",
-        image: "mcr.microsoft.com/devcontainers/go:1.21",
+        name: 'Go Development',
+        image: 'mcr.microsoft.com/devcontainers/go:1.21',
         customizations: {
           vscode: {
             extensions: [
-              "golang.go"
+              'golang.go'
             ]
           }
         },
         forwardPorts: [8080],
         portsAttributes: {
-          "8080": { label: "Go Server" }
+          '8080': { label: 'Go Server' }
         },
-        onCreateCommand: "go mod download || echo 'No go.mod found'",
-        remoteUser: "vscode",
-        waitFor: "onCreateCommand"
+        onCreateCommand: 'go mod download || echo \'No go.mod found\'',
+        remoteUser: 'vscode',
+        waitFor: 'onCreateCommand'
       };
     
     case 'rust':
       return {
-        name: "Rust Development", 
-        image: "mcr.microsoft.com/devcontainers/rust:latest",
+        name: 'Rust Development', 
+        image: 'mcr.microsoft.com/devcontainers/rust:latest',
         customizations: {
           vscode: {
             extensions: [
-              "rust-lang.rust-analyzer"
+              'rust-lang.rust-analyzer'
             ]
           }
         },
         forwardPorts: [8080],
         portsAttributes: {
-          "8080": { label: "Rust Server" }
+          '8080': { label: 'Rust Server' }
         },
-        onCreateCommand: "cargo fetch || echo 'No Cargo.toml found'",
-        remoteUser: "vscode",
-        waitFor: "onCreateCommand"
+        onCreateCommand: 'cargo fetch || echo \'No Cargo.toml found\'',
+        remoteUser: 'vscode',
+        waitFor: 'onCreateCommand'
       };
     
     case 'java':
       return {
-        name: "Java Development",
-        image: "mcr.microsoft.com/devcontainers/java:17",
+        name: 'Java Development',
+        image: 'mcr.microsoft.com/devcontainers/java:17',
         customizations: {
           vscode: {
             extensions: [
-              "vscjava.vscode-java-pack"
+              'vscjava.vscode-java-pack'
             ]
           }
         },
         forwardPorts: [8080],
         portsAttributes: {
-          "8080": { label: "Java Server" }
+          '8080': { label: 'Java Server' }
         },
-        onCreateCommand: "mvn dependency:go-offline || gradle build --refresh-dependencies || echo 'No build file found'",
-        remoteUser: "vscode",
-        waitFor: "onCreateCommand"
+        onCreateCommand: 'mvn dependency:go-offline || gradle build --refresh-dependencies || echo \'No build file found\'',
+        remoteUser: 'vscode',
+        waitFor: 'onCreateCommand'
       };
     
     default:

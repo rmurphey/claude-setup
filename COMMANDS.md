@@ -16,6 +16,21 @@ This project includes a complete set of Claude Code commands for structured deve
 **Purpose**: AI-recommended next priorities based on project state  
 **Output**: Prioritized action list with rationale
 
+### `/issue <number>`
+**Purpose**: Streamlined GitHub issue workflow  
+**Features**: 
+- Fetches issue details from GitHub API
+- Creates appropriately named branches (username/type/issue-123-title)
+- Sets up issue context documentation in `.claude/issues/`
+- Updates ACTIVE_WORK.md with current issue focus
+- Supports cross-repository issues
+
+**Usage**: 
+- `/issue 123` - Work on issue #123 in current repo
+- `/issue 456 owner/repo` - Work on issue #456 in different repo
+- `/issue list` - List open issues
+- `/issue current` - Show current issue context
+
 ### `/reflect`
 **Purpose**: Weekly development review and insights capture  
 **Process**: Guided reflection with documentation updates
