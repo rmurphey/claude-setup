@@ -19,7 +19,6 @@
 
 Quick capture of pending ideas for future consideration:
 
-- [ ] [2025-07-06 17:30] [User-Requested] Workspace multiplexing for parallel task development - Enable working on multiple tasks simultaneously with isolated workspaces (`claude-setup --workspace feature-auth --from main`). Each workspace gets separate git branch, full dev environment, independent Claude context (ACTIVE_WORK.md), and quality tools. Eliminates context switching overhead and enables parallel development streams when blocked on tasks.
 
 
 
@@ -38,6 +37,10 @@ Quick capture of pending ideas for future consideration:
 - **[2025-07-06]** Structured logging with progress indicators - Replace console.log with structured logger, add progress bars, JSON output mode for better CI/CD integration
   - **Reason**: Basic console output is sufficient for current needs; prioritizing core functionality over polish features
   - **Revisit**: When user feedback indicates need for better CI/CD integration or progress visibility becomes a pain point
+
+- **[2025-07-06]** Workspace multiplexing for parallel task development - Enable working on multiple tasks simultaneously with isolated workspaces (`claude-setup --workspace feature-auth --from main`). Each workspace gets separate git branch, full dev environment, independent Claude context (ACTIVE_WORK.md), and quality tools. Eliminates context switching overhead and enables parallel development streams when blocked on tasks.
+  - **Reason**: Complex feature requiring significant architectural changes; current single-workspace model is sufficient for most users
+  - **Revisit**: When multiple users request parallel workspace functionality or when working on large, long-running projects with frequent blocking issues
 
 ---
 
