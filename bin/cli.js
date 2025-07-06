@@ -7,6 +7,7 @@ import path from 'path';
 import { execSync } from 'child_process';
 import { LanguageDetector } from '../lib/language-detector.js';
 import { runRecovery } from '../lib/recovery-system.js';
+import { syncGitHubIssues } from '../lib/github-sync.js';
 
 // Language setup modules
 import javascript from '../lib/languages/javascript.js';
@@ -166,11 +167,18 @@ function processSmartAnswers(answers, detection) {
 
 async function main() {
   try {
-    // Check for --fix argument for one-command recovery
+    // Check for command line arguments
     const args = process.argv.slice(2);
+    
     if (args.includes('--fix')) {
       console.log(chalk.blue.bold('\n🔧 Claude Setup Recovery\n'));
       await runRecovery(args);
+      return;
+    }
+    
+    if (args.includes('--sync-issues')) {
+      console.log(chalk.blue.bold('\n📋 Syncing GitHub Issues\n'));
+      await syncGitHubIssues('internal/ACTIVE_WORK.md');
       return;
     }
     

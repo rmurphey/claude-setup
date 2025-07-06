@@ -22,6 +22,17 @@ Quick capture of pending ideas for future consideration:
 
 
 
+
+---
+
+## GitHub Issues
+
+<!-- GITHUB_ISSUES_START -->
+*No open GitHub issues*
+
+When new issues are created, they will automatically appear here. Run `claude-setup --sync-issues` to refresh.
+<!-- GITHUB_ISSUES_END -->
+
 ---
 
 ## Deferred Items
@@ -69,6 +80,7 @@ Quick capture of pending ideas for future consideration:
 - [x] [2025-07-05 23:15] Smart language detection implemented - Best-guess with verification approach reduces friction for all users. Handles single detection, multiple candidates, and graceful fallbacks
 - [x] [2025-07-06 00:00] Swift language support added - Complete Swift project setup with Package.swift generation, SwiftLint configuration, DevContainer support, and smart detection
 - [x] [2025-07-06 16:45] [AI-Generated] One-command project recovery for broken setups - Add `claude-setup --fix` command that detects missing files and restores them to save hours of manual re-setup
+- [x] [2025-07-06 17:35] [User-Requested] GitHub Issues integration into ACTIVE_WORK.md - Sync open GitHub issues into active work tracking with `claude-setup --sync-issues`. Automatic integration when accessing ACTIVE_WORK.md for unified task management.
 
 ### Session History
 - **2025-01-04**: Implemented dual directory structure to separate internal development records from user templates
