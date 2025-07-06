@@ -81,5 +81,56 @@ test('function works', () => {
 
 **Result**: From 0 functions detected (AST failures) to 42 functions detected (text patterns) - simpler approach was demonstrably better.
 
+### 2025-07-05 - Systematic Test Recovery
+**Problem**: ES module conversion broke 6 of 7 test files due to haphazard approach to systematic changes.
+
+**Lesson**: Never take haphazard approach to systematic changes. When conversion broke tests, deleted all broken tests and rebuilt with 1 comprehensive test file using proven working patterns.
+
+**Key Pattern**: Use working examples as templates, don't assume behavior will transfer across major changes.
+
+**Result**: Systematic replacement with proper ES module patterns resulted in stable test foundation.
+
+### 2025-07-05 - Dual-Architecture Implementation 
+**Problem**: Tool must provide capabilities both internally AND generate them for users (dogfooding principle).
+
+**Solution**: GitHub issue command demonstrates perfect dual-architecture:
+- Single codebase serves both use cases through modular design
+- lib/github-api.js: Reusable API wrapper
+- lib/issue-command.js: Command implementation  
+- .claude/commands/issue: Internal executable
+- templates/commands/issue.md: Self-contained template for user projects
+
+**Key Pattern**: Self-contained templates enable standalone functionality in user projects while shared libraries power internal capabilities.
+
+### 2025-07-05 - Feature Scope Management
+**Problem**: Tendency to over-engineer features beyond core value.
+
+**Learning**: GitHub issue command Phase 1 delivered 80% of value with 40% of planned effort. Phase 2+ features were incremental polish vs core functionality.
+
+**Decision Framework**: Better to ship useful features and iterate based on actual usage. Opportunity cost analysis: high-impact unaddressed features > incremental polish.
+
+### 2025-07-05 - Best-Guess with Verification Pattern
+**Problem**: Definitive auto-detection creates friction when wrong, but no detection wastes user time.
+
+**Solution**: Smart language detection uses verification instead of definitive conclusions:
+- Three modes: single confident detection, multiple candidates, no detection
+- User always has final control - system provides smart defaults
+- Reduces friction in obvious cases while handling edge cases gracefully
+
+**Key Pattern**: Pattern applicable to other auto-detection features (dependencies, frameworks, etc.)
+
+### 2025-07-06 - Swift Language Support Implementation
+**Validation**: Added sixth supported language following established patterns demonstrates modularity of language setup architecture.
+
+**Implementation**: 
+- Swift Package Manager setup with Package.swift generation and basic project structure
+- SwiftLint configuration with comprehensive rules for code quality
+- DevContainer support with swift:latest image and VS Code Swift extension
+- Language detection patterns for Package.swift, .swift files, and Xcode projects
+- Comprehensive .gitignore patterns for Swift builds, Xcode artifacts, and dependencies
+- All tests passing including new Swift-specific test coverage
+
+**Result**: Adding Swift required minimal changes to core logic while providing complete functionality equivalent to existing languages.
+
 ## User Experience Patterns
 *Document what works/doesn't work for setup tools*
