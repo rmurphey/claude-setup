@@ -5,6 +5,7 @@ import chalk from 'chalk';
 import fs from 'fs-extra';
 import path from 'path';
 import { execSync } from 'child_process';
+import { LanguageDetector } from '../lib/language-detector.js';
 
 // Language setup modules
 import javascript from '../lib/languages/javascript.js';
@@ -12,6 +13,7 @@ import python from '../lib/languages/python.js';
 import go from '../lib/languages/go.js';
 import rust from '../lib/languages/rust.js';
 import java from '../lib/languages/java.js';
+import swift from '../lib/languages/swift.js';
 
 const modeQuestion = {
   type: 'list',
@@ -35,6 +37,7 @@ const questions = [
       { name: 'Go', value: 'go' },
       { name: 'Rust', value: 'rust' },
       { name: 'Java', value: 'java' },
+      { name: 'Swift', value: 'swift' },
       { name: 'Mixed/Other', value: 'other' }
     ]
   },
@@ -66,6 +69,100 @@ const questions = [
   }
 ];
 
+/**
+ * Build smart questions with language detection and verification
+ */
+async function buildSmartQuestions() {
+  console.log(chalk.blue('🔍 Detecting project language...'));
+  
+  const detector = new LanguageDetector();
+  const detection = await detector.getBestGuess();
+  
+  let projectTypeQuestion;
+  
+  if (!detection) {
+    // No detection - use original question
+    console.log(chalk.gray('   No specific language detected, showing all options'));
+    projectTypeQuestion = questions[0]; // Original project type question
+  } else if (detection.type === 'single') {
+    // Single confident detection - verify with user
+    const evidence = detector.formatEvidence(detection.evidence);
+    console.log(chalk.green(`   Detected ${detection.name} (${evidence})`));
+    
+    projectTypeQuestion = {
+      type: 'confirm',
+      name: 'useDetectedLanguage',
+      message: `Use detected language: ${detection.name}?`,
+      default: true
+    };
+  } else {
+    // Multiple detections - show as options
+    const candidateNames = detection.candidates.map(c => c.name).join(', ');
+    console.log(chalk.yellow(`   Multiple languages detected: ${candidateNames}`));
+    
+    projectTypeQuestion = {
+      type: 'list',
+      name: 'projectType',
+      message: 'Which language should be the primary setup focus?',
+      choices: [
+        ...detection.candidates.map(c => ({
+          name: `${c.name} (detected: ${detector.formatEvidence(c.evidence)})`,
+          value: c.language
+        })),
+        new inquirer.Separator(),
+        { name: 'JavaScript/TypeScript', value: 'js' },
+        { name: 'Python', value: 'python' },
+        { name: 'Go', value: 'go' },
+        { name: 'Rust', value: 'rust' },
+        { name: 'Java', value: 'java' },
+        { name: 'Swift', value: 'swift' },
+        { name: 'Mixed/Other', value: 'other' }
+      ]
+    };
+  }
+  
+  // Build the full questions array
+  const smartQuestions = [projectTypeQuestion];
+  
+  // Add post-processing for single detection confirmation
+  if (detection && detection.type === 'single') {
+    // We'll handle this after the confirmation
+    smartQuestions.push({
+      type: 'list',
+      name: 'projectType', 
+      message: 'What type of project are you setting up?',
+      choices: [
+        { name: 'JavaScript/TypeScript', value: 'js' },
+        { name: 'Python', value: 'python' },
+        { name: 'Go', value: 'go' },
+        { name: 'Rust', value: 'rust' },
+        { name: 'Java', value: 'java' },
+        { name: 'Swift', value: 'swift' },
+        { name: 'Mixed/Other', value: 'other' }
+      ],
+      when: (answers) => !answers.useDetectedLanguage
+    });
+  }
+  
+  // Add the remaining questions (quality, team, cicd)
+  smartQuestions.push(...questions.slice(1));
+  
+  return smartQuestions;
+}
+
+/**
+ * Process smart question answers to normalize project type
+ */
+function processSmartAnswers(answers, detection) {
+  // If user confirmed detected language, use it
+  if (answers.useDetectedLanguage && detection && detection.type === 'single') {
+    answers.projectType = detection.language;
+  }
+  
+  delete answers.useDetectedLanguage; // Clean up
+  return answers;
+}
+
 async function main() {
   try {
     console.log(chalk.blue.bold('\n🤖 Claude Code Project Setup\n'));
@@ -88,7 +185,14 @@ async function main() {
 }
 
 async function handleSetupMode() {
-  const answers = await inquirer.prompt(questions);
+  // Smart language detection with verification
+  const detector = new LanguageDetector();
+  const detection = await detector.getBestGuess();
+  const smartQuestions = await buildSmartQuestions();
+  const rawAnswers = await inquirer.prompt(smartQuestions);
+  
+  // Process answers to normalize project type
+  const answers = processSmartAnswers(rawAnswers, detection);
   
   console.log(chalk.green('\n✅ Configuration complete!\n'));
   console.log(chalk.yellow('📋 Your setup:'));
@@ -128,19 +232,57 @@ async function handleDevContainerMode() {
   console.log(chalk.gray('This creates .devcontainer/devcontainer.json for GitHub Codespaces'));
   console.log(chalk.gray('For full project setup, use the main setup mode instead.\n'));
   
-  const projectTypeAnswer = await inquirer.prompt([{
-    type: 'list',
-    name: 'projectType',
-    message: 'What programming language will you use in Codespaces?',
-    choices: [
-      { name: 'JavaScript/TypeScript', value: 'js' },
-      { name: 'Python', value: 'python' },
-      { name: 'Go', value: 'go' },
-      { name: 'Rust', value: 'rust' },
-      { name: 'Java', value: 'java' },
-      { name: 'Mixed/Other (basic configuration)', value: 'other' }
-    ]
-  }]);
+  // Use smart detection for DevContainer too
+  const detector = new LanguageDetector();
+  const detection = await detector.getBestGuess();
+  
+  let projectTypeAnswer;
+  
+  if (detection && detection.type === 'single') {
+    const evidence = detector.formatEvidence(detection.evidence);
+    console.log(chalk.green(`   Detected ${detection.name} (${evidence})`));
+    
+    const confirmation = await inquirer.prompt([{
+      type: 'confirm',
+      name: 'useDetected',
+      message: `Create DevContainer for detected language: ${detection.name}?`,
+      default: true
+    }]);
+    
+    if (confirmation.useDetected) {
+      projectTypeAnswer = { projectType: detection.language };
+    } else {
+      projectTypeAnswer = await inquirer.prompt([{
+        type: 'list',
+        name: 'projectType',
+        message: 'What programming language will you use in Codespaces?',
+        choices: [
+          { name: 'JavaScript/TypeScript', value: 'js' },
+          { name: 'Python', value: 'python' },
+          { name: 'Go', value: 'go' },
+          { name: 'Rust', value: 'rust' },
+          { name: 'Java', value: 'java' },
+          { name: 'Swift', value: 'swift' },
+          { name: 'Mixed/Other (basic configuration)', value: 'other' }
+        ]
+      }]);
+    }
+  } else {
+    projectTypeAnswer = await inquirer.prompt([{
+      type: 'list',
+      name: 'projectType',
+      message: 'What programming language will you use in Codespaces?',
+      choices: [
+        { name: 'JavaScript/TypeScript', value: 'js' },
+        { name: 'Python', value: 'python' },
+        { name: 'Go', value: 'go' },
+        { name: 'Rust', value: 'rust' },
+        { name: 'Java', value: 'java' },
+        { name: 'Swift', value: 'swift' },
+        { name: 'Mixed/Other (basic configuration)', value: 'other' }
+      ]
+    }]);
+  }
   
   await generateDevContainer(projectTypeAnswer.projectType);
   
@@ -204,7 +346,10 @@ async function setupLanguage(config) {
       goMod: await fs.pathExists('go.mod'),
       cargoToml: await fs.pathExists('Cargo.toml'),
       pomXml: await fs.pathExists('pom.xml'),
-      buildGradle: await fs.pathExists('build.gradle')
+      buildGradle: await fs.pathExists('build.gradle'),
+      packageSwift: await fs.pathExists('Package.swift'),
+      xcodeproj: await fs.pathExists('*.xcodeproj'),
+      xcworkspace: await fs.pathExists('*.xcworkspace')
     }
   };
   
@@ -223,6 +368,9 @@ async function setupLanguage(config) {
       break;
     case 'java':
       await java.setup(config, detection);
+      break;
+    case 'swift':
+      await swift.setup(config, detection);
       break;
     default:
       console.log(chalk.yellow('   Manual setup required for this project type'));
@@ -471,6 +619,22 @@ build/
 *.tsbuildinfo
 .eslintcache
 `;
+    case 'swift':
+      return `${common}
+# Swift
+.build/
+.swiftpm/
+*.xcodeproj/
+*.xcworkspace/
+xcuserdata/
+DerivedData/
+*.hmap
+*.ipa
+*.dSYM.zip
+*.dSYM
+Carthage/
+Pods/
+`;
     case 'python':
       return `${common}
 # Python
@@ -613,6 +777,26 @@ function getDevContainerConfig(projectType) {
           '8080': { label: 'Java Server' }
         },
         onCreateCommand: 'mvn dependency:go-offline || gradle build --refresh-dependencies || echo \'No build file found\'',
+        remoteUser: 'vscode',
+        waitFor: 'onCreateCommand'
+      };
+    
+    case 'swift':
+      return {
+        name: 'Swift Development',
+        image: 'mcr.microsoft.com/devcontainers/swift:latest',
+        customizations: {
+          vscode: {
+            extensions: [
+              'sswg.swift-lang'
+            ]
+          }
+        },
+        forwardPorts: [8080],
+        portsAttributes: {
+          '8080': { label: 'Swift Server' }
+        },
+        onCreateCommand: 'swift package resolve || echo \'No Package.swift found\'',
         remoteUser: 'vscode',
         waitFor: 'onCreateCommand'
       };
