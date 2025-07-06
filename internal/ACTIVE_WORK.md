@@ -19,9 +19,6 @@
 
 Quick capture of pending ideas for future consideration:
 
-- [x] [2025-07-06 16:45] [AI-Generated] One-command project recovery for broken setups - Add `claude-setup --fix` command that detects missing files and restores them to save hours of manual re-setup - COMPLETED
-- [ ] [2025-07-06 16:45] [AI-Generated] Structured logging with progress indicators - Replace console.log with structured logger, add progress bars, JSON output mode for better CI/CD integration
-- [ ] [2025-07-06 16:45] [AI-Generated] Team workspace templates with role-based configurations - Frontend/backend/DevOps specific setups, shared configs, team onboarding guides to reduce onboarding time from days to hours
 
 
 ---
@@ -31,6 +28,14 @@ Quick capture of pending ideas for future consideration:
 - **[2025-07-06]** Multi-language project support with conflict resolution - Detect all languages, resolve tool conflicts (ESLint vs Prettier), create unified config for real-world polyglot projects
   - **Reason**: Complex architectural change requiring significant refactoring of existing single-language assumption
   - **Revisit**: After current architecture stabilizes and user feedback validates need
+
+- **[2025-07-06]** Team workspace templates with role-based configurations - Frontend/backend/DevOps specific setups, shared configs, team onboarding guides to reduce onboarding time from days to hours
+  - **Reason**: Focus on core Jest migration and test infrastructure stability before expanding feature scope
+  - **Revisit**: After test infrastructure is fully stable and current quality tools are proven
+
+- **[2025-07-06]** Structured logging with progress indicators - Replace console.log with structured logger, add progress bars, JSON output mode for better CI/CD integration
+  - **Reason**: Basic console output is sufficient for current needs; prioritizing core functionality over polish features
+  - **Revisit**: When user feedback indicates need for better CI/CD integration or progress visibility becomes a pain point
 
 ---
 
@@ -58,6 +63,7 @@ Quick capture of pending ideas for future consideration:
 - [x] [2025-07-05 23:00] GitHub issue command complete - Phase 1 delivered 80% of planned value with comprehensive workflow. Phase 2+ deferred as incremental polish vs high-impact alternatives
 - [x] [2025-07-05 23:15] Smart language detection implemented - Best-guess with verification approach reduces friction for all users. Handles single detection, multiple candidates, and graceful fallbacks
 - [x] [2025-07-06 00:00] Swift language support added - Complete Swift project setup with Package.swift generation, SwiftLint configuration, DevContainer support, and smart detection
+- [x] [2025-07-06 16:45] [AI-Generated] One-command project recovery for broken setups - Add `claude-setup --fix` command that detects missing files and restores them to save hours of manual re-setup
 
 ### Session History
 - **2025-01-04**: Implemented dual directory structure to separate internal development records from user templates
