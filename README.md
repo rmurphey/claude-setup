@@ -13,9 +13,10 @@ Interactive CLI tool to set up professional development projects with Claude Cod
 npx github:rmurphey/claude-setup
 ```
 
-Choose from 2 main modes plus a GitHub Codespaces utility:
+Choose from 2 main modes plus utilities:
 - **🚀 Set up new project infrastructure** - Complete development environment setup
 - **🏥 Assess and recover existing codebase** - Analysis and improvement system
+- **🔧 One-command recovery** - `--fix` instantly detects and restores missing setup files
 - **📦 Generate GitHub Codespaces DevContainer only** - Quick utility for .devcontainer/devcontainer.json
 
 ## Overview
@@ -56,6 +57,35 @@ Creates complete professional development environments through 4 simple question
 - Existing projects needing professional infrastructure
 - Teams establishing consistent development standards
 - Solo developers wanting professional-grade setup
+
+## One-Command Recovery
+
+**`--fix`** - Instantly detect and restore missing setup files to save hours of manual re-setup.
+
+### Features
+- **Smart Detection**: Scans for missing CLAUDE.md, ACTIVE_WORK.md, commands directory, and language-specific files
+- **Safe Recovery**: Backs up corrupted files before restoration
+- **Language Aware**: Restores appropriate configuration for JavaScript, Python, Go, Rust, Java, and Swift
+- **Dry Run Mode**: Preview changes with `--dry-run` before applying
+- **Auto Fix**: Skip confirmations with `--auto-fix` for CI/CD integration
+
+### Use Cases
+- Accidental deletion of setup files
+- Corrupted project configuration
+- Incomplete previous setup
+- Switching between machines
+- Team onboarding with broken repositories
+
+```bash
+# Quick fix for broken setup
+npx github:rmurphey/claude-setup --fix
+
+# See what would be fixed
+npx github:rmurphey/claude-setup --fix --dry-run
+
+# Auto-fix without prompts (CI/CD)
+npx github:rmurphey/claude-setup --fix --auto-fix
+```
 
 ## Recovery Mode
 
@@ -105,6 +135,15 @@ cd inherited-legacy-project
 npx github:rmurphey/claude-setup
 # Select: 🏥 Assess and recover existing codebase
 # Then run: /recovery-assess → /recovery-plan → /recovery-execute
+```
+
+### One-Command Recovery
+```bash
+# Fix broken setup instantly
+npx github:rmurphey/claude-setup --fix
+
+# Preview what would be fixed without making changes
+npx github:rmurphey/claude-setup --fix --dry-run
 ```
 
 
@@ -220,8 +259,6 @@ The tool creates a **persistent memory system** that maintains project knowledge
 **CLAUDE.md** - AI collaboration guidelines with quality standards, architecture principles, and project-specific development workflows.
 
 **ACTIVE_WORK.md** - Session management with current priorities, quality metrics, quick task capture, and chronological development history.
-
-**COMMANDS.md** - Custom command documentation with implementation details, usage examples, and integration patterns.
 
 ### Custom Commands Suite
 

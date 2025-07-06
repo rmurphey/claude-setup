@@ -28,7 +28,7 @@ Custom commands in `.claude/commands/` provide consistent interaction patterns b
 ### 2. Documentation Templates (`templates/`)
 - **CLAUDE.md** - AI collaboration guidelines
 - **ACTIVE_WORK.md** - Session management template
-- **COMMANDS.md** - Command system documentation
+- **README.md** - Includes comprehensive command system documentation
 
 ### 3. Language Handlers
 - **JavaScript/TypeScript** - package.json, ESLint, Prettier, Jest
@@ -112,7 +112,7 @@ Templates use `{{VARIABLE}}` substitution:
 
 ### Adding New Commands
 1. Add command name to `commands` array
-2. Document in `templates/COMMANDS.md`
+2. Document in README.md "Custom Commands Suite" section
 3. Create implementation template
 
 ### Adding New Quality Levels
@@ -146,7 +146,7 @@ claude-project-setup/
 ├── templates/              # Template files for generated projects
 │   ├── CLAUDE.md           # AI guidelines template
 │   ├── ACTIVE_WORK.md      # Session management template
-│   └── COMMANDS.md         # Commands documentation template
+│   └── (Commands documented in README.md)
 ├── __tests__/              # Test suite
 └── README.md               # Public documentation
 ```

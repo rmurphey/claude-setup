@@ -47,7 +47,7 @@ grep "rmurphey/claude-setup" package.json README.md
 - Verify all 20 commands exist in `.claude/commands/`
 - Ensure consistent `.md` file naming
 - Check YAML frontmatter in command files
-- Validate command descriptions match COMMANDS.md
+- Validate command descriptions match README.md
 
 **Repository References**:
 - Package.json repository URL
@@ -102,7 +102,7 @@ Documentation is current when:
 - ✅ README shows correct "20 specialized commands"
 - ✅ Package.json has correct repository URL
 - ✅ All npx examples use correct repo name
-- ✅ COMMANDS.md matches actual command files
+- ✅ README.md command documentation matches actual command files
 - ✅ No broken references or outdated information
 
 ## Maintenance Schedule

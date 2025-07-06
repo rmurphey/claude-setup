@@ -6,6 +6,7 @@ import fs from 'fs-extra';
 import path from 'path';
 import { execSync } from 'child_process';
 import { LanguageDetector } from '../lib/language-detector.js';
+import { runRecovery } from '../lib/recovery-system.js';
 
 // Language setup modules
 import javascript from '../lib/languages/javascript.js';
@@ -165,6 +166,14 @@ function processSmartAnswers(answers, detection) {
 
 async function main() {
   try {
+    // Check for --fix argument for one-command recovery
+    const args = process.argv.slice(2);
+    if (args.includes('--fix')) {
+      console.log(chalk.blue.bold('\n🔧 Claude Setup Recovery\n'));
+      await runRecovery(args);
+      return;
+    }
+    
     console.log(chalk.blue.bold('\n🤖 Claude Code Project Setup\n'));
     
     // First ask what mode they want

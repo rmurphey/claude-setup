@@ -18,7 +18,9 @@
     "update-readme": "node -e \"import('./lib/readme-updater.js').then(m => m.updateReadme().then(r => console.log('README updated:', r.commandCount, 'commands')))\"",
     "update-docs": "node -e \"import('./lib/readme-updater.js').then(m => m.updateAllDocs().then(r => console.log('Docs updated: README(' + r.readme.commandCount + ' commands), ESTIMATES(' + (r.estimates.updated ? 'updated' : 'no changes') + ')')))\"",
     "docs:validate": "node lib/readme-updater.js validate",
-    "docs:update": "npm run update-docs && echo 'Documentation updated successfully'"
+    "docs:update": "npm run update-docs && echo 'Documentation updated successfully'",
+    "fix": "node bin/cli.js --fix",
+    "fix:dry-run": "node bin/cli.js --fix --dry-run"
   },
   "keywords": [
     "claude",

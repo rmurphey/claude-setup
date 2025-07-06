@@ -3,3 +3,7 @@ coverage/
 .nyc_output/
 *.log
 .DS_Store
+
+# Test directories (temporary)
+test-*/
+*-temp/
