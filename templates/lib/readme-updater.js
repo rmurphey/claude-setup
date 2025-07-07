@@ -4,7 +4,6 @@
  * This is a template version for generated projects
  */
 import fs from 'fs-extra';
-import path from 'path';
 
 /**
  * Get list of commands by scanning .claude/commands directory
@@ -111,7 +110,7 @@ export async function generateCommandSection() {
   const commands = await getCommandList();
   const categories = categorizeCommands(commands);
   
-  let section = `### Custom Commands\n\n`;
+  let section = '### Custom Commands\n\n';
   section += `${commands.length} specialized commands for structured development:\n\n`;
   
   for (const [categoryName, commandList] of Object.entries(categories)) {
@@ -119,7 +118,7 @@ export async function generateCommandSection() {
     for (const { cmd, desc } of commandList) {
       section += `- \`/${cmd}\` - ${desc}\n`;
     }
-    section += `\n`;
+    section += '\n';
   }
   
   return section;
