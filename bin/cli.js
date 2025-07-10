@@ -7,7 +7,7 @@ import path from 'path';
 import { execSync } from 'child_process';
 import { LanguageDetector } from '../lib/language-detector.js';
 import { runRecovery } from '../lib/recovery-system.js';
-import { syncGitHubIssues } from '../lib/github-sync.js';
+// GitHub sync imported conditionally to avoid auto-sync during normal CLI usage
 
 // Language setup modules
 import javascript from '../lib/languages/javascript.js';
@@ -178,7 +178,24 @@ async function main() {
     
     if (args.includes('--sync-issues')) {
       console.log(chalk.blue.bold('\n📋 Syncing GitHub Issues\n'));
-      await syncGitHubIssues('internal/ACTIVE_WORK.md');
+      const { syncGitHubIssues } = await import('../lib/github-sync.js');
+      
+      // Check which ACTIVE_WORK.md file exists
+      const internalPath = 'internal/ACTIVE_WORK.md';
+      const rootPath = 'ACTIVE_WORK.md';
+      
+      let activeWorkPath;
+      if (await fs.pathExists(internalPath)) {
+        activeWorkPath = internalPath;
+      } else if (await fs.pathExists(rootPath)) {
+        activeWorkPath = rootPath;
+      } else {
+        console.error(chalk.red('❌ No ACTIVE_WORK.md file found'));
+        console.log('Run the setup tool first to create project structure');
+        process.exit(1);
+      }
+      
+      await syncGitHubIssues(activeWorkPath);
       return;
     }
     
