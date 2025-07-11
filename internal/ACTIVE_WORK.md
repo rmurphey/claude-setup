@@ -81,6 +81,8 @@ When new issues are created, they will automatically appear here. Run `claude-se
 - [x] [2025-07-06 00:00] Swift language support added - Complete Swift project setup with Package.swift generation, SwiftLint configuration, DevContainer support, and smart detection
 - [x] [2025-07-06 16:45] [AI-Generated] One-command project recovery for broken setups - Add `claude-setup --fix` command that detects missing files and restores them to save hours of manual re-setup
 - [x] [2025-07-06 17:35] [User-Requested] GitHub Issues integration into ACTIVE_WORK.md - Sync open GitHub issues into active work tracking with `claude-setup --sync-issues`. Automatic integration when accessing ACTIVE_WORK.md for unified task management.
+- [x] [2025-07-10 15:30] Fix CLI execution detection for npx usage - Original ES module check failed when run via npx because execution path differs from file path. Simplified to always run main() since this is a CLI script. Supports direct execution, npx, global install, and package.json bin methods.
+- [x] [2025-07-10 21:30] Optimize test performance and document NPX behavior - Fixed test suite performance (reduced from hanging to <1 second), optimized LanguageDetector file scanning, added comprehensive NPX behavior documentation and integration tests. Test suite now includes 75 tests covering all execution modes.
 
 ### Session History
 - **2025-01-04**: Implemented dual directory structure to separate internal development records from user templates

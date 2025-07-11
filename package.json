@@ -8,9 +8,9 @@
     "claude-setup": "./bin/cli.js"
   },
   "scripts": {
-    "test": "node --test __tests__/**/*.js",
-    "test:watch": "node --test --watch __tests__/**/*.js",
-    "test:coverage": "c8 node --test __tests__/**/*.js",
+    "test": "NODE_ENV=test node --test __tests__/**/*.js",
+    "test:watch": "NODE_ENV=test node --test --watch __tests__/**/*.js",
+    "test:coverage": "NODE_ENV=test c8 node --test __tests__/**/*.js",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "lint:changed": "eslint $(git diff --name-only --diff-filter=ACMR HEAD | grep '\\.js$' | xargs)",

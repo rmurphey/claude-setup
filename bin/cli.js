@@ -165,6 +165,96 @@ function processSmartAnswers(answers, detection) {
   return answers;
 }
 
+async function handleLanguageDetection(args) {
+  const { LanguageDetector } = await import('../lib/language-detector.js');
+  const detector = new LanguageDetector();
+  
+  const forceDetection = args.includes('--force');
+  const saveConfig = !args.includes('--no-save');
+  
+  console.log(chalk.blue('🔍 Detecting project language...'));
+  
+  try {
+    const detection = await detector.getBestGuess(!forceDetection);
+    
+    if (!detection) {
+      console.log(chalk.yellow('❌ No language detected in current directory'));
+      console.log('Try running in a directory with source code files.');
+      return;
+    }
+    
+    if (detection.source === 'config') {
+      console.log(chalk.green(`✅ Using cached detection: ${detection.name}`));
+      console.log(chalk.gray(`   Detected: ${new Date(detector.config.language.detected).toLocaleString()}`));
+      console.log(chalk.gray('   Use --force to run fresh detection'));
+    } else {
+      console.log(chalk.green(`✅ Detected: ${detection.name}`));
+      
+      if (detection.type === 'single') {
+        const evidence = detector.formatEvidence(detection.evidence);
+        console.log(chalk.gray(`   Evidence: ${evidence}`));
+        console.log(chalk.gray(`   Confidence: ${detection.confidence}`));
+        
+        if (saveConfig) {
+          const saved = await detector.saveConfig(detection);
+          if (saved) {
+            console.log(chalk.gray('   Saved to .claude-setup.json'));
+          }
+        }
+      } else {
+        console.log(chalk.yellow('   Multiple languages detected:'));
+        detection.candidates.forEach((candidate, i) => {
+          const evidence = detector.formatEvidence(candidate.evidence);
+          console.log(chalk.gray(`   ${i + 1}. ${candidate.name} (${evidence})`));
+        });
+      }
+    }
+  } catch (error) {
+    console.error(chalk.red('❌ Language detection failed:'), error.message);
+    process.exit(1);
+  }
+}
+
+async function handleConfigManagement(args) {
+  const { LanguageDetector } = await import('../lib/language-detector.js');
+  const detector = new LanguageDetector();
+  
+  if (args.includes('--show')) {
+    // Show current config
+    const config = await detector.loadConfig();
+    if (Object.keys(config).length === 0) {
+      console.log(chalk.yellow('No configuration file found'));
+      console.log('Run --detect-language to create one');
+    } else {
+      console.log(chalk.green('Current configuration:'));
+      console.log(JSON.stringify(config, null, 2));
+    }
+    return;
+  }
+  
+  if (args.includes('--reset')) {
+    // Reset/delete config
+    try {
+      if (await fs.pathExists('.claude-setup.json')) {
+        await fs.remove('.claude-setup.json');
+        console.log(chalk.green('✅ Configuration reset'));
+      } else {
+        console.log(chalk.yellow('No configuration file to reset'));
+      }
+    } catch (error) {
+      console.error(chalk.red('❌ Failed to reset config:'), error.message);
+      process.exit(1);
+    }
+    return;
+  }
+  
+  // Default: show config info
+  console.log(chalk.blue('Configuration management options:'));
+  console.log('  --config --show    Show current configuration');
+  console.log('  --config --reset   Reset configuration');
+  console.log('  --detect-language  Detect and save language config');
+}
+
 async function main() {
   try {
     // Check for command line arguments
@@ -173,6 +263,18 @@ async function main() {
     if (args.includes('--fix')) {
       console.log(chalk.blue.bold('\n🔧 Claude Setup Recovery\n'));
       await runRecovery(args);
+      return;
+    }
+    
+    if (args.includes('--detect-language')) {
+      console.log(chalk.blue.bold('\n🔍 Language Detection\n'));
+      await handleLanguageDetection(args);
+      return;
+    }
+    
+    if (args.includes('--config')) {
+      console.log(chalk.blue.bold('\n⚙️  Configuration Management\n'));
+      await handleConfigManagement(args);
       return;
     }
     
@@ -236,6 +338,18 @@ async function handleSetupMode() {
   console.log(`   CI/CD: ${answers.cicd ? 'Yes' : 'No'}\n`);
   
   await setupProject(answers);
+  
+  // Save language detection config for future use
+  if (detection && detection.type === 'single') {
+    const detector = new LanguageDetector();
+    await detector.saveConfig(detection, {
+      qualityLevel: answers.qualityLevel,
+      teamSize: answers.teamSize,
+      cicd: answers.cicd,
+      lastSetup: new Date().toISOString()
+    });
+    console.log(chalk.gray('   Saved language detection config to .claude-setup.json'));
+  }
   
   console.log(chalk.green.bold('🎉 Project setup complete!\n'));
   console.log(chalk.blue('Next steps:'));
@@ -877,9 +991,30 @@ import { dirname } from 'path';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-// Run main only if this file is executed directly
-if (import.meta.url === `file://${process.argv[1]}`) {
-  main();
+// Always run main when this CLI script is executed
+// This handles direct execution, npx, and other execution methods
+//
+// Background: The original ES module check `import.meta.url === file://${process.argv[1]}`
+// fails when run via npx because the execution path differs from the file path.
+// Since this is a CLI script that should always execute when called, we simplified
+// to always run main() regardless of execution method.
+//
+// Execution methods supported:
+// - Direct: node bin/cli.js
+// - NPX: npx github:rmurphey/claude-setup
+// - Global install: claude-setup
+// - Package.json bin: npm run fix
+
+// Run main by default (production mode)
+// Only skip execution when explicitly in test mode
+if (process.env.NODE_ENV === 'test') {
+  // Skip execution during tests - tests will import and call functions directly
+} else {
+  // Production mode: always run the CLI
+  main().catch(error => {
+    console.error('Error:', error.message);
+    process.exit(1);
+  });
 }
 
 export { 
@@ -892,5 +1027,7 @@ export {
   generateActiveWorkTemplate, 
   generateGitignore,
   generateDevContainer,
-  getDevContainerConfig
+  getDevContainerConfig,
+  handleLanguageDetection,
+  handleConfigManagement
 };

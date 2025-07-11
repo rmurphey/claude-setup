@@ -1,0 +1,43 @@
+{
+  "version": "1.0.0",
+  "language": {
+    "primary": "js",
+    "name": "JavaScript/TypeScript",
+    "confidence": "high",
+    "detected": "2025-07-11T02:56:01.388Z",
+    "evidence": {
+      "foundFiles": [
+        "package.json",
+        "package-lock.json"
+      ],
+      "foundExtensions": [
+        ".js"
+      ],
+      "fileCount": 10,
+      "score": 30
+    }
+  },
+  "detection": {
+    "skipDirectories": [
+      "node_modules",
+      ".git",
+      "dist",
+      "build",
+      "__pycache__",
+      ".pytest_cache",
+      "target",
+      ".idea",
+      ".vscode",
+      ".vs"
+    ],
+    "maxDepth": 1,
+    "maxFiles": 10,
+    "timeout": 5000
+  },
+  "setup": {
+    "qualityLevel": null,
+    "teamSize": null,
+    "cicd": false,
+    "lastSetup": null
+  }
+}
