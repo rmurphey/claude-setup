@@ -100,3 +100,5 @@ After setup completion:
 - Prevention architecture exponentially cheaper than reactive fixes
 - This is a weird project that needs to both provide capabilities, but also have those same capabilities internal to the project. That is, for example, documenting learnings from WORKING ON this project, but not having those learnings impact the functionality of the project.
 - Tests must always be run from the root directory.
+- NEVER change directories if you can achieve the same goal without changing directories.
+- ALWAYS create necessary directories for tests as part of the tests, if they don't exist; ALWAYS add these directories to gitignore, and clean them up before every test run.

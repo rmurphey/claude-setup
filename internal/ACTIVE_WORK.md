@@ -19,6 +19,8 @@
 
 Quick capture of pending ideas for future consideration:
 
+- [ ] [2025-07-11 07:15] consider to what extent templates/CLAUDE.md should mimic CLAUDE.md.
+
 
 
 
