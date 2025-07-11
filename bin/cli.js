@@ -353,9 +353,17 @@ async function handleSetupMode() {
   
   console.log(chalk.green.bold('🎉 Project setup complete!\n'));
   console.log(chalk.blue('Next steps:'));
-  console.log('1. Install dependencies as shown above');
+  
+  // Get language-specific commands with fallbacks
+  const languageModules = { js: javascript, python, go, rust, java, swift };
+  const languageModule = languageModules[answers.projectType];
+  
+  const installCmd = languageModule?.installCommand || 'Install dependencies according to your project type';
+  const lintCmd = languageModule?.lintCommand || 'Run quality checks according to your project type';
+  
+  console.log(`1. Install dependencies: ${installCmd}`);
   console.log('2. Connect to remote repository (if desired)');
-  console.log('3. Run quality check: npm run lint (or equivalent)');
+  console.log(`3. Run quality check: ${lintCmd}`);
   console.log('4. Review CLAUDE.md for AI collaboration guidelines');
   console.log('5. Start coding with professional standards in place\n');
 }

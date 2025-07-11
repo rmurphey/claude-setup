@@ -24,7 +24,8 @@ describe('CLI Modes Integration', () => {
     try {
       const result = execSync('node ../bin/cli.js --sync-issues', {
         encoding: 'utf8',
-        timeout: 10000
+        timeout: 10000,
+        env: { ...process.env, NODE_ENV: 'production' }
       });
       
       // Should contain error message about missing file

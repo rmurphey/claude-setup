@@ -14,6 +14,38 @@
 
 ## CLI Tool Architecture
 
+### 2025-07-11 - Language Module Interface Design
+**Problem**: CLI needs language-specific commands (install, lint, test) but showing "as shown above" when no commands were displayed, plus commands were scattered across different files.
+
+**Solution**: Standardized language module interface with fallback handling.
+
+**Design Decision**: Each language module exports consistent interface:
+```javascript
+export default {
+  name: 'JavaScript/TypeScript',
+  installCommand: 'npm install',
+  lintCommand: 'npm run lint', 
+  testCommand: 'npm test',
+  setup: async function(config, detection) { ... }
+};
+```
+
+**Tradeoffs Considered**:
+1. **Simple map in CLI** - Easier to read, all commands visible in one place
+   - **Downside**: Separates language knowledge from language modules
+2. **Module interface** - Keeps all language info together, better separation of concerns
+   - **Downside**: Slight complexity overhead
+3. **Enforcement vs Fallbacks** - Strict interface vs graceful degradation
+   - **Chosen**: Fallbacks for resilience and incremental implementation
+
+**Implementation**: CLI uses `languageModule?.installCommand || 'fallback'` pattern for resilient property access.
+
+**Benefits**: 
+- Language-specific knowledge stays in language modules
+- Adding new languages requires only single file changes
+- Fallbacks allow incomplete implementations 
+- Consistent user experience with specific commands
+
 ### 2025-07-05 - ES Module Migration & Test Infrastructure
 **Problem**: Test suite broken after ES module conversion - tests used CommonJS `require()` but codebase converted to ES `import` statements.
 
