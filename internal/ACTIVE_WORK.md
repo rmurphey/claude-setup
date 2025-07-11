@@ -20,6 +20,7 @@
 Quick capture of pending ideas for future consideration:
 
 - [ ] [2025-07-11 07:15] consider to what extent templates/CLAUDE.md should mimic CLAUDE.md.
+- [ ] [2025-07-11 07:17] add OS detection -- fixes like changing `timeout` to `gtimeout` mean this won't work on other systems 
 
 
 
