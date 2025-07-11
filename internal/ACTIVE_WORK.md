@@ -20,7 +20,8 @@
 Quick capture of pending ideas for future consideration:
 
 - [ ] [2025-07-11 07:15] consider to what extent templates/CLAUDE.md should mimic CLAUDE.md.
-- [ ] [2025-07-11 07:17] add OS detection -- fixes like changing `timeout` to `gtimeout` mean this won't work on other systems 
+- [x] [2025-07-11 07:17] add OS detection -- fixes like changing `timeout` to `gtimeout` mean this won't work on other systems 
+- [ ] [2025-07-11 07:19] add the option to create an OSS project -- multiple potential contributors, a small number of approvers
 
 
 
