@@ -23,4 +23,27 @@ if (process.env.NODE_ENV === 'test') {
   });
 }
 
+// Re-export functions for backward compatibility with tests
 export { main };
+
+// Re-export functions from setup module
+export { 
+  generateClaudeTemplate,
+  generateActiveWorkTemplate, 
+  generateGitignore,
+  getDevContainerConfig
+} from '../lib/cli/setup.js';
+
+// Re-export functions from utils module
+export { 
+  handleLanguageDetection,
+  handleConfigManagement,
+  handleSyncIssues
+} from '../lib/cli/utils.js';
+
+// Re-export setupProject function
+export async function setupProject(config) {
+  const { ProjectSetup } = await import('../lib/cli/setup.js');
+  const setup = new ProjectSetup();
+  return setup.setupProject(config);
+}
