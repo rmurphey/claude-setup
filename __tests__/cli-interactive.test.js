@@ -8,8 +8,7 @@ describe('InteractiveSetup', () => {
   let originalConsoleError;
   let consoleOutput;
   let consoleErrors;
-  let mockInquirer;
-  let mockLanguageDetector;
+
 
   beforeEach(() => {
     interactive = new InteractiveSetup();
@@ -21,18 +20,6 @@ describe('InteractiveSetup', () => {
     originalConsoleError = console.error;
     console.log = (...args) => consoleOutput.push(args.join(' '));
     console.error = (...args) => consoleErrors.push(args.join(' '));
-
-    // Mock inquirer
-    mockInquirer = {
-      prompt: mock.fn(),
-      Separator: class MockSeparator {}
-    };
-
-    // Mock LanguageDetector
-    mockLanguageDetector = {
-      getBestGuess: mock.fn(),
-      formatEvidence: mock.fn()
-    };
   });
 
   afterEach(() => {
@@ -284,7 +271,7 @@ describe('InteractiveSetup', () => {
       
       const processed = interactive.processSmartAnswers(answers, detection);
       
-      assert.ok(!processed.hasOwnProperty('useDetectedLanguage'));
+      assert.ok(!Object.prototype.hasOwnProperty.call(processed, 'useDetectedLanguage'));
     });
   });
 
