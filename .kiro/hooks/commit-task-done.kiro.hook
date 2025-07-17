@@ -1,0 +1,20 @@
+{
+  "enabled": true,
+  "name": "Auto Commit on Task Completion",
+  "description": "Automatically commits changes to git when a task is marked as done or completed",
+  "version": "1",
+  "when": {
+    "type": "fileEdited",
+    "patterns": [
+      "internal/ACTIVE_WORK.md",
+      "ACTIVE_WORK.md",
+      "TODO.md",
+      "tasks.md",
+      "*.todo"
+    ]
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "A task appears to have been completed based on file changes. Please review the changes and create an appropriate git commit with a descriptive message that captures what was accomplished. Use the commit command to stage and commit the changes. Do not require a user to save a file in order to commit."
+  }
+}

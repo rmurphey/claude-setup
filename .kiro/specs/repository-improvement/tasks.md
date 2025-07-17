@@ -1,12 +1,12 @@
 # Implementation Plan
 
-- [ ] 1. Set up CLI module structure and interfaces
+- [x] 1. Set up CLI module structure and interfaces
   - Create lib/cli/ directory structure with main.js, interactive.js, setup.js, and utils.js
   - Define core interfaces and class structures for each CLI module
   - Update bin/cli.js to import and delegate to new main module
   - _Requirements: 1.1, 1.4, 1.5_
 
-- [ ] 2. Implement CLI argument parsing and routing
+- [x] 2. Implement CLI argument parsing and routing
   - Create CLIMain class with parseArgs() method to handle all command-line flags
   - Implement runCLI() method for mode routing (setup/recovery/devcontainer)
   - Add validation for argument combinations and conflicts
