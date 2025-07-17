@@ -20,10 +20,11 @@ Custom commands in `.claude/commands/` provide consistent interaction patterns b
 
 ## System Components
 
-### 1. CLI Interface (`bin/cli.js`)
-- Interactive questionnaire using Inquirer
-- Orchestrates setup process
-- Provides user feedback and error handling
+### 1. CLI Interface (Modular Architecture)
+- **Entry Point** (`bin/cli.js`) - Lightweight entry point that delegates to main CLI
+- **CLI Main** (`lib/cli/main.js`) - Argument parsing, routing, and error handling
+- **Interactive Setup** (`lib/cli/interactive.js`) - User prompts, validation, and configuration
+- **Setup Orchestration** (`lib/cli/setup.js`) - Project setup execution and file generation
 
 ### 2. Documentation Templates (`templates/`)
 - **CLAUDE.md** - AI collaboration guidelines
@@ -44,7 +45,15 @@ Custom commands in `.claude/commands/` provide consistent interaction patterns b
 - Coverage reporting
 - CI/CD workflow generation
 
-### 5. Custom Commands System
+### 5. Interactive Setup System
+The `InteractiveSetup` class provides robust user interaction with:
+- **Smart Language Detection** - Automatically detects project language and offers confirmation
+- **Input Validation** - Comprehensive validation of all user inputs with clear error messages
+- **Configuration Sanitization** - Normalizes user input (case, aliases, type conversion)
+- **Language Override Support** - CLI flag support for non-interactive language selection
+- **Error Recovery** - Graceful handling of invalid configurations with helpful feedback
+
+### 6. Custom Commands System
 14 standardized commands for project management:
 - **Project Health**: `hygiene`, `maintainability`  
 - **Task Management**: `todo`, `next`, `defer`
@@ -55,9 +64,17 @@ Custom commands in `.claude/commands/` provide consistent interaction patterns b
 ## Data Flow
 
 ```
-User Input (4 questions)
+CLI Entry Point (bin/cli.js)
     ↓
-Configuration Object
+CLI Main (argument parsing & routing)
+    ↓
+Interactive Setup (user prompts & validation)
+    ↓
+Smart Language Detection
+    ↓
+Configuration Validation & Sanitization
+    ↓
+Setup Orchestration
     ↓
 Language-Specific Setup
     ↓
@@ -139,7 +156,16 @@ Templates use `{{VARIABLE}}` substitution:
 
 ```
 claude-project-setup/
-├── bin/cli.js              # Main CLI entry point
+├── bin/cli.js              # CLI entry point (delegates to lib/cli/main.js)
+├── lib/                    # Core application modules
+│   ├── cli/                # CLI-specific modules
+│   │   ├── main.js         # CLI orchestration and argument parsing
+│   │   ├── interactive.js  # Interactive setup with validation
+│   │   ├── setup.js        # Setup orchestration and file generation
+│   │   └── utils.js        # CLI utility functions
+│   ├── language-detector.js # Smart language detection
+│   ├── recovery-system.js  # Codebase recovery logic
+│   └── ...                 # Other core modules
 ├── docs/                   # System documentation
 │   ├── ARCHITECTURE.md     # This file
 │   └── SETUP_GUIDE.md      # User setup instructions
@@ -148,6 +174,9 @@ claude-project-setup/
 │   ├── ACTIVE_WORK.md      # Session management template
 │   └── (Commands documented in README.md)
 ├── __tests__/              # Test suite
+│   ├── cli-main.test.js    # CLI main module tests
+│   ├── cli-interactive.test.js # Interactive setup tests
+│   └── ...                 # Other test files
 └── README.md               # Public documentation
 ```
 
