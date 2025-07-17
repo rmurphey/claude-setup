@@ -14,9 +14,9 @@ describe('Template Functions', () => {
     
     const result = generateClaudeTemplate(config);
     
-    assert(result.includes('Quality Level: strict'));
-    assert(result.includes('Team Size: team'));
-    assert(result.includes('0 warnings threshold'));
+    assert(result.includes('**Quality Level**: strict'));
+    assert(result.includes('**Team Size**: team'));
+    assert(result.includes('Warning Threshold**: 0'));
   });
 
   test('generateGitignore should handle JavaScript projects', () => {

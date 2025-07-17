@@ -87,8 +87,8 @@ describe('NPX Behavior Tests', () => {
     for (const config of configs) {
       // Test CLAUDE.md generation
       const claudeContent = generateClaudeTemplate(config);
-      assert(claudeContent.includes(`Quality Level: ${config.qualityLevel}`));
-      assert(claudeContent.includes(`Team Size: ${config.teamSize}`));
+      assert(claudeContent.includes(`**Quality Level**: ${config.qualityLevel}`));
+      assert(claudeContent.includes(`**Team Size**: ${config.teamSize}`));
       
       // Test ACTIVE_WORK.md generation
       const activeWorkContent = generateActiveWorkTemplate(config);
