@@ -2,40 +2,57 @@
 
 ## Overview
 
-The code quality hook will be implemented as a Kiro agent hook that triggers on file save events for JavaScript/TypeScript files. It will perform real-time code quality validation focusing on formatting consistency, ES module syntax correctness, and common export/import mistakes. The hook will integrate with existing project tooling while providing fast, actionable feedback to developers.
+The code quality hook will be implemented as a git pre-commit hook that validates JavaScript/TypeScript files before they are committed. This approach is vendor-agnostic and works across all development environments. The hook will perform code quality validation focusing on formatting consistency, ES module syntax correctness, and common export/import mistakes, providing fast feedback during the commit process.
 
 ## Architecture
 
 ### Hook Trigger System
-- **Event**: File save operations on `.js`, `.ts`, `.jsx`, `.tsx` files
-- **Execution Mode**: Asynchronous to avoid blocking save operations
-- **Scope**: Modified files only (delta-based validation)
-- **Timeout**: 2-second maximum execution time with graceful degradation
+- **Event**: Git pre-commit operations on staged `.js`, `.ts`, `.jsx`, `.tsx` files
+- **Execution Mode**: Synchronous validation before commit completion
+- **Scope**: Staged files only (git diff --cached --name-only)
+- **Timeout**: 5-second maximum execution time with option to bypass
+- **Fallback**: Allow commit with warnings if validation fails
 
 ### Validation Pipeline
 ```
-File Save Event → File Filter → Quality Level Check → Validation Rules → Report Generation → User Feedback
+Git Commit → Pre-commit Hook → Get Staged Files → Quality Level Check → Validation Rules → Report Generation → Commit Decision
 ```
 
 ### Integration Points
 - **ESLint Integration**: Respect existing `.eslintrc` configurations
-- **Project Configuration**: Read quality level from `.kiro/settings/hooks.json`
+- **Project Configuration**: Read quality level from `package.json` or `.git-quality-config.json`
 - **Output Format**: ESLint-compatible error/warning format for consistency
+- **Git Integration**: Use git plumbing commands to access staged file content
 
 ## Components and Interfaces
 
 ### Core Components
 
-#### 1. Hook Registration (`code-quality-hook.js`)
+#### 1. Pre-commit Hook Script (`.git/hooks/pre-commit`)
+```bash
+#!/bin/sh
+# Git pre-commit hook for code quality validation
+node .git/hooks/code-quality-validator.js
+exit $?
+```
+
+#### 2. Main Validator (`code-quality-validator.js`)
 ```javascript
-export class CodeQualityHook {
+export class CodeQualityValidator {
   constructor(config) {
     this.qualityLevel = config.qualityLevel || 'standard';
     this.validators = new ValidatorRegistry();
   }
   
-  async onFileSave(filePath, content) {
-    // Main hook entry point
+  async validateStagedFiles() {
+    // Main validation entry point for git hook
+    const stagedFiles = await this.getStagedJSFiles();
+    const results = await this.validateFiles(stagedFiles);
+    return this.handleResults(results);
+  }
+  
+  async getStagedJSFiles() {
+    // Use git diff --cached --name-only to get staged files
   }
 }
 ```
@@ -173,15 +190,81 @@ export class ReportGenerator {
 ## Error Handling
 
 ### Validation Failures
-- **Timeout Handling**: Graceful degradation after 2-second timeout
-- **Parser Errors**: Catch and report syntax errors without blocking
+- **Timeout Handling**: Graceful degradation after 5-second timeout with option to bypass
+- **Parser Errors**: Catch and report syntax errors, allow commit with warnings
 - **Rule Failures**: Individual rule failures don't stop other validations
 - **Configuration Errors**: Fall back to default settings if config is invalid
+- **Git Integration Errors**: Fallback to basic file reading if git commands fail
 
 ### User Experience
-- **Non-blocking**: Never prevent file saves, only provide feedback
-- **Progressive Enhancement**: Work with or without existing tooling
-- **Graceful Degradation**: Reduce functionality rather than fail completely
+- **Commit Control**: Block commits only for critical errors, warn for others
+- **Bypass Option**: Allow `git commit --no-verify` to skip validation
+- **Progressive Enhancement**: Work with or without existing ESLint/Prettier
+- **Clear Feedback**: Provide actionable error messages with line numbers
+
+### AI Agent Protocol
+When the pre-commit hook fails, any AI agent (Claude, GPT, etc.) should follow this standardized response protocol:
+
+#### Hook Failure Response Format
+```json
+{
+  "hookType": "pre-commit",
+  "status": "failed",
+  "exitCode": 1,
+  "violations": [
+    {
+      "file": "src/example.js",
+      "line": 15,
+      "column": 23,
+      "severity": "error",
+      "rule": "missing-semicolon",
+      "message": "Missing semicolon after function declaration",
+      "suggestedFix": "Add semicolon at end of line 15"
+    }
+  ],
+  "summary": {
+    "totalFiles": 3,
+    "filesWithErrors": 1,
+    "totalViolations": 1,
+    "criticalErrors": 1,
+    "warnings": 0
+  }
+}
+```
+
+#### Required AI Agent Actions
+1. **Parse Hook Output**: Extract structured violation data from hook output
+2. **Categorize Issues**: Distinguish between blocking errors and warnings
+3. **Provide Fixes**: Offer specific code corrections for each violation
+4. **Explain Context**: Help user understand why each rule exists
+5. **Suggest Workflow**: Guide user on next steps (fix vs bypass)
+
+#### AI Agent Response Template
+```
+🚫 Pre-commit hook failed with [X] violations in [Y] files.
+
+**Critical Issues (blocking commit):**
+- [file:line] [rule]: [description]
+  Fix: [specific correction]
+
+**Warnings (commit allowed):**
+- [file:line] [rule]: [description]
+  Suggestion: [improvement]
+
+**Next Steps:**
+1. Apply suggested fixes above
+2. Run `git add` for fixed files
+3. Retry commit, or use `git commit --no-verify` to bypass
+
+**Why these rules matter:**
+[Brief explanation of rule importance]
+```
+
+#### Integration Requirements
+- **Exit Code Handling**: AI agents must check hook exit codes (0=success, 1=failure)
+- **Output Parsing**: Parse both JSON and human-readable hook output formats
+- **Context Preservation**: Maintain conversation context about previous violations
+- **Learning Integration**: Use hook failures as learning opportunities for code quality
 
 ## Testing Strategy
 
