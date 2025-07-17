@@ -30,6 +30,15 @@ Examples of honest responses:
 - Zero errors policy
 - {{WARNING_THRESHOLD}} warnings threshold
 
+## Testing Standards
+**CRITICAL: Any error during test execution = test failure**
+
+- **Zero tolerance for test errors** - stderr output, command failures, warnings all mark tests as failed
+- **Integration tests required** for CLI functionality, NPX execution, file operations
+- **Unit tests for speed** - development feedback (<1s)
+- **Integration tests for confidence** - real-world validation (<30s)
+- **Performance budgets** - enforce time limits to prevent hanging tests
+
 ## Commands
 - `/hygiene` - Project health check
 - `/todo` - Task management

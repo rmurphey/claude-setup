@@ -87,6 +87,16 @@ After setup completion:
 - Documentation: All setup steps documented
 - Error handling: Graceful failures, clear error messages
 
+## Testing Standards
+**CRITICAL: Any error during test execution = test failure**
+
+- **Zero tolerance for test errors** - stderr output, command failures, warnings all mark tests as failed
+- **Integration tests required** for CLI functionality, NPX execution, file operations
+- **Unit tests for speed** - development feedback (<1s)
+- **Integration tests for confidence** - real-world validation (<30s)
+- **Cross-platform validation** - Windows, macOS, Linux compatibility
+- **Performance budgets** - unit tests <1s, integration tests <30s, E2E <2min
+
 ## Key Insights
 - **Empty Repository Support**: Critical for new projects starting from scratch
 - **Interactive Questions**: 4 questions determine entire setup (type, quality, team, CI/CD)
@@ -102,3 +112,4 @@ After setup completion:
 - Tests must always be run from the root directory.
 - NEVER change directories if you can achieve the same goal without changing directories.
 - ALWAYS create necessary directories for tests as part of the tests, if they don't exist; ALWAYS add these directories to gitignore, and clean them up before every test run.
+- Any errors during a test MUST mark the test as failed. This must be documented in .claude/CLAUDE.md and .templates/CLAUDE.md
