@@ -49,13 +49,15 @@ Ask user these 4 questions:
 # Initialize if needed
 npm init -y
 
-# Install quality tools
-npm install --save-dev eslint prettier jest
+# Install quality tools with pre-commit hooks
+npm install --save-dev eslint prettier jest husky lint-staged
+npm install --save-dev eslint-plugin-import eslint-plugin-node
 
 # Configuration files
-.eslintrc.js
+eslint.config.js (flat config with quality levels)
 .prettierrc
 jest.config.js
+.git/hooks/pre-commit (enhanced with lint-staged)
 ```
 
 #### Python
@@ -101,22 +103,26 @@ checkstyle.xml
 ### 4. Quality Infrastructure
 
 #### Always Install:
-- Language-appropriate linter
-- Code formatter
+- **ESLint-based Pre-commit Hooks** - Configurable quality levels with lint-staged
+- Language-appropriate linter with import/export validation
+- Code formatter with auto-fix capabilities
 - Testing framework
-- Pre-commit hooks
+- Quality level management system
 - Basic scripts (lint, test, format)
 
 #### Standard/Strict Adds:
+- **Enhanced ESLint Rules** - Import ordering, semicolon enforcement, quote consistency
+- **Husky Integration** - Automated git hook management
 - Documentation templates
 - Custom Claude commands
-- Quality thresholds
+- Quality thresholds with dynamic switching
 - Automated monitoring
 
 #### Team Adds:
 - GitHub Actions workflows
 - Code review templates
 - Collaboration guidelines
+- Shared ESLint configurations
 
 ### 5. Documentation System
 
@@ -225,13 +231,15 @@ jobs:
 ```
 project-name/
 ├── package.json
-├── .eslintrc.js
+├── eslint.config.js (flat config with quality levels)
 ├── .prettierrc
 ├── jest.config.js
 ├── .gitignore
 ├── README.md
 ├── CLAUDE.md
 ├── ACTIVE_WORK.md
+├── .git/hooks/pre-commit (enhanced with lint-staged)
+├── .git-quality-config.json (quality level settings)
 ├── src/
 │   └── index.js
 ├── tests/

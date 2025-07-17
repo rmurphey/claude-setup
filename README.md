@@ -181,18 +181,24 @@ npx github:rmurphey/claude-setup
 - 70% test coverage target
 - All commits must pass quality gates
 - Maximum automation and enforcement
+- **ESLint**: Enforces all formatting rules without exceptions, auto-fix enabled
+- **Pre-commit**: Strict import/export validation, mandatory semicolons and quotes
 
 ### Standard
 - **<10 warnings** (Green), 10-25 (Yellow), 25+ (Red)
 - 50% test coverage minimum
 - Errors block commits, warnings allowed
 - Balanced approach for most teams
+- **ESLint**: Balanced rules with minor formatting flexibility
+- **Pre-commit**: Import/export validation with reasonable formatting requirements
 
 ### Relaxed
 - **<50 warnings** acceptable
 - 30% test coverage minimum
 - Only errors block commits
 - Suitable for rapid prototyping
+- **ESLint**: Focus on critical issues only, flexible formatting
+- **Pre-commit**: Essential syntax validation, warnings allowed
 
 ## Language Support
 

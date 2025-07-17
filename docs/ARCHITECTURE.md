@@ -39,8 +39,10 @@ Custom commands in `.claude/commands/` provide consistent interaction patterns b
 - **Java** - Gradle/Maven instructions, Checkstyle
 
 ### 4. Quality Infrastructure
-- Pre-commit hooks
-- Linting and formatting rules
+- **ESLint-based Pre-commit Hooks** - Configurable quality levels with lint-staged integration
+- **Quality Level Management** - Strict/Standard/Relaxed configurations with dynamic switching
+- **Import/Export Validation** - Custom ESLint rules for ES module syntax checking
+- **Auto-fix Integration** - Automatic code formatting on commit with fallback handling
 - Test framework configuration
 - Coverage reporting
 - CI/CD workflow generation
@@ -96,18 +98,83 @@ Success Feedback
 - 70% test coverage minimum
 - All commits blocked on quality failures
 - Maximum automation
+- **ESLint Config**: `lib/eslint-configs/strict.js` - All formatting rules enforced
+- **Pre-commit**: Auto-fix enabled, no-default-export rule, strict import ordering
 
 ### Standard (Balanced)
 - <10 warnings (Green), 10-25 (Yellow), 25+ (Red)
 - 50% test coverage minimum
 - Errors block commits, warnings allowed
 - Practical for most teams
+- **ESLint Config**: `lib/eslint-configs/base.js` - Balanced rule set
+- **Pre-commit**: Import/export validation, reasonable formatting requirements
 
 ### Relaxed (Flexible)
 - <50 warnings acceptable
 - 30% test coverage minimum
 - Only errors block commits
 - Suitable for rapid prototyping
+- **ESLint Config**: `lib/eslint-configs/relaxed.js` - Critical issues only
+- **Pre-commit**: Essential syntax validation, warnings allowed
+
+## ESLint-based Pre-commit Hook System
+
+### Architecture Components
+
+**QualityLevelManager** (`lib/quality-levels.js`)
+- Dynamic quality level switching
+- Configuration persistence in `.git-quality-config.json`
+- Automatic ESLint config generation based on selected level
+
+**ESLint Configurations** (`lib/eslint-configs/`)
+- **base.js**: Standard configuration with import/export validation
+- **strict.js**: Maximum enforcement with auto-fix and formatting rules
+- **relaxed.js**: Minimal rules focusing on critical syntax errors
+
+**Pre-commit Integration**
+- Enhanced existing `.git/hooks/pre-commit` to use lint-staged
+- Fallback to basic linting if lint-staged unavailable
+- Cross-platform timeout handling for test execution
+
+**Lint-staged Configuration**
+- Processes only staged files for performance
+- Automatic ESLint --fix application
+- Integration with existing git workflow
+
+### Custom ESLint Rules
+
+**Import/Export Validation**
+- ES module syntax enforcement (`import/no-commonjs`, `import/no-amd`)
+- Circular dependency detection (`import/no-cycle`)
+- Import ordering and grouping (`import/order`)
+- Unused import detection with auto-removal
+
+**Code Quality Rules**
+- Consistent semicolon usage
+- Single quote enforcement
+- Proper indentation and spacing
+- Variable naming conventions
+
+### Quality Level Switching
+
+Users can dynamically change quality levels using the `QualitySetup` class:
+```javascript
+import { QualitySetup } from './lib/cli/quality-setup.js';
+const setup = new QualitySetup();
+await setup.configure(); // Interactive quality level selection
+```
+
+### Integration Points
+
+**Husky Integration**
+- Automatic husky initialization
+- Pre-commit hook enhancement (not replacement)
+- Maintains existing hook functionality
+
+**Package.json Scripts**
+- `lint-staged` configuration for staged file processing
+- Enhanced lint scripts for changed files only
+- Prepare script for husky setup
 
 ## Template System
 
@@ -162,7 +229,13 @@ claude-project-setup/
 │   │   ├── main.js         # CLI orchestration and argument parsing
 │   │   ├── interactive.js  # Interactive setup with validation
 │   │   ├── setup.js        # Setup orchestration and file generation
+│   │   ├── quality-setup.js # Quality level configuration interface
 │   │   └── utils.js        # CLI utility functions
+│   ├── eslint-configs/     # ESLint configuration modules
+│   │   ├── base.js         # Standard quality level configuration
+│   │   ├── strict.js       # Strict quality level configuration
+│   │   └── relaxed.js      # Relaxed quality level configuration
+│   ├── quality-levels.js   # Quality level management system
 │   ├── language-detector.js # Smart language detection
 │   ├── recovery-system.js  # Codebase recovery logic
 │   └── ...                 # Other core modules
@@ -176,7 +249,10 @@ claude-project-setup/
 ├── __tests__/              # Test suite
 │   ├── cli-main.test.js    # CLI main module tests
 │   ├── cli-interactive.test.js # Interactive setup tests
+│   ├── code-quality-hook.test.js # ESLint pre-commit hook tests
 │   └── ...                 # Other test files
+├── .git/hooks/pre-commit   # Enhanced pre-commit hook with lint-staged
+├── eslint.config.js        # Main ESLint configuration (uses quality levels)
 └── README.md               # Public documentation
 ```
 
