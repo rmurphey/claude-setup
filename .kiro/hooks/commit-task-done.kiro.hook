@@ -1,7 +1,7 @@
 {
   "enabled": true,
-  "name": "Auto Commit on Task Completion",
-  "description": "When a task is marked completed, update relevant docs and commit the changes.",
+  "name": "Auto Commit on Task Completion and update Documentation",
+  "description": "When a task is marked completed, update relevant docs, run pre-commit hooks, fix any issues, and commit the changes.",
   "version": "1",
   "when": {
     "type": "fileEdited",

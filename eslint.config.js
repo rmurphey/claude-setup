@@ -1,30 +1,7 @@
-import js from '@eslint/js';
+import baseConfig from './lib/eslint-configs/base.js';
 
 export default [
-  js.configs.recommended,
-  {
-    languageOptions: {
-      ecmaVersion: 'latest',
-      sourceType: 'module',
-      globals: {
-        console: 'readonly',
-        process: 'readonly',
-        Buffer: 'readonly',
-        __dirname: 'readonly',
-        __filename: 'readonly',
-        global: 'readonly',
-        module: 'readonly',
-        require: 'readonly',
-        exports: 'readonly'
-      }
-    },
-    rules: {
-      'no-unused-vars': ['error', { 'argsIgnorePattern': '^_' }],
-      'no-console': 'off',
-      'semi': ['error', 'always'],
-      'quotes': ['error', 'single']
-    }
-  },
+  ...baseConfig,
   {
     files: ['**/*.test.js', '**/*.spec.js'],
     languageOptions: {
