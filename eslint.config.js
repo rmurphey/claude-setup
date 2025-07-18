@@ -38,6 +38,9 @@ export default [
       'no-unused-vars': 'off',
       '@typescript-eslint/no-unused-vars': ['error', { 'argsIgnorePattern': '^_' }],
       
+      // Disable import/no-unresolved for TypeScript files since TypeScript handles this
+      'import/no-unresolved': 'off',
+      
       // TypeScript rules that don't require type information
       '@typescript-eslint/no-explicit-any': 'error',
       '@typescript-eslint/explicit-function-return-type': 'warn',
