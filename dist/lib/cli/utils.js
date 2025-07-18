@@ -1,5 +1,6 @@
 import chalk from 'chalk';
 import fs from 'fs-extra';
+// eslint-disable-next-line import/no-unresolved
 import { LanguageDetector } from '../language-detector.js';
 /**
  * CLI utilities - shared functions for CLI operations

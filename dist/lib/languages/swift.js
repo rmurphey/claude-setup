@@ -1,7 +1,7 @@
-import fs from 'fs-extra';
 import path from 'path';
+import fs from 'fs-extra';
 import chalk from 'chalk';
-async function setup(config, detection) {
+async function setup(_config, detection) {
     // Create SwiftLint configuration
     await createSwiftLintConfig();
     // Check if Package.swift exists, create if not
@@ -80,7 +80,7 @@ final class ${path.basename(process.cwd()).replace(/[^a-zA-Z0-9]/g, '')}Tests: X
 }
 async function createSwiftLintConfig() {
     try {
-        const templatePath = path.join(__dirname, '..', '..', 'templates', '.swiftlint.yml');
+        const templatePath = path.join(__dirname, '..', '..', '..', 'templates', '.swiftlint.yml');
         const targetPath = '.swiftlint.yml';
         if (await fs.pathExists(templatePath)) {
             await fs.copy(templatePath, targetPath);
@@ -139,15 +139,16 @@ nesting:
             console.log(chalk.gray('   Created basic .swiftlint.yml'));
         }
     }
-    catch (error) {
+    catch {
         console.log(chalk.yellow('   Warning: Could not create SwiftLint config'));
     }
 }
-export default {
+const swiftHandler = {
     name: 'Swift',
     installCommand: 'swift package resolve',
     lintCommand: 'swiftlint',
     testCommand: 'swift test',
     setup
 };
+export default swiftHandler;
 //# sourceMappingURL=swift.js.map

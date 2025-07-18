@@ -1,7 +1,7 @@
-import fs from 'fs-extra';
 import path from 'path';
+import fs from 'fs-extra';
 import chalk from 'chalk';
-async function setup(config, detection) {
+async function setup(_config, detection) {
     // Create modern ESLint configuration
     await createEslintConfig();
     // Check if package.json exists, create if not
@@ -43,14 +43,14 @@ async function setup(config, detection) {
             }
             console.log(chalk.yellow('   💡 Recommended dev dependencies: eslint prettier jest'));
         }
-        catch (error) {
+        catch {
             console.log(chalk.yellow('   Run: npm install --save-dev eslint prettier jest'));
         }
     }
 }
 async function createEslintConfig() {
     try {
-        const templatePath = path.join(__dirname, '..', '..', 'templates', 'eslint.config.js');
+        const templatePath = path.join(__dirname, '..', '..', '..', 'templates', 'eslint.config.js');
         const targetPath = 'eslint.config.js';
         if (await fs.pathExists(templatePath)) {
             await fs.copy(templatePath, targetPath);
@@ -60,15 +60,16 @@ async function createEslintConfig() {
             console.log(chalk.yellow('   Warning: Could not find ESLint template'));
         }
     }
-    catch (error) {
+    catch {
         console.log(chalk.yellow('   Warning: Could not create ESLint config'));
     }
 }
-export default {
+const javascriptHandler = {
     name: 'JavaScript/TypeScript',
     installCommand: 'npm install',
     lintCommand: 'npm run lint',
     testCommand: 'npm test',
     setup
 };
+export default javascriptHandler;
 //# sourceMappingURL=javascript.js.map

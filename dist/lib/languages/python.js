@@ -1,6 +1,6 @@
 import fs from 'fs-extra';
 import chalk from 'chalk';
-async function setup(config, detection) {
+async function setup(_config, detection) {
     if (!detection.existingFiles.pyprojectToml) {
         const pyprojectToml = `[tool.ruff]
 line-length = 88
@@ -23,11 +23,12 @@ python_files = ["test_*.py"]
         console.log(chalk.yellow('   💡 Recommended dependencies: ruff pytest'));
     }
 }
-export default {
+const pythonHandler = {
     name: 'Python',
     installCommand: 'pip install -e .',
     lintCommand: 'ruff check',
     testCommand: 'pytest',
     setup
 };
+export default pythonHandler;
 //# sourceMappingURL=python.js.map

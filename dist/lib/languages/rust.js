@@ -1,5 +1,5 @@
 import chalk from 'chalk';
-async function setup(config, detection) {
+async function setup(_config, detection) {
     if (!detection.existingFiles.cargoToml) {
         console.log(chalk.yellow('   Run: cargo init .'));
     }
@@ -8,11 +8,12 @@ async function setup(config, detection) {
     }
     console.log(chalk.yellow('   💡 Clippy linting is included with Rust toolchain'));
 }
-export default {
+const rustHandler = {
     name: 'Rust',
     installCommand: 'cargo build',
     lintCommand: 'cargo clippy',
     testCommand: 'cargo test',
     setup
 };
+export default rustHandler;
 //# sourceMappingURL=rust.js.map

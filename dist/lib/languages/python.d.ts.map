@@ -1,1 +1,1 @@
-{"version":3,"file":"python.d.ts","sourceRoot":"","sources":["../../../lib/languages/python.js"],"names":[],"mappings":";;;;;;;;AAGA,mEAsBC"}
+{"version":3,"file":"python.d.ts","sourceRoot":"","sources":["../../../src/lib/languages/python.ts"],"names":[],"mappings":"AAGA,OAAO,KAAK,EAAE,eAAe,EAAqC,MAAM,iCAAiC,CAAC;AA0B1G,QAAA,MAAM,aAAa,EAAE,eAMpB,CAAC;AAEF,eAAe,aAAa,CAAC"}

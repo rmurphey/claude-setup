@@ -1,1 +1,1 @@
-{"version":3,"file":"java.d.ts","sourceRoot":"","sources":["../../../lib/languages/java.js"],"names":[],"mappings":";;;;;;;;AAEA,mEAWC"}
+{"version":3,"file":"java.d.ts","sourceRoot":"","sources":["../../../src/lib/languages/java.ts"],"names":[],"mappings":"AAEA,OAAO,KAAK,EAAE,eAAe,EAAqC,MAAM,iCAAiC,CAAC;AAe1G,QAAA,MAAM,WAAW,EAAE,eAMlB,CAAC;AAEF,eAAe,WAAW,CAAC"}
