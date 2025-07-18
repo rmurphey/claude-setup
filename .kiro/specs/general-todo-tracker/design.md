@@ -2,7 +2,7 @@
 
 ## Overview
 
-The General TODO Tracker is a continuously updated system that monitors all project files, extracts actionable items from multiple sources, and maintains a centralized TODO list. The system operates as both a CLI tool and an automated background process that integrates with existing workflows to provide real-time visibility into all pending work across the project.
+The General TODO Tracker is a vendor-agnostic, continuously updated system that monitors all project files, extracts actionable items from multiple sources, and maintains a centralized TODO list. The system operates as both a CLI tool and an automated background process that integrates with any development workflow, regardless of the AI assistant, issue tracker, or development tools being used. It provides real-time visibility into all pending work across the project without requiring specific vendor integrations.
 
 ## Architecture
 
@@ -138,11 +138,14 @@ class ReportGenerator {
   outputFormats: string[],
   updateInterval: number,
   integrations: {
-    git: boolean,
-    eslint: boolean,
-    tests: boolean
+    versionControl: 'auto' | 'git' | 'svn' | 'hg' | 'none',
+    linting: 'auto' | 'eslint' | 'pylint' | 'rubocop' | 'none',
+    testing: 'auto' | 'jest' | 'pytest' | 'go-test' | 'none',
+    issueTracking: 'none' | 'github' | 'gitlab' | 'jira' | 'linear'
   },
-  customParsers: object[]
+  customParsers: object[],
+  aiAgnosticOutput: boolean, // Generate standard formats readable by any AI
+  standardFormats: ['markdown', 'json', 'csv', 'plain-text']
 }
 ```
 

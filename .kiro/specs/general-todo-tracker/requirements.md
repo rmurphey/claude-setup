@@ -45,17 +45,17 @@ A general TODO tracking system that maintains a continuously updated list of tas
 
 ### Requirement 4
 
-**User Story:** As a developer, I want the TODO list to integrate with existing project workflows, so that it stays current without manual maintenance.
+**User Story:** As a developer, I want the TODO list to integrate with any project workflow tool-agnostically, so that it works regardless of my chosen development tools.
 
 #### Acceptance Criteria
 
-1. WHEN git hooks are triggered THEN the system SHALL update the TODO list automatically
-2. WHEN the CLI is run with specific flags THEN it SHALL generate an updated TODO report
-3. WHEN the TODO list is updated THEN it SHALL preserve manual additions and notes
-4. WHEN integration with existing specs THEN it SHALL reference related spec tasks with deep links
-5. WHEN the system runs THEN it SHALL update timestamps and track completion status
+1. WHEN using any version control system THEN the system SHALL detect and integrate with it (Git, SVN, Mercurial)
+2. WHEN using any linting tool THEN the system SHALL parse its output format (ESLint, Pylint, RuboCop, etc.)
+3. WHEN using any test framework THEN the system SHALL extract failure information (Jest, pytest, Go test, etc.)
+4. WHEN using any issue tracker THEN the system SHALL optionally integrate via plugins (GitHub, GitLab, Jira, Linear)
+5. WHEN the system runs THEN it SHALL work without requiring specific vendor tools to be installed
 
-### Requirement 4
+### Requirement 5
 
 **User Story:** As a developer, I want to manually add, edit, and complete TODO items, so that I can track custom work items alongside automated ones.
 
@@ -67,7 +67,7 @@ A general TODO tracking system that maintains a continuously updated list of tas
 4. WHEN I assign an item to a category THEN the system SHALL respect that categorization
 5. WHEN I set a due date or priority THEN the system SHALL use those values in sorting and display
 
-### Requirement 5
+### Requirement 6
 
 **User Story:** As a developer, I want the TODO system to provide actionable reports and summaries, so that I can make informed decisions about development priorities.
 
