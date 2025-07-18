@@ -4,6 +4,25 @@ inclusion: always
 
 # Development Guidelines
 
+## CIRCUIT BREAKER RULE - MANDATORY VALIDATION
+**If you ever claim something works, is fixed, or is completed:**
+**STOP. Run a test. Show the results. Only then continue.**
+**No exceptions. No assumptions. No descriptions without validation.**
+
+### MANDATORY VALIDATION CHECKLIST
+Before claiming anything is "working" or "completed":
+- [ ] Run tests and show exit code (0 = success, non-zero = failure)
+- [ ] Demonstrate actual functionality with real output
+- [ ] Never say "fixed" without proof via testing
+- [ ] Never describe code behavior without executing it
+- [ ] Show test results, not just file contents or assumptions
+
+### VALIDATION-FIRST PRINCIPLES
+- **ALWAYS test before claiming success** - exit codes and actual output matter more than file contents
+- **ALWAYS show test results, not just descriptions** - demonstrate functionality, don't assume it
+- **If you can't test it, say "I need to test this"** instead of making assumptions
+- **Proof over inference** - actual results trump logical deduction about code
+
 ## Code Quality Standards
 - All code changes must be tested using Node.js built-in test runner (`npm test`)
 - Follow ES modules syntax with `"type": "module"` in package.json
