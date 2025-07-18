@@ -64,8 +64,8 @@ export function test() { console.log("bad") }`;
       // Verify fixes were applied
       const { readFileSync } = await import('fs');
       const fixedCode = readFileSync(testFile, 'utf8');
-      assert.ok(fixedCode.includes("import fs from 'fs';"));
-      assert.ok(fixedCode.includes("console.log('bad');"));
+      assert.ok(fixedCode.includes('import fs from \'fs\';'));
+      assert.ok(fixedCode.includes('console.log(\'bad\');'));
     } finally {
       if (existsSync(testFile)) {
         unlinkSync(testFile);

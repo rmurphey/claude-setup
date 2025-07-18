@@ -1,5 +1,6 @@
 import { describe, it, beforeEach } from 'node:test';
 import assert from 'node:assert';
+
 import { SetupOrchestrator } from '../lib/cli/setup.js';
 
 describe('SetupOrchestrator', () => {

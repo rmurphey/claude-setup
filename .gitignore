@@ -4,6 +4,10 @@ coverage/
 *.log
 .DS_Store
 
+# TypeScript compilation output
+dist/
+*.tsbuildinfo
+
 # Test directories (temporary)
 test-*/
 *-temp/

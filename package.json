@@ -8,13 +8,14 @@
     "claude-setup": "./bin/cli.js"
   },
   "scripts": {
-    "build": "if [ -d \"src\" ]; then tsc; else echo \"No TypeScript source files yet - skipping build\"; fi",
+    "build": "if [ -d \"src\" ] && [ \"$(ls -A src 2>/dev/null)\" ]; then tsc; else echo \"No TypeScript source files yet - skipping build\"; fi",
     "build:watch": "tsc --watch",
     "build:clean": "rm -rf dist && npm run build",
-    "type-check": "if [ -d \"src\" ]; then tsc --noEmit; else echo \"No TypeScript source files yet - skipping type check\"; fi",
+    "type-check": "if [ -d \"src\" ] && [ \"$(ls -A src 2>/dev/null)\" ]; then tsc --noEmit; else echo \"No TypeScript source files yet - skipping type check\"; fi",
+    "pretest": "npm run build",
     "test": "NODE_ENV=test node --test __tests__/**/*.js",
     "test:watch": "NODE_ENV=test node --test --watch __tests__/**/*.js",
-    "test:coverage": "NODE_ENV=test c8 node --test __tests__/**/*.js",
+    "test:coverage": "npm run build && NODE_ENV=test c8 node --test __tests__/**/*.js",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "lint:changed": "eslint $(git diff --name-only --diff-filter=ACMR HEAD | grep '\\.(js|ts)$' | xargs)",

@@ -1,8 +1,9 @@
 import { describe, test, before, after } from 'node:test';
 import assert from 'node:assert';
-import fs from 'fs-extra';
 import path from 'path';
 import { execSync } from 'child_process';
+
+import fs from 'fs-extra';
 
 describe('Integration Tests - Critical CLI Functionality', () => {
   const testDir = path.join(process.cwd(), 'test-integration');

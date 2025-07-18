@@ -1,5 +1,6 @@
 import { describe, it, beforeEach, afterEach } from 'node:test';
 import assert from 'node:assert';
+
 import { CLIMain } from '../lib/cli/main.js';
 
 describe('CLIMain', () => {

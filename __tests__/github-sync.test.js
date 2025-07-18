@@ -1,7 +1,9 @@
 import { describe, test } from 'node:test';
 import assert from 'node:assert';
-import fs from 'fs-extra';
 import path from 'path';
+
+import fs from 'fs-extra';
+
 import { GitHubSync } from '../lib/github-sync.js';
 
 describe('GitHub Sync', () => {

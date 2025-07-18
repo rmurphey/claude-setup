@@ -1,11 +1,24 @@
-import baseConfig from './lib/eslint-configs/base.js';
 import typescriptEslint from '@typescript-eslint/eslint-plugin';
 import typescriptParser from '@typescript-eslint/parser';
+
+import baseConfig from './lib/eslint-configs/base.js';
 
 export default [
   ...baseConfig,
   {
     ignores: ['dist/**', 'coverage/**', 'node_modules/**']
+  },
+  {
+    files: ['eslint.config.js'],
+    rules: {
+      'import/no-unresolved': 'off' // Allow TypeScript ESLint imports in config
+    }
+  },
+  {
+    files: ['templates/**/*.js', 'lib/cli/setup.js'],
+    rules: {
+      'import/exports-last': 'off'
+    }
   },
   {
     files: ['**/*.ts'],
@@ -24,10 +37,12 @@ export default [
       'no-unused-vars': 'off',
       '@typescript-eslint/no-unused-vars': ['error', { 'argsIgnorePattern': '^_' }],
       
-      // TypeScript-specific rules (without type information requirements)
+      // TypeScript rules that don't require type information
       '@typescript-eslint/no-explicit-any': 'error',
       '@typescript-eslint/explicit-function-return-type': 'warn',
-      '@typescript-eslint/no-inferrable-types': 'error'
+      '@typescript-eslint/no-inferrable-types': 'error',
+      '@typescript-eslint/prefer-optional-chain': 'error',
+      '@typescript-eslint/prefer-as-const': 'error'
     }
   },
   {
