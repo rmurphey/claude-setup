@@ -33,6 +33,14 @@ inclusion: always
 - **Use `git status --porcelain`** for programmatic status checks
 - **Use `git log --oneline -n 5`** for brief history without pager
 
+## Test Output Handling - CRITICAL RULES
+- **CONSUME test results via stdout/stderr and exit codes** - don't render full test output in responses
+- **Focus on exit code**: 0 = success, non-zero = failure
+- **Provide brief summaries**: "188 tests passed" or "3 tests failed"
+- **Show detailed output ONLY when tests fail** and investigation is needed
+- **NEVER display entire test runner output** with individual test results in responses
+- **Parse and interpret** test results rather than showing raw output
+
 ## Communication Standards
 - Focus on actionable solutions rather than error acknowledgments
 - Validate all changes through testing before completion
