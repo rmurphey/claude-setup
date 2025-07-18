@@ -280,7 +280,7 @@ The tool creates a **persistent memory system** that maintains project knowledge
 
 ### Custom Commands Suite
 
-20 specialized commands for structured development:
+21 specialized commands for structured development:
 
 **Core Workflow**
 - `/hygiene` - Project health check
