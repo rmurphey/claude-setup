@@ -77,6 +77,6 @@ export function test() { console.log("bad") }`;
     const { readFileSync } = await import('fs');
     const packageJson = JSON.parse(readFileSync('package.json', 'utf8'));
     assert.ok(packageJson['lint-staged']);
-    assert.ok(packageJson['lint-staged']['*.{js,mjs,cjs}']);
+    assert.ok(packageJson['lint-staged']['*.{js,mjs,cjs,ts}']);
   });
 });
