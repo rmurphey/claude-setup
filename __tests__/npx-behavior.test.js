@@ -126,9 +126,11 @@ describe('NPX Behavior Tests', () => {
     
     const sync = new GitHubSync('nonexistent-file.md');
     
-    // Should not throw, should return false
+    // Should not throw, should return Result object with error
     const result = await sync.syncIssues();
-    assert.strictEqual(result, false);
+    assert.strictEqual(result.success, false);
+    assert(result.error);
+    assert.strictEqual(result.error.code, 'FILE_SYSTEM_ERROR');
   });
 
   test('File creation templates should be valid', async () => {

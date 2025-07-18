@@ -40,10 +40,10 @@ Quick capture of pending ideas:
     await setupTestFile();
     
     // Mock fetchGitHubIssues to return empty array
-    sync.fetchGitHubIssues = async () => [];
+    sync.fetchGitHubIssues = async () => ({ success: true, data: [] });
     
     const result = await sync.syncIssues();
-    assert(result);
+    assert(result.success);
     
     const content = await fs.readFile(testWorkFile, 'utf8');
     assert(content.includes('## GitHub Issues'));
@@ -58,7 +58,7 @@ Quick capture of pending ideas:
     await setupTestFile();
     
     // Mock fetchGitHubIssues to return sample issues
-    sync.fetchGitHubIssues = async () => [
+    sync.fetchGitHubIssues = async () => ({ success: true, data: [
       {
         number: 123,
         title: 'Fix authentication bug',
@@ -75,10 +75,10 @@ Quick capture of pending ideas:
         createdAt: '2025-01-02T00:00:00Z',
         url: 'https://github.com/test/repo/issues/124'
       }
-    ];
+    ]});
     
     const result = await sync.syncIssues();
-    assert(result);
+    assert(result.success);
     
     const content = await fs.readFile(testWorkFile, 'utf8');
     assert(content.includes('**#123**'));
@@ -109,7 +109,7 @@ Old content
     await fs.writeFile(testWorkFile, content);
     
     // Mock fetchGitHubIssues
-    sync.fetchGitHubIssues = async () => [
+    sync.fetchGitHubIssues = async () => ({ success: true, data: [
       {
         number: 999,
         title: 'New issue',
@@ -118,10 +118,10 @@ Old content
         createdAt: '2025-01-01T00:00:00Z',
         url: 'https://github.com/test/repo/issues/999'
       }
-    ];
+    ]});
     
     const result = await sync.syncIssues();
-    assert(result);
+    assert(result.success);
     
     const updatedContent = await fs.readFile(testWorkFile, 'utf8');
     assert(updatedContent.includes('**#999**'));
@@ -134,7 +134,9 @@ Old content
   test('should handle file not found gracefully', async () => {
     sync = new GitHubSync('nonexistent-file.md');
     const result = await sync.syncIssues();
-    assert.strictEqual(result, false);
+    assert.strictEqual(result.success, false);
+    assert(result.error);
+    assert.strictEqual(result.error.code, 'FILE_SYSTEM_ERROR');
   });
 
   test('should format issues without labels and assignees', async () => {

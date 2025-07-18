@@ -1,33 +1,31 @@
-/**
- * CLI command to manually sync GitHub issues
- */
-export function syncGitHubIssues(workFilePath: any): Promise<void>;
+import type { Result } from '../types/index.js';
+import { GitHubAPIError, FileSystemError } from '../types/errors.js';
 /**
  * GitHub Issues Integration for ACTIVE_WORK.md
  * Syncs open GitHub issues into active work tracking
  */
-export class GitHubSync {
-    constructor(workFilePath?: null);
-    workFilePath: any;
-    issueMarker: string;
-    issueStartMarker: string;
-    issueEndMarker: string;
+export declare class GitHubSync {
+    private readonly workFilePath;
+    private readonly issueMarker;
+    private readonly issueStartMarker;
+    private readonly issueEndMarker;
+    constructor(workFilePath?: string | null);
     /**
      * Detect ACTIVE_WORK.md path (internal/ or root)
      */
-    detectActiveWorkPath(): "internal/ACTIVE_WORK.md" | "ACTIVE_WORK.md";
+    private detectActiveWorkPath;
     /**
      * Fetch open GitHub issues using GitHub CLI
      */
-    fetchGitHubIssues(): Promise<any>;
+    private fetchGitHubIssues;
     /**
      * Format GitHub issue for ACTIVE_WORK.md
      */
-    formatIssue(issue: any): string;
+    private formatIssue;
     /**
      * Update ACTIVE_WORK.md with GitHub issues
      */
-    syncIssues(): Promise<boolean>;
+    syncIssues(): Promise<Result<boolean, GitHubAPIError | FileSystemError>>;
     /**
      * Check if GitHub CLI is available
      */
@@ -35,11 +33,15 @@ export class GitHubSync {
     /**
      * Create placeholder section when no issues exist
      */
-    createPlaceholderSection(): Promise<boolean>;
+    private createPlaceholderSection;
     /**
      * Auto-sync issues when ACTIVE_WORK.md is accessed
      */
-    autoSync(): Promise<boolean>;
+    autoSync(): Promise<Result<boolean, GitHubAPIError | FileSystemError>>;
 }
-export const gitHubSync: GitHubSync;
+/**
+ * CLI command to manually sync GitHub issues
+ */
+export declare function syncGitHubIssues(workFilePath?: string): Promise<void>;
+export declare const gitHubSync: GitHubSync;
 //# sourceMappingURL=github-sync.d.ts.map

@@ -1,49 +1,52 @@
+import type { GitHubIssue, GitHubListIssuesFilters, Result } from '../types/index.js';
+import { GitHubAPIError } from '../types/errors.js';
 /**
  * GitHub API wrapper for issue management
  * Used both internally by claude-setup and templated for user projects
  */
-export class GitHubAPI {
-    token: string;
-    repo: string;
+export declare class GitHubAPI {
+    private readonly token;
+    private readonly repo;
+    constructor();
     /**
      * Get GitHub token from environment or gh CLI
      */
-    getGitHubToken(): string;
+    private getGitHubToken;
     /**
      * Get current repository from git remote
      */
-    getCurrentRepo(): string;
+    private getCurrentRepo;
     /**
      * Fetch issue details from GitHub API
      */
-    fetchIssue(issueNumber: any, repoOverride?: null): Promise<unknown>;
+    fetchIssue(issueNumber: number, repoOverride?: string | null): Promise<Result<GitHubIssue, GitHubAPIError>>;
     /**
      * List issues with optional filters
      */
-    listIssues(filters?: {}, repoOverride?: null): Promise<unknown>;
+    listIssues(filters?: GitHubListIssuesFilters, repoOverride?: string | null): Promise<Result<GitHubIssue[], GitHubAPIError>>;
     /**
      * Generate branch name from issue
      */
-    generateBranchName(issue: any): string;
+    generateBranchName(issue: GitHubIssue): string;
     /**
      * Get current git username
      */
-    getCurrentUsername(): string;
+    private getCurrentUsername;
     /**
      * Determine issue type from labels
      */
-    getIssueType(issue: any): "test" | "ktlo" | "feat" | "docs" | "improvement" | "productivity";
+    private getIssueType;
     /**
      * Create and checkout branch for issue
      */
-    createIssueBranch(issue: any): Promise<string>;
+    createIssueBranch(issue: GitHubIssue): Promise<Result<string, GitHubAPIError>>;
     /**
      * Get default branch name
      */
-    getDefaultBranch(): string;
+    private getDefaultBranch;
     /**
      * Create issue context documentation
      */
-    createIssueContext(issue: any): Promise<string>;
+    createIssueContext(issue: GitHubIssue): Promise<Result<string, GitHubAPIError>>;
 }
 //# sourceMappingURL=github-api.d.ts.map
