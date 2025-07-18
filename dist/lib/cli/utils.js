@@ -67,12 +67,15 @@ export async function handleLanguageDetection(args) {
         }
         if (detection.source === 'config') {
             console.log(chalk.green(`✅ Using cached detection: ${detection.name}`));
-            console.log(chalk.gray(`   Detected: ${new Date(detector.config.language.detected).toLocaleString()}`));
+            const config = await detector.loadConfig();
+            if (config.language?.detected) {
+                console.log(chalk.gray(`   Detected: ${new Date(config.language.detected).toLocaleString()}`));
+            }
             console.log(chalk.gray('   Use --force to run fresh detection'));
         }
         else {
-            console.log(chalk.green(`✅ Detected: ${detection.name}`));
             if (detection.type === 'single') {
+                console.log(chalk.green(`✅ Detected: ${detection.name}`));
                 const evidence = detector.formatEvidence(detection.evidence);
                 console.log(chalk.gray(`   Evidence: ${evidence}`));
                 console.log(chalk.gray(`   Confidence: ${detection.confidence}`));
@@ -93,7 +96,8 @@ export async function handleLanguageDetection(args) {
         }
     }
     catch (error) {
-        console.error(chalk.red('❌ Language detection failed:'), error.message);
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        console.error(chalk.red('❌ Language detection failed:'), errorMessage);
         process.exit(1);
     }
 }
@@ -127,7 +131,8 @@ export async function handleConfigManagement(args) {
             }
         }
         catch (error) {
-            console.error(chalk.red('❌ Failed to reset config:'), error.message);
+            const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+            console.error(chalk.red('❌ Failed to reset config:'), errorMessage);
             process.exit(1);
         }
         return;
@@ -142,7 +147,7 @@ export async function handleConfigManagement(args) {
  * Handle GitHub issues sync command
  */
 export async function handleSyncIssues() {
-    const { syncGitHubIssues } = await import('../github-sync.js');
+    const { syncGitHubIssues } = await import('../../lib/github-sync.js');
     // Check which ACTIVE_WORK.md file exists
     const internalPath = 'internal/ACTIVE_WORK.md';
     const rootPath = 'ACTIVE_WORK.md';
@@ -166,12 +171,12 @@ export async function handleSyncIssues() {
 export async function getLanguageCommands(projectType) {
     // Import language modules dynamically
     const languageModules = {
-        js: () => import('../languages/javascript.js'),
-        python: () => import('../languages/python.js'),
-        go: () => import('../languages/go.js'),
-        rust: () => import('../languages/rust.js'),
-        java: () => import('../languages/java.js'),
-        swift: () => import('../languages/swift.js')
+        js: () => import('../../lib/languages/javascript.js'),
+        python: () => import('../../lib/languages/python.js'),
+        go: () => import('../../lib/languages/go.js'),
+        rust: () => import('../../lib/languages/rust.js'),
+        java: () => import('../../lib/languages/java.js'),
+        swift: () => import('../../lib/languages/swift.js')
     };
     if (languageModules[projectType]) {
         try {

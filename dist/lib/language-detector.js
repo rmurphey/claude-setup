@@ -1,14 +1,16 @@
-import fs from 'fs-extra';
 import path from 'path';
+import fs from 'fs-extra';
 /**
  * Smart language detection with best-guess verification approach
  * Scans project files and makes educated guesses for user confirmation
  * Can use config file for cached detection results
  */
 export class LanguageDetector {
+    configPath;
+    config = null;
+    detectionPatterns;
     constructor(configPath = '.claude-setup.json') {
         this.configPath = configPath;
-        this.config = null;
         // Detection patterns ordered by specificity
         this.detectionPatterns = [
             {
@@ -185,7 +187,8 @@ export class LanguageDetector {
             }
         }
         catch (error) {
-            console.warn(`Warning: Could not load config from ${this.configPath}:`, error.message);
+            const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+            console.warn(`Warning: Could not load config from ${this.configPath}:`, errorMessage);
         }
         this.config = {};
         return this.config;
@@ -226,7 +229,8 @@ export class LanguageDetector {
             return true;
         }
         catch (error) {
-            console.warn(`Warning: Could not save config to ${this.configPath}:`, error.message);
+            const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+            console.warn(`Warning: Could not save config to ${this.configPath}:`, errorMessage);
             return false;
         }
     }
@@ -257,7 +261,7 @@ export class LanguageDetector {
         // If top detection has significantly higher score than others, return it
         const top = detections[0];
         const second = detections[1];
-        if (!second || top.score >= second.score * 1.5) {
+        if (top && (!second || top.score >= second.score * 1.5)) {
             const result = {
                 type: 'single',
                 language: top.language,
@@ -290,7 +294,7 @@ export class LanguageDetector {
             return false;
         const detectedTime = new Date(config.language.detected);
         const now = new Date();
-        const hoursSinceDetection = (now - detectedTime) / (1000 * 60 * 60);
+        const hoursSinceDetection = (now.getTime() - detectedTime.getTime()) / (1000 * 60 * 60);
         return hoursSinceDetection < 24;
     }
     /**
