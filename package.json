@@ -26,6 +26,8 @@
     "docs:update": "npm run update-docs && echo 'Documentation updated successfully'",
     "fix": "node bin/cli.js --fix",
     "fix:dry-run": "node bin/cli.js --fix --dry-run",
+    "validate:js": "node bin/validate-js.js",
+    "validate:js:all": "node bin/validate-js.js lib/**/*.js __tests__/**/*.js bin/*.js",
     "prepare": "husky"
   },
   "keywords": [

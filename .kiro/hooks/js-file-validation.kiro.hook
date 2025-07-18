@@ -1,0 +1,20 @@
+{
+  "enabled": true,
+  "name": "JavaScript File Validation on Save",
+  "description": "Validates JavaScript files on save to ensure they conform to basic expectations: syntax correctness, ESLint compliance, and coding standards. Prevents saving files that don't meet quality standards.",
+  "version": "1",
+  "when": {
+    "type": "fileSaved",
+    "patterns": [
+      "**/*.js",
+      "**/*.mjs",
+      "**/*.cjs",
+      "**/*.ts",
+      "**/*.tsx"
+    ]
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "A JavaScript/TypeScript file was just saved. Use the built-in validator to ensure it meets basic expectations:\n\n**Run the validator:**\n```bash\nnpm run validate:js -- \"${filePath}\"\n```\n\nThe validator will automatically:\n1. **Syntax Check**: Ensure valid JavaScript/TypeScript syntax\n2. **ESLint Compliance**: Run ESLint and auto-fix violations where possible\n3. **Import/Export Validation**: Verify all imports resolve correctly\n4. **Standards Compliance**: Check semicolons, quotes, naming conventions\n\n**If validation fails:**\n- Review the specific errors reported\n- Fix any issues that couldn't be auto-corrected\n- Re-run the validator to confirm fixes\n- Only proceed if all critical issues are resolved\n\n**Critical Rule**: NEVER allow a JavaScript file to be saved with syntax errors, unresolved imports, or ESLint errors. The goal is to maintain code quality and prevent broken JavaScript from entering the repository.\n\nReport the validation results and any actions taken."
+  }
+}

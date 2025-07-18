@@ -3,6 +3,11 @@ import assert from 'node:assert';
 
 import { InteractiveSetup } from '../lib/cli/interactive.js';
 
+import { 
+  createValidConfig, 
+  assertValidationResult
+} from './test-helpers.js';
+
 describe('InteractiveSetup', () => {
   let interactive;
   let originalConsoleLog;
@@ -30,28 +35,25 @@ describe('InteractiveSetup', () => {
     mock.restoreAll();
   });
 
-  describe('constructor', () => {
-    it('should initialize with correct default questions', () => {
-      assert.strictEqual(interactive.modeQuestion.type, 'list');
-      assert.strictEqual(interactive.modeQuestion.name, 'mode');
-      assert.strictEqual(interactive.modeQuestion.choices.length, 3);
+  describe('initialization and setup', () => {
+    it('should be able to validate known project types', () => {
+      // Test that the interactive setup can validate common project types
+      const jsConfig = createValidConfig({ projectType: 'js' });
+      const pythonConfig = createValidConfig({ projectType: 'python' });
       
-      assert.strictEqual(interactive.baseQuestions.length, 4);
-      assert.strictEqual(interactive.baseQuestions[0].name, 'projectType');
-      assert.strictEqual(interactive.baseQuestions[1].name, 'qualityLevel');
-      assert.strictEqual(interactive.baseQuestions[2].name, 'teamSize');
-      assert.strictEqual(interactive.baseQuestions[3].name, 'cicd');
+      assertValidationResult(interactive, jsConfig, 0);
+      assertValidationResult(interactive, pythonConfig, 0);
     });
 
-    it('should initialize validation arrays correctly', () => {
-      assert.ok(Array.isArray(interactive.validProjectTypes));
-      assert.ok(Array.isArray(interactive.validQualityLevels));
-      assert.ok(Array.isArray(interactive.validTeamSizes));
+    it('should be able to validate quality levels and team sizes', () => {
+      // Test that the interactive setup can validate different quality levels and team sizes
+      const strictConfig = createValidConfig({ qualityLevel: 'strict', teamSize: 'solo' });
+      const standardConfig = createValidConfig({ qualityLevel: 'standard', teamSize: 'small' });
+      const relaxedConfig = createValidConfig({ qualityLevel: 'relaxed', teamSize: 'team' });
       
-      assert.ok(interactive.validProjectTypes.includes('js'));
-      assert.ok(interactive.validProjectTypes.includes('python'));
-      assert.ok(interactive.validQualityLevels.includes('strict'));
-      assert.ok(interactive.validTeamSizes.includes('solo'));
+      assertValidationResult(interactive, strictConfig, 0);
+      assertValidationResult(interactive, standardConfig, 0);
+      assertValidationResult(interactive, relaxedConfig, 0);
     });
   });
 

@@ -26,7 +26,8 @@ export default [
       parser: typescriptParser,
       parserOptions: {
         ecmaVersion: 'latest',
-        sourceType: 'module'
+        sourceType: 'module',
+        project: './tsconfig.json'
       }
     },
     plugins: {
@@ -41,8 +42,17 @@ export default [
       '@typescript-eslint/no-explicit-any': 'error',
       '@typescript-eslint/explicit-function-return-type': 'warn',
       '@typescript-eslint/no-inferrable-types': 'error',
-      '@typescript-eslint/prefer-optional-chain': 'error',
-      '@typescript-eslint/prefer-as-const': 'error'
+      '@typescript-eslint/prefer-as-const': 'error',
+      
+      // TypeScript rules that require type information (disabled for now)
+      // '@typescript-eslint/prefer-optional-chain': 'error'
+    }
+  },
+  {
+    files: ['src/types/**/*.ts'],
+    rules: {
+      // Allow 'any' in utility type definitions where it's necessary for advanced TypeScript patterns
+      '@typescript-eslint/no-explicit-any': 'off'
     }
   },
   {
