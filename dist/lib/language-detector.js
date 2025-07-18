@@ -131,7 +131,7 @@ export class LanguageDetector {
                 }
             }
         }
-        catch (error) {
+        catch {
             // Ignore errors, just return what we found
         }
         return found;
@@ -156,7 +156,7 @@ export class LanguageDetector {
                 }
             }
         }
-        catch (error) {
+        catch {
             // Ignore errors
         }
         return count;

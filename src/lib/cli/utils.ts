@@ -1,7 +1,8 @@
 import chalk from 'chalk';
 import fs from 'fs-extra';
 
-import { LanguageDetector, DetectionGuess, SingleDetectionGuess } from '../language-detector.js';
+// eslint-disable-next-line import/no-unresolved
+import { LanguageDetector, SingleDetectionGuess } from '../language-detector.js';
 
 export interface ProjectStructureChecks {
   isDirectory: boolean;
@@ -51,7 +52,7 @@ export class CLIUtils {
       // Check if git repository exists
       const gitPath = `${projectPath}/.git`;
       checks.hasGit = await fs.pathExists(gitPath);
-    } catch (error) {
+    } catch {
       // Git check failed, but not critical
     }
 
@@ -60,7 +61,7 @@ export class CLIUtils {
       const testFile = `${projectPath}/.claude-setup-test`;
       await fs.writeFile(testFile, 'test');
       await fs.remove(testFile);
-    } catch (error) {
+    } catch {
       checks.isWritable = false;
     }
 
@@ -170,8 +171,7 @@ export async function handleConfigManagement(args: string[]): Promise<void> {
  * Handle GitHub issues sync command
  */
 export async function handleSyncIssues(): Promise<void> {
-  // @ts-ignore - importing from JavaScript file that hasn't been migrated yet
-  const { syncGitHubIssues } = await import('../../lib/github-sync.js');
+  const { syncGitHubIssues } = await import('../../../lib/github-sync.js') as { syncGitHubIssues: (path: string) => Promise<void> };
   
   // Check which ACTIVE_WORK.md file exists
   const internalPath = 'internal/ACTIVE_WORK.md';
@@ -196,13 +196,20 @@ export async function handleSyncIssues(): Promise<void> {
  */
 export async function getLanguageCommands(projectType: string): Promise<LanguageCommands> {
   // Import language modules dynamically
-  const languageModules: Record<string, () => Promise<any>> = {
-    js: () => import('../../lib/languages/javascript.js') as any,
-    python: () => import('../../lib/languages/python.js') as any,
-    go: () => import('../../lib/languages/go.js') as any,
-    rust: () => import('../../lib/languages/rust.js') as any,
-    java: () => import('../../lib/languages/java.js') as any,
-    swift: () => import('../../lib/languages/swift.js') as any
+  interface LanguageModule {
+    default?: {
+      installCommand?: string;
+      lintCommand?: string;
+    };
+  }
+  
+  const languageModules: Record<string, () => Promise<LanguageModule>> = {
+    js: () => import('../../../lib/languages/javascript.js'),
+    python: () => import('../../../lib/languages/python.js'),
+    go: () => import('../../../lib/languages/go.js'),
+    rust: () => import('../../../lib/languages/rust.js'),
+    java: () => import('../../../lib/languages/java.js'),
+    swift: () => import('../../../lib/languages/swift.js')
   };
   
   if (languageModules[projectType]) {
@@ -212,7 +219,7 @@ export async function getLanguageCommands(projectType: string): Promise<Language
         installCmd: module.default?.installCommand || 'Install dependencies according to your project type',
         lintCmd: module.default?.lintCommand || 'Run quality checks according to your project type'
       };
-    } catch (error) {
+    } catch {
       // Fallback if module import fails
     }
   }

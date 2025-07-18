@@ -22,7 +22,7 @@
     "sourceMap": true,
     "removeComments": false,
     "importHelpers": false,
-    "skipLibCheck": false
+    "skipLibCheck": true
   },
   "include": [
     "src/**/*"

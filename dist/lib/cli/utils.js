@@ -35,7 +35,7 @@ export class CLIUtils {
             const gitPath = `${projectPath}/.git`;
             checks.hasGit = await fs.pathExists(gitPath);
         }
-        catch (error) {
+        catch {
             // Git check failed, but not critical
         }
         try {
@@ -44,7 +44,7 @@ export class CLIUtils {
             await fs.writeFile(testFile, 'test');
             await fs.remove(testFile);
         }
-        catch (error) {
+        catch {
             checks.isWritable = false;
         }
         return checks;
@@ -147,7 +147,7 @@ export async function handleConfigManagement(args) {
  * Handle GitHub issues sync command
  */
 export async function handleSyncIssues() {
-    const { syncGitHubIssues } = await import('../../lib/github-sync.js');
+    const { syncGitHubIssues } = await import('../../../lib/github-sync.js');
     // Check which ACTIVE_WORK.md file exists
     const internalPath = 'internal/ACTIVE_WORK.md';
     const rootPath = 'ACTIVE_WORK.md';
@@ -169,14 +169,13 @@ export async function handleSyncIssues() {
  * Get language-specific commands
  */
 export async function getLanguageCommands(projectType) {
-    // Import language modules dynamically
     const languageModules = {
-        js: () => import('../../lib/languages/javascript.js'),
-        python: () => import('../../lib/languages/python.js'),
-        go: () => import('../../lib/languages/go.js'),
-        rust: () => import('../../lib/languages/rust.js'),
-        java: () => import('../../lib/languages/java.js'),
-        swift: () => import('../../lib/languages/swift.js')
+        js: () => import('../../../lib/languages/javascript.js'),
+        python: () => import('../../../lib/languages/python.js'),
+        go: () => import('../../../lib/languages/go.js'),
+        rust: () => import('../../../lib/languages/rust.js'),
+        java: () => import('../../../lib/languages/java.js'),
+        swift: () => import('../../../lib/languages/swift.js')
     };
     if (languageModules[projectType]) {
         try {
@@ -186,7 +185,7 @@ export async function getLanguageCommands(projectType) {
                 lintCmd: module.default?.lintCommand || 'Run quality checks according to your project type'
             };
         }
-        catch (error) {
+        catch {
             // Fallback if module import fails
         }
     }

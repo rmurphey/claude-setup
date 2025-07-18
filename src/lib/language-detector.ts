@@ -1,4 +1,5 @@
 import path from 'path';
+
 import fs from 'fs-extra';
 
 export interface DetectionPattern {
@@ -87,7 +88,7 @@ export class LanguageDetector {
   private config: ProjectConfig | null = null;
   private detectionPatterns: DetectionPattern[];
 
-  constructor(configPath: string = '.claude-setup.json') {
+  constructor(configPath = '.claude-setup.json') {
     this.configPath = configPath;
     // Detection patterns ordered by specificity
     this.detectionPatterns = [
@@ -219,7 +220,7 @@ export class LanguageDetector {
           found.count += dirCount;
         }
       }
-    } catch (error) {
+    } catch {
       // Ignore errors, just return what we found
     }
 
@@ -232,8 +233,8 @@ export class LanguageDetector {
   async countFilesInDirectory(
     dirPath: string, 
     extensions: string[], 
-    maxDepth: number = 1, 
-    maxFiles: number = 10
+    maxDepth = 1, 
+    maxFiles = 10
   ): Promise<number> {
     if (maxDepth <= 0) return 0;
 
@@ -251,7 +252,7 @@ export class LanguageDetector {
           }
         }
       }
-    } catch (error) {
+    } catch {
       // Ignore errors
     }
 
@@ -338,7 +339,7 @@ export class LanguageDetector {
    * Get the best guess for language detection
    * Uses cached config if available and fresh, otherwise runs detection
    */
-  async getBestGuess(useCache: boolean = true): Promise<DetectionGuess> {
+  async getBestGuess(useCache = true): Promise<DetectionGuess> {
     // Try to use cached config first
     if (useCache) {
       const config = await this.loadConfig();

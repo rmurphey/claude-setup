@@ -27,7 +27,7 @@
   - Ensure CLI entry point maintains identical functionality
   - _Requirements: 1.2, 4.1, 4.2, 6.1_
 
-- [ ] 5. Convert core utility modules to TypeScript
+- [x] 5. Convert core utility modules to TypeScript
   - Migrate lib/language-detector.js with LanguageDetector class and detection interfaces
   - Convert lib/code-analysis.js with proper type annotations for analysis functions
   - Migrate lib/cli/utils.js with typed utility functions

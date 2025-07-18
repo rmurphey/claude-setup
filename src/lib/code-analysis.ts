@@ -67,7 +67,23 @@ export class CodeAnalyzer {
    * Analyze the entire codebase and return structured insights
    */
   async analyzeCodebase(): Promise<CodebaseAnalysis> {
-    return await this.analyzer.analyzeCodebase();
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const result: any = await this.analyzer.analyzeCodebase();
+    
+    // Convert Set to array for TypeScript compatibility
+    const analysis: CodebaseAnalysis = {
+      files: result.files || [],
+      summary: {
+        totalFiles: result.summary?.totalFiles || 0,
+        totalLines: result.summary?.totalLines || 0,
+        languages: result.summary?.languages instanceof Set 
+          ? Array.from(result.summary.languages) 
+          : result.summary?.languages || [],
+        complexity: result.summary?.complexity || { functions: [], totalComplexity: 0 }
+      }
+    };
+    
+    return analysis;
   }
 
   /**
