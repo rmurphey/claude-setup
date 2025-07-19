@@ -21,7 +21,7 @@ interface DevContainerConfig {
 /**
  * Setup orchestrator - coordinates different setup modes
  */
-export declare class SetupOrchestrator {
+declare class SetupOrchestrator {
     private readonly languageModules;
     constructor();
     /**
@@ -93,9 +93,9 @@ export declare class SetupOrchestrator {
      */
     getDevContainerConfig(projectType: string): DevContainerConfig;
 }
-export declare function generateClaudeTemplate(config: CLIConfig): string;
-export declare function generateActiveWorkTemplate(config: CLIConfig): string;
-export declare function generateGitignore(projectType: string): string;
-export declare function getDevContainerConfig(projectType: string): DevContainerConfig;
-export {};
+declare function generateClaudeTemplate(config: CLIConfig): string;
+declare function generateActiveWorkTemplate(config: CLIConfig): string;
+declare function generateGitignore(projectType: string): string;
+declare function getDevContainerConfig(projectType: string): DevContainerConfig;
+export { SetupOrchestrator, generateClaudeTemplate, generateActiveWorkTemplate, generateGitignore, getDevContainerConfig };
 //# sourceMappingURL=setup.d.ts.map

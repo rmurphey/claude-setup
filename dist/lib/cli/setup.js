@@ -14,7 +14,7 @@ import swift from '../languages/swift.js';
 /**
  * Setup orchestrator - coordinates different setup modes
  */
-export class SetupOrchestrator {
+class SetupOrchestrator {
     languageModules;
     constructor() {
         this.languageModules = {
@@ -183,7 +183,7 @@ export class SetupOrchestrator {
                 // Ignore if already on main or no commits yet
             }
         }
-        catch (error) {
+        catch {
             console.log(chalk.yellow('   Warning: Could not initialize git repository'));
             console.log(chalk.yellow('   Please run "git init" manually'));
         }
@@ -209,7 +209,7 @@ export class SetupOrchestrator {
      */
     async setupLanguage(config) {
         console.log(chalk.blue('🔧 Setting up language-specific tools...'));
-        // Simple detection for existing files
+        // Create proper LanguageDetection object for language modules
         const detection = {
             existingFiles: {
                 packageJson: await fs.pathExists('package.json'),
@@ -221,12 +221,22 @@ export class SetupOrchestrator {
                 packageSwift: await fs.pathExists('Package.swift'),
                 xcodeproj: await fs.pathExists('*.xcodeproj'),
                 xcworkspace: await fs.pathExists('*.xcworkspace')
-            }
+            },
+            language: config.projectType,
+            confidence: 1.0,
+            evidence: ['setup-mode']
+        };
+        // Create proper LanguageConfig object for language modules
+        const languageConfig = {
+            projectType: config.projectType,
+            qualityLevel: config.qualityLevel,
+            teamSize: config.teamSize,
+            cicd: config.cicd
         };
         const languageModule = this.languageModules[config.projectType];
         if (languageModule) {
             // Use the existing language module interface
-            await languageModule.setup(config, detection);
+            await languageModule.setup(languageConfig, detection);
         }
         else {
             console.log(chalk.yellow('   Manual setup required for this project type'));
@@ -248,7 +258,7 @@ export class SetupOrchestrator {
                     console.log(chalk.gray(`   Created lib/${lib}`));
                 }
             }
-            catch (error) {
+            catch {
                 console.log(chalk.yellow(`   Warning: Could not create lib/${lib}`));
             }
         }
@@ -296,7 +306,7 @@ Provide helpful output for the ${cmd} command.
                     console.log(chalk.gray(`   Created command template: ${cmd}.md`));
                 }
             }
-            catch (error) {
+            catch {
                 console.log(chalk.yellow(`   Warning: Could not create ${cmd} command`));
             }
         }
@@ -344,7 +354,7 @@ Co-Authored-By: Claude <noreply@anthropic.com>`;
             console.log(chalk.gray('   git remote add origin <your-repo-url>'));
             console.log(chalk.gray('   git push -u origin main'));
         }
-        catch (error) {
+        catch {
             console.log(chalk.yellow('   Warning: Could not create initial commit'));
             console.log(chalk.yellow('   Files created but not committed to git'));
             console.log(chalk.gray('   Run "git add . && git commit -m \'Initial setup\'" manually'));
@@ -670,16 +680,17 @@ jobs:
 }
 // Export individual functions for backward compatibility with tests
 const orchestrator = new SetupOrchestrator();
-export function generateClaudeTemplate(config) {
+function generateClaudeTemplate(config) {
     return orchestrator.generateClaudeTemplate(config);
 }
-export function generateActiveWorkTemplate(config) {
+function generateActiveWorkTemplate(config) {
     return orchestrator.generateActiveWorkTemplate(config);
 }
-export function generateGitignore(projectType) {
+function generateGitignore(projectType) {
     return orchestrator.generateGitignore(projectType);
 }
-export function getDevContainerConfig(projectType) {
+function getDevContainerConfig(projectType) {
     return orchestrator.getDevContainerConfig(projectType);
 }
+export { SetupOrchestrator, generateClaudeTemplate, generateActiveWorkTemplate, generateGitignore, getDevContainerConfig };
 //# sourceMappingURL=setup.js.map
