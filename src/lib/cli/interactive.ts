@@ -10,7 +10,6 @@ import type {
   InquirerAnswers,
   InteractiveSetupResult
 } from '../../types/index.js';
-import type { ValidationError } from '../../types/utils.js';
 import type { DetectionGuess } from '../language-detector.js';
 
 /**
@@ -168,47 +167,27 @@ export class InteractiveSetup {
   /**
    * Validate user input configuration
    */
-  validateConfiguration(config: Partial<CLIConfig>): ValidationError[] {
-    const errors: ValidationError[] = [];
+  validateConfiguration(config: Partial<CLIConfig>): string[] {
+    const errors: string[] = [];
 
     // Validate project type
     if (!config.projectType || !this.validProjectTypes.includes(config.projectType)) {
-      errors.push({
-        field: 'projectType',
-        message: `Invalid project type: ${config.projectType}. Must be one of: ${this.validProjectTypes.join(', ')}`,
-        code: 'INVALID_PROJECT_TYPE',
-        value: config.projectType
-      });
+      errors.push(`Invalid project type: ${config.projectType}. Must be one of: ${this.validProjectTypes.join(', ')}`);
     }
 
     // Validate quality level
     if (!config.qualityLevel || !this.validQualityLevels.includes(config.qualityLevel)) {
-      errors.push({
-        field: 'qualityLevel',
-        message: `Invalid quality level: ${config.qualityLevel}. Must be one of: ${this.validQualityLevels.join(', ')}`,
-        code: 'INVALID_QUALITY_LEVEL',
-        value: config.qualityLevel
-      });
+      errors.push(`Invalid quality level: ${config.qualityLevel}. Must be one of: ${this.validQualityLevels.join(', ')}`);
     }
 
     // Validate team size
     if (!config.teamSize || !this.validTeamSizes.includes(config.teamSize)) {
-      errors.push({
-        field: 'teamSize',
-        message: `Invalid team size: ${config.teamSize}. Must be one of: ${this.validTeamSizes.join(', ')}`,
-        code: 'INVALID_TEAM_SIZE',
-        value: config.teamSize
-      });
+      errors.push(`Invalid team size: ${config.teamSize}. Must be one of: ${this.validTeamSizes.join(', ')}`);
     }
 
     // Validate CI/CD flag
     if (typeof config.cicd !== 'boolean') {
-      errors.push({
-        field: 'cicd',
-        message: `Invalid CI/CD setting: ${config.cicd}. Must be true or false`,
-        code: 'INVALID_CICD_FLAG',
-        value: config.cicd
-      });
+      errors.push(`Invalid CI/CD setting: ${config.cicd}. Must be true or false`);
     }
 
     return errors;
@@ -264,14 +243,7 @@ export class InteractiveSetup {
       sanitized.cicd = lowerValue === 'true' || lowerValue === 'yes' || lowerValue === '1';
     }
 
-    // Provide defaults for required fields
-    return {
-      projectType: sanitized.projectType || 'other',
-      qualityLevel: sanitized.qualityLevel || 'standard',
-      teamSize: sanitized.teamSize || 'small',
-      cicd: sanitized.cicd || false,
-      ...sanitized
-    };
+    return sanitized as CLIConfig;
   }
 
   /**
@@ -294,7 +266,7 @@ export class InteractiveSetup {
         
         if (validationErrors.length > 0) {
           console.error(chalk.red('❌ Invalid language override:'));
-          validationErrors.forEach(error => console.error(chalk.red(`   ${error.message}`)));
+          validationErrors.forEach(error => console.error(chalk.red(`   ${error}`)));
           throw new Error('Invalid configuration provided');
         }
         
@@ -343,7 +315,7 @@ export class InteractiveSetup {
       
       if (validationErrors.length > 0) {
         console.error(chalk.red('❌ Configuration validation failed:'));
-        validationErrors.forEach(error => console.error(chalk.red(`   ${error.message}`)));
+        validationErrors.forEach(error => console.error(chalk.red(`   ${error}`)));
         throw new Error('Invalid configuration provided');
       }
       

@@ -6,6 +6,7 @@ coverage/
 
 # TypeScript compilation output
 dist/
+dist-test/
 *.tsbuildinfo
 # Auto-generated TypeScript declaration files
 lib/**/*.d.ts

@@ -1,7 +1,7 @@
 import { describe, it, beforeEach, afterEach, mock } from 'node:test';
 import assert from 'node:assert';
 
-import { InteractiveSetup } from '../lib/cli/interactive.js';
+import { InteractiveSetup } from '../dist/lib/cli/interactive.js';
 
 import { 
   createValidConfig, 
@@ -49,7 +49,7 @@ describe('InteractiveSetup', () => {
       // Test that the interactive setup can validate different quality levels and team sizes
       const strictConfig = createValidConfig({ qualityLevel: 'strict', teamSize: 'solo' });
       const standardConfig = createValidConfig({ qualityLevel: 'standard', teamSize: 'small' });
-      const relaxedConfig = createValidConfig({ qualityLevel: 'relaxed', teamSize: 'team' });
+      const relaxedConfig = createValidConfig({ qualityLevel: 'relaxed', teamSize: 'large' });
       
       assertValidationResult(interactive, strictConfig, 0);
       assertValidationResult(interactive, standardConfig, 0);

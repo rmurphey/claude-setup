@@ -14,7 +14,6 @@ export class CodeAnalyzer {
      * Analyze the entire codebase and return structured insights
      */
     async analyzeCodebase() {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const result = await this.analyzer.analyzeCodebase();
         // Convert Set to array for TypeScript compatibility
         const analysis = {

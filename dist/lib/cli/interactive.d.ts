@@ -1,5 +1,4 @@
 import type { CLIConfig, InquirerPrompt, InquirerAnswers, InteractiveSetupResult } from '../../types/index.js';
-import type { ValidationError } from '../../types/utils.js';
 import type { DetectionGuess } from '../language-detector.js';
 /**
  * Interactive setup handler - manages user prompts and configuration
@@ -25,7 +24,7 @@ export declare class InteractiveSetup {
     /**
      * Validate user input configuration
      */
-    validateConfiguration(config: Partial<CLIConfig>): ValidationError[];
+    validateConfiguration(config: Partial<CLIConfig>): string[];
     /**
      * Sanitize and normalize configuration values
      */

@@ -1,6 +1,17 @@
 // @ts-ignore - importing from JavaScript file that hasn't been migrated yet
 import { LightweightAnalyzer } from '../../lib/lightweight-analysis.js';
 
+// Type definitions for LightweightAnalyzer return types
+interface LightweightAnalysisResult {
+  files: FileAnalysis[];
+  summary: {
+    totalFiles: number;
+    totalLines: number;
+    languages: string[] | Set<string>;
+    complexity: CodebaseComplexity;
+  };
+}
+
 export interface FunctionInfo {
   name: string;
   complexity: number;
@@ -67,8 +78,7 @@ export class CodeAnalyzer {
    * Analyze the entire codebase and return structured insights
    */
   async analyzeCodebase(): Promise<CodebaseAnalysis> {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const result: any = await this.analyzer.analyzeCodebase();
+    const result: LightweightAnalysisResult = await this.analyzer.analyzeCodebase();
     
     // Convert Set to array for TypeScript compatibility
     const analysis: CodebaseAnalysis = {

@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 // New modular CLI - delegate everything to main module
-import { CLIMain } from '../lib/cli/main.js';
+import { CLIMain } from '../dist/lib/cli/main.js';
 
 /**
  * Main entry point - delegate to modular CLI
@@ -32,18 +32,18 @@ export {
   generateActiveWorkTemplate, 
   generateGitignore,
   getDevContainerConfig
-} from '../lib/cli/setup.js';
+} from '../dist/lib/cli/setup.js';
 
 // Re-export functions from utils module
 export { 
   handleLanguageDetection,
   handleConfigManagement,
   handleSyncIssues
-} from '../lib/cli/utils.js';
+} from '../dist/lib/cli/utils.js';
 
 // Re-export setupProject function
 export async function setupProject(config) {
-  const { ProjectSetup } = await import('../lib/cli/setup.js');
+  const { ProjectSetup } = await import('../dist/lib/cli/setup.js');
   const setup = new ProjectSetup();
   return setup.setupProject(config);
 }
