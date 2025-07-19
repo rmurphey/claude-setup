@@ -1,1 +1,1 @@
-{"version":3,"file":"strict.d.ts","sourceRoot":"","sources":["../../../lib/eslint-configs/strict.js"],"names":[],"mappings":"AAEA;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;EAiCE"}
+{"version":3,"file":"strict.d.ts","sourceRoot":"","sources":["../../../src/lib/eslint-configs/strict.ts"],"names":[],"mappings":"AACA,OAAO,KAAK,EAAE,YAAY,EAAE,MAAM,WAAW,CAAC;AAE9C,eAAO,MAAM,YAAY,EAAE,YAiC1B,CAAC;wBAOG,YAAY,EAAE;AALnB,wBAKoB"}

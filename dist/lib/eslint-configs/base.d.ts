@@ -1,50 +1,25 @@
-export namespace baseConfig {
-    namespace languageOptions {
-        let ecmaVersion: string;
-        let sourceType: string;
-        namespace globals {
-            let console: string;
-            let process: string;
-            let Buffer: string;
-            let __dirname: string;
-            let __filename: string;
-            let global: string;
-            let module: string;
-            let require: string;
-            let exports: string;
-        }
-    }
-    namespace plugins {
-        export { importPlugin as import };
-    }
-    let rules: {
-        'no-unused-vars': (string | {
-            argsIgnorePattern: string;
-        })[];
-        'no-console': string;
-        semi: string[];
-        quotes: string[];
-        'import/no-unresolved': string;
-        'import/named': string;
-        'import/default': string;
-        'import/namespace': string;
-        'import/no-absolute-path': string;
-        'import/no-dynamic-require': string;
-        'import/no-self-import': string;
-        'import/no-cycle': string;
-        'import/no-useless-path-segments': string;
-        'import/no-commonjs': string;
-        'import/no-amd': string;
-        'import/first': string;
-        'import/exports-last': string;
-        'import/no-duplicates': string;
-        'import/order': (string | {
-            groups: string[];
-            'newlines-between': string;
-        })[];
-    };
+export type RuleLevel = 'off' | 'warn' | 'error' | 0 | 1 | 2;
+export type RuleLevelAndOptions = [RuleLevel, ...unknown[]];
+export interface ESLintRule {
+    [key: string]: RuleLevel | RuleLevelAndOptions;
 }
-declare const _default: any[];
+export interface ESLintConfig {
+    name?: string;
+    languageOptions?: {
+        ecmaVersion?: 'latest' | number;
+        sourceType?: 'script' | 'module';
+        globals?: Record<string, boolean | 'readonly' | 'writable' | 'off'>;
+        parser?: unknown;
+        parserOptions?: Record<string, unknown>;
+    };
+    plugins?: Record<string, unknown>;
+    rules?: ESLintRule;
+}
+export interface ImportOrderGroup {
+    groups: Array<'builtin' | 'external' | 'internal' | 'parent' | 'sibling' | 'index'>;
+    'newlines-between': 'always' | 'never' | 'ignore';
+}
+export declare const baseConfig: ESLintConfig;
+declare const _default: ESLintConfig[];
 export default _default;
-import importPlugin from 'eslint-plugin-import';
 //# sourceMappingURL=base.d.ts.map
