@@ -27,6 +27,7 @@ export const QualityLevels = {
     }
 };
 export class QualityLevelManager {
+    configPath;
     constructor() {
         this.configPath = '.git-quality-config.json';
     }
@@ -37,7 +38,7 @@ export class QualityLevelManager {
                 return config.qualityLevel || 'standard';
             }
         }
-        catch (error) {
+        catch {
             console.warn('Warning: Could not read quality config, using standard level');
         }
         return 'standard';

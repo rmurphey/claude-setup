@@ -1,92 +1,59 @@
 /**
- * Calculate estimated cost for Claude usage
+ * Claude Code usage estimation utilities
  */
-export function estimateCost(messageCount: any, messageType?: string): {
+interface TaskPattern {
+    planning: number;
+    implementation: number;
+    testing: number;
+    documentation: number;
+    total: number;
+}
+interface UsagePatterns {
+    bugFix: TaskPattern;
+    smallFeature: TaskPattern;
+    mediumFeature: TaskPattern;
+    largeFeature: TaskPattern;
+    architecture: TaskPattern;
+}
+/**
+ * Estimate Claude usage for different task types
+ */
+declare const USAGE_PATTERNS: UsagePatterns;
+type MessageType = 'code' | 'planning' | 'mixed';
+type UsageCategory = 'Light' | 'Moderate' | 'Heavy' | 'Intensive';
+type TaskType = keyof UsagePatterns;
+interface CostEstimate {
     totalTokens: number;
     estimatedCost: number;
     formattedCost: string;
-};
+}
+interface UsageBreakdown extends CostEstimate {
+    breakdown: TaskPattern;
+    category: UsageCategory;
+}
+/**
+ * Calculate estimated cost for Claude usage
+ */
+declare function estimateCost(messageCount: number, messageType?: MessageType): CostEstimate;
 /**
  * Get usage category based on message count
  */
-export function getUsageCategory(messageCount: any): "Light" | "Moderate" | "Heavy" | "Intensive";
+declare function getUsageCategory(messageCount: number): UsageCategory;
 /**
  * Generate usage breakdown for a task
  */
-export function generateUsageBreakdown(taskType: any): {
-    totalTokens: number;
-    estimatedCost: number;
-    formattedCost: string;
-    breakdown: any;
-    category: string;
-};
+declare function generateUsageBreakdown(taskType: TaskType): UsageBreakdown;
 /**
  * Format usage estimate for display
  */
-export function formatUsageEstimate(messageCount: any, breakdown?: null): string;
-export namespace USAGE_PATTERNS {
-    namespace bugFix {
-        let planning: number;
-        let implementation: number;
-        let testing: number;
-        let documentation: number;
-        let total: number;
-    }
-    namespace smallFeature {
-        let planning_1: number;
-        export { planning_1 as planning };
-        let implementation_1: number;
-        export { implementation_1 as implementation };
-        let testing_1: number;
-        export { testing_1 as testing };
-        let documentation_1: number;
-        export { documentation_1 as documentation };
-        let total_1: number;
-        export { total_1 as total };
-    }
-    namespace mediumFeature {
-        let planning_2: number;
-        export { planning_2 as planning };
-        let implementation_2: number;
-        export { implementation_2 as implementation };
-        let testing_2: number;
-        export { testing_2 as testing };
-        let documentation_2: number;
-        export { documentation_2 as documentation };
-        let total_2: number;
-        export { total_2 as total };
-    }
-    namespace largeFeature {
-        let planning_3: number;
-        export { planning_3 as planning };
-        let implementation_3: number;
-        export { implementation_3 as implementation };
-        let testing_3: number;
-        export { testing_3 as testing };
-        let documentation_3: number;
-        export { documentation_3 as documentation };
-        let total_3: number;
-        export { total_3 as total };
-    }
-    namespace architecture {
-        let planning_4: number;
-        export { planning_4 as planning };
-        let implementation_4: number;
-        export { implementation_4 as implementation };
-        let testing_4: number;
-        export { testing_4 as testing };
-        let documentation_4: number;
-        export { documentation_4 as documentation };
-        let total_4: number;
-        export { total_4 as total };
-    }
-}
-declare namespace _default {
-    export { USAGE_PATTERNS };
-    export { estimateCost };
-    export { getUsageCategory };
-    export { generateUsageBreakdown };
-    export { formatUsageEstimate };
-}
+declare function formatUsageEstimate(messageCount: number, breakdown?: TaskPattern | null): string;
+export { USAGE_PATTERNS, estimateCost, getUsageCategory, generateUsageBreakdown, formatUsageEstimate };
+declare const _default: {
+    USAGE_PATTERNS: UsagePatterns;
+    estimateCost: typeof estimateCost;
+    getUsageCategory: typeof getUsageCategory;
+    generateUsageBreakdown: typeof generateUsageBreakdown;
+    formatUsageEstimate: typeof formatUsageEstimate;
+};
 export default _default;
 //# sourceMappingURL=claude-estimator.d.ts.map

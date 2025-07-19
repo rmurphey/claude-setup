@@ -35,17 +35,17 @@ export async function getCommandDescriptions() {
                 const content = await fs.readFile(cmdPath, 'utf-8');
                 // Extract description from YAML frontmatter
                 const frontmatterMatch = content.match(/^---\n([\s\S]*?)\n---/);
-                if (frontmatterMatch) {
+                if (frontmatterMatch && frontmatterMatch[1]) {
                     const yamlContent = frontmatterMatch[1];
                     const descMatch = yamlContent.match(/description:\s*(.+)/);
-                    if (descMatch) {
+                    if (descMatch && descMatch[1]) {
                         descriptions[cmd] = descMatch[1];
                     }
                 }
                 // Fallback: look for first heading
                 if (!descriptions[cmd]) {
                     const headingMatch = content.match(/^# (.+)$/m);
-                    if (headingMatch) {
+                    if (headingMatch && headingMatch[1]) {
                         descriptions[cmd] = headingMatch[1];
                     }
                 }
@@ -161,18 +161,21 @@ export async function updateEstimates() {
  * Update all documentation files
  */
 export async function updateAllDocs() {
-    const results = {};
+    const results = {
+        readme: { updated: false },
+        estimates: { updated: false }
+    };
     try {
         results.readme = await updateReadme();
     }
     catch (error) {
-        results.readme = { error: error.message };
+        results.readme = { updated: false, error: error.message };
     }
     try {
         results.estimates = await updateEstimates();
     }
     catch (error) {
-        results.estimates = { error: error.message };
+        results.estimates = { updated: false, error: error.message };
     }
     return results;
 }

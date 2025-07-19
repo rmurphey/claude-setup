@@ -1,14 +1,12 @@
 /**
  * Claude Code usage estimation utilities
  */
-// Current Claude pricing (approximate, as of 2024)
 const CLAUDE_PRICING = {
     sonnet: {
         input: 0.003, // per 1K tokens
         output: 0.015 // per 1K tokens
     }
 };
-// Average tokens per message (rough estimates)
 const AVERAGE_TOKENS = {
     userMessage: 50, // Short user prompts
     claudeResponse: 300, // Typical Claude responses
@@ -18,7 +16,7 @@ const AVERAGE_TOKENS = {
 /**
  * Estimate Claude usage for different task types
  */
-export const USAGE_PATTERNS = {
+const USAGE_PATTERNS = {
     bugFix: {
         planning: 2,
         implementation: 8,
@@ -58,7 +56,7 @@ export const USAGE_PATTERNS = {
 /**
  * Calculate estimated cost for Claude usage
  */
-export function estimateCost(messageCount, messageType = 'mixed') {
+function estimateCost(messageCount, messageType = 'mixed') {
     const tokensPerMessage = messageType === 'code' ? AVERAGE_TOKENS.codeMessage :
         messageType === 'planning' ? AVERAGE_TOKENS.planningMessage :
             (AVERAGE_TOKENS.userMessage + AVERAGE_TOKENS.claudeResponse) / 2;
@@ -70,13 +68,13 @@ export function estimateCost(messageCount, messageType = 'mixed') {
     return {
         totalTokens,
         estimatedCost: cost,
-        formattedCost: `$${cost.toFixed(2)}`
+        formattedCost: `${cost.toFixed(2)}`
     };
 }
 /**
  * Get usage category based on message count
  */
-export function getUsageCategory(messageCount) {
+function getUsageCategory(messageCount) {
     if (messageCount < 50)
         return 'Light';
     if (messageCount < 150)
@@ -88,7 +86,7 @@ export function getUsageCategory(messageCount) {
 /**
  * Generate usage breakdown for a task
  */
-export function generateUsageBreakdown(taskType) {
+function generateUsageBreakdown(taskType) {
     const pattern = USAGE_PATTERNS[taskType];
     if (!pattern) {
         throw new Error(`Unknown task type: ${taskType}`);
@@ -103,7 +101,7 @@ export function generateUsageBreakdown(taskType) {
 /**
  * Format usage estimate for display
  */
-export function formatUsageEstimate(messageCount, breakdown = null) {
+function formatUsageEstimate(messageCount, breakdown = null) {
     const category = getUsageCategory(messageCount);
     const cost = estimateCost(messageCount);
     let output = `💬 Claude Usage: ${category} (~${messageCount} messages)\n`;
@@ -117,6 +115,7 @@ export function formatUsageEstimate(messageCount, breakdown = null) {
     }
     return output;
 }
+export { USAGE_PATTERNS, estimateCost, getUsageCategory, generateUsageBreakdown, formatUsageEstimate };
 export default {
     USAGE_PATTERNS,
     estimateCost,
