@@ -1,235 +1,93 @@
 #!/usr/bin/env node
-export function runRecovery(args?: any[]): Promise<{
-    success: boolean;
-    issues: any[];
-    restored: ({
-        success: boolean;
-        error: string;
-        path?: never;
-        template?: never;
-    } | {
-        success: boolean;
-        path: any;
-        template: any;
-        error?: never;
-    } | {
-        success: boolean;
-        error: string;
-        path?: never;
-        generated?: never;
-    } | {
-        success: boolean;
-        path: any;
-        generated: boolean;
-        error?: never;
-    } | {
-        success: boolean;
-        path: string;
-        initialized: boolean;
-        error?: never;
-    } | {
-        success: boolean;
-        error: string;
-        path?: never;
-        initialized?: never;
-    })[];
-}>;
-export class RecoverySystem {
-    templateDir: string;
-    results: {
-        detected: never[];
-        restored: never[];
-        failed: never[];
-        warnings: never[];
-    };
+/**
+ * One-Command Project Recovery System
+ *
+ * Detects missing or broken setup files and restores them from templates.
+ * Saves hours of manual re-setup when projects get corrupted.
+ */
+import type { RecoveryIssue, RecoveryResults, RecoveryOptions, RecoveryExecutionResult, Result } from '../types/index.js';
+import { RecoveryError } from '../types/index.js';
+interface RecoveryAssessment {
+    issues: RecoveryIssue[];
+    severity: 'low' | 'medium' | 'high' | 'critical';
+    estimatedFixTime: number;
+    autoFixable: boolean;
+}
+interface RecoveryPlan {
+    steps: RecoveryStep[];
+    estimatedTime: number;
+    requiresUserInput: boolean;
+}
+interface RecoveryStep {
+    description: string;
+    command: string;
+    validation: string;
+    rollback?: string | undefined;
+}
+export declare class RecoverySystem {
+    private templateDir;
+    private results;
+    constructor();
     /**
      * Main recovery command - detect and fix all issues
      */
-    executeRecovery(options?: {}): Promise<{
-        success: boolean;
-        issues: any[];
-        restored: ({
-            success: boolean;
-            error: string;
-            path?: never;
-            template?: never;
-        } | {
-            success: boolean;
-            path: any;
-            template: any;
-            error?: never;
-        } | {
-            success: boolean;
-            error: string;
-            path?: never;
-            generated?: never;
-        } | {
-            success: boolean;
-            path: any;
-            generated: boolean;
-            error?: never;
-        } | {
-            success: boolean;
-            path: string;
-            initialized: boolean;
-            error?: never;
-        } | {
-            success: boolean;
-            error: string;
-            path?: never;
-            initialized?: never;
-        })[];
-    }>;
+    executeRecovery(options?: RecoveryOptions): Promise<RecoveryExecutionResult>;
+    /**
+     * Assess recovery needs and create assessment
+     */
+    assessRecovery(): Promise<RecoveryAssessment>;
+    /**
+     * Create a recovery plan for the detected issues
+     */
+    createRecoveryPlan(issues: RecoveryIssue[]): Promise<RecoveryPlan>;
+    /**
+     * Create a recovery step for a specific issue
+     */
+    private createRecoveryStep;
+    /**
+     * Check if an issue can be automatically fixed
+     */
+    private isAutoFixable;
     /**
      * Detect missing or broken setup files
      */
-    detectIssues(): Promise<any[]>;
+    detectIssues(): Promise<RecoveryIssue[]>;
     /**
      * Detect language-specific setup issues
      */
-    detectLanguageIssues(language: any): Promise<any[]>;
+    private detectLanguageIssues;
     /**
      * Fix detected issues by restoring from templates
      */
-    fixIssues(issues: any): Promise<({
-        success: boolean;
-        error: string;
-        path?: never;
-        template?: never;
-    } | {
-        success: boolean;
-        path: any;
-        template: any;
-        error?: never;
-    } | {
-        success: boolean;
-        error: string;
-        path?: never;
-        generated?: never;
-    } | {
-        success: boolean;
-        path: any;
-        generated: boolean;
-        error?: never;
-    } | {
-        success: boolean;
-        path: string;
-        initialized: boolean;
-        error?: never;
-    } | {
-        success: boolean;
-        error: string;
-        path?: never;
-        initialized?: never;
-    })[]>;
+    private fixIssues;
     /**
      * Fix a single issue
      */
-    fixSingleIssue(issue: any): Promise<{
-        success: boolean;
-        error: string;
-        path?: never;
-        template?: never;
-    } | {
-        success: boolean;
-        path: any;
-        template: any;
-        error?: never;
-    } | {
-        success: boolean;
-        error: string;
-        path?: never;
-        generated?: never;
-    } | {
-        success: boolean;
-        path: any;
-        generated: boolean;
-        error?: never;
-    } | {
-        success: boolean;
-        path: string;
-        initialized: boolean;
-        error?: never;
-    } | {
-        success: boolean;
-        error: string;
-        path?: never;
-        initialized?: never;
-    }>;
+    private fixSingleIssue;
     /**
      * Restore a file from template
      */
-    restoreFileFromTemplate(issue: any): Promise<{
-        success: boolean;
-        error: string;
-        path?: never;
-        template?: never;
-    } | {
-        success: boolean;
-        path: any;
-        template: any;
-        error?: never;
-    }>;
+    private restoreFileFromTemplate;
     /**
      * Restore entire command directory
      */
-    restoreDirectoryFromTemplate(issue: any): Promise<{
-        success: boolean;
-        error: string;
-        path?: never;
-        template?: never;
-    } | {
-        success: boolean;
-        path: any;
-        template: any;
-        error?: never;
-    }>;
+    private restoreDirectoryFromTemplate;
     /**
      * Restore a single command file
      */
-    restoreCommandFromTemplate(issue: any): Promise<{
-        success: boolean;
-        error: string;
-        path?: never;
-        template?: never;
-    } | {
-        success: boolean;
-        path: any;
-        template: any;
-        error?: never;
-    }>;
+    private restoreCommandFromTemplate;
     /**
      * Restore language-specific configuration file
      */
-    restoreLanguageFileFromTemplate(issue: any): Promise<{
-        success: boolean;
-        error: string;
-        path?: never;
-        generated?: never;
-    } | {
-        success: boolean;
-        path: any;
-        generated: boolean;
-        error?: never;
-    }>;
+    private restoreLanguageFileFromTemplate;
     /**
      * Initialize git repository
      */
-    initializeGitRepository(): Promise<{
-        success: boolean;
-        path: string;
-        initialized: boolean;
-        error?: never;
-    } | {
-        success: boolean;
-        error: string;
-        path?: never;
-        initialized?: never;
-    }>;
+    private initializeGitRepository;
     /**
      * Process template variables in restored files
      */
-    processTemplateVariables(filePath: any, _language: any): Promise<void>;
+    private processTemplateVariables;
     /**
      * Generate recovery report
      */
@@ -240,13 +98,18 @@ export class RecoverySystem {
             failed: number;
             warnings: number;
         };
-        details: {
-            detected: never[];
-            restored: never[];
-            failed: never[];
-            warnings: never[];
-        };
+        details: RecoveryResults;
     };
+    /**
+     * Validate recovery operations with comprehensive error handling
+     */
+    validateRecovery(issues: RecoveryIssue[]): Promise<Result<boolean, RecoveryError>>;
+    /**
+     * Validate a single recovery issue
+     */
+    private validateSingleIssue;
 }
+export declare function runRecovery(args?: string[]): Promise<RecoveryExecutionResult>;
 export default RecoverySystem;
+export type { RecoveryAssessment, RecoveryPlan, RecoveryStep };
 //# sourceMappingURL=recovery-system.d.ts.map

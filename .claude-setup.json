@@ -4,17 +4,18 @@
     "primary": "js",
     "name": "JavaScript/TypeScript",
     "confidence": "high",
-    "detected": "2025-07-17T20:32:05.681Z",
+    "detected": "2025-07-19T00:49:24.900Z",
     "evidence": {
       "foundFiles": [
         "package.json",
-        "package-lock.json"
+        "package-lock.json",
+        "tsconfig.json"
       ],
       "foundExtensions": [
         ".js"
       ],
-      "fileCount": 11,
-      "score": 30
+      "fileCount": 13,
+      "score": 40
     }
   },
   "detection": {

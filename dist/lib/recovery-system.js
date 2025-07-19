@@ -5,14 +5,17 @@
  * Detects missing or broken setup files and restores them from templates.
  * Saves hours of manual re-setup when projects get corrupted.
  */
-import fs from 'fs-extra';
 import path from 'path';
-import chalk from 'chalk';
 import { execSync } from 'child_process';
+import fs from 'fs-extra';
+import chalk from 'chalk';
+import { RecoveryError } from '../types/index.js';
 import { LanguageDetector } from './language-detector.js';
 export class RecoverySystem {
+    templateDir;
+    results;
     constructor() {
-        this.templateDir = path.resolve(path.dirname(new globalThis.URL(import.meta.url).pathname), '..', 'templates');
+        this.templateDir = path.resolve(path.dirname(new globalThis.URL(import.meta.url).pathname), '..', '..', 'templates');
         this.results = {
             detected: [],
             restored: [],
@@ -40,12 +43,13 @@ export class RecoverySystem {
         }
         // Confirm recovery
         if (!options.autoFix) {
-            const { confirm } = await import('inquirer').then(m => m.default.prompt({
+            const inquirer = await import('inquirer');
+            const { confirm } = await inquirer.default.prompt({
                 type: 'confirm',
                 name: 'confirm',
                 message: 'Proceed with automatic recovery?',
                 default: true
-            }));
+            });
             if (!confirm) {
                 console.log(chalk.gray('Recovery cancelled by user.'));
                 return { success: false, issues, restored: [] };
@@ -61,6 +65,109 @@ export class RecoverySystem {
         return { success: true, issues, restored };
     }
     /**
+     * Assess recovery needs and create assessment
+     */
+    async assessRecovery() {
+        const issues = await this.detectIssues();
+        // Calculate overall severity
+        const severityLevels = { critical: 4, high: 3, medium: 2, low: 1 };
+        const maxSeverity = Math.max(...issues.map(issue => severityLevels[issue.severity]));
+        const overallSeverity = Object.keys(severityLevels).find(key => severityLevels[key] === maxSeverity);
+        // Estimate fix time (in minutes)
+        const timeEstimates = { critical: 5, high: 3, medium: 2, low: 1 };
+        const estimatedFixTime = issues.reduce((total, issue) => total + timeEstimates[issue.severity], 0);
+        // Check if all issues are auto-fixable
+        const autoFixable = issues.every(issue => this.isAutoFixable(issue));
+        return {
+            issues,
+            severity: overallSeverity,
+            estimatedFixTime,
+            autoFixable
+        };
+    }
+    /**
+     * Create a recovery plan for the detected issues
+     */
+    async createRecoveryPlan(issues) {
+        const steps = [];
+        let requiresUserInput = false;
+        for (const issue of issues) {
+            const step = this.createRecoveryStep(issue);
+            steps.push(step);
+            if (!this.isAutoFixable(issue)) {
+                requiresUserInput = true;
+            }
+        }
+        // Estimate total time (in minutes)
+        const timeEstimates = { critical: 5, high: 3, medium: 2, low: 1 };
+        const estimatedTime = issues.reduce((total, issue) => total + timeEstimates[issue.severity], 0);
+        return {
+            steps,
+            estimatedTime,
+            requiresUserInput
+        };
+    }
+    /**
+     * Create a recovery step for a specific issue
+     */
+    createRecoveryStep(issue) {
+        switch (issue.type) {
+            case 'missing-file':
+            case 'corrupted-file':
+                return {
+                    description: `Restore ${issue.path} from template`,
+                    command: `copy template ${issue.template} to ${issue.path}`,
+                    validation: `check file exists: ${issue.path}`,
+                    rollback: issue.type === 'corrupted-file' ? `restore backup of ${issue.path}` : undefined
+                };
+            case 'missing-directory':
+                return {
+                    description: `Create directory ${issue.path}`,
+                    command: `copy template directory ${issue.template} to ${issue.path}`,
+                    validation: `check directory exists: ${issue.path}`
+                };
+            case 'missing-command':
+                return {
+                    description: `Restore command file ${issue.path}`,
+                    command: `copy template ${issue.template} to ${issue.path}`,
+                    validation: `check file exists: ${issue.path}`
+                };
+            case 'missing-language-file':
+                return {
+                    description: `Generate ${issue.language} configuration file ${issue.path}`,
+                    command: `run ${issue.language} setup module`,
+                    validation: `check file exists: ${issue.path}`
+                };
+            case 'missing-git':
+                return {
+                    description: 'Initialize git repository',
+                    command: 'git init',
+                    validation: 'check .git directory exists'
+                };
+            default:
+                return {
+                    description: `Fix unknown issue: ${issue.description}`,
+                    command: 'manual intervention required',
+                    validation: 'manual verification required'
+                };
+        }
+    }
+    /**
+     * Check if an issue can be automatically fixed
+     */
+    isAutoFixable(issue) {
+        // Git initialization might require user configuration
+        if (issue.type === 'missing-git') {
+            return false;
+        }
+        // Language files might require user input for configuration
+        if (issue.type === 'missing-language-file') {
+            return true; // We can generate with defaults
+        }
+        // File and directory restoration is always auto-fixable
+        return true;
+    }
+    /**
      * Detect missing or broken setup files
      */
     async detectIssues() {
@@ -68,11 +175,21 @@ export class RecoverySystem {
         // Detect project language first
         const detector = new LanguageDetector();
         const detection = await detector.getBestGuess();
-        const detectedLanguage = detection.language;
+        const detectedLanguage = detection && 'language' in detection ? detection.language : 'unknown';
         // Core documentation files
         const coreFiles = [
-            { path: 'CLAUDE.md', template: 'CLAUDE.md', severity: 'critical', description: 'Missing CLAUDE.md - AI collaboration guidelines' },
-            { path: 'ACTIVE_WORK.md', template: 'ACTIVE_WORK.md', severity: 'critical', description: 'Missing ACTIVE_WORK.md - session management' }
+            {
+                path: 'CLAUDE.md',
+                template: 'CLAUDE.md',
+                severity: 'critical',
+                description: 'Missing CLAUDE.md - AI collaboration guidelines'
+            },
+            {
+                path: 'ACTIVE_WORK.md',
+                template: 'ACTIVE_WORK.md',
+                severity: 'critical',
+                description: 'Missing ACTIVE_WORK.md - session management'
+            }
         ];
         for (const file of coreFiles) {
             if (!await fs.pathExists(file.path)) {
@@ -178,14 +295,18 @@ export class RecoverySystem {
             const exists = await fs.pathExists(file.path) ||
                 (file.alternative && await fs.pathExists(file.alternative));
             if (!exists) {
-                issues.push({
+                const issue = {
                     type: 'missing-language-file',
                     path: file.path,
                     template: `${language}/${file.path}`,
                     severity: 'high',
                     description: file.description,
                     language
-                });
+                };
+                if (file.alternative) {
+                    issue.alternative = file.alternative;
+                }
+                issues.push(issue);
             }
         }
         return issues;
@@ -204,12 +325,13 @@ export class RecoverySystem {
                 }
                 else {
                     console.log(chalk.red(`   ❌ Failed: ${issue.description} - ${result.error}`));
-                    this.results.failed.push({ issue, error: result.error });
+                    this.results.failed.push({ issue, error: result.error || 'Unknown error' });
                 }
             }
             catch (error) {
-                console.log(chalk.red(`   ❌ Error: ${issue.description} - ${error.message}`));
-                this.results.failed.push({ issue, error: error.message });
+                const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+                console.log(chalk.red(`   ❌ Error: ${issue.description} - ${errorMessage}`));
+                this.results.failed.push({ issue, error: errorMessage });
             }
         }
         return restored;
@@ -238,6 +360,9 @@ export class RecoverySystem {
      * Restore a file from template
      */
     async restoreFileFromTemplate(issue) {
+        if (!issue.template) {
+            return { success: false, error: 'No template specified for file restoration' };
+        }
         const templatePath = path.join(this.templateDir, issue.template);
         if (!await fs.pathExists(templatePath)) {
             return { success: false, error: `Template not found: ${templatePath}` };
@@ -257,6 +382,9 @@ export class RecoverySystem {
      * Restore entire command directory
      */
     async restoreDirectoryFromTemplate(issue) {
+        if (!issue.template) {
+            return { success: false, error: 'No template specified for directory restoration' };
+        }
         const templatePath = path.join(this.templateDir, issue.template);
         if (!await fs.pathExists(templatePath)) {
             return { success: false, error: `Template directory not found: ${templatePath}` };
@@ -269,6 +397,9 @@ export class RecoverySystem {
      * Restore a single command file
      */
     async restoreCommandFromTemplate(issue) {
+        if (!issue.template) {
+            return { success: false, error: 'No template specified for command restoration' };
+        }
         const templatePath = path.join(this.templateDir, issue.template);
         if (!await fs.pathExists(templatePath)) {
             return { success: false, error: `Command template not found: ${templatePath}` };
@@ -281,6 +412,9 @@ export class RecoverySystem {
      * Restore language-specific configuration file
      */
     async restoreLanguageFileFromTemplate(issue) {
+        if (!issue.language) {
+            return { success: false, error: 'No language specified for language file restoration' };
+        }
         // For language files, we need to generate them using the language setup modules
         const languageModules = {
             javascript: () => import('./languages/javascript.js'),
@@ -297,17 +431,25 @@ export class RecoverySystem {
         try {
             const module = await moduleLoader();
             // Call the setup function with recovery mode
-            const setupOptions = {
+            const config = {
+                projectType: issue.language,
                 qualityLevel: 'standard',
                 teamSize: 'solo',
-                setupCI: false,
+                cicd: false,
                 recoveryMode: true
             };
-            await module.default.setup(setupOptions);
+            const detection = {
+                existingFiles: {},
+                language: issue.language,
+                confidence: 1.0,
+                evidence: ['recovery-mode']
+            };
+            await module.default.setup(config, detection);
             return { success: true, path: issue.path, generated: true };
         }
         catch (error) {
-            return { success: false, error: `Failed to generate ${issue.language} files: ${error.message}` };
+            const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+            return { success: false, error: `Failed to generate ${issue.language} files: ${errorMessage}` };
         }
     }
     /**
@@ -332,7 +474,8 @@ export class RecoverySystem {
             return { success: true, path: '.git', initialized: true };
         }
         catch (error) {
-            return { success: false, error: `Failed to initialize git: ${error.message}` };
+            const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+            return { success: false, error: `Failed to initialize git: ${errorMessage}` };
         }
     }
     /**
@@ -354,7 +497,8 @@ export class RecoverySystem {
             await fs.writeFile(filePath, content);
         }
         catch (error) {
-            this.results.warnings.push(`Could not process template variables in ${filePath}: ${error.message}`);
+            const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+            this.results.warnings.push(`Could not process template variables in ${filePath}: ${errorMessage}`);
         }
     }
     /**
@@ -370,6 +514,54 @@ export class RecoverySystem {
             },
             details: this.results
         };
+    }
+    /**
+     * Validate recovery operations with comprehensive error handling
+     */
+    async validateRecovery(issues) {
+        try {
+            for (const issue of issues) {
+                const isValid = await this.validateSingleIssue(issue);
+                if (!isValid) {
+                    return {
+                        success: false,
+                        error: new RecoveryError(`Validation failed for issue: ${issue.description}`, {
+                            issue: issue.type,
+                            path: issue.path
+                        })
+                    };
+                }
+            }
+            return { success: true, data: true };
+        }
+        catch (error) {
+            return {
+                success: false,
+                error: new RecoveryError('Recovery validation failed', {
+                    originalError: error instanceof Error ? error.message : 'Unknown error'
+                })
+            };
+        }
+    }
+    /**
+     * Validate a single recovery issue
+     */
+    async validateSingleIssue(issue) {
+        switch (issue.type) {
+            case 'missing-file':
+            case 'corrupted-file':
+            case 'missing-command':
+                return await fs.pathExists(issue.path);
+            case 'missing-directory':
+                return await fs.pathExists(issue.path) && (await fs.stat(issue.path)).isDirectory();
+            case 'missing-language-file':
+                return await fs.pathExists(issue.path) ||
+                    (issue.alternative ? await fs.pathExists(issue.alternative) : false);
+            case 'missing-git':
+                return await fs.pathExists('.git') && (await fs.stat('.git')).isDirectory();
+            default:
+                return false;
+        }
     }
 }
 // CLI usage

@@ -1,5 +1,7 @@
 import { execSync } from 'child_process';
+
 import fs from 'fs-extra';
+
 import type { 
   GitHubIssue, 
   GitHubListIssuesFilters, 
@@ -33,7 +35,7 @@ export class GitHubAPI {
     try {
       const token = execSync('gh auth token', { encoding: 'utf8', stdio: 'pipe' }).trim();
       return token;
-    } catch (error) {
+    } catch {
       throw new GitHubAPIError(
         'GitHub authentication required. Please run "gh auth login" or set GITHUB_TOKEN environment variable.',
         { status: 401 }

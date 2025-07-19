@@ -25,7 +25,7 @@ export class GitHubAPI {
             const token = execSync('gh auth token', { encoding: 'utf8', stdio: 'pipe' }).trim();
             return token;
         }
-        catch (error) {
+        catch {
             throw new GitHubAPIError('GitHub authentication required. Please run "gh auth login" or set GITHUB_TOKEN environment variable.', { status: 401 });
         }
     }
