@@ -1,98 +1,46 @@
+import type { CLIConfig, InquirerPrompt, InquirerAnswers, InteractiveSetupResult } from '../../types/index.js';
+import type { ValidationError } from '../../types/utils.js';
+import type { DetectionGuess } from '../language-detector.js';
 /**
  * Interactive setup handler - manages user prompts and configuration
  */
-export class InteractiveSetup {
-    modeQuestion: {
-        type: string;
-        name: string;
-        message: string;
-        choices: {
-            name: string;
-            value: string;
-        }[];
-    };
-    baseQuestions: ({
-        type: string;
-        name: string;
-        message: string;
-        choices: {
-            name: string;
-            value: string;
-        }[];
-        default?: never;
-    } | {
-        type: string;
-        name: string;
-        message: string;
-        default: boolean;
-        choices?: never;
-    })[];
-    validProjectTypes: string[];
-    validQualityLevels: string[];
-    validTeamSizes: string[];
+export declare class InteractiveSetup {
+    private readonly modeQuestion;
+    private readonly baseQuestions;
+    private readonly validProjectTypes;
+    private readonly validQualityLevels;
+    private readonly validTeamSizes;
+    constructor();
     /**
      * Build smart questions with language detection and verification
      */
     buildSmartQuestions(): Promise<{
-        smartQuestions: ({
-            type: string;
-            name: string;
-            message: string;
-            default: boolean;
-            choices?: never;
-        } | {
-            type: string;
-            name: string;
-            message: string;
-            choices: any[];
-        } | undefined)[];
-        detection: {
-            type: string;
-            language: any;
-            name: any;
-            confidence: any;
-            evidence: any;
-            source: string;
-            candidates?: never;
-        } | {
-            type: string;
-            candidates: {
-                language: string;
-                name: string;
-                score: number;
-                evidence: {
-                    foundFiles: never[];
-                    foundExtensions: never[];
-                    fileCount: number;
-                    score: number;
-                };
-            }[];
-            source: string;
-            language?: never;
-            name?: never;
-            confidence?: never;
-            evidence?: never;
-        } | null;
+        smartQuestions: InquirerPrompt[];
+        detection: DetectionGuess;
     }>;
     /**
      * Process smart question answers to normalize project type
      */
-    processSmartAnswers(answers: any, detection: any): any;
+    processSmartAnswers(answers: InquirerAnswers, detection: DetectionGuess): InquirerAnswers;
     /**
      * Validate user input configuration
      */
-    validateConfiguration(config: any): string[];
+    validateConfiguration(config: Partial<CLIConfig>): ValidationError[];
     /**
      * Sanitize and normalize configuration values
      */
-    sanitizeConfiguration(config: any): any;
+    sanitizeConfiguration(config: Partial<CLIConfig>): CLIConfig;
     /**
      * Run the interactive setup process with enhanced validation
      */
-    runInteractiveSetup(options?: {}): Promise<void>;
+    runInteractiveSetup(options?: {
+        languageOverride?: string;
+    }): Promise<InteractiveSetupResult>;
     /**
      * Handle setup mode with smart language detection and validation
      */
-    runSetupMode(): Promise<void>;
+    runSetupMode(): Promise<CLIConfig & {
+        detection?: DetectionGuess;
+    }>;
 }
 //# sourceMappingURL=interactive.d.ts.map

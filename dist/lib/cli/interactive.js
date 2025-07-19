@@ -5,6 +5,11 @@ import { LanguageDetector } from '../language-detector.js';
  * Interactive setup handler - manages user prompts and configuration
  */
 export class InteractiveSetup {
+    modeQuestion;
+    baseQuestions;
+    validProjectTypes;
+    validQualityLevels;
+    validTeamSizes;
     constructor() {
         this.modeQuestion = {
             type: 'list',
@@ -48,7 +53,7 @@ export class InteractiveSetup {
                 choices: [
                     { name: 'Solo - Individual developer', value: 'solo' },
                     { name: 'Small - 2-5 people', value: 'small' },
-                    { name: 'Team - 6+ people, full CI/CD', value: 'team' }
+                    { name: 'Team - 6+ people, full CI/CD', value: 'large' }
                 ]
             },
             {
@@ -61,7 +66,7 @@ export class InteractiveSetup {
         // Valid project types for validation
         this.validProjectTypes = ['js', 'javascript', 'typescript', 'python', 'go', 'rust', 'java', 'swift', 'other'];
         this.validQualityLevels = ['strict', 'standard', 'relaxed'];
-        this.validTeamSizes = ['solo', 'small', 'team'];
+        this.validTeamSizes = ['solo', 'small', 'large'];
     }
     /**
      * Build smart questions with language detection and verification
@@ -100,7 +105,7 @@ export class InteractiveSetup {
                         name: `${c.name} (detected: ${detector.formatEvidence(c.evidence)})`,
                         value: c.language
                     })),
-                    new inquirer.Separator(),
+                    { name: '--- Other Options ---', value: 'separator' },
                     ...this.baseQuestions[0].choices
                 ]
             };
@@ -109,13 +114,15 @@ export class InteractiveSetup {
         const smartQuestions = [projectTypeQuestion];
         // Add post-processing for single detection confirmation
         if (detection && detection.type === 'single') {
-            smartQuestions.push({
-                type: 'list',
-                name: 'projectType',
-                message: 'What type of project are you setting up?',
-                choices: this.baseQuestions[0].choices,
-                when: (answers) => !answers.useDetectedLanguage
-            });
+            const baseChoices = this.baseQuestions[0].choices;
+            if (baseChoices) {
+                smartQuestions.push({
+                    type: 'list',
+                    name: 'projectType',
+                    message: 'What type of project are you setting up?',
+                    choices: baseChoices
+                });
+            }
         }
         // Add the remaining questions (quality, team, cicd)
         smartQuestions.push(...this.baseQuestions.slice(1));
@@ -139,19 +146,39 @@ export class InteractiveSetup {
         const errors = [];
         // Validate project type
         if (!config.projectType || !this.validProjectTypes.includes(config.projectType)) {
-            errors.push(`Invalid project type: ${config.projectType}. Must be one of: ${this.validProjectTypes.join(', ')}`);
+            errors.push({
+                field: 'projectType',
+                message: `Invalid project type: ${config.projectType}. Must be one of: ${this.validProjectTypes.join(', ')}`,
+                code: 'INVALID_PROJECT_TYPE',
+                value: config.projectType
+            });
         }
         // Validate quality level
         if (!config.qualityLevel || !this.validQualityLevels.includes(config.qualityLevel)) {
-            errors.push(`Invalid quality level: ${config.qualityLevel}. Must be one of: ${this.validQualityLevels.join(', ')}`);
+            errors.push({
+                field: 'qualityLevel',
+                message: `Invalid quality level: ${config.qualityLevel}. Must be one of: ${this.validQualityLevels.join(', ')}`,
+                code: 'INVALID_QUALITY_LEVEL',
+                value: config.qualityLevel
+            });
         }
         // Validate team size
         if (!config.teamSize || !this.validTeamSizes.includes(config.teamSize)) {
-            errors.push(`Invalid team size: ${config.teamSize}. Must be one of: ${this.validTeamSizes.join(', ')}`);
+            errors.push({
+                field: 'teamSize',
+                message: `Invalid team size: ${config.teamSize}. Must be one of: ${this.validTeamSizes.join(', ')}`,
+                code: 'INVALID_TEAM_SIZE',
+                value: config.teamSize
+            });
         }
         // Validate CI/CD flag
         if (typeof config.cicd !== 'boolean') {
-            errors.push(`Invalid CI/CD setting: ${config.cicd}. Must be true or false`);
+            errors.push({
+                field: 'cicd',
+                message: `Invalid CI/CD setting: ${config.cicd}. Must be true or false`,
+                code: 'INVALID_CICD_FLAG',
+                value: config.cicd
+            });
         }
         return errors;
     }
@@ -174,8 +201,11 @@ export class InteractiveSetup {
                 'golang': 'go',
                 'rs': 'rust'
             };
-            if (aliases[sanitized.projectType]) {
-                sanitized.projectType = aliases[sanitized.projectType];
+            if (sanitized.projectType && sanitized.projectType in aliases) {
+                const aliasValue = aliases[sanitized.projectType];
+                if (aliasValue) {
+                    sanitized.projectType = aliasValue;
+                }
             }
         }
         // Normalize quality level
@@ -185,13 +215,24 @@ export class InteractiveSetup {
         // Normalize team size
         if (sanitized.teamSize) {
             sanitized.teamSize = sanitized.teamSize.toLowerCase().trim();
+            // Handle 'team' -> 'large' mapping
+            if (sanitized.teamSize === 'team') {
+                sanitized.teamSize = 'large';
+            }
         }
         // Ensure CI/CD is boolean
         if (typeof sanitized.cicd === 'string') {
             const lowerValue = sanitized.cicd.toLowerCase();
             sanitized.cicd = lowerValue === 'true' || lowerValue === 'yes' || lowerValue === '1';
         }
-        return sanitized;
+        // Provide defaults for required fields
+        return {
+            projectType: sanitized.projectType || 'other',
+            qualityLevel: sanitized.qualityLevel || 'standard',
+            teamSize: sanitized.teamSize || 'small',
+            cicd: sanitized.cicd || false,
+            ...sanitized
+        };
     }
     /**
      * Run the interactive setup process with enhanced validation
@@ -211,37 +252,31 @@ export class InteractiveSetup {
                 const validationErrors = this.validateConfiguration(sanitizedConfig);
                 if (validationErrors.length > 0) {
                     console.error(chalk.red('❌ Invalid language override:'));
-                    validationErrors.forEach(error => console.error(chalk.red(`   ${error}`)));
+                    validationErrors.forEach(error => console.error(chalk.red(`   ${error.message}`)));
                     throw new Error('Invalid configuration provided');
                 }
                 console.log(chalk.blue.bold('\n🤖 Claude Code Project Setup\n'));
                 console.log(chalk.yellow(`Using language override: ${sanitizedConfig.projectType}`));
-                // Delegate to setup orchestrator with override
-                const { SetupOrchestrator } = await import('./setup.js');
-                const orchestrator = new SetupOrchestrator();
-                await orchestrator.runSetupMode(sanitizedConfig);
-                return;
+                // Return config for setup orchestrator to handle
+                return sanitizedConfig;
             }
             // First ask what mode they want
             const modeAnswer = await inquirer.prompt([this.modeQuestion]);
             if (modeAnswer.mode === 'recovery') {
-                const { SetupOrchestrator } = await import('./setup.js');
-                const orchestrator = new SetupOrchestrator();
-                await orchestrator.runRecoveryMode();
+                return { mode: 'recovery' };
             }
             else if (modeAnswer.mode === 'devcontainer') {
-                const { SetupOrchestrator } = await import('./setup.js');
-                const orchestrator = new SetupOrchestrator();
-                await orchestrator.runDevContainerMode();
+                return { mode: 'devcontainer' };
             }
             else {
-                await this.runSetupMode();
+                return await this.runSetupMode();
             }
         }
         catch (error) {
-            console.error(chalk.red('❌ Interactive setup failed:'), error.message);
+            const errorMessage = error instanceof Error ? error.message : String(error);
+            console.error(chalk.red('❌ Interactive setup failed:'), errorMessage);
             if (process.env.NODE_ENV === 'development') {
-                console.error(chalk.gray('Stack trace:'), error.stack);
+                console.error(chalk.gray('Stack trace:'), error instanceof Error ? error.stack : 'No stack trace available');
             }
             throw error;
         }
@@ -261,7 +296,7 @@ export class InteractiveSetup {
             const validationErrors = this.validateConfiguration(sanitizedConfig);
             if (validationErrors.length > 0) {
                 console.error(chalk.red('❌ Configuration validation failed:'));
-                validationErrors.forEach(error => console.error(chalk.red(`   ${error}`)));
+                validationErrors.forEach(error => console.error(chalk.red(`   ${error.message}`)));
                 throw new Error('Invalid configuration provided');
             }
             console.log(chalk.green('\n✅ Configuration complete!\n'));
@@ -274,11 +309,13 @@ export class InteractiveSetup {
             const { SetupOrchestrator } = await import('./setup.js');
             const orchestrator = new SetupOrchestrator();
             await orchestrator.runSetupMode(sanitizedConfig, detection);
+            return { ...sanitizedConfig, detection };
         }
         catch (error) {
-            console.error(chalk.red('❌ Setup mode failed:'), error.message);
+            const errorMessage = error instanceof Error ? error.message : String(error);
+            console.error(chalk.red('❌ Setup mode failed:'), errorMessage);
             if (process.env.NODE_ENV === 'development') {
-                console.error(chalk.gray('Stack trace:'), error.stack);
+                console.error(chalk.gray('Stack trace:'), error instanceof Error ? error.stack : 'No stack trace available');
             }
             throw error;
         }

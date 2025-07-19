@@ -2,6 +2,7 @@ import inquirer from 'inquirer';
 import chalk from 'chalk';
 import { QualityLevelManager } from '../quality-levels.js';
 export class QualitySetup {
+    manager;
     constructor() {
         this.manager = new QualityLevelManager();
     }
@@ -15,7 +16,7 @@ export class QualitySetup {
                 type: 'list',
                 name: 'selectedLevel',
                 message: 'Select code quality level:',
-                choices: availableLevels.map(level => ({
+                choices: availableLevels.map((level) => ({
                     name: `${level.name} - ${level.description}`,
                     value: level.value
                 })),
@@ -30,7 +31,8 @@ export class QualitySetup {
                 console.log(chalk.gray('ESLint configuration updated automatically.'));
             }
             catch (error) {
-                console.error(chalk.red(`❌ Failed to update quality level: ${error.message}`));
+                const errorMessage = error instanceof Error ? error.message : String(error);
+                console.error(chalk.red(`❌ Failed to update quality level: ${errorMessage}`));
                 return false;
             }
         }
@@ -42,10 +44,10 @@ export class QualitySetup {
     async showStatus() {
         const currentLevel = await this.manager.getCurrentLevel();
         const availableLevels = await this.manager.getAvailableLevels();
-        const levelConfig = availableLevels.find(l => l.value === currentLevel);
+        const levelConfig = availableLevels.find((l) => l.value === currentLevel);
         console.log(chalk.blue('\n📊 Code Quality Status\n'));
-        console.log(`Current Level: ${chalk.yellow(levelConfig.name)}`);
-        console.log(`Description: ${chalk.gray(levelConfig.description)}`);
+        console.log(`Current Level: ${chalk.yellow(levelConfig?.name || currentLevel)}`);
+        console.log(`Description: ${chalk.gray(levelConfig?.description || 'No description available')}`);
         console.log(`Config File: ${chalk.gray('.git-quality-config.json')}`);
     }
 }

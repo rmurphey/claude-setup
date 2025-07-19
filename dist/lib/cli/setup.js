@@ -1,8 +1,8 @@
-import chalk from 'chalk';
-import inquirer from 'inquirer';
-import fs from 'fs-extra';
-import path from 'path';
 import { execSync } from 'child_process';
+import path from 'path';
+import chalk from 'chalk';
+import fs from 'fs-extra';
+import inquirer from 'inquirer';
 import { LanguageDetector } from '../language-detector.js';
 // Language setup modules
 import javascript from '../languages/javascript.js';
@@ -15,28 +15,31 @@ import swift from '../languages/swift.js';
  * Setup orchestrator - coordinates different setup modes
  */
 export class SetupOrchestrator {
+    languageModules;
     constructor() {
-        this.languageModules = { js: javascript, python, go, rust, java, swift };
+        this.languageModules = {
+            js: javascript,
+            python,
+            go,
+            rust,
+            java,
+            swift
+        };
     }
     /**
      * Run the main setup mode - moved from main.js
      */
-    async runSetupMode(config) {
+    async runSetupMode(config, detection) {
         console.log(chalk.blue.bold('\n🤖 Claude Code Project Setup\n'));
-        // If config is just a language override, run interactive setup
-        if (config && config.languageOverride) {
-            const { InteractiveSetup } = await import('./interactive.js');
-            const interactive = new InteractiveSetup();
-            await interactive.runInteractiveSetup(config);
-            return;
-        }
+        // Language override handling is now done in main.js
+        // This method expects a full config object
         // If we have a full config, run direct setup
         if (config && config.projectType) {
             await this.setupProject(config);
             // Save language detection config for future use
-            if (config.detection && config.detection.type === 'single') {
+            if (detection && detection.type === 'single') {
                 const detector = new LanguageDetector();
-                await detector.saveConfig(config.detection, {
+                await detector.saveConfig(detection, {
                     qualityLevel: config.qualityLevel,
                     teamSize: config.teamSize,
                     cicd: config.cicd,
@@ -56,10 +59,9 @@ export class SetupOrchestrator {
             console.log('5. Start coding with professional standards in place\n');
         }
         else {
-            // No config provided, run interactive setup
-            const { InteractiveSetup } = await import('./interactive.js');
-            const interactive = new InteractiveSetup();
-            await interactive.runInteractiveSetup();
+            // No config provided - this should be handled by main.js
+            console.error(chalk.red('❌ No configuration provided to setup orchestrator'));
+            throw new Error('Setup orchestrator requires configuration');
         }
     }
     /**
@@ -223,6 +225,7 @@ export class SetupOrchestrator {
         };
         const languageModule = this.languageModules[config.projectType];
         if (languageModule) {
+            // Use the existing language module interface
             await languageModule.setup(config, detection);
         }
         else {
@@ -295,41 +298,6 @@ Provide helpful output for the ${cmd} command.
             }
             catch (error) {
                 console.log(chalk.yellow(`   Warning: Could not create ${cmd} command`));
-            }
-        }
-    }
-    /**
-     * Setup recovery commands
-     */
-    async setupRecoveryCommands() {
-        console.log(chalk.blue('🏥 Installing recovery system...'));
-        await fs.ensureDir('.claude/commands');
-        const recoveryCommands = ['recovery-assess', 'recovery-plan', 'recovery-execute'];
-        for (const cmd of recoveryCommands) {
-            const sourcePath = path.join(process.cwd(), '.claude', 'commands', `${cmd}.md`);
-            const targetPath = `.claude/commands/${cmd}.md`;
-            try {
-                await fs.copy(sourcePath, targetPath);
-                console.log(chalk.gray(`   Installed: ${cmd}.md`));
-            }
-            catch (error) {
-                console.log(chalk.yellow(`   Warning: Could not install ${cmd} command`));
-            }
-        }
-        // Also copy the basic commands if .claude doesn't exist
-        if (!await fs.pathExists('.claude/commands/hygiene.md')) {
-            console.log(chalk.blue('📋 Installing basic command suite...'));
-            const basicCommands = ['hygiene', 'todo', 'learn', 'commit', 'push', 'next', 'ideation'];
-            for (const cmd of basicCommands) {
-                const sourcePath = path.join(process.cwd(), '.claude', 'commands', `${cmd}.md`);
-                const targetPath = `.claude/commands/${cmd}.md`;
-                try {
-                    await fs.copy(sourcePath, targetPath);
-                    console.log(chalk.gray(`   Installed: ${cmd}.md`));
-                }
-                catch (error) {
-                    console.log(chalk.yellow(`   Warning: Could not install ${cmd} command`));
-                }
             }
         }
     }
