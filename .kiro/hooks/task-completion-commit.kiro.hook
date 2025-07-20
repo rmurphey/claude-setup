@@ -1,0 +1,23 @@
+{
+  "enabled": true,
+  "name": "Task Completion Auto-Commit",
+  "description": "Automatically updates documentation and commits changes when task completion is detected",
+  "version": "1",
+  "when": {
+    "type": "fileEdited",
+    "patterns": [
+      "internal/ACTIVE_WORK.md",
+      "README.md",
+      "docs/**/*.md",
+      "src/**/*",
+      "lib/**/*",
+      "package.json",
+      ".kiro/specs/*",
+      ".kiro/specs/*"
+    ]
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "A task appears to have been completed based on file changes. Please:\n\n1. Run the update-docs command to refresh all documentation\n2. Review the changes made and ensure they are complete\n3. Create an appropriate commit message that summarizes the work completed\n4. Commit the changes with the generated message\n\nFocus on ensuring documentation is current and the commit message accurately reflects the completed work."
+  }
+}

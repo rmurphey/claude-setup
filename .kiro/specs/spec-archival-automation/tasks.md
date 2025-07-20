@@ -14,14 +14,14 @@
   - Write validation logic to ensure tasks.md files are properly formatted
   - _Requirements: 1.1, 3.1, 4.2_
 
-- [ ] 3. Build ArchivalEngine with safe file operations
+- [x] 3. Build ArchivalEngine with safe file operations
   - Implement ArchivalEngine class with atomic archival operations
   - Create safe directory copying that preserves file permissions and timestamps
   - Add validation checks to ensure spec directories contain required files
   - Implement rollback mechanisms for failed archival operations
   - _Requirements: 1.2, 3.1, 3.2, 3.3_
 
-- [ ] 4. Create archive metadata and indexing system
+- [x] 4. Create archive metadata and indexing system
   - Implement metadata generation for archived specs with completion timestamps
   - Create archive index management for tracking all archived specs
   - Add archive directory structure creation with timestamped folder names

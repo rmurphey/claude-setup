@@ -113,3 +113,4 @@ After setup completion:
 - NEVER change directories if you can achieve the same goal without changing directories.
 - ALWAYS create necessary directories for tests as part of the tests, if they don't exist; ALWAYS add these directories to gitignore, and clean them up before every test run.
 - Any errors during a test MUST mark the test as failed. This must be documented in .claude/CLAUDE.md and .templates/CLAUDE.md
+- Pay attention to the agent hooks in the .kiro directory and perform them accordingly. Keep task lists updated as you finish them.

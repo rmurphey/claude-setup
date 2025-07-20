@@ -49,6 +49,20 @@ export interface ArchivalEngine {
   archiveSpec(specPath: string): Promise<ArchivalResult>;
   createArchiveMetadata(spec: SpecInfo): ArchiveMetadata;
   validateArchivalSafety(specPath: string): Promise<SafetyCheck>;
+  getArchivedSpecs(): Promise<ArchiveIndexEntry[]>;
+  searchArchivedSpecs(searchTerm: string): Promise<ArchiveIndexEntry[]>;
+  getArchiveStats(): Promise<{
+    totalArchives: number;
+    oldestArchive?: Date;
+    newestArchive?: Date;
+    totalTasks: number;
+  }>;
+  validateAndRepairArchiveIndex(): Promise<{
+    isValid: boolean;
+    repaired: boolean;
+    issues: string[];
+  }>;
+  removeArchivedSpec(archivePath: string): Promise<boolean>;
 }
 
 // ============================================================================
