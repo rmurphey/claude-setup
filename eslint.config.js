@@ -1,12 +1,12 @@
 import typescriptEslint from '@typescript-eslint/eslint-plugin';
 import typescriptParser from '@typescript-eslint/parser';
 
-import baseConfig from './lib/eslint-configs/base.js';
+import baseConfig from './lib/lib/eslint-configs/base.js';
 
 export default [
   ...baseConfig,
   {
-    ignores: ['dist/**', 'dist-test/**', 'lib/**/*.d.ts', 'lib/**/*.d.ts.map', 'coverage/**', 'node_modules/**']
+    ignores: ['dist/**', 'dist-test/**', 'lib/**', 'coverage/**', 'node_modules/**']
   },
   {
     files: ['eslint.config.js'],

@@ -124,7 +124,7 @@ function estimateCost(messageCount: number, messageType: MessageType = 'mixed'):
   return {
     totalTokens,
     estimatedCost: cost,
-    formattedCost: `${cost.toFixed(2)}`
+    formattedCost: `$${cost.toFixed(2)}`
   };
 }
 

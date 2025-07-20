@@ -58,7 +58,7 @@ describe('NPX Behavior Tests', () => {
   test('Empty directory detection should work', async () => {
     // Test language detection in empty directory
     process.env.NODE_ENV = 'test';
-    const { LanguageDetector } = await import('../lib/language-detector.js');
+    const { LanguageDetector } = await import('../lib/lib/language-detector.js');
     
     // Change to empty test directory
     const originalCwd = process.cwd();
@@ -122,7 +122,7 @@ describe('NPX Behavior Tests', () => {
 
   test('GitHub sync should handle missing ACTIVE_WORK.md gracefully', async () => {
     process.env.NODE_ENV = 'test';
-    const { GitHubSync } = await import('../lib/github-sync.js');
+    const { GitHubSync } = await import('../lib/lib/github-sync.js');
     
     const sync = new GitHubSync('nonexistent-file.md');
     

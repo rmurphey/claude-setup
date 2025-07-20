@@ -171,7 +171,7 @@ export async function handleConfigManagement(args: string[]): Promise<void> {
  * Handle GitHub issues sync command
  */
 export async function handleSyncIssues(): Promise<void> {
-  const { syncGitHubIssues } = await import('../../../lib/github-sync.js') as { syncGitHubIssues: (path: string) => Promise<void> };
+  const { syncGitHubIssues } = await import('../github-sync.js') as { syncGitHubIssues: (path: string) => Promise<void> };
   
   // Check which ACTIVE_WORK.md file exists
   const internalPath = 'internal/ACTIVE_WORK.md';
@@ -204,12 +204,12 @@ export async function getLanguageCommands(projectType: string): Promise<Language
   }
   
   const languageModules: Record<string, () => Promise<LanguageModule>> = {
-    js: () => import('../../../lib/languages/javascript.js'),
-    python: () => import('../../../lib/languages/python.js'),
-    go: () => import('../../../lib/languages/go.js'),
-    rust: () => import('../../../lib/languages/rust.js'),
-    java: () => import('../../../lib/languages/java.js'),
-    swift: () => import('../../../lib/languages/swift.js')
+    js: () => import('../languages/javascript.js'),
+    python: () => import('../languages/python.js'),
+    go: () => import('../languages/go.js'),
+    rust: () => import('../languages/rust.js'),
+    java: () => import('../languages/java.js'),
+    swift: () => import('../languages/swift.js')
   };
   
   if (languageModules[projectType]) {
