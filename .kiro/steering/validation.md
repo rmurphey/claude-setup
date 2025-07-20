@@ -36,6 +36,7 @@ Before every response that mentions code functionality:
 - "Implementation is done"
 - "The code should work"
 - "This fixes the issue"
+- "You're absolutely right"
 
 ## Required Phrases When Untested
 - "I need to test this"
