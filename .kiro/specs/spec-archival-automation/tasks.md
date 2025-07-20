@@ -1,6 +1,6 @@
 # Implementation Plan
 
-- [ ] 1. Create core archival system interfaces and types
+- [x] 1. Create core archival system interfaces and types
   - Define TypeScript interfaces for SpecCompletionDetector, ArchivalEngine, and related types
   - Create error classes for archival operations with specific error codes
   - Implement configuration interfaces for archival settings and metadata structures

@@ -404,3 +404,9 @@ export interface BenchmarkResult {
   maxTime: number;
   totalTime: number;
 }
+
+// =============================================================================
+// Archival System Types
+// =============================================================================
+
+export * from './archival.js';
