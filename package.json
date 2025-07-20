@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Interactive CLI to set up Claude Code projects with professional development standards",
   "type": "module",
-  "main": "index.js",
+  "main": "./bin/cli.js",
   "bin": {
     "claude-setup": "./bin/cli.js"
   },
