@@ -1,7 +1,7 @@
 import { describe, it, beforeEach, afterEach, mock } from 'node:test';
 import assert from 'node:assert';
 
-import { InteractiveSetup } from '../dist/lib/cli/interactive.js';
+import { InteractiveSetup } from '../lib/lib/cli/interactive.js';
 
 import { 
   createValidConfig, 

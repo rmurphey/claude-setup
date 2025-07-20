@@ -1,1 +1,0 @@
-{"version":3,"file":"quality-setup.d.ts","sourceRoot":"","sources":["../../../src/lib/cli/quality-setup.ts"],"names":[],"mappings":"AAgBA,qBAAa,YAAY;IACvB,OAAO,CAAC,QAAQ,CAAC,OAAO,CAAsB;;IAMxC,SAAS,IAAI,OAAO,CAAC,OAAO,CAAC;IAwC7B,UAAU,IAAI,OAAO,CAAC,IAAI,CAAC;CAUlC;AAED,eAAe,YAAY,CAAC"}

@@ -43,8 +43,10 @@ export class CLIMain {
   ]);
 
   private flagConflicts = new Map([
-    ['--help', ['--version', '--fix', '--detect-language', '--config', '--sync-issues']],
-    ['--version', ['--help', '--fix', '--detect-language', '--config', '--sync-issues']],
+    ['--fix', ['--detect-language', '--config', '--sync-issues']],
+    ['--detect-language', ['--fix', '--config', '--sync-issues']],
+    ['--config', ['--fix', '--detect-language', '--sync-issues']],
+    ['--sync-issues', ['--fix', '--detect-language', '--config']],
     ['--show', ['--reset']],
     ['--reset', ['--show']]
   ]);
@@ -132,14 +134,14 @@ export class CLIMain {
           break;
         default:
           if (arg.startsWith('--language')) {
-            const value = this.extractFlagValue(arg, argv, i);
+            const value = this.extractFlagValue(argv, '--language');
             if (!value) {
               throw new Error('--language flag requires a value');
             }
             if (!this.isValidLanguage(value)) {
               throw new Error(`Invalid language: ${value}. Supported: js, python, go, rust, java, swift`);
             }
-            flags.language = value.toLowerCase();
+            flags.language = value;
             if (arg.includes('=')) {
               // Value was in same argument, don't increment i
             } else {
@@ -197,7 +199,7 @@ export class CLIMain {
       }
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-      console.error(chalk.red('❌ Error:'), errorMessage);
+      console.error(chalk.red('❌ Command line error:'), errorMessage);
       
       if (errorMessage.includes('Unknown flag') || errorMessage.includes('requires a value')) {
         console.log('\nUse --help to see available options.');
@@ -208,19 +210,31 @@ export class CLIMain {
   }
 
   /**
-   * Extract flag value from argument
+   * Extract flag value from argument array (last occurrence wins)
    */
-  private extractFlagValue(arg: string, argv: string[], index: number): string | null {
-    if (arg.includes('=')) {
-      return arg.split('=')[1] || null;
+  extractFlagValue(argv: string[], flagName: string): string | null {
+    let lastValue: string | null = null;
+    
+    for (let i = 0; i < argv.length; i++) {
+      const arg = argv[i];
+      if (!arg) continue;
+      
+      if (arg.startsWith(flagName)) {
+        if (arg.includes('=')) {
+          const parts = arg.split('=');
+          lastValue = parts.slice(1).join('=') || null;
+        } else {
+          const nextArg = argv[i + 1];
+          if (nextArg && !nextArg.startsWith('-')) {
+            lastValue = nextArg;
+          } else {
+            lastValue = null;
+          }
+        }
+      }
     }
     
-    const nextArg = argv[index + 1];
-    if (nextArg && !nextArg.startsWith('-')) {
-      return nextArg;
-    }
-    
-    return null;
+    return lastValue;
   }
 
   /**
@@ -237,7 +251,7 @@ export class CLIMain {
       if (conflicts) {
         const conflictingFlags = conflicts.filter(conflict => activeFlags.includes(conflict));
         if (conflictingFlags.length > 0) {
-          throw new Error(`Flag ${flag} conflicts with: ${conflictingFlags.join(', ')}`);
+          throw new Error(`${flag} cannot be used with: ${conflictingFlags.join(', ')}`);
         }
       }
     }
@@ -292,7 +306,7 @@ export class CLIMain {
    * Check if language is valid
    */
   private isValidLanguage(language: string): boolean {
-    const validLanguages = ['js', 'javascript', 'python', 'go', 'rust', 'java', 'swift'];
+    const validLanguages = ['js', 'javascript', 'typescript', 'python', 'go', 'rust', 'java', 'swift'];
     return validLanguages.includes(language.toLowerCase());
   }
 
