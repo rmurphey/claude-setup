@@ -136,6 +136,7 @@ After setup completion:
   - Specs: `.kiro/specs/` with requirements, design, tasks
   - Steering docs: `.kiro/steering/` (product, structure, tech, tone, validation)
 - **Templates**: `templates/` for user-facing files, separate from internal development
+- **Specs are in `.kiro/specs/**/*`**
 
 #### Meta-Project Complexity
 - **Dual nature**: Project provides setup capabilities AND uses those same capabilities internally
