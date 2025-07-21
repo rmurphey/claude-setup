@@ -4,7 +4,7 @@ This document explains how to integrate the `.kiro.hook` system with Claude Code
 
 ## Overview
 
-The `kiro-hook-executor.js` script acts as a bridge between `.kiro.hook` files and Claude Code's existing hook system. It reads `.kiro.hook` configurations and executes their prompts via Claude CLI when file patterns match.
+The `.kiro/kiro-hook-executor.js` script acts as a bridge between `.kiro.hook` files and Claude Code's existing hook system. It reads `.kiro.hook` configurations and executes their prompts via Claude CLI when file patterns match.
 
 ## Installation
 
@@ -16,16 +16,16 @@ npm install minimatch
 ### 2. Test the Hook Executor
 ```bash
 # List all discovered hooks
-node kiro-hook-executor.js --list-hooks
+node .kiro/kiro-hook-executor.js --list-hooks
 
 # Test pattern matching
-node kiro-hook-executor.js --test ".kiro/specs/my-spec/tasks.md"
-node kiro-hook-executor.js --test "README.md"
+node .kiro/kiro-hook-executor.js --test ".kiro/specs/my-spec/tasks.md"
+node .kiro/kiro-hook-executor.js --test "README.md"
 ```
 
 ### 3. Make Script Executable
 ```bash
-chmod +x kiro-hook-executor.js
+chmod +x .kiro/kiro-hook-executor.js
 ```
 
 ## Integration with Claude Code
@@ -38,7 +38,7 @@ Add to your `~/.claude/settings.json`:
 {
   "hooks": {
     "fileChange": [
-      "node /full/path/to/your/project/kiro-hook-executor.js"
+      "node /full/path/to/your/project/.kiro/kiro-hook-executor.js"
     ]
   }
 }
@@ -54,7 +54,7 @@ Add to your project's `.claude/settings.json`:
 {
   "hooks": {
     "fileChange": [
-      "node kiro-hook-executor.js"
+      "node .kiro/kiro-hook-executor.js"
     ]
   }
 }
@@ -68,14 +68,14 @@ Add to `.git/hooks/post-commit`:
 #!/bin/bash
 # Get list of changed files from last commit
 git diff-tree --no-commit-id --name-only -r HEAD | while read file; do
-  node kiro-hook-executor.js "$file"
+  node .kiro/kiro-hook-executor.js "$file"
 done
 ```
 
 ## How It Works
 
 1. **File Change Detection**: Claude Code's native hook system detects file changes
-2. **Bridge Execution**: Claude calls `kiro-hook-executor.js` with the changed file path
+2. **Bridge Execution**: Claude calls `.kiro/kiro-hook-executor.js` with the changed file path
 3. **Pattern Matching**: Script matches file against all `.kiro.hook` patterns using minimatch
 4. **Hook Execution**: For matches, script executes Claude CLI with the hook's prompt
 5. **Claude Interaction**: Claude receives the prompt and performs the specified actions
@@ -121,7 +121,7 @@ The bridge supports the existing `.kiro.hook` format:
 ### Hook Not Executing
 1. Verify Claude settings.json syntax
 2. Check file path permissions
-3. Test manually: `node kiro-hook-executor.js path/to/changed/file`
+3. Test manually: `node .kiro/kiro-hook-executor.js path/to/changed/file`
 
 ### Claude CLI Not Found
 The executor tries multiple Claude CLI commands:
@@ -134,7 +134,7 @@ Ensure at least one is available in your PATH.
 ### Pattern Matching Issues
 Use the test command to verify patterns:
 ```bash
-node kiro-hook-executor.js --test "your/file/path"
+node .kiro/kiro-hook-executor.js --test "your/file/path"
 ```
 
 ## Future Enhancements

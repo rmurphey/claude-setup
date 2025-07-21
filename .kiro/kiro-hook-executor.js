@@ -19,7 +19,7 @@ const __dirname = dirname(__filename);
 
 class KiroHookExecutor {
   constructor() {
-    this.projectRoot = __dirname; // Assuming script is in project root
+    this.projectRoot = join(__dirname, '..'); // Script is now in .kiro/ directory
     this.hooksDir = join(this.projectRoot, '.kiro', 'hooks');
     this.loadedHooks = [];
   }

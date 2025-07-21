@@ -28,17 +28,17 @@
 ## Phase 2: Critical File Relocation
 
 ### Task 2.1: Move kiro-hook-executor.js to .kiro/
-- [ ] Search for all references to kiro-hook-executor.js
-- [ ] Update package.json hooks or scripts referencing the file
-- [ ] Update any documentation mentioning the file location
-- [ ] Move file using git mv to preserve history
-- [ ] Test hook system functionality after move
+- [x] Search for all references to kiro-hook-executor.js
+- [x] Update package.json hooks or scripts referencing the file
+- [x] Update any documentation mentioning the file location
+- [x] Move file using git mv to preserve history
+- [x] Test hook system functionality after move
 
 ### Task 2.2: Verify Hook System After Move
-- [ ] Test kiro hook discovery and loading
-- [ ] Verify hook execution works correctly
-- [ ] Run integration tests for spec archival automation
-- [ ] Confirm no broken references remain
+- [x] Test kiro hook discovery and loading
+- [x] Verify hook execution works correctly
+- [x] Run integration tests for spec archival automation
+- [x] Confirm no broken references remain
 
 ## Phase 3: Documentation and Test File Organization
 
