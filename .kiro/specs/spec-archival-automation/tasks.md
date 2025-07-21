@@ -42,7 +42,7 @@
   - Write batch processing logic for checking multiple specs efficiently
   - _Requirements: 1.1, 4.1, 4.2_
 
-- [ ] 7. Create Kiro hook for automatic archival triggering
+- [x] 7. Create Kiro hook for automatic archival triggering
   - Write .kiro.hook configuration file for tasks.md file change detection
   - Implement hook integration that triggers archival checks on task completion
   - Add hook logic to prevent interference with active spec editing
