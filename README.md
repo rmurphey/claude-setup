@@ -36,6 +36,8 @@ Claude Setup transforms any directory into a professional development environmen
 - Organizations standardizing development practices
 - Solo developers wanting professional-grade infrastructure
 
+📊 **[See detailed value proposition and ROI analysis →](docs/VALUE_PROPOSITION.md)**
+
 **When NOT to Use This:**
 - **Existing complex setups** - Projects with heavily customized build systems, unique tooling, or specialized workflows
 - **Learning/educational projects** - When you want to understand each tool individually rather than use opinionated defaults
