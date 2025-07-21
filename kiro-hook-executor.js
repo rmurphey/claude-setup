@@ -87,14 +87,14 @@ class KiroHookExecutor {
         }
 
         const cmd = claudeCommands[cmdIndex];
-        const args = ['--prompt', prompt];
+        const args = ['--print', prompt];
         
-        console.log(`Executing: ${cmd} ${args.join(' ')}`);
+        console.log(`Executing: ${cmd} --print <prompt>`);
+        console.log(`Prompt: ${prompt.substring(0, 100)}...`);
         
         const claudeProcess = spawn(cmd, args, {
-          stdio: 'inherit',
-          cwd: this.projectRoot,
-          shell: true
+          stdio: ['pipe', 'inherit', 'inherit'],
+          cwd: this.projectRoot
         });
 
         claudeProcess.on('close', (code) => {
@@ -148,8 +148,16 @@ class KiroHookExecutor {
       
       if (hook.config.then?.type === 'askAgent') {
         try {
-          await this.executeClaude(hook.config.then.prompt);
-          console.log(`✅ Hook ${hook.config.name} completed successfully`);
+          console.log('📝 Would execute Claude with prompt:');
+          console.log(`   ${hook.config.then.prompt.substring(0, 200)}...`);
+          
+          // For testing, we'll skip actual Claude execution and just simulate success
+          if (process.env.KIRO_HOOK_TEST_MODE === 'true') {
+            console.log(`✅ Hook ${hook.config.name} completed successfully (TEST MODE)`);
+          } else {
+            await this.executeClaude(hook.config.then.prompt);
+            console.log(`✅ Hook ${hook.config.name} completed successfully`);
+          }
         } catch (error) {
           console.error(`❌ Hook ${hook.config.name} failed:`, error.message);
         }

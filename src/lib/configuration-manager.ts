@@ -26,7 +26,7 @@ export class ConfigurationManagerImpl implements ConfigurationManager {
   private readonly configFilePath: string;
   private configCache: ArchivalConfig | null = null;
   
-  constructor(configDirectory = '.') {
+  constructor(configDirectory = '.kiro') {
     this.configFilePath = join(configDirectory, ConfigurationManagerImpl.CONFIG_FILE_NAME);
   }
 
