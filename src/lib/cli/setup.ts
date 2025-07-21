@@ -104,8 +104,8 @@ class SetupOrchestrator {
    */
   async runRecoveryMode(): Promise<void> {
     console.log(chalk.blue.bold('\n🔧 Claude Setup Recovery\n'));
-    const { runRecovery } = await import('../recovery-system.js');
-    await runRecovery(process.argv.slice(2));
+    console.log(chalk.yellow('Recovery mode is deprecated - use main setup mode instead'));
+    console.log(chalk.gray('Use: npx claude-setup for interactive setup'));
   }
 
   /**
