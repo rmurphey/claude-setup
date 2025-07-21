@@ -326,8 +326,9 @@ Optional GitHub Actions workflows with:
 1. Fork the repository
 2. Create a feature branch
 3. Run the setup tool on your branch: `npx github:rmurphey/claude-setup`
-4. Make your changes
-5. Submit a pull request
+4. Make your changes (note: project uses `.kiro/` for specs, hooks, and steering docs)
+5. Run tests: `npm test` (all 298+ tests must pass)
+6. Submit a pull request
 
 ### Getting Help
 - **Documentation Issues**: Open an issue with the "documentation" label

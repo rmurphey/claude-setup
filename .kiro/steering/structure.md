@@ -20,6 +20,11 @@
   - `ACTIVE_WORK.md` - Current development session
   - `ARCHITECTURE_DECISIONS.md` - Design decisions log
   - `LEARNINGS.md` - Development insights
+- `.kiro/` - Kiro project management system
+  - `hooks/` - Automated workflow hooks
+  - `specs/` - Detailed project specifications with requirements, design, tasks
+  - `steering/` - Project steering documents (product, structure, tech, tone, validation)
+  - `kiro-hook-executor.js` - Hook execution engine
 - `__tests__/` - Test files using Node.js test runner
 - `coverage/` - Test coverage reports (generated)
 

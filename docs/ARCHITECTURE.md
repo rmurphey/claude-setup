@@ -239,8 +239,14 @@ claude-project-setup/
 │   ├── language-detector.js # Smart language detection
 │   ├── recovery-system.js  # Codebase recovery logic
 │   └── ...                 # Other core modules
+├── .kiro/                  # Kiro project management system
+│   ├── hooks/              # Automated workflow hooks
+│   ├── specs/              # Project specifications (requirements, design, tasks)
+│   ├── steering/           # Project steering documents
+│   └── kiro-hook-executor.js # Hook execution engine
 ├── docs/                   # System documentation
 │   ├── ARCHITECTURE.md     # This file
+│   ├── VALUE_PROPOSITION.md # ROI analysis and user value
 │   └── SETUP_GUIDE.md      # User setup instructions
 ├── templates/              # Template files for generated projects
 │   ├── CLAUDE.md           # AI guidelines template
@@ -250,6 +256,7 @@ claude-project-setup/
 │   ├── cli-main.test.js    # CLI main module tests
 │   ├── cli-interactive.test.js # Interactive setup tests
 │   ├── code-quality-hook.test.js # ESLint pre-commit hook tests
+│   ├── integration-runner.js # Integration test runner
 │   └── ...                 # Other test files
 ├── .git/hooks/pre-commit   # Enhanced pre-commit hook with lint-staged
 ├── eslint.config.js        # Main ESLint configuration (uses quality levels)
