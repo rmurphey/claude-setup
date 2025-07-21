@@ -4,7 +4,7 @@ import path from 'path';
 
 import fs from 'fs-extra';
 
-import { GitHubSync } from '../lib/lib/github-sync.js';
+import { GitHubSync } from '../dist/lib/github-sync.js';
 
 describe('GitHub Sync', () => {
   const testWorkFile = path.join(process.cwd(), 'test-active-work.md');

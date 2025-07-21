@@ -210,7 +210,7 @@ describe('Claude Setup CLI Integration Tests', () => {
 
   describe('Smart Language Detection', () => {
     test('LanguageDetector should detect JavaScript projects', async () => {
-      const { LanguageDetector } = await import('../lib/lib/language-detector.js');
+      const { LanguageDetector } = await import('../dist/lib/language-detector.js');
       const detector = new LanguageDetector();
       
       // This test runs in a project with package.json, so should detect JS
@@ -223,7 +223,7 @@ describe('Claude Setup CLI Integration Tests', () => {
     });
 
     test('LanguageDetector should format evidence properly', async () => {
-      const { LanguageDetector } = await import('../lib/lib/language-detector.js');
+      const { LanguageDetector } = await import('../dist/lib/language-detector.js');
       const detector = new LanguageDetector();
       
       const evidence = {
@@ -239,7 +239,7 @@ describe('Claude Setup CLI Integration Tests', () => {
     });
 
     test('LanguageDetector should handle no detection gracefully', async () => {
-      const { LanguageDetector } = await import('../lib/lib/language-detector.js');
+      const { LanguageDetector } = await import('../dist/lib/language-detector.js');
       const detector = new LanguageDetector();
       
       // Mock empty directory
@@ -251,7 +251,7 @@ describe('Claude Setup CLI Integration Tests', () => {
     });
 
     test('LanguageDetector should include Swift in detection patterns', async () => {
-      const { LanguageDetector } = await import('../lib/lib/language-detector.js');
+      const { LanguageDetector } = await import('../dist/lib/language-detector.js');
       const detector = new LanguageDetector();
       
       // Check that Swift patterns are included

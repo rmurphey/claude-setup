@@ -3,8 +3,8 @@ import assert from 'node:assert';
 import { promises as fs } from 'fs';
 import { join } from 'path';
 
-import { SpecCompletionDetectorImpl } from '../lib/lib/spec-completion-detector.js';
-import { ValidationError } from '../lib/types/archival.js';
+import { SpecCompletionDetectorImpl } from '../dist/lib/spec-completion-detector.js';
+import { ValidationError } from '../dist/types/archival.js';
 
 describe('SpecCompletionDetector', () => {
   let detector;

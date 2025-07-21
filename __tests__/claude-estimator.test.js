@@ -7,7 +7,7 @@ import {
   generateUsageBreakdown,
   formatUsageEstimate,
   USAGE_PATTERNS
-} from '../lib/lib/claude-estimator.js';
+} from '../dist/lib/claude-estimator.js';
 
 describe('Claude Cost Estimation', () => {
   describe('getUsageCategory', () => {

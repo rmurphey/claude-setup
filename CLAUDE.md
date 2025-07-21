@@ -116,3 +116,4 @@ After setup completion:
 - Pay attention to the agent hooks in the .kiro directory and perform them accordingly. Keep task lists updated as you finish them.
 - Familiarize yourself with the contents of .kiro
 - Specifically, recognize that there are spec directories in .kiro/spec
+- Never attempt a commit without ensuring the tests are green. Never bypass the pre-commit hook without a *detailed* explanation.

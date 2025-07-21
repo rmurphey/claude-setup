@@ -5,7 +5,7 @@ import { join } from 'path';
 import { tmpdir } from 'os';
 import { mkdtemp } from 'fs/promises';
 
-import { ArchiveIndexManager } from '../lib/lib/archive-index-manager.js';
+import { ArchiveIndexManager } from '../dist/lib/archive-index-manager.js';
 
 describe('ArchiveIndexManager', () => {
   let tempDir;

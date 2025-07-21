@@ -4,7 +4,7 @@ import { promises as fs } from 'fs';
 import { join } from 'path';
 import { tmpdir } from 'os';
 
-import { ArchivalEngineImpl } from '../lib/lib/archival-engine.js';
+import { ArchivalEngineImpl } from '../dist/lib/archival-engine.js';
 
 describe('ArchivalEngine', () => {
   let tempDir;

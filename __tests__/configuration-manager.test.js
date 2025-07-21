@@ -5,7 +5,7 @@ import { join } from 'path';
 import { tmpdir } from 'os';
 import { mkdtemp } from 'fs/promises';
 
-import { ConfigurationManagerImpl } from '../lib/lib/configuration-manager.js';
+import { ConfigurationManagerImpl } from '../dist/lib/configuration-manager.js';
 
 describe('ConfigurationManager', () => {
   let tempDir;

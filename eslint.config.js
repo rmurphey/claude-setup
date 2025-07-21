@@ -1,7 +1,7 @@
 import typescriptEslint from '@typescript-eslint/eslint-plugin';
 import typescriptParser from '@typescript-eslint/parser';
 
-import baseConfig from './lib/lib/eslint-configs/base.js';
+import baseConfig from './dist/lib/eslint-configs/base.js';
 
 export default [
   ...baseConfig,

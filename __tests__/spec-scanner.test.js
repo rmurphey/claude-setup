@@ -3,7 +3,7 @@ import assert from 'node:assert';
 import { promises as fs } from 'fs';
 import { join } from 'path';
 
-import { SpecScannerImpl } from '../lib/lib/spec-scanner.js';
+import { SpecScannerImpl } from '../dist/lib/spec-scanner.js';
 
 describe('SpecScannerImpl', () => {
   let scanner;

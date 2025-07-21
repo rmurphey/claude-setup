@@ -3,7 +3,7 @@ import assert from 'node:assert';
 import { execSync } from 'child_process';
 import { writeFileSync, unlinkSync, existsSync } from 'fs';
 
-import { QualityLevelManager } from '../lib/lib/quality-levels.js';
+import { QualityLevelManager } from '../dist/lib/quality-levels.js';
 
 describe('Code Quality Hook', () => {
   test('QualityLevelManager can get current level', async () => {

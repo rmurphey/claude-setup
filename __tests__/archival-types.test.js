@@ -10,7 +10,7 @@ import {
   ValidationError, 
   CopyError, 
   ConfigurationError 
-} from '../lib/types/archival.js';
+} from '../dist/types/archival.js';
 
 test('ArchivalError should be properly constructed', () => {
   const error = new ArchivalError(

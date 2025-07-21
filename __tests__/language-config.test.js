@@ -4,7 +4,7 @@ import path from 'path';
 
 import fs from 'fs-extra';
 
-import { LanguageDetector } from '../lib/lib/language-detector.js';
+import { LanguageDetector } from '../dist/lib/language-detector.js';
 
 describe('Language Configuration', () => {
   const testDir = path.join(process.cwd(), 'test-language-config');
