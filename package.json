@@ -27,7 +27,7 @@
     "lint:changed:fix": "eslint $(git diff --name-only --diff-filter=ACMR HEAD | grep '\\.(js|ts)$' | xargs) --fix",
     "update-readme": "node -e \"import('./dist/lib/readme-updater.js').then(m => m.updateReadme().then(r => console.log('README updated:', r.commandCount, 'commands')))\"",
     "update-docs": "node -e \"import('./dist/lib/readme-updater.js').then(m => m.updateAllDocs().then(r => console.log('Docs updated: README(' + r.readme.commandCount + ' commands), ESTIMATES(' + (r.estimates.updated ? 'updated' : 'no changes') + ')')))\"",
-    "archive-spec": "node bin/archive-spec.js",
+    "archive-completed": "node bin/archive-completed-specs.js --verbose",
     "docs:validate": "node dist/lib/readme-updater.js validate",
     "docs:update": "npm run update-docs && echo 'Documentation updated successfully'",
     "fix": "node bin/cli.js --fix",
@@ -45,6 +45,7 @@
   "license": "MIT",
   "dependencies": {
     "chalk": "^5.3.0",
+    "commander": "^14.0.0",
     "fs-extra": "^11.1.1",
     "inquirer": "^9.2.0",
     "minimatch": "^10.0.3",
