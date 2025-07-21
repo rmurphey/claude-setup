@@ -69,24 +69,24 @@
 ## Phase 2: Enhanced Task Detection
 
 ### Task 2.1: Custom Plugin Development
-- [ ] 12. Develop remarkKiroTasks plugin for task detection
+- [x] 12. Develop remarkKiroTasks plugin for task detection
   _Dependencies: #8_
   _Requirements: Handle hierarchical tasks, multiple checkbox formats_
   _Priority: high_
   _Effort: 6 hours_
 
-- [ ] 13. Implement enhanced task parsing logic
+- [x] 13. Implement enhanced task parsing logic
   _Dependencies: #12_
   _Requirements: Extract task numbers, titles, status, line numbers_
   _Priority: high_
   _Effort: 4 hours_
 
-- [ ] 14. Add support for nested task structures (phases → tasks → subtasks)
+- [x] 14. Add support for nested task structures (phases → tasks → subtasks)
   _Dependencies: #13_
   _Priority: medium_
   _Effort: 4 hours_
 
-- [ ] 15. Handle edge cases in task detection
+- [x] 15. Handle edge cases in task detection
   _Dependencies: #13_
   _Requirements: Malformed tasks, missing numbers, invalid syntax_
   _Priority: medium_

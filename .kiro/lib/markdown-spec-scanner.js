@@ -9,27 +9,77 @@
 import { unified } from 'unified';
 import remarkParse from 'remark-parse';
 import remarkGfm from 'remark-gfm';
+import remarkStringify from 'remark-stringify';
 import { visit } from 'unist-util-visit';
+
+import { remarkKiroTasks } from './remark-kiro-tasks.js';
 
 export class MarkdownSpecScanner {
   constructor() {
     this.processor = unified()
       .use(remarkParse)
-      .use(remarkGfm);
+      .use(remarkGfm)
+      .use(remarkKiroTasks)
+      .use(remarkStringify);
   }
 
   /**
-   * Parse a markdown file and return AST
+   * Parse a markdown file and return AST with enhanced task processing
    */
   async parseFile(content) {
     const ast = this.processor.parse(content);
+    const processedResult = await this.processor.process(content);
+    
+    // Store the processed file data for enhanced task extraction
+    this.lastProcessedFile = processedResult;
+    
     return ast;
   }
 
   /**
-   * Extract tasks from markdown AST
+   * Extract tasks from markdown AST using enhanced processing
    */
   extractTasks(ast) {
+    // Try enhanced task extraction first
+    if (this.lastProcessedFile && this.lastProcessedFile.data && this.lastProcessedFile.data.kiroTasks) {
+      return this.convertEnhancedTasks(this.lastProcessedFile.data.kiroTasks);
+    }
+    
+    // Fallback to basic AST parsing
+    return this.extractBasicTasks(ast);
+  }
+
+  /**
+   * Extract enhanced tasks and convert to compatible format
+   */
+  convertEnhancedTasks(enhancedTasks) {
+    return enhancedTasks.map(task => ({
+      raw: task.raw,
+      number: task.number,
+      title: task.title,
+      completed: task.completed,
+      lineNumber: task.lineNumber,
+      description: [], // Enhanced tasks don't currently populate this
+      metadata: {
+        requirements: task.metadata.requirements || [],
+        dependencies: task.metadata.dependencies || [],
+        tags: task.metadata.tags || [],
+        priority: task.metadata.priority,
+        assignee: task.metadata.assignee,
+        effort: task.metadata.effort
+      },
+      // Enhanced fields
+      depth: task.depth,
+      hierarchy: task.hierarchy,
+      parent: task.parent,
+      children: task.children
+    }));
+  }
+
+  /**
+   * Basic task extraction for fallback compatibility
+   */
+  extractBasicTasks(ast) {
     const tasks = [];
 
     visit(ast, 'listItem', (item) => {
