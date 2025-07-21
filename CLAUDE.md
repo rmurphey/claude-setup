@@ -103,18 +103,53 @@ After setup completion:
 - **Universal Architecture**: Same documentation patterns work across languages
 - **Command-Driven Development**: Custom commands enable consistent Claude interaction
 
-## Memory
-- Setup system must work for completely empty repositories
-- Quality infrastructure needed before any application code
-- Interactive approach scales better than complex instructions
-- Prevention architecture exponentially cheaper than reactive fixes
-- This is a weird project that needs to both provide capabilities, but also have those same capabilities internal to the project. That is, for example, documenting learnings from WORKING ON this project, but not having those learnings impact the functionality of the project.
-- Tests must always be run from the root directory.
-- NEVER change directories if you can achieve the same goal without changing directories.
-- ALWAYS create necessary directories for tests as part of the tests, if they don't exist; ALWAYS add these directories to gitignore, and clean them up before every test run.
-- Any errors during a test MUST mark the test as failed. This must be documented in .claude/CLAUDE.md and .templates/CLAUDE.md
-- Pay attention to the agent hooks in the .kiro directory and perform them accordingly. Keep task lists updated as you finish them.
-- Familiarize yourself with the contents of .kiro
-- Specifically, recognize that there are spec directories in .kiro/spec
-- Never attempt a commit without ensuring the tests are green. Never bypass the pre-commit hook without a *detailed* explanation.
-- Mistakes like this, where a task was not actually completed even though you said it was, should happen rarely. Mistakes like these cost money to fix them.
+## Memory & Project Context
+
+### Core Project Identity
+- **Mission**: Interactive CLI tool transforming directories into professional development environments
+- **Target**: Supports 6+ languages (JS/TS, Python, Go, Rust, Java, Swift) with universal quality standards
+- **Distribution**: NPX package `npx github:rmurphey/claude-setup` with global npm installation option
+
+### Critical Implementation Rules
+
+#### Repository Support Requirements
+- **MUST work with completely empty repositories** - this is a foundational requirement
+- **Quality infrastructure before application code** - infrastructure-first approach
+- **Interactive setup via 4 questions** - project type, quality level, team size, CI/CD
+
+#### Test Execution Standards
+- **Tests ALWAYS run from root directory** - never change directories unless absolutely necessary
+- **Zero tolerance for test errors** - any stderr output, command failures, or warnings = test failure
+- **Create test directories within tests** - add to gitignore, clean up before each run
+- **All 297 tests must pass** before any commit
+
+#### Development Workflow
+- **Never commit without green tests** - pre-commit hooks must pass
+- **Never bypass pre-commit hooks** without detailed explanation
+- **Incomplete tasks cost money** - mark tasks completed only when fully finished
+- **Update task lists** as work progresses using TodoWrite tool
+
+#### File Organization & Structure
+- **Build output**: `dist/` directory (NOT `lib/lib/` nesting)
+- **Kiro infrastructure**: Located in `.kiro/` directory
+  - Hook executor: `.kiro/kiro-hook-executor.js`
+  - Specs: `.kiro/specs/` with requirements, design, tasks
+  - Steering docs: `.kiro/steering/` (product, structure, tech, tone, validation)
+- **Templates**: `templates/` for user-facing files, separate from internal development
+
+#### Meta-Project Complexity
+- **Dual nature**: Project provides setup capabilities AND uses those same capabilities internally
+- **Internal vs External**: Document learnings from working ON project without affecting project functionality
+- **Self-hosting**: This project must exemplify the quality standards it helps others achieve
+
+#### Documentation Maintenance
+- **Steering documents**: Keep `.kiro/steering/` updated alongside other docs
+- **Architecture**: Update structure.md when file organization changes
+- **Product**: Update product.md when features/capabilities change
+- **Technology**: Update tech.md when dependencies or tools change
+
+#### Quality Enforcement
+- **Prevention over cure**: Exponentially cheaper to establish quality from start
+- **Universal patterns**: Same documentation/quality patterns work across all languages  
+- **Custom commands**: 13 core commands must be installed and functional
+- **Recovery system**: Must handle legacy codebases with `--fix` functionality
