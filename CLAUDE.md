@@ -117,3 +117,4 @@ After setup completion:
 - Familiarize yourself with the contents of .kiro
 - Specifically, recognize that there are spec directories in .kiro/spec
 - Never attempt a commit without ensuring the tests are green. Never bypass the pre-commit hook without a *detailed* explanation.
+- Mistakes like this, where a task was not actually completed even though you said it was, should happen rarely. Mistakes like these cost money to fix them.
