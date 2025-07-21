@@ -32,7 +32,8 @@
     "docs:update": "npm run update-docs && echo 'Documentation updated successfully'",
     "fix": "node bin/cli.js --fix",
     "fix:dry-run": "node bin/cli.js --fix --dry-run",
-    "prepare": "husky"
+    "prepare": "husky",
+    "postinstall": "npm run build"
   },
   "keywords": [
     "claude",

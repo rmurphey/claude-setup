@@ -4,13 +4,13 @@ coverage/
 *.log
 .DS_Store
 
-# TypeScript compilation output
-dist/
+# TypeScript compilation output - commit dist/ for npx compatibility
+# dist/
 dist-test/
 *.tsbuildinfo
-# Auto-generated TypeScript declaration files
-dist/**/*.d.ts
-dist/**/*.d.ts.map
+# Auto-generated TypeScript declaration files - commit for npx
+# dist/**/*.d.ts
+# dist/**/*.d.ts.map
 
 # Test directories (temporary)
 test-*/
