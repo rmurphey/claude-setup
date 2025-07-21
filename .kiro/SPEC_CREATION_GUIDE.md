@@ -2,6 +2,13 @@
 
 This guide codifies the structure and patterns from the earliest and most successful specifications in this project to ensure consistent, high-quality spec creation.
 
+## What Is a Complete "Spec"?
+
+A **specification** (or "spec") is complete if and only if it contains all three required components with proper structure. See `.kiro/SPEC_DEFINITION.md` for the complete definition and validation requirements.
+
+**Required**: `requirements.md` + `design.md` + `tasks.md` (all properly structured)  
+**Incomplete**: Missing any file, improper structure, or broken requirements traceability
+
 ## Quick Start
 
 1. **Copy the template**:

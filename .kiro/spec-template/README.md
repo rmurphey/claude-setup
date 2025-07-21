@@ -2,6 +2,8 @@
 
 This directory contains templates for creating new specifications in the `.kiro/specs/` directory. These templates are based on analysis of the earliest and most successful specs in this project.
 
+**Important**: A "spec" is only complete when it has all three required files with proper structure. See `../.kiro/SPEC_DEFINITION.md` for the complete definition.
+
 ## Template Structure
 
 Each spec consists of three core files:

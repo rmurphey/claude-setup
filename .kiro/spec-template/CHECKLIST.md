@@ -2,6 +2,8 @@
 
 Use this checklist to validate spec quality before considering it complete.
 
+**Definition**: A spec is complete if and only if it meets all requirements in `.kiro/SPEC_DEFINITION.md`. This checklist implements those validation requirements.
+
 ## Requirements.md Checklist
 
 ### Structure
@@ -123,11 +125,33 @@ Watch out for these warning signs:
 - Inconsistent between files
 - Implementation details everywhere instead of focusing on requirements
 
+## Final Completeness Validation
+
+Before considering a spec complete, verify it meets the formal definition:
+
+### ✅ Complete Spec Requirements (from SPEC_DEFINITION.md)
+- [ ] All three files exist: `requirements.md`, `design.md`, `tasks.md`
+- [ ] Each file follows required structure (see templates)
+- [ ] Requirements document has 3-9 user-focused requirements with testable acceptance criteria
+- [ ] Design document shows architecture and implementation approach with code examples
+- [ ] Tasks document breaks work into phases with numbered, traceable tasks
+- [ ] All requirements mapped to tasks using `_Requirements: X.Y_` format
+- [ ] Task dependencies form logical implementation order without cycles
+- [ ] No orphaned requirements or orphaned tasks
+- [ ] Terminology consistent across all documents
+- [ ] No contradictions between files
+
+### ✅ Spec Completeness Declaration
+- [ ] **This spec meets the complete definition in `.kiro/SPEC_DEFINITION.md`**
+- [ ] **All validation requirements have been verified**
+- [ ] **Spec is ready for implementation**
+
 ## Spec Review Process
 
 1. **Self-review**: Use this checklist before considering spec complete
 2. **Technical review**: Have another developer review for technical soundness
 3. **User perspective**: Validate that requirements focus on user value
 4. **Implementation review**: Verify tasks are actionable and well-ordered
+5. **Completeness verification**: Confirm spec meets formal definition
 
-A good spec passes all checklist items and avoids red flags.
+**A spec is only complete when it passes ALL checklist items including final validation AND avoids all red flags.**
