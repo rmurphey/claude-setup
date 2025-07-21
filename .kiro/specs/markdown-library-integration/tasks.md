@@ -26,19 +26,19 @@
   _Effort: 30 minutes_
 
 ### Task 1.2: Basic AST Integration
-- [ ] 5. Create new MarkdownSpecScanner class
+- [x] 5. Create new MarkdownSpecScanner class
   _Dependencies: #4_
   _Requirements: Maintain existing API surface_
   _Priority: high_
   _Effort: 3 hours_
 
-- [ ] 6. Implement basic unified processor pipeline
+- [x] 6. Implement basic unified processor pipeline
   _Dependencies: #5_
   _Requirements: remarkParse, remarkGfm plugins_
   _Priority: high_
   _Effort: 2 hours_
 
-- [ ] 7. Add basic spec file parsing with AST output
+- [x] 7. Add basic spec file parsing with AST output
   _Dependencies: #6_
   _Priority: high_
   _Effort: 3 hours_
