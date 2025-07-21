@@ -9,6 +9,7 @@ import path from 'path';
 
 import fs from 'fs-extra';
 
+import { MarkdownSpecScanner, type MarkdownTask } from '../../.kiro/lib/markdown-spec-scanner.js';
 import type { 
   KiroTask, 
   SpecMetadata, 
@@ -20,10 +21,12 @@ import type {
 export class KiroSpecScanner {
   private baseDir: string;
   private specsDir: string;
+  private markdownScanner: MarkdownSpecScanner;
 
   constructor(baseDir: string = process.cwd()) {
     this.baseDir = baseDir;
     this.specsDir = path.join(baseDir, '.kiro', 'specs');
+    this.markdownScanner = new MarkdownSpecScanner();
   }
 
   /**
@@ -177,136 +180,44 @@ export class KiroSpecScanner {
   }
 
   /**
-   * Parse tasks.md file and extract task items
+   * Parse tasks.md file and extract task items using AST-based parsing
    */
   async parseTasksFile(filePath: string): Promise<ParsedTaskItem[]> {
     try {
       const content = await fs.readFile(filePath, 'utf-8');
-      const lines = content.split('\n');
-      const tasks: ParsedTaskItem[] = [];
       
-      let currentTask: Partial<ParsedTaskItem> | null = null;
+      // Use the new markdown scanner for AST-based parsing
+      const ast = await this.markdownScanner.parseFile(content);
+      const astTasks = this.markdownScanner.extractTasks(ast);
       
-      for (let i = 0; i < lines.length; i++) {
-        const line = lines[i];
-        if (!line) continue;
-        const lineNum = i + 1;
-        
-        // Check if this is a task line (starts with - [ ] or - [x])
-        const taskMatch = line.match(/^- \[([ x])\] (\d+)\. (.+)$/);
-        if (taskMatch) {
-          // Save previous task if exists
-          if (currentTask) {
-            tasks.push(this.finalizeParseTask(currentTask));
-          }
-          
-          // Start new task
-          const checkbox = taskMatch[1];
-          const numberStr = taskMatch[2];
-          const title = taskMatch[3];
-          
-          if (checkbox !== undefined && numberStr !== undefined && title !== undefined) {
-            currentTask = {
-              raw: line,
-              number: parseInt(numberStr, 10),
-              title: title.trim(),
-              completed: checkbox === 'x',
-              lineNumber: lineNum,
-              description: [],
-              metadata: {
-                requirements: [],
-                dependencies: [],
-                tags: []
-              }
-            };
-          }
-        } else if (currentTask && line.trim()) {
-          // This is a continuation line for the current task
-          if (line.startsWith('  ')) {
-            // Task description or metadata
-            const cleanLine = line.substring(2); // Remove indentation
-            
-            // Check for metadata patterns
-            if (cleanLine.startsWith('_Requirements:')) {
-              const reqMatch = cleanLine.match(/_Requirements:\s*([^_]+)_/);
-              if (reqMatch?.[1]) {
-                currentTask.metadata!.requirements = reqMatch[1]
-                  .split(',')
-                  .map(r => r.trim())
-                  .filter(r => r);
-              }
-            } else if (cleanLine.startsWith('_Dependencies:')) {
-              const depMatch = cleanLine.match(/_Dependencies:\s*([^_]+)_/);
-              if (depMatch?.[1]) {
-                currentTask.metadata!.dependencies = depMatch[1]
-                  .split(',')
-                  .map(d => d.trim())
-                  .filter(d => d);
-              }
-            } else if (cleanLine.startsWith('_Priority:')) {
-              const priMatch = cleanLine.match(/_Priority:\s*([^_]+)_/);
-              if (priMatch?.[1]) {
-                currentTask.metadata!.priority = priMatch[1].trim();
-              }
-            } else if (cleanLine.startsWith('_Assignee:')) {
-              const assignMatch = cleanLine.match(/_Assignee:\s*([^_]+)_/);
-              if (assignMatch?.[1]) {
-                currentTask.metadata!.assignee = assignMatch[1].trim();
-              }
-            } else if (cleanLine.startsWith('_Tags:')) {
-              const tagMatch = cleanLine.match(/_Tags:\s*([^_]+)_/);
-              if (tagMatch?.[1]) {
-                currentTask.metadata!.tags = tagMatch[1]
-                  .split(',')
-                  .map(t => t.trim())
-                  .filter(t => t);
-              }
-            } else {
-              // Regular description line
-              currentTask.description!.push(cleanLine);
-            }
-          }
-        } else if (currentTask && !line.trim()) {
-          // Empty line - might be end of task, but continue for now
-          continue;
-        } else if (currentTask) {
-          // Non-indented line that's not a task - end current task
-          tasks.push(this.finalizeParseTask(currentTask));
-          currentTask = null;
-        }
-      }
-      
-      // Don't forget the last task
-      if (currentTask) {
-        tasks.push(this.finalizeParseTask(currentTask));
-      }
-      
-      return tasks;
+      // Convert AST tasks to ParsedTaskItem format for backward compatibility
+      return astTasks.map(task => this.convertAstTaskToParseTask(task));
     } catch (error) {
       throw new Error(`Failed to parse tasks file ${filePath}: ${error instanceof Error ? error.message : error}`);
     }
   }
 
   /**
-   * Finalize a parsed task by ensuring all required fields are present
+   * Convert AST task to ParsedTaskItem format for backward compatibility
    */
-  private finalizeParseTask(partial: Partial<ParsedTaskItem>): ParsedTaskItem {
+  private convertAstTaskToParseTask(astTask: MarkdownTask): ParsedTaskItem {
     return {
-      raw: partial.raw || '',
-      number: partial.number || 0,
-      title: partial.title || 'Untitled Task',
-      description: partial.description || [],
-      completed: partial.completed || false,
-      lineNumber: partial.lineNumber || 0,
+      raw: astTask.raw,
+      number: astTask.number,
+      title: astTask.title,
+      description: astTask.description || [],
+      completed: astTask.completed,
+      lineNumber: astTask.lineNumber,
       metadata: {
-        requirements: partial.metadata?.requirements || [],
-        dependencies: partial.metadata?.dependencies || [],
-        tags: partial.metadata?.tags || [],
-        ...(partial.metadata?.priority && { priority: partial.metadata.priority }),
-        ...(partial.metadata?.assignee && { assignee: partial.metadata.assignee })
+        requirements: astTask.metadata?.requirements || [],
+        dependencies: astTask.metadata?.dependencies || [],
+        tags: astTask.metadata?.tags || [],
+        ...(astTask.metadata?.priority && { priority: astTask.metadata.priority }),
+        ...(astTask.metadata?.assignee && { assignee: astTask.metadata.assignee })
       }
     };
   }
+
 
   /**
    * Convert parsed task item to KiroTask

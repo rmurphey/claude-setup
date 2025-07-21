@@ -43,7 +43,7 @@
   _Priority: high_
   _Effort: 3 hours_
 
-- [ ] 8. Create compatibility layer for existing API
+- [x] 8. Create compatibility layer for existing API
   _Dependencies: #7_
   _Requirements: All existing tests must pass_
   _Priority: high_
