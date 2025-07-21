@@ -10,10 +10,13 @@ import {
   ArchiveMetadata,
   ArchivalError,
   ValidationError,
-  CopyError
+  CopyError,
+  ArchivalConfig
 } from '../types/archival.js';
 
 import { ArchiveIndexManager } from './archive-index-manager.js';
+import { ConfigurationManagerImpl } from './configuration-manager.js';
+import { SpecScannerImpl } from './spec-scanner.js';
 
 /**
  * ArchivalEngine - Safely archives completed specs with atomic operations
@@ -32,10 +35,14 @@ export class ArchivalEngineImpl implements ArchivalEngine {
 
   private readonly archiveLocation: string;
   private readonly indexManager: ArchiveIndexManager;
+  private readonly configManager: ConfigurationManagerImpl;
+  private readonly specScanner: SpecScannerImpl;
 
-  constructor(archiveLocation: string = ArchivalEngineImpl.DEFAULT_ARCHIVE_LOCATION) {
+  constructor(archiveLocation: string = ArchivalEngineImpl.DEFAULT_ARCHIVE_LOCATION, configDirectory = '.') {
     this.archiveLocation = archiveLocation;
     this.indexManager = new ArchiveIndexManager(archiveLocation);
+    this.configManager = new ConfigurationManagerImpl(configDirectory);
+    this.specScanner = new SpecScannerImpl();
   }
 
   /**
@@ -497,6 +504,106 @@ export class ArchivalEngineImpl implements ArchivalEngine {
   }
 
   /**
+   * Get current archival configuration
+   * @returns Promise<ArchivalConfig> Current configuration
+   */
+  async getConfig(): Promise<ArchivalConfig> {
+    return await this.configManager.loadConfig();
+  }
+
+  /**
+   * Update archival configuration
+   * @param config New configuration to save
+   * @returns Promise<void>
+   */
+  async updateConfig(config: ArchivalConfig): Promise<void> {
+    await this.configManager.saveConfig(config);
+  }
+
+  /**
+   * Check if archival is enabled according to configuration
+   * @returns Promise<boolean> True if archival is enabled
+   */
+  async isArchivalEnabled(): Promise<boolean> {
+    const config = await this.getConfig();
+    return config.enabled;
+  }
+
+  /**
+   * Get configured delay before archival
+   * @returns Promise<number> Delay in minutes
+   */
+  async getArchivalDelay(): Promise<number> {
+    const config = await this.getConfig();
+    return config.delayMinutes;
+  }
+
+  /**
+   * Check if a spec should be archived based on configuration and timing
+   * @param specPath Path to spec directory
+   * @returns Promise<{shouldArchive: boolean, reason?: string}> Archival decision
+   */
+  async shouldArchiveSpec(specPath: string): Promise<{shouldArchive: boolean, reason?: string}> {
+    const config = await this.getConfig();
+    
+    // Check if archival is disabled
+    if (!config.enabled) {
+      return { shouldArchive: false, reason: 'Archival is disabled in configuration' };
+    }
+    
+    // Check safety conditions first
+    const safetyCheck = await this.validateArchivalSafety(specPath);
+    if (!safetyCheck.canProceed) {
+      return { shouldArchive: false, reason: `Safety validation failed: ${safetyCheck.issues.join(', ')}` };
+    }
+    
+    // Check timing delay
+    if (config.delayMinutes > 0) {
+      const tasksFile = join(specPath, 'tasks.md');
+      try {
+        const tasksStats = await fs.stat(tasksFile);
+        const delayMs = config.delayMinutes * 60 * 1000; // Convert minutes to milliseconds
+        const timeSinceModification = Date.now() - tasksStats.mtime.getTime();
+        
+        if (timeSinceModification < delayMs) {
+          const remainingMinutes = Math.ceil((delayMs - timeSinceModification) / (60 * 1000));
+          return { 
+            shouldArchive: false, 
+            reason: `Waiting for delay period (${remainingMinutes} minutes remaining)` 
+          };
+        }
+      } catch {
+        return { shouldArchive: false, reason: 'Unable to check file modification time' };
+      }
+    }
+    
+    return { shouldArchive: true };
+  }
+
+  /**
+   * Archive spec with configuration-aware behavior
+   * @param specPath Path to the spec directory to archive
+   * @returns Promise<ArchivalResult> Result of the archival operation
+   */
+  async archiveSpecWithConfig(specPath: string): Promise<ArchivalResult> {
+    // Check if archival should proceed
+    const { shouldArchive, reason } = await this.shouldArchiveSpec(specPath);
+    
+    if (!shouldArchive) {
+      return {
+        success: false,
+        originalPath: specPath,
+        archivePath: '',
+        timestamp: new Date(),
+        error: reason || 'Archival was skipped'
+      };
+    }
+    
+    // Proceed with normal archival
+    return await this.archiveSpec(specPath);
+  }
+
+  /**
    * Remove an archived spec from both filesystem and index
    * @param archivePath Path to the archived spec directory
    * @returns Promise<boolean> True if successfully removed
@@ -543,5 +650,95 @@ export class ArchivalEngineImpl implements ArchivalEngine {
         'Check archive path and permissions'
       );
     }
+  }
+
+  // ============================================================================
+  // Spec Scanning and Detection Methods
+  // ============================================================================
+
+  /**
+   * Get all specs from the .kiro/specs directory
+   * @returns Promise<string[]> Array of spec directory paths
+   */
+  async getAllSpecs(): Promise<string[]> {
+    return await this.specScanner.getAllSpecs();
+  }
+
+  /**
+   * Get all completed specs
+   * @returns Promise<string[]> Array of completed spec paths
+   */
+  async getCompletedSpecs(): Promise<string[]> {
+    return await this.specScanner.getCompletedSpecs();
+  }
+
+  /**
+   * Get specs that are ready for archival (completed and valid)
+   * @returns Promise<string[]> Array of specs ready for archival
+   */
+  async getSpecsReadyForArchival(): Promise<string[]> {
+    return await this.specScanner.getSpecsReadyForArchival();
+  }
+
+  /**
+   * Scan and validate all specs in the directory
+   * @returns Promise<object> Comprehensive scanning and validation report
+   */
+  async scanAndValidateSpecs(): Promise<{
+    totalSpecs: number;
+    validSpecs: string[];
+    invalidSpecs: string[];
+    issues: Record<string, string[]>;
+  }> {
+    return await this.specScanner.scanAndValidateAllSpecs();
+  }
+
+  /**
+   * Automatically archive all completed specs that are ready for archival
+   * @returns Promise<ArchivalResult[]> Results of all archival operations
+   */
+  async autoArchiveCompletedSpecs(): Promise<ArchivalResult[]> {
+    const config = await this.getConfig();
+    
+    // Check if archival is enabled
+    if (!config.enabled) {
+      return [];
+    }
+
+    const specsReadyForArchival = await this.getSpecsReadyForArchival();
+    const results: ArchivalResult[] = [];
+
+    for (const specPath of specsReadyForArchival) {
+      try {
+        // Check if spec should be archived based on configuration
+        const { shouldArchive } = await this.shouldArchiveSpec(specPath);
+        
+        if (shouldArchive) {
+          const result = await this.archiveSpec(specPath);
+          results.push(result);
+          
+          // Log successful archival if configured
+          if (config.notificationLevel !== 'none') {
+            console.log(`✓ Archived spec: ${specPath} -> ${result.archivePath}`);
+          }
+        }
+      } catch (error) {
+        // Log archival failure but continue with other specs
+        const failResult: ArchivalResult = {
+          success: false,
+          originalPath: specPath,
+          archivePath: '',
+          timestamp: new Date(),
+          error: error instanceof Error ? error.message : 'Unknown archival error'
+        };
+        results.push(failResult);
+        
+        if (config.notificationLevel === 'verbose') {
+          console.error(`✗ Failed to archive spec: ${specPath} - ${failResult.error}`);
+        }
+      }
+    }
+
+    return results;
   }
 }

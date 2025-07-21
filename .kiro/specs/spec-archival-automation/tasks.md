@@ -28,14 +28,14 @@
   - Write metadata persistence using JSON files with proper error handling
   - _Requirements: 1.3, 2.1, 2.2, 2.3_
 
-- [ ] 5. Implement configuration management system
+- [x] 5. Implement configuration management system
   - Create ConfigurationManager class for loading and saving archival settings
   - Add default configuration with sensible archival behavior settings
   - Implement configuration validation and migration for version updates
   - Write configuration file handling with proper error recovery
   - _Requirements: 5.1, 5.2, 5.3, 5.4_
 
-- [ ] 6. Build spec scanning and detection utilities
+- [x] 6. Build spec scanning and detection utilities
   - Create utility functions to scan .kiro/specs directory for all specs
   - Implement spec completion checking that integrates with SpecCompletionDetector
   - Add file modification time checking to avoid archiving actively edited specs

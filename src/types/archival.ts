@@ -17,6 +17,27 @@ export interface SpecCompletionDetector {
   checkSpecCompletion(specPath: string): Promise<CompletionStatus>;
   getAllCompletedSpecs(): Promise<string[]>;
   isTasksFileComplete(tasksContent: string): boolean;
+  parseTaskCounts(content: string): { totalTasks: number; completedTasks: number };
+  validateTasksFormat(content: string): { isValid: boolean; issues: string[] };
+}
+
+export interface SpecValidationResult {
+  isValid: boolean;
+  issues: string[];
+  warnings: string[];
+}
+
+export interface SpecScanner {
+  getAllSpecs(): Promise<string[]>;
+  getCompletedSpecs(): Promise<string[]>;
+  getIncompleteSpecs(): Promise<string[]>;
+  validateSpec(specPath: string): Promise<SpecValidationResult>;
+  scanAndValidateAllSpecs(): Promise<{
+    totalSpecs: number;
+    validSpecs: string[];
+    invalidSpecs: string[];
+    issues: Record<string, string[]>;
+  }>;
 }
 
 // ============================================================================
@@ -63,6 +84,23 @@ export interface ArchivalEngine {
     issues: string[];
   }>;
   removeArchivedSpec(archivePath: string): Promise<boolean>;
+  getConfig(): Promise<ArchivalConfig>;
+  updateConfig(config: ArchivalConfig): Promise<void>;
+  isArchivalEnabled(): Promise<boolean>;
+  getArchivalDelay(): Promise<number>;
+  shouldArchiveSpec(specPath: string): Promise<{shouldArchive: boolean, reason?: string}>;
+  archiveSpecWithConfig(specPath: string): Promise<ArchivalResult>;
+  // New scanning and detection methods
+  getAllSpecs(): Promise<string[]>;
+  getCompletedSpecs(): Promise<string[]>;
+  getSpecsReadyForArchival(): Promise<string[]>;
+  scanAndValidateSpecs(): Promise<{
+    totalSpecs: number;
+    validSpecs: string[];
+    invalidSpecs: string[];
+    issues: Record<string, string[]>;
+  }>;
+  autoArchiveCompletedSpecs(): Promise<ArchivalResult[]>;
 }
 
 // ============================================================================

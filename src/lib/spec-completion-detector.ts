@@ -108,7 +108,7 @@ export class SpecCompletionDetectorImpl implements SpecCompletionDetector {
    * @param content Content of the tasks.md file
    * @returns Object with totalTasks and completedTasks counts
    */
-  private parseTaskCounts(content: string): { totalTasks: number; completedTasks: number } {
+  parseTaskCounts(content: string): { totalTasks: number; completedTasks: number } {
     const tasks = this.extractTasks(content);
     const completedTasks = tasks.filter(task => task.completed).length;
     
