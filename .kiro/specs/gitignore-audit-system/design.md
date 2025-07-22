@@ -27,6 +27,8 @@
 ### 1. Project Scanner
 **Purpose**: Analyze project structure to determine technology stack and tools
 
+**🔄 LEVERAGE EXISTING**: Extend `LanguageDetector` from `src/lib/language-detector.ts`
+
 ```typescript
 interface ProjectAnalysis {
   technologies: Technology[];
@@ -36,12 +38,12 @@ interface ProjectAnalysis {
   customPatterns: string[];
 }
 
-class ProjectScanner {
+class GitIgnoreProjectScanner extends LanguageDetector {
   async analyzeProject(rootPath: string): Promise<ProjectAnalysis>
-  detectTechnologies(): Technology[]
-  detectBuildTools(): BuildTool[]
-  detectEditors(): Editor[]
-  detectFrameworks(): Framework[]
+  detectBuildTools(): BuildTool[]      // NEW: npm, cargo, maven, etc.
+  detectEditors(): Editor[]            // NEW: .vscode/, .idea/, etc.
+  detectFrameworks(): Framework[]      // NEW: React, Django, etc.
+  // inheritTechnologies(): from parent LanguageDetector
 }
 ```
 
@@ -140,28 +142,25 @@ class AuditEngine {
 
 ### Commands
 
+**🔄 LEVERAGE EXISTING**: Integrate with existing CLI in `src/cli/main.ts`
+
 ```bash
-# Audit current project
-claude-setup gitignore audit
+# Main command integration
+claude-setup --gitignore-audit           # Add to existing setup flow
 
-# Audit with specific technology
-claude-setup gitignore audit --tech javascript,python
-
-# Show detailed report
-claude-setup gitignore audit --verbose
-
-# Dry run fixes
-claude-setup gitignore fix --dry-run
-
-# Apply fixes interactively
-claude-setup gitignore fix --interactive
-
-# Apply all recommended fixes
-claude-setup gitignore fix --auto
-
-# Check specific file would be ignored
-claude-setup gitignore test path/to/file.js
+# New subcommand structure  
+claude-setup gitignore audit             # Standalone audit
+claude-setup gitignore audit --verbose   # Detailed report
+claude-setup gitignore fix --dry-run     # Preview fixes
+claude-setup gitignore fix --interactive # Selective fixes
+claude-setup gitignore fix --auto        # Apply all fixes
+claude-setup gitignore test <file>       # Test pattern matching
 ```
+
+**CLI Integration Points**:
+- Add `--gitignore-audit` flag to existing `CLIFlags` interface
+- Extend `PrimaryMode` type with `'gitignore'`
+- Hook into `SetupOrchestrator` workflow
 
 ### Output Format
 

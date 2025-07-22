@@ -3,36 +3,39 @@
 ## Phase 1: Core Infrastructure (Week 1)
 
 ### Task 1.1: Project Scanner Implementation
-**Estimated effort**: 2 days
+**Estimated effort**: 1 day ⬇️ (was 2 days)
 **Priority**: Critical
 
-- [ ] Create `ProjectScanner` class with technology detection
-- [ ] Implement file pattern matching for major languages
-- [ ] Add build tool detection (npm, cargo, maven, gradle)
-- [ ] Add editor detection (.vscode, .idea, vim files)
-- [ ] Create comprehensive test suite for detection accuracy
+- [ ] **LEVERAGE**: Extend existing `LanguageDetector` class ✅ 
+- [ ] Add build tool detection (npm, cargo, maven, gradle) - NEW functionality
+- [ ] Add editor detection (.vscode, .idea, vim files) - NEW functionality  
+- [ ] Add framework detection (React, Django, etc.) - NEW functionality
+- [ ] Create comprehensive test suite for new detection methods
 - [ ] Handle edge cases (mixed projects, monorepos)
 
 **Deliverables**:
-- `src/lib/gitignore/scanner.ts`
-- `__tests__/gitignore/scanner.test.js`
-- Technology detection with 95%+ accuracy
+- `src/lib/gitignore/project-scanner.ts` (extends LanguageDetector)
+- `__tests__/gitignore/project-scanner.test.js`
+- **REUSE**: Existing technology detection ✅
+- **NEW**: Build tool, editor, framework detection
 
 ### Task 1.2: Rule Library Foundation
-**Estimated effort**: 3 days
+**Estimated effort**: 2 days ⬇️ (was 3 days)
 **Priority**: Critical
 
 - [ ] Define `IgnoreRule` and `RuleSet` TypeScript interfaces
-- [ ] Create rule definitions for JavaScript/TypeScript
-- [ ] Create rule definitions for Python, Go, Rust, Java, Swift
-- [ ] Add editor and OS-specific rules
+- [ ] **LEVERAGE**: Use existing language handlers structure ✅ (`src/lib/languages/`)
+- [ ] Extend JavaScript/TypeScript rules with gitignore patterns
+- [ ] Extend Python, Go, Rust, Java, Swift rules with gitignore patterns  
+- [ ] Add editor and OS-specific rules (new)
 - [ ] Implement rule validation and conflict detection
-- [ ] Create rule loading and management system
+- [ ] **REUSE**: Existing rule loading patterns ✅
 
 **Deliverables**:
-- `src/lib/gitignore/rules/` directory with all rule files
-- `src/lib/gitignore/rule-loader.ts`
-- 200+ comprehensive ignore patterns across technologies
+- `src/lib/gitignore/rules/` directory (follows existing `/languages/` pattern)
+- `src/lib/gitignore/rule-loader.ts` (follows existing patterns)
+- **REUSE**: Existing language handler architecture ✅
+- **NEW**: 200+ gitignore-specific patterns
 
 ### Task 1.3: GitIgnore Parser
 **Estimated effort**: 2 days
@@ -102,68 +105,69 @@
 ## Phase 3: CLI Integration (Week 3)
 
 ### Task 3.1: CLI Commands
-**Estimated effort**: 2 days
+**Estimated effort**: 1 day ⬇️ (was 2 days)
 **Priority**: High
 
-- [ ] Implement `gitignore audit` command
-- [ ] Implement `gitignore fix` command
-- [ ] Add `gitignore test` command for file checking
-- [ ] Create interactive mode for fix selection
-- [ ] Add verbose and quiet output modes
-- [ ] Implement progress reporting for long operations
+- [ ] **LEVERAGE**: Extend existing `CLIFlags` interface ✅ (`src/cli/main.ts`)
+- [ ] **LEVERAGE**: Extend existing `PrimaryMode` type ✅
+- [ ] Add `gitignore` subcommand to existing CLI structure
+- [ ] Implement audit, fix, test subcommands using existing patterns
+- [ ] **REUSE**: Existing interactive patterns ✅ (inquirer, chalk)
+- [ ] **REUSE**: Existing progress reporting ✅
 
 **Deliverables**:
-- `src/cli/gitignore-commands.ts`
-- Full CLI interface with help documentation
-- Support for all major workflow patterns
+- Extend `src/cli/main.ts` with gitignore support
+- `src/lib/gitignore/cli-handler.ts` (follows existing pattern)
+- **REUSE**: Existing CLI infrastructure ✅
+- **NEW**: Gitignore-specific commands
 
 ### Task 3.2: Main Setup Integration
-**Estimated effort**: 1 day
+**Estimated effort**: 0.5 days ⬇️ (was 1 day)
 **Priority**: Medium
 
-- [ ] Integrate gitignore audit into main setup workflow
-- [ ] Add configuration options to disable/enable audit
-- [ ] Create setup prompts for gitignore fixes
-- [ ] Add gitignore validation to quality checks
-- [ ] Update setup completion messages
+- [ ] **LEVERAGE**: Extend existing `SetupOrchestrator` ✅ (`src/lib/cli/setup.ts`)
+- [ ] **REUSE**: Existing configuration patterns ✅ (CLIConfig interface)
+- [ ] **REUSE**: Existing prompt patterns ✅ (inquirer integration)
+- [ ] Add gitignore audit to existing quality pipeline
+- [ ] **REUSE**: Existing completion message patterns ✅
 
 **Deliverables**:
-- Updated `SetupOrchestrator` with gitignore integration
-- Seamless workflow integration
-- User-controlled automation level
+- Extend existing `SetupOrchestrator.setupProject()` method
+- **REUSE**: Existing workflow integration patterns ✅
+- **NEW**: Gitignore audit step in setup flow
 
 ### Task 3.3: Output Formatting and UX
-**Estimated effort**: 1 day
+**Estimated effort**: 0.5 days ⬇️ (was 1 day)
 **Priority**: Medium
 
-- [ ] Design clear, actionable audit reports
-- [ ] Create colored diff previews for fixes
-- [ ] Add progress indicators and status messages
-- [ ] Implement helpful error messages and suggestions
-- [ ] Create summary statistics and scoring display
+- [ ] **REUSE**: Existing chalk color patterns ✅ (already imported)
+- [ ] **REUSE**: Existing diff patterns from archival system ✅
+- [ ] **REUSE**: Existing progress indicators ✅ (setup workflow)
+- [ ] **REUSE**: Existing error handling patterns ✅ (CLIError classes)
+- [ ] **NEW**: Gitignore-specific scoring and reporting
 
 **Deliverables**:
-- Professional CLI output with clear guidance
-- Intuitive user experience
-- Helpful error handling and recovery
+- **REUSE**: Existing professional CLI output patterns ✅
+- **REUSE**: Existing error handling infrastructure ✅
+- **NEW**: Gitignore audit-specific formatting
 
 ## Phase 4: Testing and Validation (Week 4)
 
 ### Task 4.1: Comprehensive Test Suite
-**Estimated effort**: 3 days
+**Estimated effort**: 2 days ⬇️ (was 3 days)
 **Priority**: Critical
 
-- [ ] Create unit tests for all core components
-- [ ] Add integration tests for end-to-end workflows
-- [ ] Create fixture tests with real-world projects
-- [ ] Add performance benchmarks and regression tests
-- [ ] Implement error condition and edge case testing
-- [ ] Create cross-platform compatibility tests
+- [ ] **REUSE**: Existing test infrastructure ✅ (Node.js test runner, assert)
+- [ ] **REUSE**: Existing fixture patterns ✅ (`__tests__/` structure)
+- [ ] **REUSE**: Existing language detection tests ✅ (extend patterns)
+- [ ] Add new tests for gitignore-specific functionality
+- [ ] **REUSE**: Existing performance test patterns ✅
+- [ ] **REUSE**: Existing cross-platform test setup ✅
 
 **Deliverables**:
-- 95%+ test coverage across all components
-- Performance benchmarks under target thresholds
-- Comprehensive edge case coverage
+- **REUSE**: Existing 95%+ test coverage standards ✅
+- **REUSE**: Existing performance benchmarking ✅
+- **NEW**: Gitignore-specific test coverage
 
 ### Task 4.2: Real-World Validation
 **Estimated effort**: 2 days
@@ -183,69 +187,62 @@
 
 ## Phase 5: Documentation and Polish (Week 5)
 
-### Task 5.1: Documentation
-**Estimated effort**: 2 days
+### Task 5.1: Documentation  
+**Estimated effort**: 1 day ⬇️ (was 2 days)
 **Priority**: Medium
 
-- [ ] Write comprehensive API documentation
-- [ ] Create user guide with examples
-- [ ] Document rule customization and extension
-- [ ] Add troubleshooting guide
-- [ ] Create architecture documentation
-- [ ] Write contribution guidelines for new rules
+- [ ] **REUSE**: Existing documentation patterns ✅ (docs/ structure)
+- [ ] **REUSE**: Existing API doc generation ✅ (TypeScript comments)
+- [ ] **REUSE**: Existing troubleshooting guide patterns ✅
+- [ ] **NEW**: Gitignore-specific user guide and examples
+- [ ] **LEVERAGE**: Existing contribution guidelines ✅
 
 **Deliverables**:
-- Complete documentation set
-- User-friendly guides and examples
-- Developer documentation for extensions
+- **REUSE**: Existing documentation infrastructure ✅
+- **NEW**: Gitignore audit user guide
 
 ### Task 5.2: Performance Optimization
-**Estimated effort**: 1 day
+**Estimated effort**: 0.5 days ⬇️ (was 1 day)  
 **Priority**: Low
 
-- [ ] Profile and optimize hot paths
-- [ ] Implement caching for repeated operations
-- [ ] Optimize pattern matching algorithms
-- [ ] Add smart exclusions for large directories
-- [ ] Implement parallel processing where beneficial
+- [ ] **LEVERAGE**: Existing LanguageDetector optimizations ✅
+- [ ] **REUSE**: Existing caching patterns ✅ (configuration manager)
+- [ ] **REUSE**: Existing performance benchmarks ✅
+- [ ] **NEW**: Gitignore-specific optimizations if needed
 
 **Deliverables**:
-- <2 second audit time for typical projects
-- <100MB memory usage during operation
-- Scalable performance for large repositories
+- **REUSE**: Existing performance standards ✅ (<2s operation time)
+- **LEVERAGE**: Existing memory management ✅
 
 ### Task 5.3: Advanced Features
-**Estimated effort**: 2 days
+**Estimated effort**: 1 day ⬇️ (was 2 days)
 **Priority**: Low
 
-- [ ] Add pre-commit hook integration
-- [ ] Implement custom rule definition support
-- [ ] Create rule sharing and template system
-- [ ] Add batch processing for multiple projects
-- [ ] Implement configuration file support
-- [ ] Add update mechanism for rule definitions
+- [ ] **REUSE**: Existing pre-commit hook patterns ✅ (Husky integration)
+- [ ] **LEVERAGE**: Existing configuration system ✅ (.claude-setup.json)
+- [ ] **REUSE**: Existing template system ✅ (templates/ directory)
+- [ ] **NEW**: Rule sharing and custom definitions (minimal implementation)
 
 **Deliverables**:
-- Enhanced workflow integration
-- Extensibility for custom use cases
-- Future-proof architecture
+- **LEVERAGE**: Existing workflow integration ✅
+- **REUSE**: Existing extensibility patterns ✅
 
 ## Risk Mitigation
 
 ### Technical Risks
-- **Pattern matching complexity**: Extensive testing against Git behavior
-- **Performance with large repos**: Early benchmarking and optimization
-- **Cross-platform compatibility**: Test matrix across OS and Node versions
+- **Pattern matching complexity**: **REUSE** existing minimatch patterns ✅
+- **Performance with large repos**: **REUSE** existing LanguageDetector optimizations ✅
+- **Cross-platform compatibility**: **REUSE** existing test matrix ✅
 
 ### User Experience Risks
-- **Overly aggressive patterns**: Conservative defaults, user review required
-- **Workflow disruption**: Optional integration, non-destructive by default
-- **False positives**: Comprehensive validation with real-world projects
+- **Overly aggressive patterns**: **REUSE** existing conservative defaults pattern ✅
+- **Workflow disruption**: **REUSE** existing optional integration patterns ✅
+- **False positives**: **REUSE** existing validation approach ✅
 
 ### Maintenance Risks
-- **Rule database maintenance**: Clear contribution guidelines, automated testing
-- **Technology evolution**: Extensible architecture, regular review cycles
-- **Integration complexity**: Modular design, backward compatibility
+- **Rule database maintenance**: **REUSE** existing language handler patterns ✅
+- **Technology evolution**: **REUSE** existing extensible architecture ✅
+- **Integration complexity**: **LEVERAGE** existing modular design ✅
 
 ## Success Metrics
 
