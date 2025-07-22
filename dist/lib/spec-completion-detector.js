@@ -37,9 +37,9 @@ export class SpecCompletionDetectorImpl {
         }
         catch (err) {
             if (err.code === 'ENOENT') {
-                throw new ValidationError(`Tasks file not found: ${tasksFilePath}`, specPath, 'Ensure the spec directory contains a tasks.md file');
+                throw new ValidationError(`Tasks file not found: ${tasksFilePath}`, specPath);
             }
-            throw new ValidationError(`Failed to read tasks file: ${err instanceof Error ? err.message : 'Unknown error'}`, specPath, 'Check file permissions and ensure tasks.md is readable');
+            throw new ValidationError(`Failed to read tasks file: ${err instanceof Error ? err.message : 'Unknown error'}`, specPath);
         }
     }
     /**
@@ -68,7 +68,7 @@ export class SpecCompletionDetectorImpl {
             }
         }
         catch (err) {
-            throw new ValidationError(`Failed to scan specs directory: ${err instanceof Error ? err.message : 'Unknown error'}`, specsDir, 'Ensure .kiro/specs directory exists and is readable');
+            throw new ValidationError(`Failed to scan specs directory: ${err instanceof Error ? err.message : 'Unknown error'}`, specsDir);
         }
         return completedSpecs;
     }

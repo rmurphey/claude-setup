@@ -40,7 +40,7 @@ describe('CLIMain', () => {
       const config = cli.parseArgs(['--help', '--version']);
       assert.strictEqual(config.help, true);
       assert.strictEqual(config.version, true);
-      assert.strictEqual(config.fix, false);
+      assert.strictEqual(config.detectLanguage, false);
     });
 
     it('should parse short flags correctly', () => {
@@ -60,9 +60,8 @@ describe('CLIMain', () => {
     });
 
     it('should handle multiple flags correctly', () => {
-      const config = cli.parseArgs(['--fix', '--dry-run', '--force']);
-      assert.strictEqual(config.fix, true);
-      assert.strictEqual(config.dryRun, true);
+      const config = cli.parseArgs(['--detect-language', '--force']);
+      assert.strictEqual(config.detectLanguage, true);
       assert.strictEqual(config.force, true);
     });
 
@@ -97,20 +96,20 @@ describe('CLIMain', () => {
   describe('validateFlagCombinations', () => {
     it('should throw error for conflicting flags', () => {
       assert.throws(() => {
-        cli.parseArgs(['--fix', '--detect-language']);
-      }, /--fix cannot be used with: --detect-language/);
+        cli.parseArgs(['--config', '--detect-language']);
+      }, /cannot be used with/);
     });
 
     it('should throw error for multiple conflicting flags', () => {
       assert.throws(() => {
-        cli.parseArgs(['--config', '--fix', '--sync-issues']);
+        cli.parseArgs(['--config', '--detect-language', '--sync-issues']);
       }, /cannot be used with/);
     });
 
     it('should throw error for missing dependencies', () => {
       assert.throws(() => {
-        cli.parseArgs(['--dry-run']);
-      }, /--dry-run requires: --fix/);
+        cli.parseArgs(['--show']);
+      }, /--show requires: --config/);
     });
 
     it('should throw error for show without config', () => {
@@ -133,8 +132,6 @@ describe('CLIMain', () => {
 
     it('should allow valid flag combinations', () => {
       // These should not throw
-      assert.doesNotThrow(() => cli.parseArgs(['--fix', '--dry-run']));
-      assert.doesNotThrow(() => cli.parseArgs(['--fix', '--auto-fix']));
       assert.doesNotThrow(() => cli.parseArgs(['--config', '--show']));
       assert.doesNotThrow(() => cli.parseArgs(['--config', '--reset']));
       assert.doesNotThrow(() => cli.parseArgs(['--detect-language', '--force']));
@@ -169,10 +166,6 @@ describe('CLIMain', () => {
   });
 
   describe('determinePrimaryMode', () => {
-    it('should return recovery for fix flag', () => {
-      const config = { fix: true };
-      assert.strictEqual(cli.determinePrimaryMode(config), 'recovery');
-    });
 
     it('should return language-detection for detectLanguage flag', () => {
       const config = { detectLanguage: true };
@@ -194,11 +187,6 @@ describe('CLIMain', () => {
       assert.strictEqual(cli.determinePrimaryMode(config), 'setup');
     });
 
-    it('should prioritize modes correctly', () => {
-      // Fix should take priority over other modes
-      const config = { fix: true, detectLanguage: true };
-      assert.strictEqual(cli.determinePrimaryMode(config), 'recovery');
-    });
   });
 
   describe('configKeyToFlag', () => {
@@ -264,7 +252,7 @@ describe('CLIMain', () => {
     });
 
     it('should handle flag combination errors gracefully', async () => {
-      await cli.runCLI(['--fix', '--detect-language']);
+      await cli.runCLI(['--config', '--detect-language']);
       
       assert.strictEqual(exitCode, 1);
       assert.ok(consoleErrors.some(err => err.includes('Command line error')));
@@ -283,7 +271,7 @@ describe('CLIMain', () => {
       const config = cli.parseArgs([]);
       assert.strictEqual(config.help, false);
       assert.strictEqual(config.version, false);
-      assert.strictEqual(config.fix, false);
+      assert.strictEqual(config.detectLanguage, false);
     });
 
     it('should handle arguments with special characters', () => {

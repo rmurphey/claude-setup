@@ -7,9 +7,6 @@ export class CLIMain {
     supportedFlags = new Set([
         '--help', '-h',
         '--version', '-v',
-        '--fix',
-        '--dry-run',
-        '--auto-fix',
         '--detect-language',
         '--config',
         '--show',
@@ -21,16 +18,13 @@ export class CLIMain {
         '--no-save'
     ]);
     flagConflicts = new Map([
-        ['--fix', ['--detect-language', '--config', '--sync-issues']],
-        ['--detect-language', ['--fix', '--config', '--sync-issues']],
-        ['--config', ['--fix', '--detect-language', '--sync-issues']],
-        ['--sync-issues', ['--fix', '--detect-language', '--config']],
+        ['--detect-language', ['--config', '--sync-issues']],
+        ['--config', ['--detect-language', '--sync-issues']],
+        ['--sync-issues', ['--detect-language', '--config']],
         ['--show', ['--reset']],
         ['--reset', ['--show']]
     ]);
     flagDependencies = new Map([
-        ['--dry-run', ['--fix']],
-        ['--auto-fix', ['--fix']],
         ['--show', ['--config']],
         ['--reset', ['--config']]
     ]);
@@ -41,9 +35,6 @@ export class CLIMain {
         const flags = {
             help: false,
             version: false,
-            fix: false,
-            dryRun: false,
-            autoFix: false,
             detectLanguage: false,
             config: false,
             show: false,
@@ -72,15 +63,6 @@ export class CLIMain {
                 case '--version':
                 case '-v':
                     flags.version = true;
-                    break;
-                case '--fix':
-                    flags.fix = true;
-                    break;
-                case '--dry-run':
-                    flags.dryRun = true;
-                    break;
-                case '--auto-fix':
-                    flags.autoFix = true;
                     break;
                 case '--detect-language':
                     flags.detectLanguage = true;
@@ -146,9 +128,6 @@ export class CLIMain {
             }
             const mode = this.determinePrimaryMode(flags);
             switch (mode) {
-                case 'recovery':
-                    await this.handleRecoveryMode(flags);
-                    break;
                 case 'language-detection':
                     await handleLanguageDetection(argv || process.argv.slice(2));
                     break;
@@ -256,8 +235,6 @@ export class CLIMain {
      * Determine primary mode based on flags
      */
     determinePrimaryMode(flags) {
-        if (flags.fix)
-            return 'recovery';
         if (flags.detectLanguage)
             return 'language-detection';
         if (flags.config)
@@ -288,9 +265,6 @@ USAGE:
 OPTIONS:
   -h, --help              Show this help message
   -v, --version           Show version information
-  --fix                   Run recovery mode to fix broken setup
-      --dry-run           Preview changes without applying them (requires --fix)
-      --auto-fix          Automatically apply fixes without confirmation (requires --fix)
   --detect-language       Detect and display project language
   --config                Manage configuration
       --show              Show current configuration (requires --config)
@@ -304,22 +278,18 @@ OPTIONS:
 EXAMPLES:
   claude-setup                        # Interactive setup
   claude-setup --language=js          # Setup with JavaScript override
-  claude-setup --fix                  # Fix broken project setup
-  claude-setup --fix --dry-run        # Preview recovery changes
   claude-setup --detect-language      # Detect project language
   claude-setup --config --show        # Show current config
   claude-setup --config --reset       # Reset configuration
 
 MODES:
   Setup Mode       Set up new project infrastructure (default)
-  Recovery Mode    Assess and recover existing codebase (--fix)
   Language Mode    Detect and display project language (--detect-language)
   Config Mode      Manage configuration settings (--config)
   Sync Mode        Sync GitHub issues with ACTIVE_WORK.md (--sync-issues)
   DevContainer     Generate DevContainer configuration only (--devcontainer)
 
 FLAG DEPENDENCIES:
-  --dry-run, --auto-fix require --fix
   --show, --reset require --config
 
 For more information, visit: https://github.com/rmurphey/claude-setup
@@ -331,19 +301,6 @@ For more information, visit: https://github.com/rmurphey/claude-setup
     showVersion() {
         // Import package.json to get version
         console.log('1.0.0');
-    }
-    /**
-     * Handle recovery mode
-     */
-    async handleRecoveryMode(flags) {
-        // const { RecoverySystem } = await import('../lib/recovery-system.js');
-        // const recovery = new RecoverySystem();
-        if (flags.dryRun) {
-            console.log(chalk.blue('🔍 Running in dry-run mode...'));
-            // Implement dry-run logic
-        }
-        // Implement recovery logic
-        console.log(chalk.yellow('Recovery mode not fully implemented yet'));
     }
     /**
      * Handle setup mode

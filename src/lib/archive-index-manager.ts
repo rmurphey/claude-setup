@@ -73,8 +73,7 @@ export class ArchiveIndexManager {
     } catch (error) {
       throw new ConfigurationError(
         `Failed to add archive entry: ${error instanceof Error ? error.message : 'Unknown error'}`,
-        metadata.archivePath,
-        'Check archive index file permissions and disk space'
+        metadata.archivePath
       );
     }
   }
@@ -106,8 +105,7 @@ export class ArchiveIndexManager {
     } catch (error) {
       throw new ConfigurationError(
         `Failed to remove archive entry: ${error instanceof Error ? error.message : 'Unknown error'}`,
-        archivePath,
-        'Check archive index file permissions'
+        archivePath
       );
     }
   }
@@ -329,8 +327,7 @@ export class ArchiveIndexManager {
       } else {
         throw new ConfigurationError(
           `Failed to load archive index: ${error instanceof Error ? error.message : 'Unknown error'}`,
-          this.indexFilePath,
-          'Check file permissions and format of archive index file'
+          this.indexFilePath
         );
       }
     }
@@ -349,8 +346,7 @@ export class ArchiveIndexManager {
     } catch (error) {
       throw new ConfigurationError(
         `Failed to save archive index: ${error instanceof Error ? error.message : 'Unknown error'}`,
-        this.indexFilePath,
-        'Check write permissions for archive directory'
+        this.indexFilePath
       );
     }
   }

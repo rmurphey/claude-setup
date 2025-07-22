@@ -172,19 +172,16 @@ export type ArchivalErrorCode =
 export class ArchivalError extends Error {
   public readonly code: ArchivalErrorCode;
   public readonly specPath: string;
-  public readonly recoveryAction: string;
 
   constructor(
     message: string,
     code: ArchivalErrorCode,
-    specPath: string,
-    recoveryAction: string
+    specPath: string
   ) {
     super(message);
     this.name = 'ArchivalError';
     this.code = code;
     this.specPath = specPath;
-    this.recoveryAction = recoveryAction;
     
     // Maintains proper stack trace for where our error was thrown (only available on V8)
     if (Error.captureStackTrace) {
@@ -194,22 +191,22 @@ export class ArchivalError extends Error {
 }
 
 export class ValidationError extends ArchivalError {
-  constructor(message: string, specPath: string, recoveryAction: string) {
-    super(message, 'VALIDATION_FAILED', specPath, recoveryAction);
+  constructor(message: string, specPath: string) {
+    super(message, 'VALIDATION_FAILED', specPath);
     this.name = 'ValidationError';
   }
 }
 
 export class CopyError extends ArchivalError {
-  constructor(message: string, specPath: string, recoveryAction: string) {
-    super(message, 'COPY_FAILED', specPath, recoveryAction);
+  constructor(message: string, specPath: string) {
+    super(message, 'COPY_FAILED', specPath);
     this.name = 'CopyError';
   }
 }
 
 export class ConfigurationError extends ArchivalError {
-  constructor(message: string, specPath: string, recoveryAction: string) {
-    super(message, 'CONFIG_ERROR', specPath, recoveryAction);
+  constructor(message: string, specPath: string) {
+    super(message, 'CONFIG_ERROR', specPath);
     this.name = 'ConfigurationError';
   }
 }

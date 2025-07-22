@@ -13,10 +13,8 @@ Interactive CLI tool to set up professional development projects with Claude Cod
 npx github:rmurphey/claude-setup
 ```
 
-Choose from 2 main modes plus utilities:
+Choose from setup modes plus utilities:
 - **🚀 Set up new project infrastructure** - Complete development environment setup
-- **🏥 Assess and recover existing codebase** - Analysis and improvement system
-- **🔧 One-command recovery** - `--fix` instantly detects and restores missing setup files
 - **📦 Generate GitHub Codespaces DevContainer only** - Quick utility for .devcontainer/devcontainer.json
 
 ## Overview
@@ -72,50 +70,6 @@ Creates complete professional development environments through 4 simple question
 - Teams establishing consistent development standards
 - Solo developers wanting professional-grade setup
 
-## One-Command Recovery
-
-**`--fix`** - Instantly detect and restore missing setup files to save hours of manual re-setup.
-
-### Features
-- **Smart Detection**: Scans for missing CLAUDE.md, ACTIVE_WORK.md, commands directory, and language-specific files
-- **Safe Recovery**: Backs up corrupted files before restoration
-- **Language Aware**: Restores appropriate configuration for JavaScript, Python, Go, Rust, Java, and Swift
-- **Dry Run Mode**: Preview changes with `--dry-run` before applying
-- **Auto Fix**: Skip confirmations with `--auto-fix` for CI/CD integration
-
-### Use Cases
-- Accidental deletion of setup files
-- Corrupted project configuration
-- Incomplete previous setup
-- Switching between machines
-- Team onboarding with broken repositories
-
-```bash
-# Quick fix for broken setup
-npx github:rmurphey/claude-setup --fix
-
-# See what would be fixed
-npx github:rmurphey/claude-setup --fix --dry-run
-
-# Auto-fix without prompts (CI/CD)
-npx github:rmurphey/claude-setup --fix --auto-fix
-```
-
-## Recovery Mode
-
-Comprehensive analysis and improvement system for projects with technical debt or maintenance challenges.
-
-### The 3-Command Workflow
-
-**`/recovery-assess`** - Analyze codebase health (0-100 score)  
-**`/recovery-plan`** - Generate prioritized improvement roadmap  
-**`/recovery-execute`** - Apply automated improvements  
-
-### Use Cases
-- Legacy codebases with accumulated technical debt
-- Inherited projects without clear standards
-- Rapid prototypes that need production-ready infrastructure
-- Team transitions requiring consistent development practices
 
 ## GitHub Codespaces DevContainer Generator
 
@@ -143,22 +97,6 @@ npx github:rmurphey/claude-setup
 # Select: JavaScript → Standard → Solo → No CI/CD
 ```
 
-### Legacy Codebase Recovery
-```bash
-cd inherited-legacy-project
-npx github:rmurphey/claude-setup
-# Select: 🏥 Assess and recover existing codebase
-# Then run: /recovery-assess → /recovery-plan → /recovery-execute
-```
-
-### One-Command Recovery
-```bash
-# Fix broken setup instantly
-npx github:rmurphey/claude-setup --fix
-
-# Preview what would be fixed without making changes
-npx github:rmurphey/claude-setup --fix --dry-run
-```
 
 
 ```bash
@@ -296,11 +234,6 @@ The tool creates a **persistent memory system** that maintains project knowledge
 - `/defer` - Postpone tasks with reasons
 - `/ideation` - AI-powered development idea generation
 
-**Codebase Analysis & Recovery**
-- `/recovery-assess` - Analyze codebase health (0-100 score)
-- `/recovery-plan` - Generate prioritized improvement roadmap
-- `/recovery-execute` - Apply automated improvements
-
 **Learning & Growth**
 - `/learn` - Capture insights
 - `/reflect` - Session reflection
@@ -363,9 +296,6 @@ git config --global user.email "your@email.com"
 **Conflicts with existing setup**
 If you have existing configuration files that conflict:
 ```bash
-# Use dry-run mode to see what would change
-npx github:rmurphey/claude-setup --fix --dry-run
-
 # Backup your existing files first
 cp package.json package.json.backup
 cp .eslintrc.json .eslintrc.json.backup

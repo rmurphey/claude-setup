@@ -42,7 +42,7 @@ export class ArchivalEngineImpl {
             // Step 1: Validate archival safety
             const safetyCheck = await this.validateArchivalSafety(specPath);
             if (!safetyCheck.canProceed) {
-                throw new ValidationError(`Archival safety validation failed: ${safetyCheck.issues.join(', ')}`, specPath, 'Fix validation issues before attempting archival');
+                throw new ValidationError(`Archival safety validation failed: ${safetyCheck.issues.join(', ')}`, specPath);
             }
             // Step 2: Create archive directory structure
             await this.ensureArchiveDirectory();
@@ -73,7 +73,7 @@ export class ArchivalEngineImpl {
             // Rollback: Clean up partial archive on failure
             await this.rollbackArchival(archivePath);
             const archivalError = error instanceof ArchivalError ? error :
-                new ArchivalError(`Archival failed: ${error instanceof Error ? error.message : 'Unknown error'}`, 'COPY_FAILED', specPath, 'Check file permissions and disk space, then retry archival');
+                new ArchivalError(`Archival failed: ${error instanceof Error ? error.message : 'Unknown error'}`, 'COPY_FAILED', specPath);
             return {
                 success: false,
                 originalPath: specPath,
@@ -210,7 +210,7 @@ export class ArchivalEngineImpl {
             await fs.mkdir(this.archiveLocation, { recursive: true });
         }
         catch (error) {
-            throw new ArchivalError(`Failed to create archive directory: ${error instanceof Error ? error.message : 'Unknown error'}`, 'CONFIG_ERROR', this.archiveLocation, 'Check permissions and disk space for archive location');
+            throw new ArchivalError(`Failed to create archive directory: ${error instanceof Error ? error.message : 'Unknown error'}`, 'CONFIG_ERROR', this.archiveLocation);
         }
     }
     /**
@@ -236,7 +236,7 @@ export class ArchivalEngineImpl {
             }
         }
         catch (error) {
-            throw new CopyError(`Failed to copy spec to archive: ${error instanceof Error ? error.message : 'Unknown error'}`, sourcePath, 'Check source file permissions and target directory write access');
+            throw new CopyError(`Failed to copy spec to archive: ${error instanceof Error ? error.message : 'Unknown error'}`, sourcePath);
         }
     }
     /**
@@ -257,7 +257,7 @@ export class ArchivalEngineImpl {
             await fs.utimes(targetPath, sourceStats.atime, sourceStats.mtime);
         }
         catch (error) {
-            throw new CopyError(`Failed to copy file with metadata: ${error instanceof Error ? error.message : 'Unknown error'}`, sourcePath, 'Check file permissions and disk space');
+            throw new CopyError(`Failed to copy file with metadata: ${error instanceof Error ? error.message : 'Unknown error'}`, sourcePath);
         }
     }
     /**
@@ -283,7 +283,7 @@ export class ArchivalEngineImpl {
             };
         }
         catch (error) {
-            throw new ValidationError(`Failed to extract spec info: ${error instanceof Error ? error.message : 'Unknown error'}`, specPath, 'Ensure tasks.md file exists and is readable');
+            throw new ValidationError(`Failed to extract spec info: ${error instanceof Error ? error.message : 'Unknown error'}`, specPath);
         }
     }
     /**
@@ -297,7 +297,7 @@ export class ArchivalEngineImpl {
             await fs.writeFile(metadataPath, JSON.stringify(metadata, null, 2), 'utf-8');
         }
         catch (error) {
-            throw new ArchivalError(`Failed to write archive metadata: ${error instanceof Error ? error.message : 'Unknown error'}`, 'COPY_FAILED', archivePath, 'Check write permissions for archive directory');
+            throw new ArchivalError(`Failed to write archive metadata: ${error instanceof Error ? error.message : 'Unknown error'}`, 'COPY_FAILED', archivePath);
         }
     }
     /**
@@ -326,7 +326,7 @@ export class ArchivalEngineImpl {
             }
         }
         catch (error) {
-            throw new ArchivalError(`Archive integrity verification failed: ${error instanceof Error ? error.message : 'Unknown error'}`, 'COPY_FAILED', archivePath, 'Archive may be corrupted - manual verification required');
+            throw new ArchivalError(`Archive integrity verification failed: ${error instanceof Error ? error.message : 'Unknown error'}`, 'COPY_FAILED', archivePath);
         }
     }
     /**
@@ -358,7 +358,7 @@ export class ArchivalEngineImpl {
             await fs.rm(specPath, { recursive: true, force: true });
         }
         catch (error) {
-            throw new ArchivalError(`Failed to remove original spec: ${error instanceof Error ? error.message : 'Unknown error'}`, 'CLEANUP_FAILED', specPath, 'Manual cleanup required - remove original spec directory');
+            throw new ArchivalError(`Failed to remove original spec: ${error instanceof Error ? error.message : 'Unknown error'}`, 'CLEANUP_FAILED', specPath);
         }
     }
     /**
@@ -518,14 +518,14 @@ export class ArchivalEngineImpl {
                         // If we can't restore index entry, that's acceptable since the archive might be truly gone
                     }
                 }
-                throw new ArchivalError(`Failed to remove archived spec from filesystem: ${fsError instanceof Error ? fsError.message : 'Unknown error'}`, 'CLEANUP_FAILED', archivePath, 'Manual removal of archive directory may be required');
+                throw new ArchivalError(`Failed to remove archived spec from filesystem: ${fsError instanceof Error ? fsError.message : 'Unknown error'}`, 'CLEANUP_FAILED', archivePath);
             }
         }
         catch (error) {
             if (error instanceof ArchivalError) {
                 throw error;
             }
-            throw new ArchivalError(`Failed to remove archived spec: ${error instanceof Error ? error.message : 'Unknown error'}`, 'CLEANUP_FAILED', archivePath, 'Check archive path and permissions');
+            throw new ArchivalError(`Failed to remove archived spec: ${error instanceof Error ? error.message : 'Unknown error'}`, 'CLEANUP_FAILED', archivePath);
         }
     }
     // ============================================================================

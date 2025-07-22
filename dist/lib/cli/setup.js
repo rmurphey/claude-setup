@@ -65,14 +65,6 @@ class SetupOrchestrator {
         }
     }
     /**
-     * Run recovery mode - moved from main.js
-     */
-    async runRecoveryMode() {
-        console.log(chalk.blue.bold('\n🔧 Claude Setup Recovery\n'));
-        console.log(chalk.yellow('Recovery mode is deprecated - use main setup mode instead'));
-        console.log(chalk.gray('Use: npx claude-setup for interactive setup'));
-    }
-    /**
      * Run DevContainer mode
      */
     async runDevContainerMode() {
@@ -273,8 +265,7 @@ class SetupOrchestrator {
             'hygiene', 'todo', 'design', 'commit', 'next',
             'learn', 'docs', 'estimate', 'reflect', 'defer',
             'push', 'version-tag', 'maintainability', 'idea', 'ideation',
-            'recovery-assess', 'recovery-plan', 'recovery-execute', 'update-docs',
-            'issue'
+            'update-docs', 'issue'
         ];
         for (const cmd of commands) {
             const templatePath = path.join(process.cwd(), 'templates', 'commands', `${cmd}.md`);

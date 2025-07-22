@@ -18,7 +18,6 @@ describe('SetupOrchestrator', () => {
 
     it('should have all required methods', () => {
       assert.strictEqual(typeof orchestrator.runSetupMode, 'function');
-      assert.strictEqual(typeof orchestrator.runRecoveryMode, 'function');
       assert.strictEqual(typeof orchestrator.runDevContainerMode, 'function');
       assert.strictEqual(typeof orchestrator.setupProject, 'function');
       assert.strictEqual(typeof orchestrator.generateDevContainer, 'function');
@@ -139,7 +138,6 @@ describe('SetupOrchestrator', () => {
   describe('method existence and basic functionality', () => {
     it('should have all required methods', () => {
       assert.strictEqual(typeof orchestrator.runSetupMode, 'function');
-      assert.strictEqual(typeof orchestrator.runRecoveryMode, 'function');
       assert.strictEqual(typeof orchestrator.runDevContainerMode, 'function');
       assert.strictEqual(typeof orchestrator.setupProject, 'function');
       assert.strictEqual(typeof orchestrator.generateDevContainer, 'function');

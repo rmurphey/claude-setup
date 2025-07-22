@@ -135,17 +135,16 @@ export type ArchivalErrorCode = 'VALIDATION_FAILED' | 'COPY_FAILED' | 'CLEANUP_F
 export declare class ArchivalError extends Error {
     readonly code: ArchivalErrorCode;
     readonly specPath: string;
-    readonly recoveryAction: string;
-    constructor(message: string, code: ArchivalErrorCode, specPath: string, recoveryAction: string);
+    constructor(message: string, code: ArchivalErrorCode, specPath: string);
 }
 export declare class ValidationError extends ArchivalError {
-    constructor(message: string, specPath: string, recoveryAction: string);
+    constructor(message: string, specPath: string);
 }
 export declare class CopyError extends ArchivalError {
-    constructor(message: string, specPath: string, recoveryAction: string);
+    constructor(message: string, specPath: string);
 }
 export declare class ConfigurationError extends ArchivalError {
-    constructor(message: string, specPath: string, recoveryAction: string);
+    constructor(message: string, specPath: string);
 }
 export interface HookConfig {
     enabled: boolean;

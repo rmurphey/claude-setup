@@ -44,14 +44,12 @@ export class SpecCompletionDetectorImpl implements SpecCompletionDetector {
       if ((err as { code?: string }).code === 'ENOENT') {
         throw new ValidationError(
           `Tasks file not found: ${tasksFilePath}`,
-          specPath,
-          'Ensure the spec directory contains a tasks.md file'
+          specPath
         );
       }
       throw new ValidationError(
         `Failed to read tasks file: ${err instanceof Error ? err.message : 'Unknown error'}`,
-        specPath,
-        'Check file permissions and ensure tasks.md is readable'
+        specPath
       );
     }
   }
@@ -85,8 +83,7 @@ export class SpecCompletionDetectorImpl implements SpecCompletionDetector {
     } catch (err) {
       throw new ValidationError(
         `Failed to scan specs directory: ${err instanceof Error ? err.message : 'Unknown error'}`,
-        specsDir,
-        'Ensure .kiro/specs directory exists and is readable'
+        specsDir
       );
     }
     

@@ -40,7 +40,7 @@ export class SpecScannerImpl {
             return specs.sort(); // Return sorted for consistent ordering
         }
         catch (error) {
-            throw new ValidationError(`Failed to scan specs directory: ${error instanceof Error ? error.message : 'Unknown error'}`, SpecScannerImpl.SPECS_DIRECTORY, 'Ensure .kiro/specs directory exists and is readable');
+            throw new ValidationError(`Failed to scan specs directory: ${error instanceof Error ? error.message : 'Unknown error'}`, SpecScannerImpl.SPECS_DIRECTORY);
         }
     }
     /**

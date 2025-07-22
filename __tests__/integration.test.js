@@ -84,37 +84,6 @@ describe('Integration Tests - Critical CLI Functionality', () => {
     }
   });
 
-  test('CLI --fix should handle empty directory', async () => {
-    const originalCwd = process.cwd();
-    process.chdir(testDir);
-    
-    try {
-      await fs.emptyDir('.'); // Ensure clean directory
-      
-      const result = execSync('node ../bin/cli.js --fix', {
-        encoding: 'utf8',
-        timeout,
-        stdio: 'pipe'
-      });
-      
-      // Should start recovery process
-      assert(typeof result === 'string', 'Should produce string output');
-      
-    } catch (error) {
-      // Recovery might fail in empty directory, but should not timeout
-      assert(!error.message.includes('timeout'), 'Should not timeout');
-      
-      const output = (error.stderr || '') + (error.stdout || '');
-      assert(!output.includes('gtimeout'), `Cross-platform timeout error: ${output}`);
-      
-      // Should contain recovery-related output
-      if (error.status !== 0) {
-        console.log(`Recovery command exited with code ${error.status}, output: ${output}`);
-      }
-    } finally {
-      process.chdir(originalCwd);
-    }
-  });
 
   test('CLI should handle config management', async () => {
     const originalCwd = process.cwd();

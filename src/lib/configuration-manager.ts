@@ -62,8 +62,7 @@ export class ConfigurationManagerImpl implements ConfigurationManager {
       } else {
         throw new ConfigurationError(
           `Failed to load archival configuration: ${error instanceof Error ? error.message : 'Unknown error'}`,
-          this.configFilePath,
-          'Check configuration file format and permissions, or delete to recreate with defaults'
+          this.configFilePath
         );
       }
     }
@@ -95,8 +94,7 @@ export class ConfigurationManagerImpl implements ConfigurationManager {
     } catch (error) {
       throw new ConfigurationError(
         `Failed to save archival configuration: ${error instanceof Error ? error.message : 'Unknown error'}`,
-        this.configFilePath,
-        'Check write permissions for configuration directory'
+        this.configFilePath
       );
     }
   }
@@ -266,8 +264,7 @@ export class ConfigurationManagerImpl implements ConfigurationManager {
     if (!this.validateConfig(updatedConfig)) {
       throw new ConfigurationError(
         `Invalid value for configuration setting '${key}': ${value}`,
-        this.configFilePath,
-        `Ensure the value for '${key}' meets the required constraints`
+        this.configFilePath
       );
     }
     
@@ -326,8 +323,7 @@ export class ConfigurationManagerImpl implements ConfigurationManager {
     } catch (error) {
       throw new ConfigurationError(
         `Failed to backup configuration: ${error instanceof Error ? error.message : 'Unknown error'}`,
-        this.configFilePath,
-        'Check write permissions for configuration directory'
+        this.configFilePath
       );
     }
   }
@@ -361,8 +357,7 @@ export class ConfigurationManagerImpl implements ConfigurationManager {
     } catch (error) {
       throw new ConfigurationError(
         `Failed to restore from backup: ${error instanceof Error ? error.message : 'Unknown error'}`,
-        backupPath,
-        'Check backup file format and permissions'
+        backupPath
       );
     }
   }

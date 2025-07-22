@@ -30,8 +30,6 @@
     "archive-completed": "node bin/archive-completed-specs.js --verbose",
     "docs:validate": "node dist/lib/readme-updater.js validate",
     "docs:update": "npm run update-docs && echo 'Documentation updated successfully'",
-    "fix": "node bin/cli.js --fix",
-    "fix:dry-run": "node bin/cli.js --fix --dry-run",
     "prepare": "husky"
   },
   "keywords": [

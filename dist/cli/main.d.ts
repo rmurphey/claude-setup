@@ -1,9 +1,6 @@
 export interface CLIFlags {
     help: boolean;
     version: boolean;
-    fix: boolean;
-    dryRun: boolean;
-    autoFix: boolean;
     detectLanguage: boolean;
     config: boolean;
     show: boolean;
@@ -14,7 +11,7 @@ export interface CLIFlags {
     force: boolean;
     noSave: boolean;
 }
-export type PrimaryMode = 'setup' | 'recovery' | 'language-detection' | 'configuration' | 'sync-issues' | 'devcontainer';
+export type PrimaryMode = 'setup' | 'language-detection' | 'configuration' | 'sync-issues' | 'devcontainer';
 /**
  * Main CLI orchestrator class
  */
@@ -58,10 +55,6 @@ export declare class CLIMain {
      * Show version information
      */
     private showVersion;
-    /**
-     * Handle recovery mode
-     */
-    private handleRecoveryMode;
     /**
      * Handle setup mode
      */

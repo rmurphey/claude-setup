@@ -29,10 +29,6 @@ declare class SetupOrchestrator {
      */
     runSetupMode(config: CLIConfig, detection?: DetectionGuess): Promise<void>;
     /**
-     * Run recovery mode - moved from main.js
-     */
-    runRecoveryMode(): Promise<void>;
-    /**
      * Run DevContainer mode
      */
     runDevContainerMode(): Promise<void>;

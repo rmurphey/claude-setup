@@ -50,8 +50,7 @@ export class SpecScannerImpl implements SpecScanner {
     } catch (error) {
       throw new ValidationError(
         `Failed to scan specs directory: ${error instanceof Error ? error.message : 'Unknown error'}`,
-        SpecScannerImpl.SPECS_DIRECTORY,
-        'Ensure .kiro/specs directory exists and is readable'
+        SpecScannerImpl.SPECS_DIRECTORY
       );
     }
   }

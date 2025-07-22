@@ -219,52 +219,6 @@ export class GitHubAPIError extends CLIError {
   }
 }
 
-export class RecoveryError extends CLIError {
-  readonly code = 'RECOVERY_FAILED' as const;
-  readonly severity = 'error' as const;
-
-  constructor(
-    message: string, 
-    context?: { 
-      issueType?: string; 
-      filePath?: string; 
-      templatePath?: string;
-      partialSuccess?: boolean;
-    }
-  ) {
-    super(message, context);
-  }
-
-  getUserMessage(): string {
-    const issueType = this.context?.issueType;
-    const filePath = this.context?.filePath;
-    
-    if (issueType && filePath) {
-      return `Recovery failed for ${issueType} at '${filePath}': ${this.message}`;
-    }
-    
-    return `Recovery operation failed: ${this.message}`;
-  }
-
-  getSuggestions(): string[] {
-    const suggestions = ['Try running recovery again with --verbose for more details'];
-    
-    if (this.context?.partialSuccess) {
-      suggestions.push('Some files were recovered successfully - check the output');
-    }
-    
-    if (this.context?.templatePath) {
-      suggestions.push(`Verify template exists: ${this.context.templatePath}`);
-    }
-    
-    suggestions.push(
-      'Check file permissions in the project directory',
-      'Ensure you have write access to the project files'
-    );
-    
-    return suggestions;
-  }
-}
 
 export class ValidationError extends CLIError {
   readonly code = 'VALIDATION_FAILED' as const;
@@ -440,10 +394,6 @@ export const ERROR_CODES = {
   GITHUB_RATE_LIMITED: 'GITHUB_RATE_LIMITED',
   GITHUB_NOT_FOUND: 'GITHUB_NOT_FOUND',
   
-  // Recovery
-  RECOVERY_FAILED: 'RECOVERY_FAILED',
-  TEMPLATE_NOT_FOUND: 'TEMPLATE_NOT_FOUND',
-  BACKUP_FAILED: 'BACKUP_FAILED',
   
   // Validation
   VALIDATION_FAILED: 'VALIDATION_FAILED',

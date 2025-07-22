@@ -55,7 +55,7 @@ export class ArchiveIndexManager {
             await this.saveIndex(index);
         }
         catch (error) {
-            throw new ConfigurationError(`Failed to add archive entry: ${error instanceof Error ? error.message : 'Unknown error'}`, metadata.archivePath, 'Check archive index file permissions and disk space');
+            throw new ConfigurationError(`Failed to add archive entry: ${error instanceof Error ? error.message : 'Unknown error'}`, metadata.archivePath);
         }
     }
     /**
@@ -78,7 +78,7 @@ export class ArchiveIndexManager {
             return wasRemoved;
         }
         catch (error) {
-            throw new ConfigurationError(`Failed to remove archive entry: ${error instanceof Error ? error.message : 'Unknown error'}`, archivePath, 'Check archive index file permissions');
+            throw new ConfigurationError(`Failed to remove archive entry: ${error instanceof Error ? error.message : 'Unknown error'}`, archivePath);
         }
     }
     /**
@@ -253,7 +253,7 @@ export class ArchiveIndexManager {
                 await this.saveIndex(this.indexCache);
             }
             else {
-                throw new ConfigurationError(`Failed to load archive index: ${error instanceof Error ? error.message : 'Unknown error'}`, this.indexFilePath, 'Check file permissions and format of archive index file');
+                throw new ConfigurationError(`Failed to load archive index: ${error instanceof Error ? error.message : 'Unknown error'}`, this.indexFilePath);
             }
         }
     }
@@ -269,7 +269,7 @@ export class ArchiveIndexManager {
             this.indexCache = index;
         }
         catch (error) {
-            throw new ConfigurationError(`Failed to save archive index: ${error instanceof Error ? error.message : 'Unknown error'}`, this.indexFilePath, 'Check write permissions for archive directory');
+            throw new ConfigurationError(`Failed to save archive index: ${error instanceof Error ? error.message : 'Unknown error'}`, this.indexFilePath);
         }
     }
     /**

@@ -61,8 +61,7 @@ export class ArchivalEngineImpl implements ArchivalEngine {
       if (!safetyCheck.canProceed) {
         throw new ValidationError(
           `Archival safety validation failed: ${safetyCheck.issues.join(', ')}`,
-          specPath,
-          'Fix validation issues before attempting archival'
+          specPath
         );
       }
 
@@ -106,8 +105,7 @@ export class ArchivalEngineImpl implements ArchivalEngine {
         new ArchivalError(
           `Archival failed: ${error instanceof Error ? error.message : 'Unknown error'}`,
           'COPY_FAILED',
-          specPath,
-          'Check file permissions and disk space, then retry archival'
+          specPath
         );
 
       return {
@@ -255,8 +253,7 @@ export class ArchivalEngineImpl implements ArchivalEngine {
       throw new ArchivalError(
         `Failed to create archive directory: ${error instanceof Error ? error.message : 'Unknown error'}`,
         'CONFIG_ERROR',
-        this.archiveLocation,
-        'Check permissions and disk space for archive location'
+        this.archiveLocation
       );
     }
   }
@@ -286,8 +283,7 @@ export class ArchivalEngineImpl implements ArchivalEngine {
     } catch (error) {
       throw new CopyError(
         `Failed to copy spec to archive: ${error instanceof Error ? error.message : 'Unknown error'}`,
-        sourcePath,
-        'Check source file permissions and target directory write access'
+        sourcePath
       );
     }
   }
@@ -313,8 +309,7 @@ export class ArchivalEngineImpl implements ArchivalEngine {
     } catch (error) {
       throw new CopyError(
         `Failed to copy file with metadata: ${error instanceof Error ? error.message : 'Unknown error'}`,
-        sourcePath,
-        'Check file permissions and disk space'
+        sourcePath
       );
     }
   }
@@ -346,8 +341,7 @@ export class ArchivalEngineImpl implements ArchivalEngine {
     } catch (error) {
       throw new ValidationError(
         `Failed to extract spec info: ${error instanceof Error ? error.message : 'Unknown error'}`,
-        specPath,
-        'Ensure tasks.md file exists and is readable'
+        specPath
       );
     }
   }
@@ -366,8 +360,7 @@ export class ArchivalEngineImpl implements ArchivalEngine {
       throw new ArchivalError(
         `Failed to write archive metadata: ${error instanceof Error ? error.message : 'Unknown error'}`,
         'COPY_FAILED',
-        archivePath,
-        'Check write permissions for archive directory'
+        archivePath
       );
     }
   }
@@ -404,8 +397,7 @@ export class ArchivalEngineImpl implements ArchivalEngine {
       throw new ArchivalError(
         `Archive integrity verification failed: ${error instanceof Error ? error.message : 'Unknown error'}`,
         'COPY_FAILED',
-        archivePath,
-        'Archive may be corrupted - manual verification required'
+        archivePath
       );
     }
   }
@@ -443,8 +435,7 @@ export class ArchivalEngineImpl implements ArchivalEngine {
       throw new ArchivalError(
         `Failed to remove original spec: ${error instanceof Error ? error.message : 'Unknown error'}`,
         'CLEANUP_FAILED',
-        specPath,
-        'Manual cleanup required - remove original spec directory'
+        specPath
       );
     }
   }
@@ -634,8 +625,7 @@ export class ArchivalEngineImpl implements ArchivalEngine {
         throw new ArchivalError(
           `Failed to remove archived spec from filesystem: ${fsError instanceof Error ? fsError.message : 'Unknown error'}`,
           'CLEANUP_FAILED',
-          archivePath,
-          'Manual removal of archive directory may be required'
+          archivePath
         );
       }
     } catch (error) {
@@ -646,8 +636,7 @@ export class ArchivalEngineImpl implements ArchivalEngine {
       throw new ArchivalError(
         `Failed to remove archived spec: ${error instanceof Error ? error.message : 'Unknown error'}`,
         'CLEANUP_FAILED',
-        archivePath,
-        'Check archive path and permissions'
+        archivePath
       );
     }
   }

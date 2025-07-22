@@ -67,18 +67,6 @@ export declare class GitHubAPIError extends CLIError {
     getUserMessage(): string;
     getSuggestions(): string[];
 }
-export declare class RecoveryError extends CLIError {
-    readonly code: "RECOVERY_FAILED";
-    readonly severity: "error";
-    constructor(message: string, context?: {
-        issueType?: string;
-        filePath?: string;
-        templatePath?: string;
-        partialSuccess?: boolean;
-    });
-    getUserMessage(): string;
-    getSuggestions(): string[];
-}
 export declare class ValidationError extends CLIError {
     readonly code: "VALIDATION_FAILED";
     readonly severity: "error";
@@ -159,9 +147,6 @@ export declare const ERROR_CODES: {
     readonly GITHUB_AUTH_FAILED: "GITHUB_AUTH_FAILED";
     readonly GITHUB_RATE_LIMITED: "GITHUB_RATE_LIMITED";
     readonly GITHUB_NOT_FOUND: "GITHUB_NOT_FOUND";
-    readonly RECOVERY_FAILED: "RECOVERY_FAILED";
-    readonly TEMPLATE_NOT_FOUND: "TEMPLATE_NOT_FOUND";
-    readonly BACKUP_FAILED: "BACKUP_FAILED";
     readonly VALIDATION_FAILED: "VALIDATION_FAILED";
     readonly INVALID_INPUT: "INVALID_INPUT";
     readonly MISSING_REQUIRED_FIELD: "MISSING_REQUIRED_FIELD";

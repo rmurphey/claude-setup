@@ -53,7 +53,7 @@ The `InteractiveSetup` class provides robust user interaction with:
 - **Input Validation** - Comprehensive validation of all user inputs with clear error messages
 - **Configuration Sanitization** - Normalizes user input (case, aliases, type conversion)
 - **Language Override Support** - CLI flag support for non-interactive language selection
-- **Error Recovery** - Graceful handling of invalid configurations with helpful feedback
+- **Error Handling** - Graceful handling of invalid configurations with helpful feedback
 
 ### 6. Custom Commands System
 14 standardized commands for project management:
@@ -208,7 +208,7 @@ Templates use `{{VARIABLE}}` substitution:
 
 - **Graceful Degradation**: Continue setup even if some steps fail
 - **Clear Error Messages**: User-friendly error descriptions
-- **Recovery Instructions**: Tell users how to fix issues
+- **Help Instructions**: Tell users how to fix issues
 - **Exit Codes**: Proper exit codes for CI/CD integration
 
 ## Testing Strategy
@@ -237,7 +237,6 @@ claude-project-setup/
 │   │   └── relaxed.js      # Relaxed quality level configuration
 │   ├── quality-levels.js   # Quality level management system
 │   ├── language-detector.js # Smart language detection
-│   ├── recovery-system.js  # Codebase recovery logic
 │   └── ...                 # Other core modules
 ├── .kiro/                  # Kiro project management system
 │   ├── hooks/              # Automated workflow hooks

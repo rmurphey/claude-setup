@@ -47,7 +47,7 @@ export class ConfigurationManagerImpl {
                 return this.configCache;
             }
             else {
-                throw new ConfigurationError(`Failed to load archival configuration: ${error instanceof Error ? error.message : 'Unknown error'}`, this.configFilePath, 'Check configuration file format and permissions, or delete to recreate with defaults');
+                throw new ConfigurationError(`Failed to load archival configuration: ${error instanceof Error ? error.message : 'Unknown error'}`, this.configFilePath);
             }
         }
     }
@@ -73,7 +73,7 @@ export class ConfigurationManagerImpl {
             this.configCache = config;
         }
         catch (error) {
-            throw new ConfigurationError(`Failed to save archival configuration: ${error instanceof Error ? error.message : 'Unknown error'}`, this.configFilePath, 'Check write permissions for configuration directory');
+            throw new ConfigurationError(`Failed to save archival configuration: ${error instanceof Error ? error.message : 'Unknown error'}`, this.configFilePath);
         }
     }
     /**
@@ -212,7 +212,7 @@ export class ConfigurationManagerImpl {
         const currentConfig = await this.loadConfig();
         const updatedConfig = { ...currentConfig, [key]: value };
         if (!this.validateConfig(updatedConfig)) {
-            throw new ConfigurationError(`Invalid value for configuration setting '${key}': ${value}`, this.configFilePath, `Ensure the value for '${key}' meets the required constraints`);
+            throw new ConfigurationError(`Invalid value for configuration setting '${key}': ${value}`, this.configFilePath);
         }
         await this.saveConfig(updatedConfig);
     }
@@ -262,7 +262,7 @@ export class ConfigurationManagerImpl {
             return backupPath;
         }
         catch (error) {
-            throw new ConfigurationError(`Failed to backup configuration: ${error instanceof Error ? error.message : 'Unknown error'}`, this.configFilePath, 'Check write permissions for configuration directory');
+            throw new ConfigurationError(`Failed to backup configuration: ${error instanceof Error ? error.message : 'Unknown error'}`, this.configFilePath);
         }
     }
     /**
@@ -288,7 +288,7 @@ export class ConfigurationManagerImpl {
             await this.saveConfig(migratedConfig);
         }
         catch (error) {
-            throw new ConfigurationError(`Failed to restore from backup: ${error instanceof Error ? error.message : 'Unknown error'}`, backupPath, 'Check backup file format and permissions');
+            throw new ConfigurationError(`Failed to restore from backup: ${error instanceof Error ? error.message : 'Unknown error'}`, backupPath);
         }
     }
 }
