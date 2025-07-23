@@ -234,6 +234,11 @@ The tool creates a **persistent memory system** that maintains project knowledge
 - `/defer` - Postpone tasks with reasons
 - `/ideation` - AI-powered development idea generation
 
+**Codebase Analysis & Recovery**
+- `/recovery-assess` - Analyze codebase health (0-100 score)
+- `/recovery-plan` - Generate prioritized improvement roadmap
+- `/recovery-execute` - Apply automated improvements
+
 **Learning & Growth**
 - `/learn` - Capture insights
 - `/reflect` - Session reflection

@@ -1,4 +1,5 @@
 import chalk from 'chalk';
+import yargs from 'yargs';
 
 import { handleLanguageDetection, handleConfigManagement, handleSyncIssues } from '../lib/cli/utils.js';
 
@@ -53,83 +54,38 @@ export class CLIMain {
    * Parse command line arguments into configuration object
    */
   parseArgs(argv: string[] = process.argv.slice(2)): CLIFlags {
+    const parsed = yargs(argv)
+      .option('help', { alias: 'h', type: 'boolean', description: 'Show help information' })
+      .option('version', { alias: 'v', type: 'boolean', description: 'Show version information' })
+      .option('detect-language', { type: 'boolean', description: 'Detect and display project language' })
+      .option('config', { type: 'boolean', description: 'Manage configuration' })
+      .option('show', { type: 'boolean', description: 'Show current configuration (requires --config)' })
+      .option('reset', { type: 'boolean', description: 'Reset configuration (requires --config)' })
+      .option('sync-issues', { type: 'boolean', description: 'Sync GitHub issues with ACTIVE_WORK.md' })
+      .option('devcontainer', { type: 'boolean', description: 'Generate DevContainer configuration only' })
+      .option('language', { type: 'string', description: 'Override language detection', choices: ['js', 'javascript', 'typescript', 'python', 'go', 'rust', 'java', 'swift'] })
+      .option('force', { type: 'boolean', description: 'Force operations (skip confirmations)' })
+      .option('no-save', { type: 'boolean', description: 'Don\'t save configuration' })
+      .help(false)
+      .version(false)
+      .exitProcess(false)
+      .parseSync();
+
     const flags: CLIFlags = {
-      help: false,
-      version: false,
-      detectLanguage: false,
-      config: false,
-      show: false,
-      reset: false,
-      syncIssues: false,
-      devcontainer: false,
-      force: false,
-      noSave: false
+      help: Boolean(parsed.help),
+      version: Boolean(parsed.version),
+      detectLanguage: Boolean(parsed['detect-language']),
+      config: Boolean(parsed.config),
+      show: Boolean(parsed.show),
+      reset: Boolean(parsed.reset),
+      syncIssues: Boolean(parsed['sync-issues']),
+      devcontainer: Boolean(parsed.devcontainer),
+      force: Boolean(parsed.force),
+      noSave: Boolean(parsed['no-save'])
     };
 
-    for (let i = 0; i < argv.length; i++) {
-      const arg = argv[i];
-      if (!arg) continue;
-
-      // Check for unknown flags
-      if (arg.startsWith('-')) {
-        const flagName = arg.split('=')[0];
-        if (flagName && !this.supportedFlags.has(flagName)) {
-          throw new Error(`Unknown flag: ${arg}`);
-        }
-      }
-
-      switch (arg) {
-        case '--help':
-        case '-h':
-          flags.help = true;
-          break;
-        case '--version':
-        case '-v':
-          flags.version = true;
-          break;
-        case '--detect-language':
-          flags.detectLanguage = true;
-          break;
-        case '--config':
-          flags.config = true;
-          break;
-        case '--show':
-          flags.show = true;
-          break;
-        case '--reset':
-          flags.reset = true;
-          break;
-        case '--sync-issues':
-          flags.syncIssues = true;
-          break;
-        case '--devcontainer':
-          flags.devcontainer = true;
-          break;
-        case '--force':
-          flags.force = true;
-          break;
-        case '--no-save':
-          flags.noSave = true;
-          break;
-        default:
-          if (arg.startsWith('--language')) {
-            const value = this.extractFlagValue(argv, '--language');
-            if (!value) {
-              throw new Error('--language flag requires a value');
-            }
-            if (!this.isValidLanguage(value)) {
-              throw new Error(`Invalid language: ${value}. Supported: js, python, go, rust, java, swift`);
-            }
-            flags.language = value;
-            if (arg.includes('=')) {
-              // Value was in same argument, don't increment i
-            } else {
-              // Value was in next argument, skip it
-              i++;
-            }
-          }
-          break;
-      }
+    if (parsed.language) {
+      flags.language = parsed.language;
     }
 
     this.validateFlagCombinations(flags);
