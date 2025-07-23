@@ -1,7 +1,7 @@
 {
   "name": "claude-project-setup",
   "version": "1.0.0",
-  "description": "Interactive CLI to set up Claude Code projects with professional development standards",
+  "description": "Interactive CLI to set up Claude Code projects with professional development standards. Transforms any directory into a professional development environment with quality tools, documentation systems, and structured workflows.",
   "type": "module",
   "main": "./bin/cli.js",
   "bin": {
@@ -30,14 +30,33 @@
     "archive-completed": "node bin/archive-completed-specs.js --verbose",
     "docs:validate": "node dist/lib/readme-updater.js validate",
     "docs:update": "npm run update-docs && echo 'Documentation updated successfully'",
-    "prepare": "husky"
+    "prepare": "husky",
+    "release:patch": "npm version patch && git push && git push --tags",
+    "release:minor": "npm version minor && git push && git push --tags",
+    "release:major": "npm version major && git push && git push --tags"
   },
   "keywords": [
     "claude",
     "claude-code",
     "project-setup",
     "development-standards",
-    "quality-tools"
+    "quality-tools",
+    "cli",
+    "setup",
+    "linting",
+    "typescript",
+    "javascript",
+    "python",
+    "go",
+    "rust",
+    "java",
+    "swift",
+    "eslint",
+    "git",
+    "ci-cd",
+    "github-actions",
+    "devcontainer",
+    "codespaces"
   ],
   "author": "Claude Code Setup System",
   "license": "MIT",
@@ -79,6 +98,10 @@
     "type": "git",
     "url": "https://github.com/rmurphey/claude-setup.git"
   },
+  "bugs": {
+    "url": "https://github.com/rmurphey/claude-setup/issues"
+  },
+  "homepage": "https://github.com/rmurphey/claude-setup#readme",
   "files": [
     "bin/",
     "dist/",

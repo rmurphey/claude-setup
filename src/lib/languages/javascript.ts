@@ -6,25 +6,18 @@ import chalk from 'chalk';
 import type { LanguageHandler, LanguageConfig, LanguageDetection } from '../../types/language-handler.js';
 
 async function setup(_config: LanguageConfig, detection: LanguageDetection): Promise<void> {
+  // Detect framework if package.json exists
+  const framework = await detectFramework(detection);
+  
   // Create modern ESLint configuration
-  await createEslintConfig();
+  await createEslintConfig(framework);
   
   // Check if package.json exists, create if not
   if (!detection.existingFiles.packageJson) {
-    const packageJson = {
-      name: path.basename(process.cwd()),
-      version: '1.0.0',
-      scripts: {
-        lint: 'eslint .',
-        'lint:fix': 'eslint . --fix',
-        format: 'prettier --write .',
-        test: 'jest',
-        'update-readme': 'node -e "import(\'./lib/readme-updater.js\').then(m => m.updateReadme().then(r => console.log(\'README updated:\', r)))"'
-      }
-    };
+    const packageJson = createFrameworkPackageJson(framework);
     await fs.writeFile('package.json', JSON.stringify(packageJson, null, 2));
     console.log(chalk.gray('   Created package.json'));
-    console.log(chalk.yellow('   Run: npm install --save-dev eslint prettier jest'));
+    console.log(chalk.yellow(`   Run: npm install --save-dev ${getFrameworkDevDeps(framework)}`));
   } else {
     console.log(chalk.gray('   Found existing package.json'));
     // Check if quality scripts exist, suggest additions if missing
@@ -50,7 +43,31 @@ async function setup(_config: LanguageConfig, detection: LanguageDetection): Pro
   }
 }
 
-async function createEslintConfig(): Promise<void> {
+type JSFramework = 'react' | 'vue' | 'angular' | 'next' | 'nuxt' | 'vite' | 'vanilla';
+
+async function detectFramework(detection: LanguageDetection): Promise<JSFramework> {
+  if (!detection.existingFiles.packageJson) {
+    return 'vanilla';
+  }
+  
+  try {
+    const packageJson = JSON.parse(await fs.readFile('package.json', 'utf8'));
+    const deps = { ...packageJson.dependencies, ...packageJson.devDependencies };
+    
+    if (deps.next) return 'next';
+    if (deps.nuxt) return 'nuxt';
+    if (deps.react) return 'react';
+    if (deps.vue) return 'vue';
+    if (deps['@angular/core']) return 'angular';
+    if (deps.vite) return 'vite';
+    
+    return 'vanilla';
+  } catch {
+    return 'vanilla';
+  }
+}
+
+async function createEslintConfig(framework: JSFramework): Promise<void> {
   try {
     const templatePath = path.join(__dirname, '..', '..', '..', 'templates', 'eslint.config.js');
     const targetPath = 'eslint.config.js';
@@ -59,10 +76,203 @@ async function createEslintConfig(): Promise<void> {
       await fs.copy(templatePath, targetPath);
       console.log(chalk.gray('   Created modern eslint.config.js'));
     } else {
-      console.log(chalk.yellow('   Warning: Could not find ESLint template'));
+      // Create framework-specific ESLint config
+      await createFrameworkEslintConfig(framework);
     }
   } catch {
     console.log(chalk.yellow('   Warning: Could not create ESLint config'));
+  }
+}
+
+async function createFrameworkEslintConfig(framework: JSFramework): Promise<void> {
+  const baseConfig = `import js from '@eslint/js';
+
+export default [
+  js.configs.recommended,
+  {
+    files: ['**/*.{js,mjs,cjs,jsx,ts,tsx}'],
+    rules: {
+      'no-unused-vars': 'warn',
+      'no-console': 'warn',
+      'prefer-const': 'error',
+      'no-var': 'error'
+    }
+  }`;
+
+  let frameworkConfig = '';
+  
+  switch (framework) {
+    case 'react':
+    case 'next':
+      frameworkConfig = `,
+  {
+    files: ['**/*.{jsx,tsx}'],
+    plugins: {
+      react: require('eslint-plugin-react')
+    },
+    rules: {
+      'react/jsx-uses-react': 'error',
+      'react/jsx-uses-vars': 'error',
+      'react/prop-types': 'warn'
+    }
+  }`;
+      console.log(chalk.yellow('   💡 Install: npm install --save-dev eslint-plugin-react'));
+      break;
+      
+    case 'vue':
+    case 'nuxt':
+      frameworkConfig = `,
+  {
+    files: ['**/*.vue'],
+    plugins: {
+      vue: require('eslint-plugin-vue')
+    },
+    rules: {
+      'vue/multi-word-component-names': 'warn',
+      'vue/no-unused-vars': 'error'
+    }
+  }`;
+      console.log(chalk.yellow('   💡 Install: npm install --save-dev eslint-plugin-vue'));
+      break;
+      
+    case 'angular':
+      frameworkConfig = `,
+  {
+    files: ['**/*.ts'],
+    plugins: {
+      '@angular-eslint': require('@angular-eslint/eslint-plugin')
+    },
+    rules: {
+      '@angular-eslint/component-class-suffix': 'error',
+      '@angular-eslint/directive-class-suffix': 'error'
+    }
+  }`;
+      console.log(chalk.yellow('   💡 Install: npm install --save-dev @angular-eslint/eslint-plugin'));
+      break;
+  }
+
+  const config = `${baseConfig}${frameworkConfig}
+];`;
+
+  await fs.writeFile('eslint.config.js', config);
+  console.log(chalk.gray(`   Created ${framework}-optimized eslint.config.js`));
+}
+
+function createFrameworkPackageJson(framework: JSFramework) {
+  const baseName = path.basename(process.cwd());
+  const basePackage = {
+    name: baseName,
+    version: '1.0.0',
+    scripts: {
+      lint: 'eslint .',
+      'lint:fix': 'eslint . --fix',
+      format: 'prettier --write .',
+      'update-readme': 'node -e "import(\'./lib/readme-updater.js\').then(m => m.updateReadme().then(r => console.log(\'README updated:\', r)))"'
+    }
+  };
+
+  switch (framework) {
+    case 'react':
+      return {
+        ...basePackage,
+        scripts: {
+          ...basePackage.scripts,
+          start: 'react-scripts start',
+          build: 'react-scripts build',
+          test: 'react-scripts test',
+          eject: 'react-scripts eject'
+        }
+      };
+      
+    case 'next':
+      return {
+        ...basePackage,
+        scripts: {
+          ...basePackage.scripts,
+          dev: 'next dev',
+          build: 'next build',
+          start: 'next start',
+          test: 'jest'
+        }
+      };
+      
+    case 'vue':
+      return {
+        ...basePackage,
+        scripts: {
+          ...basePackage.scripts,
+          serve: 'vue-cli-service serve',
+          build: 'vue-cli-service build',
+          test: 'vue-cli-service test:unit'
+        }
+      };
+      
+    case 'nuxt':
+      return {
+        ...basePackage,
+        scripts: {
+          ...basePackage.scripts,
+          dev: 'nuxt dev',
+          build: 'nuxt build',
+          generate: 'nuxt generate',
+          preview: 'nuxt preview',
+          test: 'jest'
+        }
+      };
+      
+    case 'angular':
+      return {
+        ...basePackage,
+        scripts: {
+          ...basePackage.scripts,
+          serve: 'ng serve',
+          build: 'ng build',
+          test: 'ng test',
+          e2e: 'ng e2e'
+        }
+      };
+      
+    case 'vite':
+      return {
+        ...basePackage,
+        scripts: {
+          ...basePackage.scripts,
+          dev: 'vite',
+          build: 'vite build',
+          preview: 'vite preview',
+          test: 'vitest'
+        }
+      };
+      
+    default:
+      return {
+        ...basePackage,
+        scripts: {
+          ...basePackage.scripts,
+          test: 'jest'
+        }
+      };
+  }
+}
+
+function getFrameworkDevDeps(framework: JSFramework): string {
+  const base = 'eslint prettier jest';
+  
+  switch (framework) {
+    case 'react':
+      return `${base} eslint-plugin-react`;
+    case 'next':
+      return `${base} eslint-plugin-react @types/node`;
+    case 'vue':
+      return `${base} eslint-plugin-vue`;
+    case 'nuxt':
+      return `${base} eslint-plugin-vue @nuxt/types`;
+    case 'angular':
+      return `${base} @angular-eslint/eslint-plugin @types/node`;
+    case 'vite':
+      return `${base} vitest`;
+    default:
+      return base;
   }
 }
 

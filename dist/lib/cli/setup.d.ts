@@ -73,9 +73,25 @@ declare class SetupOrchestrator {
      */
     generateClaudeTemplate(config: CLIConfig): string;
     /**
+     * Generate team-specific workflow section
+     */
+    generateTeamSpecificWorkflowSection(config: CLIConfig): string;
+    /**
+     * Generate team-specific commands
+     */
+    generateTeamSpecificCommands(config: CLIConfig): string;
+    /**
+     * Generate team-specific quality guidelines
+     */
+    generateTeamSpecificQualityGuidelines(config: CLIConfig): string;
+    /**
      * Generate Active Work template
      */
     generateActiveWorkTemplate(config: CLIConfig): string;
+    /**
+     * Generate team-specific active work section
+     */
+    generateTeamSpecificActiveWorkSection(config: CLIConfig): string;
     /**
      * Generate gitignore file
      */

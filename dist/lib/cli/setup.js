@@ -373,8 +373,7 @@ Co-Authored-By: Claude <noreply@anthropic.com>`;
 - **Warning Threshold**: ${config.qualityLevel === 'strict' ? '0' : config.qualityLevel === 'standard' ? '<10' : '<50'}
 - **Coverage Target**: ${config.qualityLevel === 'strict' ? '70' : config.qualityLevel === 'standard' ? '50' : '30'}%
 
-## Development Standards
-This project follows ${config.qualityLevel} quality standards with ${config.teamSize} team practices.
+${this.generateTeamSpecificWorkflowSection(config)}
 
 ## Custom Commands
 Use the following commands for structured development:
@@ -383,17 +382,111 @@ Use the following commands for structured development:
 - \`/commit\` - Structured commits
 - \`/learn\` - Knowledge capture
 - \`/docs\` - Documentation updates
+${this.generateTeamSpecificCommands(config)}
 
 ## Quality Guidelines
 - Maintain ${config.qualityLevel} code quality standards
 - Keep warnings ${config.qualityLevel === 'strict' ? 'at zero' : config.qualityLevel === 'standard' ? 'under 10' : 'under 50'}
 - Target ${config.qualityLevel === 'strict' ? '70' : config.qualityLevel === 'standard' ? '50' : '30'}% test coverage
-- Follow team size practices for ${config.teamSize} development
+${this.generateTeamSpecificQualityGuidelines(config)}
 
 ## Collaboration
 This project is set up for AI-assisted development with Claude Code.
 `;
         return template;
+    }
+    /**
+     * Generate team-specific workflow section
+     */
+    generateTeamSpecificWorkflowSection(config) {
+        switch (config.teamSize) {
+            case 'solo':
+                return `## Development Standards
+This project follows ${config.qualityLevel} quality standards optimized for individual development.
+
+### Solo Development Workflow
+- **Fast iteration**: Simplified branching, direct commits to main
+- **Personal productivity**: Focus on code quality without heavy process overhead
+- **Documentation**: Capture key decisions for future reference
+- **AI assistance**: Use Claude for code review and knowledge capture`;
+            case 'small':
+                return `## Development Standards
+This project follows ${config.qualityLevel} quality standards optimized for small team collaboration.
+
+### Small Team Workflow
+- **Feature branches**: Use feature branches with peer review for major changes
+- **Quick feedback**: Async code reviews, pair programming when needed
+- **Shared knowledge**: Document key decisions and maintain team awareness
+- **Collaborative AI**: Use Claude for team knowledge sharing and consistency`;
+            case 'large':
+                return `## Development Standards
+This project follows ${config.qualityLevel} quality standards optimized for large team coordination.
+
+### Large Team Workflow
+- **Structured branching**: Feature branches, release branches, strict review process
+- **Process consistency**: Standardized commits, comprehensive documentation
+- **Knowledge management**: Detailed specs, architecture decisions, team handoffs
+- **AI governance**: Use Claude with team guidelines for consistent code standards`;
+            default:
+                return `## Development Standards
+This project follows ${config.qualityLevel} quality standards with ${config.teamSize} team practices.`;
+        }
+    }
+    /**
+     * Generate team-specific commands
+     */
+    generateTeamSpecificCommands(config) {
+        switch (config.teamSize) {
+            case 'solo':
+                return `
+
+### Solo Development Commands
+- \`/idea\` - Quick idea capture and evaluation
+- \`/reflect\` - Personal learning and growth tracking
+- \`/defer\` - Task postponement with reasoning`;
+            case 'small':
+                return `
+
+### Small Team Commands
+- \`/idea\` - Idea capture with team context
+- \`/reflect\` - Team retrospectives and learning
+- \`/estimate\` - Feature complexity estimation
+- \`/defer\` - Collaborative task prioritization`;
+            case 'large':
+                return `
+
+### Large Team Commands
+- \`/design\` - Formal feature design documentation
+- \`/estimate\` - Detailed project estimation
+- \`/maintainability\` - Code health analysis
+- \`/version-tag\` - Release management
+- \`/defer\` - Formal backlog management`;
+            default:
+                return '';
+        }
+    }
+    /**
+     * Generate team-specific quality guidelines
+     */
+    generateTeamSpecificQualityGuidelines(config) {
+        switch (config.teamSize) {
+            case 'solo':
+                return `- Focus on personal productivity and maintainable code
+- Use AI assistance for code review and learning
+- Document important decisions for future reference`;
+            case 'small':
+                return `- Balance thoroughness with team velocity
+- Use peer review for knowledge sharing
+- Maintain consistent coding standards across the team
+- Leverage AI for team knowledge capture`;
+            case 'large':
+                return `- Enforce strict process compliance for team coordination
+- Require comprehensive documentation and testing
+- Use AI assistance for maintaining consistency across large codebase
+- Implement formal code review and approval processes`;
+            default:
+                return `- Follow team size practices for ${config.teamSize} development`;
+        }
     }
     /**
      * Generate Active Work template
@@ -406,7 +499,99 @@ This project is set up for AI-assisted development with Claude Code.
 - **Quality**: ${config.qualityLevel}
 - **Date**: ${new Date().toISOString().split('T')[0]}
 
-## Current Session
+${this.generateTeamSpecificActiveWorkSection(config)}
+
+---
+*This file tracks active development sessions and progress*
+`;
+        return template;
+    }
+    /**
+     * Generate team-specific active work section
+     */
+    generateTeamSpecificActiveWorkSection(config) {
+        switch (config.teamSize) {
+            case 'solo':
+                return `## Current Session
+*Update this section with your current work focus*
+
+### Personal Goals
+- [ ] Initial project setup complete
+- [ ] Core feature identified and planned
+- [ ] Development environment ready
+
+### Progress
+- [x] Project structure created
+- [x] Quality tools configured
+- [ ] First feature implementation
+- [ ] Personal workflow established
+
+### Learning Notes
+Project initialized with ${config.qualityLevel} quality standards for solo development.
+
+### Next Steps
+1. Review generated configuration files
+2. Install dependencies  
+3. Plan first feature or refactor
+4. Set up remote repository (optional)
+5. Establish personal development rhythm`;
+            case 'small':
+                return `## Current Session
+*Update this section with your current work focus*
+
+### Team Goals
+- [ ] Initial project setup complete
+- [ ] Team workflow established
+- [ ] First collaborative feature planned
+
+### Progress
+- [x] Project structure created
+- [x] Quality tools configured
+- [ ] Team communication established
+- [ ] First feature implementation
+- [ ] Code review process tested
+
+### Team Notes
+Project initialized with ${config.qualityLevel} quality standards for small team collaboration.
+
+### Next Steps
+1. Review generated configuration files with team
+2. Install dependencies
+3. Establish branching strategy
+4. Set up remote repository and access
+5. Plan first team feature
+6. Test code review workflow`;
+            case 'large':
+                return `## Current Session
+*Update this section with your current work focus*
+
+### Team Goals
+- [ ] Initial project setup complete
+- [ ] Team processes documented
+- [ ] Architecture decisions recorded
+- [ ] Development standards established
+
+### Progress
+- [x] Project structure created
+- [x] Quality tools configured
+- [ ] Team documentation complete
+- [ ] CI/CD pipeline tested
+- [ ] First feature specification written
+- [ ] Code review process documented
+
+### Team Coordination
+Project initialized with ${config.qualityLevel} quality standards for large team coordination.
+
+### Next Steps
+1. Review configuration with technical leads
+2. Set up CI/CD pipeline
+3. Document team development processes
+4. Establish repository access and permissions
+5. Create feature specification template
+6. Plan team onboarding process
+7. Schedule architecture review`;
+            default:
+                return `## Current Session
 *Update this section with your current work focus*
 
 ### Goals
@@ -420,16 +605,12 @@ This project is set up for AI-assisted development with Claude Code.
 ### Notes
 Project initialized with ${config.qualityLevel} quality standards.
 
-## Next Steps
+### Next Steps
 1. Review generated configuration files
 2. Install dependencies
 3. Begin feature development
-4. Set up remote repository
-
----
-*This file tracks active development sessions and progress*
-`;
-        return template;
+4. Set up remote repository`;
+        }
     }
     /**
      * Generate gitignore file
