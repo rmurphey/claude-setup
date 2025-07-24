@@ -46,9 +46,10 @@ export class CLIMain {
             type: 'boolean',
             description: 'Force operations (skip confirmations)'
         })
-            .option('no-save', {
+            .option('save', {
             type: 'boolean',
-            description: 'Don\'t save configuration'
+            default: true,
+            description: 'Save configuration (use --no-save to disable)'
         })
             // Use yargs built-in validation for simple conflicts and dependencies
             .conflicts('detect-language', 'config')
@@ -56,8 +57,9 @@ export class CLIMain {
             .conflicts('config', 'sync-issues')
             .implies('show', 'config')
             .implies('reset', 'config')
-            .version('1.0.0')
-            .help()
+            .strict() // Enable strict mode to reject unknown options
+            .version(false) // Disable automatic version handling
+            .help(false) // Disable automatic help handling
             .exitProcess(false) // Don't exit process on validation errors, throw instead
             .showHelpOnFail(false) // Don't show help on validation failures
             .parseSync();
@@ -70,7 +72,7 @@ export class CLIMain {
             syncIssues: Boolean(parsed['sync-issues']),
             devcontainer: Boolean(parsed.devcontainer),
             force: Boolean(parsed.force),
-            noSave: parsed.save === false && parsed.save !== undefined
+            noSave: !parsed.save // --no-save sets save to false, so noSave is the inverse
         };
         if (parsed.language) {
             flags.language = parsed.language;
