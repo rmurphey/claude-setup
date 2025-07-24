@@ -78,7 +78,7 @@ export class CLIMain {
       .showHelpOnFail(false)  // Don't show help on validation failures
       .parseSync();
 
-    // Simple option parsing without validation - just convert to CLIFlags interface
+    // Convert to CLIFlags interface
     const flags: CLIFlags = {
       detectLanguage: Boolean(parsed['detect-language']),
       config: Boolean(parsed.config),
@@ -94,7 +94,43 @@ export class CLIMain {
       flags.language = parsed.language;
     }
 
+    // Apply custom validation for complex business rules that yargs cannot handle
+    this.validateComplexBusinessRules(flags);
+
     return flags;
+  }
+
+  /**
+   * Custom validation layer for complex business rules that yargs built-in validation cannot handle
+   */
+  private validateComplexBusinessRules(flags: CLIFlags): void {
+    // Check for three-way conflict that yargs pairwise conflicts cannot detect
+    // Note: This is theoretical since yargs will catch the first pairwise conflict,
+    // but we implement it to match the design specification
+    const primaryModes = [flags.detectLanguage, flags.config, flags.syncIssues];
+    const activePrimaryModes = primaryModes.filter(Boolean).length;
+    
+    if (activePrimaryModes > 1) {
+      // Provide specific error message for three-way conflict as specified in design
+      if (flags.detectLanguage && flags.config && flags.syncIssues) {
+        throw new Error('Cannot use --detect-language, --config, and --sync-issues together');
+      }
+      
+      // Handle other multi-flag conflicts with clear error messages
+      if (flags.detectLanguage && flags.config) {
+        throw new Error('Arguments detect-language and config are mutually exclusive');
+      }
+      if (flags.detectLanguage && flags.syncIssues) {
+        throw new Error('Arguments detect-language and sync-issues are mutually exclusive');
+      }
+      if (flags.config && flags.syncIssues) {
+        throw new Error('Arguments config and sync-issues are mutually exclusive');
+      }
+    }
+
+    // Additional complex business rules can be added here as needed
+    // For example, conditional validation based on multiple flag combinations
+    // or validation that depends on external state
   }
 
   /**
