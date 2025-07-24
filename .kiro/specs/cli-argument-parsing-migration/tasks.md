@@ -15,7 +15,7 @@
   - Verify yargs provides clear error messages for invalid choices
   - _Requirements: 1.4, 1.5, 2.1, 2.2_
 
-- [ ] 3. Use yargs built-in validation for simple conflicts and dependencies
+- [x] 3. Use yargs built-in validation for simple conflicts and dependencies
   - Use yargs .conflicts() method for simple flag conflicts where possible
   - Use yargs .implies() method for simple flag dependencies where possible
   - Test yargs built-in conflict detection (e.g., .conflicts('show', 'reset'))

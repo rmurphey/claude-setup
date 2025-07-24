@@ -25,7 +25,7 @@ export declare class CLIMain {
     /**
      * Determine primary mode based on flags
      */
-    private determinePrimaryMode;
+    determinePrimaryMode(flags: CLIFlags): PrimaryMode;
     /**
      * Handle setup mode
      */

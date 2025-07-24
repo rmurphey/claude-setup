@@ -50,8 +50,16 @@ export class CLIMain {
             type: 'boolean',
             description: 'Don\'t save configuration'
         })
+            // Use yargs built-in validation for simple conflicts and dependencies
+            .conflicts('detect-language', 'config')
+            .conflicts('detect-language', 'sync-issues')
+            .conflicts('config', 'sync-issues')
+            .implies('show', 'config')
+            .implies('reset', 'config')
             .version('1.0.0')
             .help()
+            .exitProcess(false) // Don't exit process on validation errors, throw instead
+            .showHelpOnFail(false) // Don't show help on validation failures
             .parseSync();
         // Simple option parsing without validation - just convert to CLIFlags interface
         const flags = {
@@ -73,6 +81,32 @@ export class CLIMain {
      * Main CLI execution method
      */
     async runCLI(argv) {
+        const args = argv || process.argv.slice(2);
+        // Handle help and version manually before yargs processing
+        if (args.includes('--help') || args.includes('-h')) {
+            console.log('Claude Code Project Setup');
+            console.log('');
+            console.log('USAGE:');
+            console.log('  claude-setup [options]');
+            console.log('');
+            console.log('OPTIONS:');
+            console.log('  --detect-language    Detect and display project language');
+            console.log('  --config            Manage configuration');
+            console.log('  --show              Show current configuration (requires --config)');
+            console.log('  --reset             Reset configuration (requires --config)');
+            console.log('  --sync-issues       Sync GitHub issues with ACTIVE_WORK.md');
+            console.log('  --devcontainer      Generate DevContainer configuration only');
+            console.log('  --language <lang>   Override language detection');
+            console.log('  --force             Force operations (skip confirmations)');
+            console.log('  --no-save           Don\'t save configuration');
+            console.log('  --version           Show version number');
+            console.log('  --help              Show help');
+            return;
+        }
+        if (args.includes('--version') || args.includes('-v')) {
+            console.log('1.0.0');
+            return;
+        }
         try {
             const flags = this.parseArgs(argv);
             const mode = this.determinePrimaryMode(flags);

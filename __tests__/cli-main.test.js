@@ -38,17 +38,17 @@ describe('CLIMain', () => {
   describe('Business Logic Tests', () => {
     // Test our custom validation logic, not yargs functionality
     it('should validate flag combinations correctly', () => {
-      // Test our custom conflict validation
+      // Test yargs built-in conflict validation
       assert.throws(() => {
         cli.parseArgs(['--config', '--detect-language']);
-      }, /cannot be used with/);
+      }, /mutually exclusive/);
     });
 
     it('should validate flag dependencies correctly', () => {
-      // Test our custom dependency validation
+      // Test yargs built-in dependency validation
       assert.throws(() => {
         cli.parseArgs(['--show']);
-      }, /requires.*--config/);
+      }, /Missing dependent arguments/);
     });
 
     it('should determine primary mode correctly', () => {
@@ -95,9 +95,9 @@ describe('CLIMain', () => {
 
     it('should handle empty arguments', () => {
       const config = cli.parseArgs([]);
-      assert.strictEqual(config.help, false);
-      assert.strictEqual(config.version, false);
       assert.strictEqual(config.detectLanguage, false);
+      assert.strictEqual(config.config, false);
+      assert.strictEqual(config.syncIssues, false);
     });
   });
 });
