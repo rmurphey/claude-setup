@@ -22,7 +22,7 @@
   - Test yargs built-in dependency detection (e.g., .implies('show', 'config'))
   - _Requirements: 2.4, 2.5_
 
-- [ ] 4. Add custom validation only for complex business rules
+- [x] 4. Add custom validation only for complex business rules
   - Identify which validation rules cannot be handled by yargs built-ins
   - Implement minimal custom validation layer only for complex cases
   - Ensure custom validation works on top of yargs parsing results

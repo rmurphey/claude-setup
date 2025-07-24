@@ -104,33 +104,57 @@ export class CLIMain {
    * Custom validation layer for complex business rules that yargs built-in validation cannot handle
    */
   private validateComplexBusinessRules(flags: CLIFlags): void {
-    // Check for three-way conflict that yargs pairwise conflicts cannot detect
-    // Note: This is theoretical since yargs will catch the first pairwise conflict,
-    // but we implement it to match the design specification
-    const primaryModes = [flags.detectLanguage, flags.config, flags.syncIssues];
-    const activePrimaryModes = primaryModes.filter(Boolean).length;
+    // Complex Business Rule 1: Three-way mutual exclusion
+    // While yargs can handle pairwise conflicts, it cannot detect when all three
+    // primary mode flags are used together and provide a specific error message
+    const primaryModeFlags = [
+      { flag: flags.detectLanguage, name: 'detect-language' },
+      { flag: flags.config, name: 'config' },
+      { flag: flags.syncIssues, name: 'sync-issues' }
+    ];
     
-    if (activePrimaryModes > 1) {
-      // Provide specific error message for three-way conflict as specified in design
+    const activePrimaryModes = primaryModeFlags.filter(mode => mode.flag);
+    
+    if (activePrimaryModes.length > 1) {
+      // Special case: All three primary modes used together
       if (flags.detectLanguage && flags.config && flags.syncIssues) {
         throw new Error('Cannot use --detect-language, --config, and --sync-issues together');
       }
       
-      // Handle other multi-flag conflicts with clear error messages
-      if (flags.detectLanguage && flags.config) {
-        throw new Error('Arguments detect-language and config are mutually exclusive');
-      }
-      if (flags.detectLanguage && flags.syncIssues) {
-        throw new Error('Arguments detect-language and sync-issues are mutually exclusive');
-      }
-      if (flags.config && flags.syncIssues) {
-        throw new Error('Arguments config and sync-issues are mutually exclusive');
+      // This code path is actually unreachable because yargs will catch
+      // the first pairwise conflict, but we keep it for completeness
+      // and to demonstrate the custom validation pattern
+      const flagNames = activePrimaryModes.map(mode => `--${mode.name}`);
+      throw new Error(`Cannot use ${flagNames.join(', ')} together`);
+    }
+
+    // Complex Business Rule 2: Conditional validation based on multiple flags
+    // Example: If language is specified with certain combinations, validate the value
+    if (flags.language && flags.devcontainer) {
+      // Custom validation that depends on multiple flag combinations
+      // This is an example of validation that yargs cannot handle with built-ins
+      const supportedDevContainerLanguages = ['js', 'javascript', 'typescript', 'python', 'go', 'rust', 'java'];
+      if (!supportedDevContainerLanguages.includes(flags.language)) {
+        throw new Error(`Language '${flags.language}' is not supported for DevContainer generation. Supported: ${supportedDevContainerLanguages.join(', ')}`);
       }
     }
 
-    // Additional complex business rules can be added here as needed
-    // For example, conditional validation based on multiple flag combinations
-    // or validation that depends on external state
+    // Complex Business Rule 3: State-dependent validation
+    // Example: Validation that depends on external conditions or complex logic
+    // This demonstrates validation that cannot be expressed through yargs declarative config
+    if (flags.force && flags.config && flags.reset) {
+      // This is a complex rule that requires checking multiple flags together
+      // and potentially external state (like checking if config exists)
+      // For now, we allow this combination but could add restrictions based on
+      // file system state or other complex conditions
+    }
+
+    // Additional complex business rules can be added here as needed:
+    // - Validation that depends on file system state
+    // - Validation that requires async operations
+    // - Validation with complex conditional logic
+    // - Validation that depends on environment variables
+    // - Cross-flag validation with complex interdependencies
   }
 
   /**

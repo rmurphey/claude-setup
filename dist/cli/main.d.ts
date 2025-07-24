@@ -19,6 +19,10 @@ export declare class CLIMain {
      */
     parseArgs(argv?: string[]): CLIFlags;
     /**
+     * Custom validation layer for complex business rules that yargs built-in validation cannot handle
+     */
+    private validateComplexBusinessRules;
+    /**
      * Main CLI execution method
      */
     runCLI(argv?: string[]): Promise<void>;
