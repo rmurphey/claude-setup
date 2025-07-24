@@ -8,7 +8,7 @@
   - Verify basic boolean flags work (--force, --detect-language, etc.)
   - _Requirements: 1.1, 1.2, 1.3, 5.3_
 
-- [ ] 2. Implement language option handling with yargs built-in validation
+- [x] 2. Implement language option handling with yargs built-in validation
   - Configure --language option with choices validation in yargs
   - Verify yargs automatically handles both --language=js and --language js syntax
   - Test that yargs choices validation automatically rejects invalid language values
