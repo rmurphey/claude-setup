@@ -1,6 +1,4 @@
 export interface CLIFlags {
-    help: boolean;
-    version: boolean;
     detectLanguage: boolean;
     config: boolean;
     show: boolean;
@@ -16,9 +14,6 @@ export type PrimaryMode = 'setup' | 'language-detection' | 'configuration' | 'sy
  * Main CLI orchestrator class
  */
 export declare class CLIMain {
-    private supportedFlags;
-    private flagConflicts;
-    private flagDependencies;
     /**
      * Parse command line arguments into configuration object
      */
@@ -28,33 +23,9 @@ export declare class CLIMain {
      */
     runCLI(argv?: string[]): Promise<void>;
     /**
-     * Extract flag value from argument array (last occurrence wins)
-     */
-    extractFlagValue(argv: string[], flagName: string): string | null;
-    /**
-     * Validate flag combinations
-     */
-    private validateFlagCombinations;
-    /**
-     * Convert config key to flag name
-     */
-    private configKeyToFlag;
-    /**
      * Determine primary mode based on flags
      */
     private determinePrimaryMode;
-    /**
-     * Check if language is valid
-     */
-    private isValidLanguage;
-    /**
-     * Show help information
-     */
-    private showHelp;
-    /**
-     * Show version information
-     */
-    private showVersion;
     /**
      * Handle setup mode
      */

@@ -6,32 +6,32 @@ The current CLI argument parsing system in `src/cli/main.ts` uses manual parsing
 
 ## Requirements
 
-### Requirement 1: Maintain Complete Backward Compatibility
+### Requirement 1: Leverage Yargs Built-in Features
 
-**User Story:** As a user of the claude-setup CLI, I want all existing commands and flags to work exactly the same way after the migration, so that my scripts and workflows are not disrupted.
-
-#### Acceptance Criteria
-
-1. WHEN I run any existing CLI command THEN the behavior SHALL be identical to the current implementation
-2. WHEN I use short flags like `-h` or `-v` THEN they SHALL work exactly as before
-3. WHEN I use long flags like `--help` or `--version` THEN they SHALL work exactly as before
-4. WHEN I use the `--language` flag with equals syntax `--language=js` THEN it SHALL work as before
-5. WHEN I use the `--language` flag with space syntax `--language js` THEN it SHALL work as before
-6. WHEN I use the `--no-save` flag THEN it SHALL properly negate the save option as before
-
-### Requirement 2: Preserve All Validation Logic with Descriptive Errors
-
-**User Story:** As a developer maintaining the CLI, I want all existing validation rules to be preserved exactly with clear, actionable error messages, so that invalid flag combinations and missing dependencies are caught the same way and users understand how to fix their commands.
+**User Story:** As a developer maintaining the CLI, I want to use yargs' built-in capabilities for help, version, and validation instead of duplicating this functionality, so that the code is simpler and more maintainable.
 
 #### Acceptance Criteria
 
-1. WHEN I use conflicting flags like `--detect-language` and `--config` THEN the system SHALL throw a descriptive error message explaining which flags conflict and why
-2. WHEN I use `--show` without `--config` THEN the system SHALL throw an error clearly stating the dependency requirement and how to fix it
-3. WHEN I use `--reset` without `--config` THEN the system SHALL throw an error clearly stating the dependency requirement and how to fix it
-4. WHEN I use `--show` and `--reset` together THEN the system SHALL throw an error explaining the conflict and suggesting alternatives
-5. WHEN I provide an invalid language value THEN the system SHALL throw an error with the invalid value, supported languages list, and usage example
-6. WHEN I provide an unknown flag THEN the system SHALL throw an error identifying the unknown flag and suggesting `--help` for available options
-7. WHEN I provide a flag that requires a value without providing one THEN the system SHALL throw an error explaining what value is expected with an example
+1. WHEN I use `-h` or `--help` THEN yargs SHALL automatically display help and exit the process
+2. WHEN I use `-v` or `--version` THEN yargs SHALL automatically display version and exit the process
+3. WHEN yargs handles help/version THEN my parseArgs method SHALL never receive help: true or version: true flags
+4. WHEN I use the `--language` flag with equals syntax `--language=js` THEN yargs SHALL parse it automatically
+5. WHEN I use the `--language` flag with space syntax `--language js` THEN yargs SHALL parse it automatically
+6. WHEN I use the `--no-save` flag THEN yargs SHALL handle the boolean negation automatically
+
+### Requirement 2: Use Yargs Built-in Validation Where Possible
+
+**User Story:** As a developer maintaining the CLI, I want to leverage yargs' built-in validation features for common scenarios and only implement custom validation for complex business rules, so that the code is simpler and more reliable.
+
+#### Acceptance Criteria
+
+1. WHEN I provide an invalid language value THEN yargs choices validation SHALL automatically reject it with a clear error message
+2. WHEN I provide an unknown flag THEN yargs SHALL automatically throw an error and suggest `--help`
+3. WHEN I provide a flag that requires a value without providing one THEN yargs SHALL automatically handle this validation
+4. WHEN I use yargs built-in conflicts() method THEN it SHALL handle simple flag conflicts automatically
+5. WHEN I use yargs built-in implies() method THEN it SHALL handle simple flag dependencies automatically
+6. WHEN complex business logic is needed THEN custom validation SHALL be added on top of yargs parsing
+7. WHEN validation fails THEN error messages SHALL be clear and actionable
 
 ### Requirement 3: Maintain Test Compatibility
 
@@ -55,17 +55,17 @@ The current CLI argument parsing system in `src/cli/main.ts` uses manual parsing
 3. WHEN debugging CLI issues THEN the code SHALL be easier to understand and trace
 4. WHEN reviewing the code THEN it SHALL use established patterns from the yargs library
 
-### Requirement 5: Preserve Essential Public API
+### Requirement 5: Simplify Public API to Reflect Yargs Usage
 
-**User Story:** As a developer using the CLIMain class, I want the essential public interface to remain unchanged, so that any code depending on it continues to work.
+**User Story:** As a developer using the CLIMain class, I want the public interface to be simplified to reflect that yargs handles help/version automatically, so that the API is cleaner and more intuitive.
 
 #### Acceptance Criteria
 
 1. WHEN I instantiate CLIMain THEN the constructor SHALL work the same way
 2. WHEN I call `runCLI(argv)` THEN it SHALL execute the same way (this is the main entry point used by bin/cli.js)
-3. WHEN I access the CLIFlags interface THEN it SHALL have the same types and values
+3. WHEN I access the CLIFlags interface THEN it SHALL NOT include help and version flags since yargs handles these automatically
 4. WHEN I use the PrimaryMode type THEN it SHALL remain unchanged
-5. IF `parseArgs(argv)` is kept as a public method THEN it SHALL return the same CLIFlags interface, BUT it MAY be made private if only used internally
+5. WHEN yargs handles help/version and exits THEN runCLI SHALL never be called with those flags
 
 ### Requirement 6: Handle Edge Cases
 

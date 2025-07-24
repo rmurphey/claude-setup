@@ -20,10 +20,10 @@ CLIMain
 ```
 CLIMain
 ├── Yargs-based argument parsing (declarative configuration)
-├── Yargs built-in validation + custom validation layer
-├── Yargs built-in help/version + custom formatting
+├── Yargs built-in validation (choices, conflicts, implies)
+├── Yargs built-in help/version (automatic exit)
 ├── Yargs built-in value extraction
-└── Custom error message formatting (to match existing tests)
+└── Minimal custom validation for complex business rules
 ```
 
 ## Components and Interfaces
@@ -46,8 +46,9 @@ CLIMain
 **Option Definitions:**
 ```typescript
 yargs
-  .option('help', { alias: 'h', type: 'boolean', description: 'Show help information' })
-  .option('version', { alias: 'v', type: 'boolean', description: 'Show version information' })
+  .scriptName('claude-setup')
+  .usage('$0 [options]')
+  .description('Interactive CLI to set up Claude Code projects with professional development standards')
   .option('detect-language', { type: 'boolean', description: 'Detect and display project language' })
   .option('config', { type: 'boolean', description: 'Manage configuration' })
   .option('show', { type: 'boolean', description: 'Show current configuration (requires --config)' })
@@ -61,14 +62,21 @@ yargs
   })
   .option('force', { type: 'boolean', description: 'Force operations (skip confirmations)' })
   .option('no-save', { type: 'boolean', description: "Don't save configuration" })
+  .version('1.0.0')
+  .help()
 ```
 
-**Validation Configuration:**
+**Built-in Yargs Features Used:**
+- `.help()` - Automatically handles -h/--help flags and exits process
+- `.version('1.0.0')` - Automatically handles -v/--version flags and exits process  
+- `.choices()` - Validates language option values automatically
+- `.scriptName()` and `.usage()` - Provides proper help formatting
+- `.description()` - Adds description to help output
+
+**Custom Validation (if needed):**
 ```typescript
-.conflicts('detect-language', ['config', 'sync-issues'])
-.conflicts('show', 'reset')
-.implies('show', 'config')
-.implies('reset', 'config')
+// Only implement custom validation for complex business rules
+// that yargs built-in validation cannot handle
 ```
 
 ### 3. Error Message Compatibility Layer
@@ -93,11 +101,10 @@ yargs
 
 ## Data Models
 
-### CLIFlags Interface (Unchanged)
+### CLIFlags Interface (Updated)
 ```typescript
 export interface CLIFlags {
-  help: boolean;
-  version: boolean;
+  // help and version removed - yargs handles these automatically and exits process
   detectLanguage: boolean;
   config: boolean;
   show: boolean;

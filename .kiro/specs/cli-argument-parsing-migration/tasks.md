@@ -1,47 +1,47 @@
 # Implementation Plan
 
-- [ ] 1. Setup yargs dependency and basic configuration
+- [x] 1. Setup yargs dependency and basic configuration
   - Add yargs and @types/yargs as dependencies to package.json
   - Create basic yargs configuration with all CLI options defined
-  - Implement simple option parsing without validation
-  - Verify basic boolean flags work (--help, --version, --force, etc.)
-  - _Requirements: 1.1, 1.2, 1.3, 5.1_
+  - Use yargs built-in .help() and .version() methods instead of custom handling
+  - Remove help and version from CLIFlags interface since yargs handles them automatically
+  - Verify basic boolean flags work (--force, --detect-language, etc.)
+  - _Requirements: 1.1, 1.2, 1.3, 5.3_
 
-- [ ] 2. Implement language option handling with validation
+- [ ] 2. Implement language option handling with yargs built-in validation
   - Configure --language option with choices validation in yargs
-  - Handle both --language=js and --language js syntax
-  - Implement custom language validation to match existing error messages
-  - Test language validation with valid and invalid values
-  - _Requirements: 1.4, 1.5, 2.5, 6.4_
+  - Verify yargs automatically handles both --language=js and --language js syntax
+  - Test that yargs choices validation automatically rejects invalid language values
+  - Verify yargs provides clear error messages for invalid choices
+  - _Requirements: 1.4, 1.5, 2.1, 2.2_
 
-- [ ] 3. Implement flag conflict detection and validation
-  - Create custom validation layer for complex flag conflicts
-  - Implement conflict detection for --detect-language vs --config vs --sync-issues
-  - Implement conflict detection for --show vs --reset
-  - Ensure error messages match existing test expectations exactly
-  - _Requirements: 2.1, 2.4, 3.2_
+- [ ] 3. Use yargs built-in validation for simple conflicts and dependencies
+  - Use yargs .conflicts() method for simple flag conflicts where possible
+  - Use yargs .implies() method for simple flag dependencies where possible
+  - Test yargs built-in conflict detection (e.g., .conflicts('show', 'reset'))
+  - Test yargs built-in dependency detection (e.g., .implies('show', 'config'))
+  - _Requirements: 2.4, 2.5_
 
-- [ ] 4. Implement flag dependency validation
-  - Add custom validation for --show requires --config dependency
-  - Add custom validation for --reset requires --config dependency
-  - Ensure dependency error messages match existing test expectations
-  - Test all dependency scenarios from existing test suite
-  - _Requirements: 2.2, 2.3, 3.2_
+- [ ] 4. Add custom validation only for complex business rules
+  - Identify which validation rules cannot be handled by yargs built-ins
+  - Implement minimal custom validation layer only for complex cases
+  - Ensure custom validation works on top of yargs parsing results
+  - Test that custom validation provides clear error messages
+  - _Requirements: 2.6, 2.7_
 
-- [ ] 5. Implement error message compatibility layer
-  - Create error message transformation functions
-  - Handle unknown option errors to match "error: unknown option '--flag'" format
-  - Handle missing argument errors to match "error: option '--language <lang>' argument missing" format
-  - Handle invalid value errors with descriptive messages and suggestions
-  - Add help suggestions for error scenarios
-  - _Requirements: 2.6, 2.7, 6.2, 6.3_
+- [ ] 5. Verify yargs built-in error handling is sufficient
+  - Test that yargs automatically provides clear error messages for unknown options
+  - Test that yargs automatically provides clear error messages for missing arguments
+  - Test that yargs choices validation provides clear error messages for invalid values
+  - Only implement custom error formatting if yargs defaults are insufficient
+  - _Requirements: 2.2, 2.3, 6.2, 6.3_
 
-- [ ] 6. Handle edge cases and special argument scenarios
-  - Implement --no-save boolean negation handling
-  - Handle empty argument arrays (default to setup mode)
-  - Handle duplicate flags (last one wins behavior)
-  - Handle arguments with special characters
-  - Ensure performance with large numbers of arguments
+- [ ] 6. Verify yargs handles edge cases automatically
+  - Test that yargs automatically handles --no-save boolean negation
+  - Verify empty argument arrays work correctly (yargs returns default values)
+  - Test that yargs handles duplicate flags with last-one-wins behavior
+  - Test that yargs handles arguments with special characters gracefully
+  - Verify yargs performance with large numbers of arguments
   - _Requirements: 1.6, 6.1, 6.4, 6.5, 7.1, 7.2_
 
 - [ ] 7. Integrate yargs parsing into CLIMain class
