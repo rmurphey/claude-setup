@@ -1,0 +1,13 @@
+{
+  "version": "1.0",
+  "lastUpdated": "2025-07-25T20:29:33.861Z",
+  "archives": [
+    {
+      "specName": "cli-argument-parsing-migration",
+      "archivePath": ".kiro/specs/archive/2025-07-25_cli-argument-parsing-migration",
+      "completionDate": "2025-07-25T20:22:57.076Z",
+      "archivalDate": "2025-07-25T20:29:33.860Z",
+      "totalTasks": 10
+    }
+  ]
+}

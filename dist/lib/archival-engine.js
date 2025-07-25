@@ -181,23 +181,31 @@ export class ArchivalEngineImpl {
         let archivePath = join(this.archiveLocation, archiveName);
         // Handle conflicts by adding time suffix
         let counter = 1;
-        let pathExists = true;
-        while (pathExists) {
+        while (true) {
             try {
                 await fs.stat(archivePath);
                 // Path exists, try with time suffix
                 const timePart = timestamp.toISOString().split('T')[1];
                 const timeStr = timePart ? timePart.split('.')[0]?.replace(/:/g, '-') : 'unknown'; // HH-MM-SS format
-                archiveName = `${dateStr}_${timeStr}_${specName}`;
-                if (counter > 1) {
+                if (counter === 1) {
+                    archiveName = `${dateStr}_${timeStr}_${specName}`;
+                }
+                else {
                     archiveName = `${dateStr}_${timeStr}_${counter}_${specName}`;
                 }
                 archivePath = join(this.archiveLocation, archiveName);
                 counter++;
+                // Safety check to prevent infinite loops
+                if (counter > 100) {
+                    throw new Error(`Unable to generate unique archive path after 100 attempts for spec: ${specName}`);
+                }
             }
-            catch {
-                // Path doesn't exist, we can use it
-                pathExists = false;
+            catch (error) {
+                if (error instanceof Error && error.message.includes('Unable to generate unique archive path')) {
+                    throw error;
+                }
+                // Path doesn't exist (ENOENT), we can use it
+                break;
             }
         }
         return archivePath;

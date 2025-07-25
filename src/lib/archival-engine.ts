@@ -228,14 +228,23 @@ export class ArchivalEngineImpl implements ArchivalEngine {
         // Path exists, try with time suffix
         const timePart = timestamp.toISOString().split('T')[1];
         const timeStr = timePart ? timePart.split('.')[0]?.replace(/:/g, '-') : 'unknown'; // HH-MM-SS format
-        archiveName = `${dateStr}_${timeStr}_${specName}`;
-        if (counter > 1) {
+        if (counter === 1) {
+          archiveName = `${dateStr}_${timeStr}_${specName}`;
+        } else {
           archiveName = `${dateStr}_${timeStr}_${counter}_${specName}`;
         }
         archivePath = join(this.archiveLocation, archiveName);
         counter++;
-      } catch {
-        // Path doesn't exist, we can use it
+        
+        // Safety check to prevent infinite loops
+        if (counter > 100) {
+          throw new Error(`Unable to generate unique archive path after 100 attempts for spec: ${specName}`);
+        }
+      } catch (error) {
+        if (error instanceof Error && error.message.includes('Unable to generate unique archive path')) {
+          throw error;
+        }
+        // Path doesn't exist (ENOENT), we can use it
         pathExists = false;
       }
     }
