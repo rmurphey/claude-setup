@@ -58,7 +58,7 @@
   - Ensure no behavioral regressions in edge cases
   - _Requirements: 3.1, 3.2, 3.3, 3.4_
 
-- [ ] 9. Remove commander dependency and cleanup
+- [x] 9. Remove commander dependency and cleanup
   - Remove commander import from src/cli/main.ts
   - Remove commander dependency from package.json
   - Update package-lock.json by running npm install
