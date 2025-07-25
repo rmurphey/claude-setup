@@ -58,21 +58,14 @@
   - Ensure no behavioral regressions in edge cases
   - _Requirements: 3.1, 3.2, 3.3, 3.4_
 
-- [ ] 9. Performance testing and optimization
-  - Benchmark argument parsing performance vs current implementation
-  - Test with 1000+ arguments to ensure efficiency
-  - Verify CLI startup time shows no regression
-  - Optimize yargs configuration if needed for performance
-  - _Requirements: 7.1, 7.2, 7.3_
-
-- [ ] 10. Remove commander dependency and cleanup
+- [ ] 9. Remove commander dependency and cleanup
   - Remove commander import from src/cli/main.ts
   - Remove commander dependency from package.json
   - Update package-lock.json by running npm install
   - Verify no other files import or use commander
   - _Requirements: 4.1, 4.4_
 
-- [ ] 11. Code cleanup and documentation
+- [ ] 10. Code cleanup and documentation
   - Remove old manual parsing methods (extractFlagValue, configKeyToFlag, etc.)
   - Remove unused validation Maps and Sets
   - Update code comments and documentation
