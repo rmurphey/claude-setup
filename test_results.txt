@@ -1,0 +1,2231 @@
+
+> claude-project-setup@1.0.0 pretest
+> npm run build
+
+
+> claude-project-setup@1.0.0 prebuild
+> npm run clean
+
+
+> claude-project-setup@1.0.0 clean
+> rm -rf dist
+
+
+> claude-project-setup@1.0.0 build
+> if [ -d "src" ] && [ "$(ls -A src 2>/dev/null)" ]; then tsc; else echo "No TypeScript source files yet - skipping build"; fi
+
+
+> claude-project-setup@1.0.0 test
+> NODE_ENV=test node --test __tests__/**/*.js
+
+TAP version 13
+# Subtest: ArchivalEngine
+    # Subtest: validateArchivalSafety
+        # Subtest: should pass validation for complete spec with all required files
+        ok 1 - should pass validation for complete spec with all required files
+          ---
+          duration_ms: 34.555291
+          type: 'test'
+          ...
+        # Subtest: should fail validation when required files are missing
+        ok 2 - should fail validation when required files are missing
+          ---
+          duration_ms: 37.997666
+          type: 'test'
+          ...
+        # Subtest: should fail validation when spec directory does not exist
+        ok 3 - should fail validation when spec directory does not exist
+          ---
+          duration_ms: 6.836792
+          type: 'test'
+          ...
+        # Subtest: should fail validation when spec was recently modified
+        ok 4 - should fail validation when spec was recently modified
+          ---
+          duration_ms: 18.493167
+          type: 'test'
+          ...
+        1..4
+    ok 1 - validateArchivalSafety
+      ---
+      duration_ms: 98.450458
+      type: 'suite'
+      ...
+    # Subtest: createArchiveMetadata
+        # Subtest: should create proper archive metadata
+        ok 1 - should create proper archive metadata
+          ---
+          duration_ms: 3.32075
+          type: 'test'
+          ...
+        1..1
+    ok 2 - createArchiveMetadata
+      ---
+      duration_ms: 3.438875
+      type: 'suite'
+      ...
+    # Subtest: archiveSpec
+        # Subtest: should successfully archive a complete spec
+        ok 1 - should successfully archive a complete spec
+          ---
+          duration_ms: 99.3975
+          type: 'test'
+          ...
+        # Subtest: should fail archival and rollback when validation fails
+        ok 2 - should fail archival and rollback when validation fails
+          ---
+          duration_ms: 27.793792
+          type: 'test'
+          ...
+        # Subtest: should preserve file permissions and timestamps
+        ok 3 - should preserve file permissions and timestamps
+          ---
+          duration_ms: 68.872042
+          type: 'test'
+          ...
+        # Subtest: should handle subdirectories in spec
+        ok 4 - should handle subdirectories in spec
+          ---
+          duration_ms: 94.996417
+          type: 'test'
+          ...
+        1..4
+    ok 3 - archiveSpec
+      ---
+      duration_ms: 291.959125
+      type: 'suite'
+      ...
+    # Subtest: error handling
+        # Subtest: should handle permission errors gracefully
+        ok 1 - should handle permission errors gracefully
+          ---
+          duration_ms: 29.720791
+          type: 'test'
+          ...
+        # Subtest: should handle concurrent archival attempts
+        ok 2 - should handle concurrent archival attempts
+          ---
+          duration_ms: 177.247791
+          type: 'test'
+          ...
+        1..2
+    ok 4 - error handling
+      ---
+      duration_ms: 207.161917
+      type: 'suite'
+      ...
+    1..4
+ok 1 - ArchivalEngine
+  ---
+  duration_ms: 601.366917
+  type: 'suite'
+  ...
+# Subtest: ArchivalError should be properly constructed
+ok 2 - ArchivalError should be properly constructed
+  ---
+  duration_ms: 0.668792
+  type: 'test'
+  ...
+# Subtest: ValidationError should extend ArchivalError correctly
+ok 3 - ValidationError should extend ArchivalError correctly
+  ---
+  duration_ms: 0.125708
+  type: 'test'
+  ...
+# Subtest: CopyError should extend ArchivalError correctly
+ok 4 - CopyError should extend ArchivalError correctly
+  ---
+  duration_ms: 0.08275
+  type: 'test'
+  ...
+# Subtest: ConfigurationError should extend ArchivalError correctly
+ok 5 - ConfigurationError should extend ArchivalError correctly
+  ---
+  duration_ms: 0.061625
+  type: 'test'
+  ...
+# Subtest: Error codes should be properly typed
+ok 6 - Error codes should be properly typed
+  ---
+  duration_ms: 0.147
+  type: 'test'
+  ...
+# Subtest: Error stack trace should be properly maintained
+ok 7 - Error stack trace should be properly maintained
+  ---
+  duration_ms: 0.150792
+  type: 'test'
+  ...
+# Subtest: ArchiveIndexManager
+    # Subtest: Index Creation and Loading
+        # Subtest: should create empty index when none exists
+        ok 1 - should create empty index when none exists
+          ---
+          duration_ms: 10.986292
+          type: 'test'
+          ...
+        # Subtest: should persist and load index from file
+        ok 2 - should persist and load index from file
+          ---
+          duration_ms: 7.066125
+          type: 'test'
+          ...
+        1..2
+    ok 1 - Index Creation and Loading
+      ---
+      duration_ms: 18.440542
+      type: 'suite'
+      ...
+    # Subtest: Archive Entry Management
+        # Subtest: should add archive entry successfully
+        ok 1 - should add archive entry successfully
+          ---
+          duration_ms: 29.138625
+          type: 'test'
+          ...
+        # Subtest: should update existing entry when adding duplicate
+        ok 2 - should update existing entry when adding duplicate
+          ---
+          duration_ms: 29.172375
+          type: 'test'
+          ...
+        # Subtest: should remove archive entry successfully
+        ok 3 - should remove archive entry successfully
+          ---
+          duration_ms: 14.585209
+          type: 'test'
+          ...
+        # Subtest: should return false when removing non-existent entry
+        ok 4 - should return false when removing non-existent entry
+          ---
+          duration_ms: 4.613667
+          type: 'test'
+          ...
+        1..4
+    ok 2 - Archive Entry Management
+      ---
+      duration_ms: 78.340541
+      type: 'suite'
+      ...
+    # Subtest: Search and Retrieval
+        # Subtest: should search archives by spec name
+        ok 1 - should search archives by spec name
+          ---
+          duration_ms: 24.562
+          type: 'test'
+          ...
+        # Subtest: should return all archives sorted by date
+        ok 2 - should return all archives sorted by date
+          ---
+          duration_ms: 39.641
+          type: 'test'
+          ...
+        # Subtest: should find archive by spec name
+        ok 3 - should find archive by spec name
+          ---
+          duration_ms: 16.604833
+          type: 'test'
+          ...
+        # Subtest: should find archive by path
+        ok 4 - should find archive by path
+          ---
+          duration_ms: 12.078625
+          type: 'test'
+          ...
+        # Subtest: should return null for non-existent searches
+        ok 5 - should return null for non-existent searches
+          ---
+          duration_ms: 28.621583
+          type: 'test'
+          ...
+        1..5
+    ok 3 - Search and Retrieval
+      ---
+      duration_ms: 122.280625
+      type: 'suite'
+      ...
+    # Subtest: Statistics
+        # Subtest: should return correct statistics
+        ok 1 - should return correct statistics
+          ---
+          duration_ms: 13.342792
+          type: 'test'
+          ...
+        # Subtest: should return empty statistics for no archives
+        ok 2 - should return empty statistics for no archives
+          ---
+          duration_ms: 22.750875
+          type: 'test'
+          ...
+        1..2
+    ok 4 - Statistics
+      ---
+      duration_ms: 36.680584
+      type: 'suite'
+      ...
+    # Subtest: Index Validation and Repair
+        # Subtest: should validate healthy index
+        ok 1 - should validate healthy index
+          ---
+          duration_ms: 16.423583
+          type: 'test'
+          ...
+        # Subtest: should remove entries for non-existent archives
+        ok 2 - should remove entries for non-existent archives
+          ---
+          duration_ms: 13.701875
+          type: 'test'
+          ...
+        1..2
+    ok 5 - Index Validation and Repair
+      ---
+      duration_ms: 30.313292
+      type: 'suite'
+      ...
+    # Subtest: Error Handling
+        # Subtest: should handle corrupted index file
+        ok 1 - should handle corrupted index file
+          ---
+          duration_ms: 2.854
+          type: 'test'
+          ...
+        # Subtest: should handle permission errors gracefully
+        ok 2 - should handle permission errors gracefully
+          ---
+          duration_ms: 5.793917
+          type: 'test'
+          ...
+        1..2
+    ok 6 - Error Handling
+      ---
+      duration_ms: 8.790709
+      type: 'suite'
+      ...
+    1..6
+ok 8 - ArchiveIndexManager
+  ---
+  duration_ms: 295.548083
+  type: 'suite'
+  ...
+# Subtest: Claude Cost Estimation
+    # Subtest: getUsageCategory
+        # Subtest: should categorize Light usage correctly
+        ok 1 - should categorize Light usage correctly
+          ---
+          duration_ms: 0.517166
+          type: 'test'
+          ...
+        # Subtest: should categorize Moderate usage correctly
+        ok 2 - should categorize Moderate usage correctly
+          ---
+          duration_ms: 0.059
+          type: 'test'
+          ...
+        # Subtest: should categorize Heavy usage correctly
+        ok 3 - should categorize Heavy usage correctly
+          ---
+          duration_ms: 0.123709
+          type: 'test'
+          ...
+        # Subtest: should categorize Intensive usage correctly
+        ok 4 - should categorize Intensive usage correctly
+          ---
+          duration_ms: 0.197208
+          type: 'test'
+          ...
+        # Subtest: should handle edge cases
+        ok 5 - should handle edge cases
+          ---
+          duration_ms: 0.173209
+          type: 'test'
+          ...
+        1..5
+    ok 1 - getUsageCategory
+      ---
+      duration_ms: 1.876875
+      type: 'suite'
+      ...
+    # Subtest: estimateCost
+        # Subtest: should calculate reasonable costs for different message counts
+        ok 1 - should calculate reasonable costs for different message counts
+          ---
+          duration_ms: 0.489416
+          type: 'test'
+          ...
+        # Subtest: should format costs correctly
+        ok 2 - should format costs correctly
+          ---
+          duration_ms: 0.086708
+          type: 'test'
+          ...
+        # Subtest: should handle different message types
+        ok 3 - should handle different message types
+          ---
+          duration_ms: 0.278417
+          type: 'test'
+          ...
+        # Subtest: should handle zero messages gracefully
+        ok 4 - should handle zero messages gracefully
+          ---
+          duration_ms: 0.132042
+          type: 'test'
+          ...
+        1..4
+    ok 2 - estimateCost
+      ---
+      duration_ms: 1.27275
+      type: 'suite'
+      ...
+    # Subtest: USAGE_PATTERNS
+        # Subtest: should have consistent structure for all patterns
+        ok 1 - should have consistent structure for all patterns
+          ---
+          duration_ms: 0.121459
+          type: 'test'
+          ...
+        # Subtest: should have totals that match sum of components
+        ok 2 - should have totals that match sum of components
+          ---
+          duration_ms: 0.044458
+          type: 'test'
+          ...
+        # Subtest: should have realistic patterns that increase with complexity
+        ok 3 - should have realistic patterns that increase with complexity
+          ---
+          duration_ms: 0.979625
+          type: 'test'
+          ...
+        # Subtest: should have implementation as largest component for most patterns
+        ok 4 - should have implementation as largest component for most patterns
+          ---
+          duration_ms: 0.069334
+          type: 'test'
+          ...
+        1..4
+    ok 3 - USAGE_PATTERNS
+      ---
+      duration_ms: 1.291042
+      type: 'suite'
+      ...
+    # Subtest: generateUsageBreakdown
+        # Subtest: should generate valid breakdown for known task types
+        ok 1 - should generate valid breakdown for known task types
+          ---
+          duration_ms: 0.279542
+          type: 'test'
+          ...
+        # Subtest: should throw error for unknown task type
+        ok 2 - should throw error for unknown task type
+          ---
+          duration_ms: 0.268875
+          type: 'test'
+          ...
+        # Subtest: should have consistent categories based on total messages
+        ok 3 - should have consistent categories based on total messages
+          ---
+          duration_ms: 0.151375
+          type: 'test'
+          ...
+        1..3
+    ok 4 - generateUsageBreakdown
+      ---
+      duration_ms: 0.933208
+      type: 'suite'
+      ...
+    # Subtest: formatUsageEstimate
+        # Subtest: should format estimate without breakdown
+        ok 1 - should format estimate without breakdown
+          ---
+          duration_ms: 0.088542
+          type: 'test'
+          ...
+        # Subtest: should format estimate with breakdown
+        ok 2 - should format estimate with breakdown
+          ---
+          duration_ms: 0.0425
+          type: 'test'
+          ...
+        # Subtest: should handle edge cases
+        ok 3 - should handle edge cases
+          ---
+          duration_ms: 0.032959
+          type: 'test'
+          ...
+        1..3
+    ok 5 - formatUsageEstimate
+      ---
+      duration_ms: 0.210458
+      type: 'suite'
+      ...
+    # Subtest: Real-world validation
+        # Subtest: should produce reasonable estimates for known historical tasks
+        ok 1 - should produce reasonable estimates for known historical tasks
+          ---
+          duration_ms: 0.044084
+          type: 'test'
+          ...
+        # Subtest: should categorize historical estimates correctly
+        ok 2 - should categorize historical estimates correctly
+          ---
+          duration_ms: 0.02775
+          type: 'test'
+          ...
+        # Subtest: should have patterns that match real development ratios
+        ok 3 - should have patterns that match real development ratios
+          ---
+          duration_ms: 0.037916
+          type: 'test'
+          ...
+        1..3
+    ok 6 - Real-world validation
+      ---
+      duration_ms: 0.14325
+      type: 'suite'
+      ...
+    1..6
+ok 9 - Claude Cost Estimation
+  ---
+  duration_ms: 6.127833
+  type: 'suite'
+  ...
+# Subtest: Claude Setup CLI Integration Tests
+    # Subtest: Template Generation Functions (Unit Tests)
+        # Subtest: generateClaudeTemplate should create proper content for strict quality
+        ok 1 - generateClaudeTemplate should create proper content for strict quality
+          ---
+          duration_ms: 0.645
+          type: 'test'
+          ...
+        # Subtest: generateClaudeTemplate should create proper content for standard quality
+        ok 2 - generateClaudeTemplate should create proper content for standard quality
+          ---
+          duration_ms: 0.115208
+          type: 'test'
+          ...
+        # Subtest: generateClaudeTemplate should create proper content for relaxed quality
+        ok 3 - generateClaudeTemplate should create proper content for relaxed quality
+          ---
+          duration_ms: 0.048
+          type: 'test'
+          ...
+        # Subtest: generateActiveWorkTemplate should create consistent content
+        ok 4 - generateActiveWorkTemplate should create consistent content
+          ---
+          duration_ms: 6.7185
+          type: 'test'
+          ...
+        # Subtest: generateGitignore should handle JavaScript projects
+        ok 5 - generateGitignore should handle JavaScript projects
+          ---
+          duration_ms: 0.167959
+          type: 'test'
+          ...
+        # Subtest: generateGitignore should handle Python projects
+        ok 6 - generateGitignore should handle Python projects
+          ---
+          duration_ms: 0.050542
+          type: 'test'
+          ...
+        # Subtest: generateGitignore should handle Go projects with common patterns
+        ok 7 - generateGitignore should handle Go projects with common patterns
+          ---
+          duration_ms: 0.200792
+          type: 'test'
+          ...
+        # Subtest: generateGitignore should handle Rust projects with common patterns
+        ok 8 - generateGitignore should handle Rust projects with common patterns
+          ---
+          duration_ms: 0.0685
+          type: 'test'
+          ...
+        # Subtest: generateGitignore should handle Swift projects
+        ok 9 - generateGitignore should handle Swift projects
+          ---
+          duration_ms: 0.880375
+          type: 'test'
+          ...
+        # Subtest: generateGitignore should handle Java projects with common patterns
+        ok 10 - generateGitignore should handle Java projects with common patterns
+          ---
+          duration_ms: 0.723459
+          type: 'test'
+          ...
+        # Subtest: generateGitignore should handle unknown project types with basic content
+        ok 11 - generateGitignore should handle unknown project types with basic content
+          ---
+          duration_ms: 0.140458
+          type: 'test'
+          ...
+        1..11
+    ok 1 - Template Generation Functions (Unit Tests)
+      ---
+      duration_ms: 14.063292
+      type: 'suite'
+      ...
+    # Subtest: Quality Level Variations
+        # Subtest: should generate proper CLAUDE.md for strict quality and solo team
+        ok 1 - should generate proper CLAUDE.md for strict quality and solo team
+          ---
+          duration_ms: 0.221167
+          type: 'test'
+          ...
+        # Subtest: should generate proper CLAUDE.md for strict quality and small team
+        ok 2 - should generate proper CLAUDE.md for strict quality and small team
+          ---
+          duration_ms: 0.068416
+          type: 'test'
+          ...
+        # Subtest: should generate proper CLAUDE.md for strict quality and team team
+        ok 3 - should generate proper CLAUDE.md for strict quality and team team
+          ---
+          duration_ms: 0.092291
+          type: 'test'
+          ...
+        # Subtest: should generate proper CLAUDE.md for standard quality and solo team
+        ok 4 - should generate proper CLAUDE.md for standard quality and solo team
+          ---
+          duration_ms: 0.05375
+          type: 'test'
+          ...
+        # Subtest: should generate proper CLAUDE.md for standard quality and small team
+        ok 5 - should generate proper CLAUDE.md for standard quality and small team
+          ---
+          duration_ms: 0.049208
+          type: 'test'
+          ...
+        # Subtest: should generate proper CLAUDE.md for standard quality and team team
+        ok 6 - should generate proper CLAUDE.md for standard quality and team team
+          ---
+          duration_ms: 0.345958
+          type: 'test'
+          ...
+        # Subtest: should generate proper CLAUDE.md for relaxed quality and solo team
+        ok 7 - should generate proper CLAUDE.md for relaxed quality and solo team
+          ---
+          duration_ms: 0.078166
+          type: 'test'
+          ...
+        # Subtest: should generate proper CLAUDE.md for relaxed quality and small team
+        ok 8 - should generate proper CLAUDE.md for relaxed quality and small team
+          ---
+          duration_ms: 0.07975
+          type: 'test'
+          ...
+        # Subtest: should generate proper CLAUDE.md for relaxed quality and team team
+        ok 9 - should generate proper CLAUDE.md for relaxed quality and team team
+          ---
+          duration_ms: 0.056667
+          type: 'test'
+          ...
+        1..9
+    ok 2 - Quality Level Variations
+      ---
+      duration_ms: 1.338458
+      type: 'suite'
+      ...
+    # Subtest: Language-Specific Content
+        # Subtest: should generate language-specific gitignore for js
+        ok 1 - should generate language-specific gitignore for js
+          ---
+          duration_ms: 0.181166
+          type: 'test'
+          ...
+        # Subtest: should generate language-specific gitignore for python
+        ok 2 - should generate language-specific gitignore for python
+          ---
+          duration_ms: 0.138708
+          type: 'test'
+          ...
+        # Subtest: should generate common gitignore for go
+        ok 3 - should generate common gitignore for go
+          ---
+          duration_ms: 0.107959
+          type: 'test'
+          ...
+        # Subtest: should generate common gitignore for rust
+        ok 4 - should generate common gitignore for rust
+          ---
+          duration_ms: 0.053333
+          type: 'test'
+          ...
+        # Subtest: should generate common gitignore for java
+        ok 5 - should generate common gitignore for java
+          ---
+          duration_ms: 0.070375
+          type: 'test'
+          ...
+        1..5
+    ok 3 - Language-Specific Content
+      ---
+      duration_ms: 0.688375
+      type: 'suite'
+      ...
+    # Subtest: Smart Language Detection
+        # Subtest: LanguageDetector should detect JavaScript projects
+        ok 1 - LanguageDetector should detect JavaScript projects
+          ---
+          duration_ms: 98.733458
+          type: 'test'
+          ...
+        # Subtest: LanguageDetector should format evidence properly
+        ok 2 - LanguageDetector should format evidence properly
+          ---
+          duration_ms: 0.208125
+          type: 'test'
+          ...
+        # Subtest: LanguageDetector should handle no detection gracefully
+        ok 3 - LanguageDetector should handle no detection gracefully
+          ---
+          duration_ms: 32.705791
+          type: 'test'
+          ...
+        # Subtest: LanguageDetector should include Swift in detection patterns
+        ok 4 - LanguageDetector should include Swift in detection patterns
+          ---
+          duration_ms: 0.1455
+          type: 'test'
+          ...
+        1..4
+    ok 4 - Smart Language Detection
+      ---
+      duration_ms: 131.940709
+      type: 'suite'
+      ...
+    # Subtest: GitHub Issue Command
+        # Subtest: CLI should have main function exported
+        ok 1 - CLI should have main function exported
+          ---
+          duration_ms: 6.180708
+          type: 'test'
+          ...
+        # Subtest: issue command template should exist
+        ok 2 - issue command template should exist
+          ---
+          duration_ms: 2.08675
+          type: 'test'
+          ...
+        # Subtest: internal issue command should exist as markdown file
+        ok 3 - internal issue command should exist as markdown file
+          ---
+          duration_ms: 7.2865
+          type: 'test'
+          ...
+        1..3
+    ok 5 - GitHub Issue Command
+      ---
+      duration_ms: 15.883875
+      type: 'suite'
+      ...
+    # Subtest: DevContainer Configuration
+        # Subtest: getDevContainerConfig should handle Swift projects
+        ok 1 - getDevContainerConfig should handle Swift projects
+          ---
+          duration_ms: 0.500959
+          type: 'test'
+          ...
+        # Subtest: getDevContainerConfig should handle JavaScript projects
+        ok 2 - getDevContainerConfig should handle JavaScript projects
+          ---
+          duration_ms: 0.161583
+          type: 'test'
+          ...
+        # Subtest: getDevContainerConfig should handle unknown project types
+        ok 3 - getDevContainerConfig should handle unknown project types
+          ---
+          duration_ms: 0.117625
+          type: 'test'
+          ...
+        1..3
+    ok 6 - DevContainer Configuration
+      ---
+      duration_ms: 0.910209
+      type: 'suite'
+      ...
+    # Subtest: Template Consistency
+        # Subtest: all templates should contain required sections
+        ok 1 - all templates should contain required sections
+          ---
+          duration_ms: 0.220375
+          type: 'test'
+          ...
+        # Subtest: templates should be valid and well-formatted
+        ok 2 - templates should be valid and well-formatted
+          ---
+          duration_ms: 0.139708
+          type: 'test'
+          ...
+        1..2
+    ok 7 - Template Consistency
+      ---
+      duration_ms: 0.42575
+      type: 'suite'
+      ...
+    1..7
+ok 10 - Claude Setup CLI Integration Tests
+  ---
+  duration_ms: 165.855792
+  type: 'suite'
+  ...
+# Subtest: InteractiveSetup
+    # Subtest: initialization and setup
+        # Subtest: should be able to validate known project types
+        ok 1 - should be able to validate known project types
+          ---
+          duration_ms: 1.877
+          type: 'test'
+          ...
+        # Subtest: should be able to validate quality levels and team sizes
+        ok 2 - should be able to validate quality levels and team sizes
+          ---
+          duration_ms: 0.182167
+          type: 'test'
+          ...
+        1..2
+    ok 1 - initialization and setup
+      ---
+      duration_ms: 2.424375
+      type: 'suite'
+      ...
+    # Subtest: validateConfiguration
+        # Subtest: should return no errors for valid configuration
+        ok 1 - should return no errors for valid configuration
+          ---
+          duration_ms: 0.282292
+          type: 'test'
+          ...
+        # Subtest: should return error for invalid project type
+        ok 2 - should return error for invalid project type
+          ---
+          duration_ms: 0.259833
+          type: 'test'
+          ...
+        # Subtest: should return error for missing project type
+        ok 3 - should return error for missing project type
+          ---
+          duration_ms: 0.131625
+          type: 'test'
+          ...
+        # Subtest: should return error for invalid quality level
+        ok 4 - should return error for invalid quality level
+          ---
+          duration_ms: 0.086833
+          type: 'test'
+          ...
+        # Subtest: should return error for invalid team size
+        ok 5 - should return error for invalid team size
+          ---
+          duration_ms: 0.074875
+          type: 'test'
+          ...
+        # Subtest: should return error for invalid cicd type
+        ok 6 - should return error for invalid cicd type
+          ---
+          duration_ms: 0.438666
+          type: 'test'
+          ...
+        # Subtest: should return multiple errors for multiple invalid fields
+        ok 7 - should return multiple errors for multiple invalid fields
+          ---
+          duration_ms: 0.504125
+          type: 'test'
+          ...
+        1..7
+    ok 2 - validateConfiguration
+      ---
+      duration_ms: 2.393042
+      type: 'suite'
+      ...
+    # Subtest: sanitizeConfiguration
+        # Subtest: should normalize project type to lowercase
+        ok 1 - should normalize project type to lowercase
+          ---
+          duration_ms: 0.430708
+          type: 'test'
+          ...
+        # Subtest: should handle project type aliases
+        ok 2 - should handle project type aliases
+          ---
+          duration_ms: 0.367084
+          type: 'test'
+          ...
+        # Subtest: should trim whitespace from string values
+        ok 3 - should trim whitespace from string values
+          ---
+          duration_ms: 0.1355
+          type: 'test'
+          ...
+        # Subtest: should convert string cicd values to boolean
+        ok 4 - should convert string cicd values to boolean
+          ---
+          duration_ms: 0.099834
+          type: 'test'
+          ...
+        # Subtest: should preserve boolean cicd values
+        ok 5 - should preserve boolean cicd values
+          ---
+          duration_ms: 0.118583
+          type: 'test'
+          ...
+        # Subtest: should not modify original config object
+        ok 6 - should not modify original config object
+          ---
+          duration_ms: 0.354666
+          type: 'test'
+          ...
+        1..6
+    ok 3 - sanitizeConfiguration
+      ---
+      duration_ms: 1.675167
+      type: 'suite'
+      ...
+    # Subtest: processSmartAnswers
+        # Subtest: should use detected language when user confirms
+        ok 1 - should use detected language when user confirms
+          ---
+          duration_ms: 0.208333
+          type: 'test'
+          ...
+        # Subtest: should not modify answers when user rejects detection
+        ok 2 - should not modify answers when user rejects detection
+          ---
+          duration_ms: 0.354208
+          type: 'test'
+          ...
+        # Subtest: should not modify answers when no detection available
+        ok 3 - should not modify answers when no detection available
+          ---
+          duration_ms: 0.178375
+          type: 'test'
+          ...
+        # Subtest: should not modify answers for multiple detection type
+        ok 4 - should not modify answers for multiple detection type
+          ---
+          duration_ms: 0.260583
+          type: 'test'
+          ...
+        # Subtest: should clean up useDetectedLanguage property
+        ok 5 - should clean up useDetectedLanguage property
+          ---
+          duration_ms: 0.205125
+          type: 'test'
+          ...
+        1..5
+    ok 4 - processSmartAnswers
+      ---
+      duration_ms: 1.369208
+      type: 'suite'
+      ...
+    # Subtest: buildSmartQuestions
+        # Subtest: should handle no language detection
+        ok 1 - should handle no language detection
+          ---
+          duration_ms: 96.911959
+          type: 'test'
+          ...
+        # Subtest: should handle buildSmartQuestions structure
+        ok 2 - should handle buildSmartQuestions structure
+          ---
+          duration_ms: 7.564583
+          type: 'test'
+          ...
+        # Subtest: should include project type question in some form
+        ok 3 - should include project type question in some form
+          ---
+          duration_ms: 5.350125
+          type: 'test'
+          ...
+        # Subtest: should include all base questions
+        ok 4 - should include all base questions
+          ---
+          duration_ms: 5.465667
+          type: 'test'
+          ...
+        1..4
+    ok 5 - buildSmartQuestions
+      ---
+      duration_ms: 115.854959
+      type: 'suite'
+      ...
+    # Subtest: Edge cases and error handling
+        # Subtest: should handle empty configuration object
+        ok 1 - should handle empty configuration object
+          ---
+          duration_ms: 0.197292
+          type: 'test'
+          ...
+        # Subtest: should handle null configuration values
+        ok 2 - should handle null configuration values
+          ---
+          duration_ms: 0.060709
+          type: 'test'
+          ...
+        # Subtest: should handle undefined configuration values
+        ok 3 - should handle undefined configuration values
+          ---
+          duration_ms: 0.051
+          type: 'test'
+          ...
+        # Subtest: should sanitize configuration with missing fields
+        ok 4 - should sanitize configuration with missing fields
+          ---
+          duration_ms: 0.068125
+          type: 'test'
+          ...
+        # Subtest: should handle case-insensitive string boolean conversion
+        ok 5 - should handle case-insensitive string boolean conversion
+          ---
+          duration_ms: 0.073542
+          type: 'test'
+          ...
+        # Subtest: should preserve original object structure during sanitization
+        ok 6 - should preserve original object structure during sanitization
+          ---
+          duration_ms: 0.158625
+          type: 'test'
+          ...
+        1..6
+    ok 6 - Edge cases and error handling
+      ---
+      duration_ms: 0.68025
+      type: 'suite'
+      ...
+    # Subtest: Performance considerations
+        # Subtest: should handle large validation arrays efficiently
+        ok 1 - should handle large validation arrays efficiently
+          ---
+          duration_ms: 0.579209
+          type: 'test'
+          ...
+        # Subtest: should handle complex configuration objects efficiently
+        ok 2 - should handle complex configuration objects efficiently
+          ---
+          duration_ms: 0.306708
+          type: 'test'
+          ...
+        1..2
+    ok 7 - Performance considerations
+      ---
+      duration_ms: 1.245917
+      type: 'suite'
+      ...
+    1..7
+ok 11 - InteractiveSetup
+  ---
+  duration_ms: 126.066583
+  type: 'suite'
+  ...
+# Subtest: CLIMain
+    # Subtest: Business Logic Tests
+        # Subtest: should validate flag combinations correctly
+        ok 1 - should validate flag combinations correctly
+          ---
+          duration_ms: 9.842125
+          type: 'test'
+          ...
+        # Subtest: should validate flag dependencies correctly
+        ok 2 - should validate flag dependencies correctly
+          ---
+          duration_ms: 1.727
+          type: 'test'
+          ...
+        # Subtest: should determine primary mode correctly
+        ok 3 - should determine primary mode correctly
+          ---
+          duration_ms: 6.50125
+          type: 'test'
+          ...
+        # Subtest: should show help content correctly
+        ok 4 - should show help content correctly
+          ---
+          duration_ms: 0.334416
+          type: 'test'
+          ...
+        # Subtest: should show version correctly
+        ok 5 - should show version correctly
+          ---
+          duration_ms: 0.186041
+          type: 'test'
+          ...
+        # Subtest: should handle errors gracefully
+        ok 6 - should handle errors gracefully
+          ---
+          duration_ms: 0.930833
+          type: 'test'
+          ...
+        1..6
+    ok 1 - Business Logic Tests
+      ---
+      duration_ms: 20.364958
+      type: 'suite'
+      ...
+    # Subtest: Integration Tests
+        # Subtest: should have required public methods
+        ok 1 - should have required public methods
+          ---
+          duration_ms: 0.098709
+          type: 'test'
+          ...
+        # Subtest: should handle empty arguments
+        ok 2 - should handle empty arguments
+          ---
+          duration_ms: 0.567417
+          type: 'test'
+          ...
+        1..2
+    ok 2 - Integration Tests
+      ---
+      duration_ms: 0.772833
+      type: 'suite'
+      ...
+    # Subtest: Yargs Built-in Error Handling (Task 5)
+        # Subtest: should provide clear error messages for unknown options
+        ok 1 - should provide clear error messages for unknown options
+          ---
+          duration_ms: 3.655833
+          type: 'test'
+          ...
+        # Subtest: should provide clear error messages for missing arguments
+        ok 2 - should provide clear error messages for missing arguments
+          ---
+          duration_ms: 1.430833
+          type: 'test'
+          ...
+        # Subtest: should provide clear error messages for invalid choices
+        ok 3 - should provide clear error messages for invalid choices
+          ---
+          duration_ms: 0.979417
+          type: 'test'
+          ...
+        # Subtest: should handle yargs built-in conflict detection
+        ok 4 - should handle yargs built-in conflict detection
+          ---
+          duration_ms: 0.462833
+          type: 'test'
+          ...
+        # Subtest: should handle yargs built-in dependency detection
+        ok 5 - should handle yargs built-in dependency detection
+          ---
+          duration_ms: 1.931
+          type: 'test'
+          ...
+        1..5
+    ok 3 - Yargs Built-in Error Handling (Task 5)
+      ---
+      duration_ms: 8.576959
+      type: 'suite'
+      ...
+    # Subtest: Yargs Edge Cases Handling (Task 6)
+        # Subtest: should handle --no-save boolean negation automatically
+        ok 1 - should handle --no-save boolean negation automatically
+          ---
+          duration_ms: 1.855917
+          type: 'test'
+          ...
+        # Subtest: should handle empty argument arrays correctly
+        ok 2 - should handle empty argument arrays correctly
+          ---
+          duration_ms: 0.757917
+          type: 'test'
+          ...
+        # Subtest: should handle duplicate flags with last-one-wins behavior
+        ok 3 - should handle duplicate flags with last-one-wins behavior
+          ---
+          duration_ms: 3.480666
+          type: 'test'
+          ...
+        # Subtest: should handle arguments with special characters gracefully
+        ok 4 - should handle arguments with special characters gracefully
+          ---
+          duration_ms: 0.791333
+          type: 'test'
+          ...
+        # Subtest: should handle large numbers of arguments efficiently
+        ok 5 - should handle large numbers of arguments efficiently
+          ---
+          duration_ms: 5.703291
+          type: 'test'
+          ...
+        # Subtest: should handle both --language=js and --language js syntax
+        ok 6 - should handle both --language=js and --language js syntax
+          ---
+          duration_ms: 2.776167
+          type: 'test'
+          ...
+        1..6
+    ok 4 - Yargs Edge Cases Handling (Task 6)
+      ---
+      duration_ms: 15.612833
+      type: 'suite'
+      ...
+    1..4
+ok 12 - CLIMain
+  ---
+  duration_ms: 45.706083
+  type: 'suite'
+  ...
+# Subtest: CLI Modes Integration
+    # Subtest: CLI exports required functions
+    ok 1 - CLI exports required functions
+      ---
+      duration_ms: 224.367208
+      type: 'test'
+      ...
+    # Subtest: generateClaudeTemplate creates valid content
+    ok 2 - generateClaudeTemplate creates valid content
+      ---
+      duration_ms: 0.195083
+      type: 'test'
+      ...
+    # Subtest: generateGitignore creates appropriate content
+    ok 3 - generateGitignore creates appropriate content
+      ---
+      duration_ms: 0.149792
+      type: 'test'
+      ...
+    # Subtest: language module detection works
+    ok 4 - language module detection works
+      ---
+      duration_ms: 0.059541
+      type: 'test'
+      ...
+    # Subtest: config management functions work
+    ok 5 - config management functions work
+      ---
+      duration_ms: 0.053125
+      type: 'test'
+      ...
+    1..5
+ok 13 - CLI Modes Integration
+  ---
+  duration_ms: 225.334333
+  type: 'suite'
+  ...
+# Subtest: Code Quality Hook
+    # Subtest: QualityLevelManager can get current level
+    ok 1 - QualityLevelManager can get current level
+      ---
+      duration_ms: 4.200167
+      type: 'test'
+      ...
+    # Subtest: QualityLevelManager can get available levels
+    ok 2 - QualityLevelManager can get available levels
+      ---
+      duration_ms: 0.3295
+      type: 'test'
+      ...
+    # Subtest: ESLint configuration validates import/export rules
+    ok 3 - ESLint configuration validates import/export rules
+      ---
+      duration_ms: 1715.336458
+      type: 'test'
+      ...
+    # Subtest: ESLint auto-fix works correctly
+    ok 4 - ESLint auto-fix works correctly
+      ---
+      duration_ms: 639.487459
+      type: 'test'
+      ...
+    # Subtest: lint-staged configuration exists
+    ok 5 - lint-staged configuration exists
+      ---
+      duration_ms: 0.272625
+      type: 'test'
+      ...
+    1..5
+ok 14 - Code Quality Hook
+  ---
+  duration_ms: 2361.417708
+  type: 'suite'
+  ...
+# Subtest: ConfigurationManager
+    # Subtest: Default Configuration
+        # Subtest: should provide sensible default configuration
+        ok 1 - should provide sensible default configuration
+          ---
+          duration_ms: 9.413125
+          type: 'test'
+          ...
+        # Subtest: should create default config file when none exists
+        ok 2 - should create default config file when none exists
+          ---
+          duration_ms: 16.809834
+          type: 'test'
+          ...
+        1..2
+    ok 1 - Default Configuration
+      ---
+      duration_ms: 27.0185
+      type: 'suite'
+      ...
+    # Subtest: Configuration Validation
+        # Subtest: should validate correct configuration
+        ok 1 - should validate correct configuration
+          ---
+          duration_ms: 3.115083
+          type: 'test'
+          ...
+        # Subtest: should reject invalid boolean fields
+        ok 2 - should reject invalid boolean fields
+          ---
+          duration_ms: 3.280208
+          type: 'test'
+          ...
+        # Subtest: should reject invalid delayMinutes
+        ok 3 - should reject invalid delayMinutes
+          ---
+          duration_ms: 6.273667
+          type: 'test'
+          ...
+        # Subtest: should reject invalid archiveLocation
+        ok 4 - should reject invalid archiveLocation
+          ---
+          duration_ms: 0.827458
+          type: 'test'
+          ...
+        # Subtest: should reject invalid notificationLevel
+        ok 5 - should reject invalid notificationLevel
+          ---
+          duration_ms: 1.436458
+          type: 'test'
+          ...
+        1..5
+    ok 2 - Configuration Validation
+      ---
+      duration_ms: 16.248458
+      type: 'suite'
+      ...
+    # Subtest: Configuration Persistence
+        # Subtest: should save and load configuration correctly
+        ok 1 - should save and load configuration correctly
+          ---
+          duration_ms: 12.222834
+          type: 'test'
+          ...
+        # Subtest: should include metadata in saved config file
+        ok 2 - should include metadata in saved config file
+          ---
+          duration_ms: 4.501292
+          type: 'test'
+          ...
+        # Subtest: should handle file permission errors gracefully
+        ok 3 - should handle file permission errors gracefully
+          ---
+          duration_ms: 5.480292
+          type: 'test'
+          ...
+        1..3
+    ok 3 - Configuration Persistence
+      ---
+      duration_ms: 22.602667
+      type: 'suite'
+      ...
+    # Subtest: Configuration Migration
+        # Subtest: should migrate empty/invalid config to defaults
+        ok 1 - should migrate empty/invalid config to defaults
+          ---
+          duration_ms: 1.28475
+          type: 'test'
+          ...
+        # Subtest: should preserve valid configuration values
+        ok 2 - should preserve valid configuration values
+          ---
+          duration_ms: 2.979041
+          type: 'test'
+          ...
+        # Subtest: should migrate legacy field names
+        ok 3 - should migrate legacy field names
+          ---
+          duration_ms: 1.431417
+          type: 'test'
+          ...
+        # Subtest: should not override new fields with legacy values
+        ok 4 - should not override new fields with legacy values
+          ---
+          duration_ms: 1.262917
+          type: 'test'
+          ...
+        # Subtest: should reject invalid legacy values
+        ok 5 - should reject invalid legacy values
+          ---
+          duration_ms: 0.887708
+          type: 'test'
+          ...
+        1..5
+    ok 4 - Configuration Migration
+      ---
+      duration_ms: 8.062791
+      type: 'suite'
+      ...
+    # Subtest: Configuration Updates
+        # Subtest: should update individual settings
+        ok 1 - should update individual settings
+          ---
+          duration_ms: 5.057292
+          type: 'test'
+          ...
+        # Subtest: should reject invalid setting updates
+        ok 2 - should reject invalid setting updates
+          ---
+          duration_ms: 6.61525
+          type: 'test'
+          ...
+        # Subtest: should reset to defaults
+        ok 3 - should reset to defaults
+          ---
+          duration_ms: 7.259125
+          type: 'test'
+          ...
+        1..3
+    ok 5 - Configuration Updates
+      ---
+      duration_ms: 19.089583
+      type: 'suite'
+      ...
+    # Subtest: Configuration Backup and Restore
+        # Subtest: should create configuration backup
+        ok 1 - should create configuration backup
+          ---
+          duration_ms: 37.065458
+          type: 'test'
+          ...
+        # Subtest: should restore from backup
+        ok 2 - should restore from backup
+          ---
+          duration_ms: 41.955
+          type: 'test'
+          ...
+        # Subtest: should handle invalid backup files
+        ok 3 - should handle invalid backup files
+          ---
+          duration_ms: 4.586625
+          type: 'test'
+          ...
+        1..3
+    ok 6 - Configuration Backup and Restore
+      ---
+      duration_ms: 83.812042
+      type: 'suite'
+      ...
+    # Subtest: Error Handling
+        # Subtest: should handle corrupted config file
+        ok 1 - should handle corrupted config file
+          ---
+          duration_ms: 6.011583
+          type: 'test'
+          ...
+        # Subtest: should not save invalid configuration
+        ok 2 - should not save invalid configuration
+          ---
+          duration_ms: 7.098833
+          type: 'test'
+          ...
+        1..2
+    ok 7 - Error Handling
+      ---
+      duration_ms: 13.224834
+      type: 'suite'
+      ...
+    # Subtest: Utility Methods
+        # Subtest: should report config file existence correctly
+        ok 1 - should report config file existence correctly
+          ---
+          duration_ms: 3.277625
+          type: 'test'
+          ...
+        # Subtest: should provide correct config file path
+        ok 2 - should provide correct config file path
+          ---
+          duration_ms: 1.916292
+          type: 'test'
+          ...
+        1..2
+    ok 8 - Utility Methods
+      ---
+      duration_ms: 5.293208
+      type: 'suite'
+      ...
+    # Subtest: All Notification Levels
+        # Subtest: should accept all valid notification levels
+        ok 1 - should accept all valid notification levels
+          ---
+          duration_ms: 1.197834
+          type: 'test'
+          ...
+        1..1
+    ok 9 - All Notification Levels
+      ---
+      duration_ms: 1.678166
+      type: 'suite'
+      ...
+    # Subtest: Boundary Value Testing
+        # Subtest: should handle boundary values for delayMinutes
+        ok 1 - should handle boundary values for delayMinutes
+          ---
+          duration_ms: 3.423458
+          type: 'test'
+          ...
+        1..1
+    ok 10 - Boundary Value Testing
+      ---
+      duration_ms: 3.561292
+      type: 'suite'
+      ...
+    1..10
+ok 15 - ConfigurationManager
+  ---
+  duration_ms: 206.818333
+  type: 'suite'
+  ...
+# No open GitHub issues found in this repository
+# 📝 When issues are created, they will automatically appear in ACTIVE_WORK.md
+# ✅ GitHub Issues section added to ACTIVE_WORK.md
+# Subtest: GitHub Sync
+    # Subtest: should create placeholder section when no issues exist
+    ok 1 - should create placeholder section when no issues exist
+      ---
+      duration_ms: 15.23625
+      type: 'test'
+      ...
+# ✅ Synced 2 GitHub issues to /Users/rmurphey/personal/claude/claude_setup/test-active-work.md
+    # Subtest: should format GitHub issues correctly
+    ok 2 - should format GitHub issues correctly
+      ---
+      duration_ms: 64.565
+      type: 'test'
+      ...
+# ✅ Synced 1 GitHub issues to /Users/rmurphey/personal/claude/claude_setup/test-active-work.md
+    # Subtest: should update existing GitHub Issues section
+    ok 3 - should update existing GitHub Issues section
+      ---
+      duration_ms: 54.314292
+      type: 'test'
+      ...
+    # Subtest: should handle file not found gracefully
+    ok 4 - should handle file not found gracefully
+      ---
+      duration_ms: 0.34525
+      type: 'test'
+      ...
+    # Subtest: should format issues without labels and assignees
+    ok 5 - should format issues without labels and assignees
+      ---
+      duration_ms: 0.160417
+      type: 'test'
+      ...
+    1..5
+ok 16 - GitHub Sync
+  ---
+  duration_ms: 136.133208
+  type: 'suite'
+  ...
+# 🧪 Running integration tests...
+# 📊 Test Output:
+# ❌ Errors:
+# (node:38246) Warning: node:test run() is being called recursively within a test file. skipping running files.
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# ✅ Integration tests passed!
+# Subtest: __tests__/integration-runner.js
+ok 12 - __tests__/integration-runner.js
+  ---
+  duration_ms: 112.039667
+  type: 'test'
+  ...
+# 🔍 Detecting project language...
+# Subtest: Integration Tests - Critical CLI Functionality
+    # Subtest: NPX execution should work in empty directory
+    ok 1 - NPX execution should work in empty directory
+      ---
+      duration_ms: 277.625167
+      type: 'test'
+      ...
+    # Subtest: CLI --sync-issues should handle missing ACTIVE_WORK.md
+    ok 2 - CLI --sync-issues should handle missing ACTIVE_WORK.md
+      ---
+      duration_ms: 222.366167
+      type: 'test'
+      ...
+# Warning: Could not load config from .claude-setup.json: ENOENT: no such file or directory, open '.claude-setup.json'
+    # Subtest: CLI should handle config management
+    ok 3 - CLI should handle config management
+      ---
+      duration_ms: 154.130292
+      type: 'test'
+      ...
+    # Subtest: CLI should create project files
+    ok 4 - CLI should create project files
+      ---
+      duration_ms: 150.823583
+      type: 'test'
+      ...
+    # Subtest: CLI should handle interactive mode gracefully
+    ok 5 - CLI should handle interactive mode gracefully
+      ---
+      duration_ms: 178.269042
+      type: 'test'
+      ...
+    1..5
+ok 18 - Integration Tests - Critical CLI Functionality
+  ---
+  duration_ms: 990.149958
+  type: 'suite'
+  ...
+# ❌ No language detected in current directory
+# Try running in a directory with source code files.
+# Subtest: Language Configuration
+    # Subtest: should save and load detection config
+    ok 1 - should save and load detection config
+      ---
+      duration_ms: 12.103
+      type: 'test'
+      ...
+    # Subtest: should use cached config when fresh
+    ok 2 - should use cached config when fresh
+      ---
+      duration_ms: 17.907917
+      type: 'test'
+      ...
+    # Subtest: should run fresh detection when config is stale
+    ok 3 - should run fresh detection when config is stale
+      ---
+      duration_ms: 49.842875
+      type: 'test'
+      ...
+    # Subtest: should skip cache when useCache is false
+    ok 4 - should skip cache when useCache is false
+      ---
+      duration_ms: 15.884333
+      type: 'test'
+      ...
+    # Subtest: should handle config file errors gracefully
+    ok 5 - should handle config file errors gracefully
+      ---
+      duration_ms: 1.939875
+      type: 'test'
+      ...
+    # Subtest: should check config freshness correctly
+    ok 6 - should check config freshness correctly
+      ---
+      duration_ms: 0.303542
+      type: 'test'
+      ...
+    # Subtest: should auto-save detection results
+    ok 7 - should auto-save detection results
+      ---
+      duration_ms: 20.007833
+      type: 'test'
+      ...
+    1..7
+ok 19 - Language Configuration
+  ---
+  duration_ms: 126.302833
+  type: 'suite'
+  ...
+# Warning: Could not load config from .claude-setup.json: Expected property name or '}' in JSON at position 2 (line 1 column 3)
+# Subtest: NPX Behavior Tests
+    # Subtest: CLI should not execute when imported in test environment
+    ok 1 - CLI should not execute when imported in test environment
+      ---
+      duration_ms: 343.608125
+      type: 'test'
+      ...
+    # Subtest: CLI should execute when NODE_ENV is not test
+    ok 2 - CLI should execute when NODE_ENV is not test
+      ---
+      duration_ms: 209.716042
+      type: 'test'
+      ...
+    # Subtest: Empty directory detection should work
+    ok 3 - Empty directory detection should work
+      ---
+      duration_ms: 12.003583
+      type: 'test'
+      ...
+    # Subtest: Template generation should work for all quality levels
+    ok 4 - Template generation should work for all quality levels
+      ---
+      duration_ms: 2.916375
+      type: 'test'
+      ...
+    # Subtest: DevContainer configuration should work for all languages
+    ok 5 - DevContainer configuration should work for all languages
+      ---
+      duration_ms: 0.204833
+      type: 'test'
+      ...
+    # Subtest: GitHub sync should handle missing ACTIVE_WORK.md gracefully
+    ok 6 - GitHub sync should handle missing ACTIVE_WORK.md gracefully
+      ---
+      duration_ms: 1.527833
+      type: 'test'
+      ...
+    # Subtest: File creation templates should be valid
+    ok 7 - File creation templates should be valid
+      ---
+      duration_ms: 1.343083
+      type: 'test'
+      ...
+    # Subtest: Command templates should be comprehensive
+    ok 8 - Command templates should be comprehensive
+      ---
+      duration_ms: 0.728791
+      type: 'test'
+      ...
+    1..8
+ok 20 - NPX Behavior Tests
+  ---
+  duration_ms: 584.276584
+  type: 'suite'
+  ...
+# Subtest: SetupOrchestrator
+    # Subtest: basic functionality
+        # Subtest: should instantiate SetupOrchestrator class
+        ok 1 - should instantiate SetupOrchestrator class
+          ---
+          duration_ms: 0.399459
+          type: 'test'
+          ...
+        # Subtest: should have all required methods
+        ok 2 - should have all required methods
+          ---
+          duration_ms: 0.097625
+          type: 'test'
+          ...
+        # Subtest: should initialize with language modules
+        ok 3 - should initialize with language modules
+          ---
+          duration_ms: 0.142041
+          type: 'test'
+          ...
+        1..3
+    ok 1 - basic functionality
+      ---
+      duration_ms: 0.978334
+      type: 'suite'
+      ...
+    # Subtest: template generation methods
+        # Subtest: should generate Claude template with correct configuration
+        ok 1 - should generate Claude template with correct configuration
+          ---
+          duration_ms: 0.338709
+          type: 'test'
+          ...
+        # Subtest: should generate Active Work template with project info
+        ok 2 - should generate Active Work template with project info
+          ---
+          duration_ms: 3.016292
+          type: 'test'
+          ...
+        # Subtest: should generate appropriate gitignore for JavaScript projects
+        ok 3 - should generate appropriate gitignore for JavaScript projects
+          ---
+          duration_ms: 0.265584
+          type: 'test'
+          ...
+        # Subtest: should generate appropriate gitignore for Python projects
+        ok 4 - should generate appropriate gitignore for Python projects
+          ---
+          duration_ms: 0.140458
+          type: 'test'
+          ...
+        # Subtest: should generate appropriate gitignore for Swift projects
+        ok 5 - should generate appropriate gitignore for Swift projects
+          ---
+          duration_ms: 0.309791
+          type: 'test'
+          ...
+        1..5
+    ok 2 - template generation methods
+      ---
+      duration_ms: 4.706667
+      type: 'suite'
+      ...
+    # Subtest: getDevContainerConfig
+        # Subtest: should return JavaScript-specific DevContainer config
+        ok 1 - should return JavaScript-specific DevContainer config
+          ---
+          duration_ms: 0.593625
+          type: 'test'
+          ...
+        # Subtest: should return Python-specific DevContainer config
+        ok 2 - should return Python-specific DevContainer config
+          ---
+          duration_ms: 0.292459
+          type: 'test'
+          ...
+        # Subtest: should return Go-specific DevContainer config
+        ok 3 - should return Go-specific DevContainer config
+          ---
+          duration_ms: 3.082334
+          type: 'test'
+          ...
+        # Subtest: should return base config for unknown project types
+        ok 4 - should return base config for unknown project types
+          ---
+          duration_ms: 0.136458
+          type: 'test'
+          ...
+        1..4
+    ok 3 - getDevContainerConfig
+      ---
+      duration_ms: 4.407542
+      type: 'suite'
+      ...
+    # Subtest: method existence and basic functionality
+        # Subtest: should have all required methods
+        ok 1 - should have all required methods
+          ---
+          duration_ms: 0.183042
+          type: 'test'
+          ...
+        # Subtest: should initialize with language modules
+        ok 2 - should initialize with language modules
+          ---
+          duration_ms: 0.109458
+          type: 'test'
+          ...
+        1..2
+    ok 4 - method existence and basic functionality
+      ---
+      duration_ms: 0.399375
+      type: 'suite'
+      ...
+    1..4
+ok 21 - SetupOrchestrator
+  ---
+  duration_ms: 10.861917
+  type: 'suite'
+  ...
+# Subtest: Template Functions
+    # Subtest: generateClaudeTemplate should create proper content
+    ok 1 - generateClaudeTemplate should create proper content
+      ---
+      duration_ms: 0.350041
+      type: 'test'
+      ...
+    # Subtest: generateGitignore should handle JavaScript projects
+    ok 2 - generateGitignore should handle JavaScript projects
+      ---
+      duration_ms: 0.066042
+      type: 'test'
+      ...
+    # Subtest: generateGitignore should handle Python projects
+    ok 3 - generateGitignore should handle Python projects
+      ---
+      duration_ms: 0.089375
+      type: 'test'
+      ...
+    1..3
+ok 22 - Template Functions
+  ---
+  duration_ms: 0.948833
+  type: 'suite'
+  ...
+# Subtest: SpecCompletionDetector
+    # Subtest: isTasksFileComplete
+        # Subtest: should return true for all completed tasks
+        ok 1 - should return true for all completed tasks
+          ---
+          duration_ms: 8.947375
+          type: 'test'
+          ...
+        # Subtest: should return false for incomplete tasks
+        ok 2 - should return false for incomplete tasks
+          ---
+          duration_ms: 4.198666
+          type: 'test'
+          ...
+        # Subtest: should return false for no tasks
+        ok 3 - should return false for no tasks
+          ---
+          duration_ms: 3.322792
+          type: 'test'
+          ...
+        # Subtest: should handle nested tasks correctly
+        ok 4 - should handle nested tasks correctly
+          ---
+          duration_ms: 1.762375
+          type: 'test'
+          ...
+        # Subtest: should handle mixed indentation
+        ok 5 - should handle mixed indentation
+          ---
+          duration_ms: 5.84725
+          type: 'test'
+          ...
+        # Subtest: should ignore malformed task markers
+        ok 6 - should ignore malformed task markers
+          ---
+          duration_ms: 3.443583
+          type: 'test'
+          ...
+        1..6
+    ok 1 - isTasksFileComplete
+      ---
+      duration_ms: 28.503208
+      type: 'suite'
+      ...
+    # Subtest: checkSpecCompletion
+        # Subtest: should return correct completion status for completed spec
+        ok 1 - should return correct completion status for completed spec
+          ---
+          duration_ms: 7.197791
+          type: 'test'
+          ...
+        # Subtest: should return correct completion status for incomplete spec
+        ok 2 - should return correct completion status for incomplete spec
+          ---
+          duration_ms: 4.223458
+          type: 'test'
+          ...
+        # Subtest: should throw ValidationError for missing tasks.md
+        ok 3 - should throw ValidationError for missing tasks.md
+          ---
+          duration_ms: 8.418166
+          type: 'test'
+          ...
+        # Subtest: should handle empty tasks file
+        ok 4 - should handle empty tasks file
+          ---
+          duration_ms: 1.277083
+          type: 'test'
+          ...
+        1..4
+    ok 2 - checkSpecCompletion
+      ---
+      duration_ms: 21.582625
+      type: 'suite'
+      ...
+    # Subtest: getAllCompletedSpecs
+        # Subtest: should find all completed specs
+        ok 1 - should find all completed specs
+          ---
+          duration_ms: 5.904417
+          type: 'test'
+          ...
+        # Subtest: should return empty array when no specs exist
+        ok 2 - should return empty array when no specs exist
+          ---
+          duration_ms: 47.572791
+          type: 'test'
+          ...
+        # Subtest: should ignore archive directory
+        ok 3 - should ignore archive directory
+          ---
+          duration_ms: 18.983375
+          type: 'test'
+          ...
+        1..3
+    ok 3 - getAllCompletedSpecs
+      ---
+      duration_ms: 72.937417
+      type: 'suite'
+      ...
+    # Subtest: validateTasksFormat
+        # Subtest: should validate correct task format
+        ok 1 - should validate correct task format
+          ---
+          duration_ms: 20.493959
+          type: 'test'
+          ...
+        # Subtest: should detect empty content
+        ok 2 - should detect empty content
+          ---
+          duration_ms: 14.311792
+          type: 'test'
+          ...
+        # Subtest: should detect missing task markers
+        ok 3 - should detect missing task markers
+          ---
+          duration_ms: 9.38325
+          type: 'test'
+          ...
+        # Subtest: should detect malformed task markers
+        ok 4 - should detect malformed task markers
+          ---
+          duration_ms: 3.176709
+          type: 'test'
+          ...
+        # Subtest: should detect tasks without list formatting
+        ok 5 - should detect tasks without list formatting
+          ---
+          duration_ms: 2.390666
+          type: 'test'
+          ...
+        1..5
+    ok 4 - validateTasksFormat
+      ---
+      duration_ms: 52.795042
+      type: 'suite'
+      ...
+    # Subtest: getCompletionPercentage
+        # Subtest: should calculate correct percentage for partial completion
+        ok 1 - should calculate correct percentage for partial completion
+          ---
+          duration_ms: 37.961209
+          type: 'test'
+          ...
+        # Subtest: should return 100% for completed spec
+        ok 2 - should return 100% for completed spec
+          ---
+          duration_ms: 17.037334
+          type: 'test'
+          ...
+        # Subtest: should return 0% for spec with no tasks
+        ok 3 - should return 0% for spec with no tasks
+          ---
+          duration_ms: 17.067167
+          type: 'test'
+          ...
+        1..3
+    ok 5 - getCompletionPercentage
+      ---
+      duration_ms: 72.520792
+      type: 'suite'
+      ...
+    # Subtest: edge cases and error handling
+        # Subtest: should handle tasks with complex text content
+        ok 1 - should handle tasks with complex text content
+          ---
+          duration_ms: 5.296583
+          type: 'test'
+          ...
+        # Subtest: should handle very long task descriptions
+        ok 2 - should handle very long task descriptions
+          ---
+          duration_ms: 3.404709
+          type: 'test'
+          ...
+        # Subtest: should handle mixed line endings
+        ok 3 - should handle mixed line endings
+          ---
+          duration_ms: 4.688125
+          type: 'test'
+          ...
+        1..3
+    ok 6 - edge cases and error handling
+      ---
+      duration_ms: 13.762708
+      type: 'suite'
+      ...
+    1..6
+ok 23 - SpecCompletionDetector
+  ---
+  duration_ms: 262.758
+  type: 'suite'
+  ...
+# Subtest: SpecScannerImpl
+    # Subtest: getAllSpecs()
+        # Subtest: should return empty array when no specs exist
+        ok 1 - should return empty array when no specs exist
+          ---
+          duration_ms: 23.36225
+          type: 'test'
+          ...
+        # Subtest: should find valid spec directories
+        ok 2 - should find valid spec directories
+          ---
+          duration_ms: 5.928542
+          type: 'test'
+          ...
+        # Subtest: should exclude archive directory
+        ok 3 - should exclude archive directory
+          ---
+          duration_ms: 9.777625
+          type: 'test'
+          ...
+        # Subtest: should exclude directories without tasks.md
+        ok 4 - should exclude directories without tasks.md
+          ---
+          duration_ms: 4.548666
+          type: 'test'
+          ...
+        # Subtest: should return specs in sorted order
+        ok 5 - should return specs in sorted order
+          ---
+          duration_ms: 15.138125
+          type: 'test'
+          ...
+        1..5
+    ok 1 - getAllSpecs()
+      ---
+      duration_ms: 64.255084
+      type: 'suite'
+      ...
+    # Subtest: getCompletedSpecs()
+        # Subtest: should return empty array when no completed specs
+        ok 1 - should return empty array when no completed specs
+          ---
+          duration_ms: 4.561959
+          type: 'test'
+          ...
+        # Subtest: should find completed specs
+        ok 2 - should find completed specs
+          ---
+          duration_ms: 7.763167
+          type: 'test'
+          ...
+        # Subtest: should handle specs with invalid tasks.md
+        ok 3 - should handle specs with invalid tasks.md
+          ---
+          duration_ms: 19.962291
+          type: 'test'
+          ...
+        1..3
+    ok 2 - getCompletedSpecs()
+      ---
+      duration_ms: 32.862041
+      type: 'suite'
+      ...
+    # Subtest: getIncompleteSpecs()
+        # Subtest: should return specs that are not completed
+        ok 1 - should return specs that are not completed
+          ---
+          duration_ms: 54.362708
+          type: 'test'
+          ...
+        1..1
+    ok 3 - getIncompleteSpecs()
+      ---
+      duration_ms: 54.589459
+      type: 'suite'
+      ...
+    # Subtest: validateSpec()
+        # Subtest: should validate spec with all required files
+        ok 1 - should validate spec with all required files
+          ---
+          duration_ms: 21.65225
+          type: 'test'
+          ...
+        # Subtest: should report missing required files
+        ok 2 - should report missing required files
+          ---
+          duration_ms: 8.607042
+          type: 'test'
+          ...
+        # Subtest: should warn about empty files
+        ok 3 - should warn about empty files
+          ---
+          duration_ms: 10.6125
+          type: 'test'
+          ...
+        # Subtest: should validate tasks.md format
+        ok 4 - should validate tasks.md format
+          ---
+          duration_ms: 6.931292
+          type: 'test'
+          ...
+        # Subtest: should warn about unexpected files
+        ok 5 - should warn about unexpected files
+          ---
+          duration_ms: 7.760125
+          type: 'test'
+          ...
+        # Subtest: should warn about very short content files
+        ok 6 - should warn about very short content files
+          ---
+          duration_ms: 5.883958
+          type: 'test'
+          ...
+        # Subtest: should warn when all tasks are completed
+        ok 7 - should warn when all tasks are completed
+          ---
+          duration_ms: 3.677459
+          type: 'test'
+          ...
+        1..7
+    ok 4 - validateSpec()
+      ---
+      duration_ms: 65.62575
+      type: 'suite'
+      ...
+    # Subtest: scanAndValidateAllSpecs()
+        # Subtest: should scan and categorize all specs
+        ok 1 - should scan and categorize all specs
+          ---
+          duration_ms: 17.112125
+          type: 'test'
+          ...
+        # Subtest: should collect issues and warnings for each spec
+        ok 2 - should collect issues and warnings for each spec
+          ---
+          duration_ms: 6.294458
+          type: 'test'
+          ...
+        1..2
+    ok 5 - scanAndValidateAllSpecs()
+      ---
+      duration_ms: 23.566666
+      type: 'suite'
+      ...
+    # Subtest: getSpecsReadyForArchival()
+        # Subtest: should return only completed and valid specs
+        ok 1 - should return only completed and valid specs
+          ---
+          duration_ms: 11.5585
+          type: 'test'
+          ...
+        1..1
+    ok 6 - getSpecsReadyForArchival()
+      ---
+      duration_ms: 11.659416
+      type: 'suite'
+      ...
+    # Subtest: getSpecStats()
+        # Subtest: should return comprehensive statistics
+        ok 1 - should return comprehensive statistics
+          ---
+          duration_ms: 10.222375
+          type: 'test'
+          ...
+        1..1
+    ok 7 - getSpecStats()
+      ---
+      duration_ms: 10.431625
+      type: 'suite'
+      ...
+    # Subtest: error handling
+        # Subtest: should handle missing specs directory gracefully
+        ok 1 - should handle missing specs directory gracefully
+          ---
+          duration_ms: 1.110583
+          type: 'test'
+          ...
+        # Subtest: should handle corrupted spec directory
+        ok 2 - should handle corrupted spec directory
+          ---
+          duration_ms: 1.000667
+          type: 'test'
+          ...
+        # Subtest: should handle permission errors gracefully
+        ok 3 - should handle permission errors gracefully
+          ---
+          duration_ms: 2.845709
+          type: 'test'
+          ...
+        1..3
+    ok 8 - error handling
+      ---
+      duration_ms: 5.095209
+      type: 'suite'
+      ...
+    1..8
+ok 24 - SpecScannerImpl
+  ---
+  duration_ms: 269.476792
+  type: 'suite'
+  ...
+# Subtest: __tests__/test-helpers.js
+ok 20 - __tests__/test-helpers.js
+  ---
+  duration_ms: 36.002542
+  type: 'test'
+  ...
+1..25
+# tests 272
+# suites 79
+# pass 272
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 2552.54

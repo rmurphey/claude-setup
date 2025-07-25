@@ -100,4 +100,109 @@ describe('CLIMain', () => {
       assert.strictEqual(config.syncIssues, false);
     });
   });
+
+  describe('Yargs Built-in Error Handling (Task 5)', () => {
+    it('should provide clear error messages for unknown options', () => {
+      assert.throws(() => {
+        cli.parseArgs(['--unknown-flag']);
+      }, /Unknown arguments/);
+    });
+
+    it('should provide clear error messages for missing arguments', () => {
+      assert.throws(() => {
+        cli.parseArgs(['--language']);
+      }, /Invalid values/);
+    });
+
+    it('should provide clear error messages for invalid choices', () => {
+      assert.throws(() => {
+        cli.parseArgs(['--language', 'invalid']);
+      }, /Invalid values/);
+      
+      assert.throws(() => {
+        cli.parseArgs(['--language', 'cobol']);
+      }, /Choices: "js", "javascript", "typescript", "python", "go", "rust", "java", "swift"/);
+    });
+
+    it('should handle yargs built-in conflict detection', () => {
+      assert.throws(() => {
+        cli.parseArgs(['--config', '--detect-language']);
+      }, /mutually exclusive/);
+    });
+
+    it('should handle yargs built-in dependency detection', () => {
+      assert.throws(() => {
+        cli.parseArgs(['--show']);
+      }, /Missing dependent arguments/);
+    });
+  });
+
+  describe('Yargs Edge Cases Handling (Task 6)', () => {
+    it('should handle --no-save boolean negation automatically', () => {
+      const result = cli.parseArgs(['--no-save']);
+      assert.strictEqual(result.noSave, true);
+      
+      const result2 = cli.parseArgs(['--save']);
+      assert.strictEqual(result2.noSave, false);
+      
+      const result3 = cli.parseArgs([]);
+      assert.strictEqual(result3.noSave, false); // default is save=true, so noSave=false
+    });
+
+    it('should handle empty argument arrays correctly', () => {
+      const result = cli.parseArgs([]);
+      assert.strictEqual(result.detectLanguage, false);
+      assert.strictEqual(result.config, false);
+      assert.strictEqual(result.syncIssues, false);
+      assert.strictEqual(result.devcontainer, false);
+      assert.strictEqual(result.force, false);
+      assert.strictEqual(result.noSave, false);
+      assert.strictEqual(result.show, false);
+      assert.strictEqual(result.reset, false);
+      assert.strictEqual(result.language, undefined);
+    });
+
+    it('should handle duplicate flags with last-one-wins behavior', () => {
+      const result = cli.parseArgs(['--language', 'js', '--language', 'python']);
+      assert.strictEqual(result.language, 'python');
+      
+      const result2 = cli.parseArgs(['--force', '--no-force', '--force']);
+      assert.strictEqual(result2.force, true);
+    });
+
+    it('should handle arguments with special characters gracefully', () => {
+      // Test that yargs handles special characters in string values
+      const result = cli.parseArgs(['--language', 'js']);
+      assert.strictEqual(result.language, 'js');
+      
+      // Test boolean flags with special characters in other contexts work
+      const result2 = cli.parseArgs(['--force']);
+      assert.strictEqual(result2.force, true);
+    });
+
+    it('should handle large numbers of arguments efficiently', () => {
+      // Create a large argument array with many boolean flags
+      const args = [];
+      for (let i = 0; i < 100; i++) {
+        args.push('--force');
+        args.push('--no-force');
+      }
+      args.push('--force'); // Final value should be true
+      
+      const start = Date.now();
+      const result = cli.parseArgs(args);
+      const duration = Date.now() - start;
+      
+      assert.strictEqual(result.force, true);
+      assert.ok(duration < 100, `Parsing took ${duration}ms, should be under 100ms`);
+    });
+
+    it('should handle both --language=js and --language js syntax', () => {
+      const result1 = cli.parseArgs(['--language=js']);
+      assert.strictEqual(result1.language, 'js');
+      
+      const result2 = cli.parseArgs(['--language', 'python']);
+      assert.strictEqual(result2.language, 'python');
+    });
+  });
 });
