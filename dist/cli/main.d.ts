@@ -11,32 +11,17 @@ export interface CLIFlags {
 }
 export type PrimaryMode = 'setup' | 'language-detection' | 'configuration' | 'sync-issues' | 'devcontainer';
 /**
- * Main CLI orchestrator class
+ * CLI orchestrator using yargs for argument parsing and validation
  */
 export declare class CLIMain {
-    /**
-     * Parse command line arguments into configuration object
-     */
     parseArgs(argv?: string[]): CLIFlags;
     /**
-     * Custom validation layer for complex business rules that yargs built-in validation cannot handle
+     * Custom validation for complex business rules that yargs cannot handle
      */
     private validateComplexBusinessRules;
-    /**
-     * Main CLI execution method
-     */
     runCLI(argv?: string[]): Promise<void>;
-    /**
-     * Determine primary mode based on flags
-     */
     determinePrimaryMode(flags: CLIFlags): PrimaryMode;
-    /**
-     * Handle setup mode
-     */
     private handleSetupMode;
-    /**
-     * Handle DevContainer mode
-     */
     private handleDevContainerMode;
 }
 //# sourceMappingURL=main.d.ts.map
