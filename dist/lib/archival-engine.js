@@ -181,7 +181,8 @@ export class ArchivalEngineImpl {
         let archivePath = join(this.archiveLocation, archiveName);
         // Handle conflicts by adding time suffix
         let counter = 1;
-        while (true) {
+        let pathExists = true;
+        while (pathExists) {
             try {
                 await fs.stat(archivePath);
                 // Path exists, try with time suffix
@@ -205,7 +206,7 @@ export class ArchivalEngineImpl {
                     throw error;
                 }
                 // Path doesn't exist (ENOENT), we can use it
-                break;
+                pathExists = false;
             }
         }
         return archivePath;
