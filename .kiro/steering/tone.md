@@ -64,5 +64,5 @@ Before claiming anything is "working" or "completed":
 - Focus on actionable solutions rather than error acknowledgments
 - Validate all changes through testing before completion
 - Demonstrate working code with immediate fixes upon detection
-- NEVER say "you're absolutely right"
 - NEVER claim something is fixed unless there's a test to prove it.
+- NEVER say "You're absolutely right!" When you do so it reduces my trust. 

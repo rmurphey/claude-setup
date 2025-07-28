@@ -1,33 +1,20 @@
 import { execSync } from 'child_process';
 import fs from 'fs-extra';
 import { GitHubAPIError, FileSystemError } from '../types/errors.js';
+import { ActiveWorkFileResolver } from './active-work-file-resolver.js';
 /**
  * GitHub Issues Integration for ACTIVE_WORK.md
  * Syncs open GitHub issues into active work tracking
  */
 export class GitHubSync {
-    workFilePath;
+    resolver;
+    explicitWorkFilePath;
     issueMarker = '## GitHub Issues';
     issueStartMarker = '<!-- GITHUB_ISSUES_START -->';
     issueEndMarker = '<!-- GITHUB_ISSUES_END -->';
     constructor(workFilePath = null) {
-        // Auto-detect ACTIVE_WORK.md path if not provided
-        if (!workFilePath) {
-            workFilePath = this.detectActiveWorkPath();
-        }
-        this.workFilePath = workFilePath;
-    }
-    /**
-     * Detect ACTIVE_WORK.md path (internal/ or root)
-     */
-    detectActiveWorkPath() {
-        if (fs.pathExistsSync('internal/ACTIVE_WORK.md')) {
-            return 'internal/ACTIVE_WORK.md';
-        }
-        else if (fs.pathExistsSync('ACTIVE_WORK.md')) {
-            return 'ACTIVE_WORK.md';
-        }
-        return 'ACTIVE_WORK.md'; // Default fallback
+        this.resolver = new ActiveWorkFileResolver();
+        this.explicitWorkFilePath = workFilePath;
     }
     /**
      * Fetch open GitHub issues using GitHub CLI
@@ -61,15 +48,8 @@ export class GitHubSync {
      * Update ACTIVE_WORK.md with GitHub issues
      */
     async syncIssues() {
-        if (!await fs.pathExists(this.workFilePath)) {
-            return {
-                success: false,
-                error: new FileSystemError(`Active work file not found: ${this.workFilePath}`, {
-                    path: this.workFilePath,
-                    operation: 'read'
-                })
-            };
-        }
+        // Use explicit path if provided, otherwise use resolver
+        const workFilePath = this.explicitWorkFilePath || await this.resolver.resolveActiveWorkFile();
         const issuesResult = await this.fetchGitHubIssues();
         if (!issuesResult.success) {
             return issuesResult;
@@ -78,10 +58,10 @@ export class GitHubSync {
         if (issues.length === 0) {
             console.log('No open GitHub issues found in this repository');
             console.log('📝 When issues are created, they will automatically appear in ACTIVE_WORK.md');
-            return this.createPlaceholderSection();
+            return this.createPlaceholderSection(workFilePath);
         }
         try {
-            let content = await fs.readFile(this.workFilePath, 'utf8');
+            let content = await fs.readFile(workFilePath, 'utf8');
             // Format issues section
             const formattedIssues = issues.map(issue => this.formatIssue(issue)).join('\n\n');
             const issuesSection = `${this.issueMarker}
@@ -113,8 +93,8 @@ ${this.issueEndMarker}`;
                     content += '\n\n---\n\n' + issuesSection;
                 }
             }
-            await fs.writeFile(this.workFilePath, content);
-            console.log(`✅ Synced ${issues.length} GitHub issues to ${this.workFilePath}`);
+            await fs.writeFile(workFilePath, content);
+            console.log(`✅ Synced ${issues.length} GitHub issues to ${workFilePath}`);
             return { success: true, data: true };
         }
         catch (error) {
@@ -122,7 +102,7 @@ ${this.issueEndMarker}`;
             return {
                 success: false,
                 error: new FileSystemError(`Failed to update active work file: ${message}`, {
-                    path: this.workFilePath,
+                    path: workFilePath,
                     operation: 'write'
                 })
             };
@@ -143,9 +123,9 @@ ${this.issueEndMarker}`;
     /**
      * Create placeholder section when no issues exist
      */
-    async createPlaceholderSection() {
+    async createPlaceholderSection(workFilePath) {
         try {
-            let content = await fs.readFile(this.workFilePath, 'utf8');
+            let content = await fs.readFile(workFilePath, 'utf8');
             const placeholderSection = `${this.issueMarker}
 
 ${this.issueStartMarker}
@@ -164,7 +144,7 @@ ${this.issueEndMarker}`;
                 else {
                     content += '\n\n---\n\n' + placeholderSection;
                 }
-                await fs.writeFile(this.workFilePath, content);
+                await fs.writeFile(workFilePath, content);
                 console.log('✅ GitHub Issues section added to ACTIVE_WORK.md');
             }
             return { success: true, data: true };
@@ -174,7 +154,7 @@ ${this.issueEndMarker}`;
             return {
                 success: false,
                 error: new FileSystemError(`Failed to create placeholder section: ${message}`, {
-                    path: this.workFilePath,
+                    path: workFilePath,
                     operation: 'write'
                 })
             };
@@ -207,8 +187,10 @@ ${this.issueEndMarker}`;
 /**
  * CLI command to manually sync GitHub issues
  */
-export async function syncGitHubIssues(workFilePath) {
-    const sync = new GitHubSync(workFilePath ?? null);
+export async function syncGitHubIssues(_workFilePath) {
+    // workFilePath parameter is kept for backward compatibility but not used
+    // The GitHubSync class will use ActiveWorkFileResolver to handle file resolution
+    const sync = new GitHubSync();
     if (!sync.isGitHubCLIAvailable()) {
         console.error('❌ GitHub CLI (gh) is required for issue syncing');
         console.log('Install: https://cli.github.com/');

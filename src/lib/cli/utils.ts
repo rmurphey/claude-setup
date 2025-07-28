@@ -171,24 +171,11 @@ export async function handleConfigManagement(args: string[]): Promise<void> {
  * Handle GitHub issues sync command
  */
 export async function handleSyncIssues(): Promise<void> {
-  const { syncGitHubIssues } = await import('../github-sync.js') as { syncGitHubIssues: (path: string) => Promise<void> };
+  const { syncGitHubIssues } = await import('../github-sync.js') as { syncGitHubIssues: () => Promise<void> };
   
-  // Check which ACTIVE_WORK.md file exists
-  const internalPath = 'internal/ACTIVE_WORK.md';
-  const rootPath = 'ACTIVE_WORK.md';
-  
-  let activeWorkPath: string;
-  if (await fs.pathExists(internalPath)) {
-    activeWorkPath = internalPath;
-  } else if (await fs.pathExists(rootPath)) {
-    activeWorkPath = rootPath;
-  } else {
-    console.error(chalk.red('❌ No ACTIVE_WORK.md file found'));
-    console.log('Run the setup tool first to create project structure');
-    process.exit(1);
-  }
-  
-  await syncGitHubIssues(activeWorkPath);
+  // Let GitHubSync class handle file resolution automatically using ActiveWorkFileResolver
+  // This removes the file existence check that caused "Active work file not found" errors
+  await syncGitHubIssues();
 }
 
 /**

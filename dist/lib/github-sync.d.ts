@@ -5,15 +5,12 @@ import { GitHubAPIError, FileSystemError } from '../types/errors.js';
  * Syncs open GitHub issues into active work tracking
  */
 export declare class GitHubSync {
-    private readonly workFilePath;
+    private readonly resolver;
+    private readonly explicitWorkFilePath;
     private readonly issueMarker;
     private readonly issueStartMarker;
     private readonly issueEndMarker;
     constructor(workFilePath?: string | null);
-    /**
-     * Detect ACTIVE_WORK.md path (internal/ or root)
-     */
-    private detectActiveWorkPath;
     /**
      * Fetch open GitHub issues using GitHub CLI
      */
@@ -42,6 +39,6 @@ export declare class GitHubSync {
 /**
  * CLI command to manually sync GitHub issues
  */
-export declare function syncGitHubIssues(workFilePath?: string): Promise<void>;
+export declare function syncGitHubIssues(_workFilePath?: string): Promise<void>;
 export declare const gitHubSync: GitHubSync;
 //# sourceMappingURL=github-sync.d.ts.map

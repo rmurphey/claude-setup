@@ -1,0 +1,17 @@
+{
+  "enabled": true,
+  "name": "Archive GitHub Sync",
+  "description": "Fetches GitHub issues whenever you archive a task, and initiates new spec creation tasks as necessary",
+  "version": "1",
+  "when": {
+    "type": "fileEdited",
+    "patterns": [
+      "internal/ACTIVE_WORK.md",
+      ".kiro/specs/**/*.md"
+    ]
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "A task has been archived or spec updated. Please:\n\n1. Fetch current GitHub issues using the GitHub API (avoid interactive gh commands)\n2. Review the archived task content to understand what was completed\n3. Check if any new GitHub issues need corresponding spec files created\n4. If new specs are needed, create them in the .kiro/specs/ directory following the established patterns\n5. Update internal/ACTIVE_WORK.md if new tasks should be prioritized\n\nFocus on maintaining sync between GitHub issues and local spec files to ensure nothing falls through the cracks."
+  }
+}

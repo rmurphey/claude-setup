@@ -359,9 +359,9 @@ Quick capture of pending ideas for future consideration:
 ## GitHub Issues
 
 <!-- GITHUB_ISSUES_START -->
-*No open GitHub issues*
-
-When new issues are created, they will automatically appear here. Run `claude-setup --sync-issues` to refresh.
+- [ ] **#2** Active work file not found: internal/ACTIVE_WORK.md
+  - **URL**: https://github.com/rmurphey/claude-setup/issues/2
+  - **Created**: 7/7/2025
 <!-- GITHUB_ISSUES_END -->
 
 ---
