@@ -401,3 +401,25 @@ MIT License - see [LICENSE](LICENSE) file for details.
 
 *A living reference implementation for the Claude Code community*  
 *This repository uses its own commands - explore our git history to see them in action*
+
+### Living Examples from This Repository
+
+- [🔴 test: add failing test for updateCommandCatalog isolation (TDD RED)](../../commit/00e7a22)
+- [🔴 test: add failing tests for tdd.js framework detection (TDD RED)](../../commit/2ce43d1)
+- [🔴 test: add failing tests for learn.js functions (TDD RED)](../../commit/8b90d58)
+- [🔴 test: add failing tests for formatBytes and estimateTokens (TDD RED)](../../commit/1fdac58)
+- [🔴 test: add failing tests for findBrokenLinks (TDD RED phase)](../../commit/8ec6319)
+- [✨ feat: make /docs update ALL documentation by default](../../commit/0275a8f)
+- [🟢 feat: export tdd.js functions for testing (TDD GREEN)](../../commit/b344bc7)
+- [🟢 feat: export learn.js functions for testing (TDD GREEN)](../../commit/1c417af)
+- [🟢 feat: export formatBytes and estimateTokens (TDD GREEN)](../../commit/d0af9df)
+- [🟢 feat: extract and export findBrokenLinks (TDD GREEN phase)](../../commit/c446afe)
+- [🟢 fix: use process.cwd() instead of __dirname for paths (TDD GREEN)](../../commit/e2e81e6)
+- [🔧 fix: make 'update' the default mode for /docs command](../../commit/237c279)
+- [fix: simplify push command to just git push](../../commit/9c58ba6)
+- [📚 docs: add file read requirement to CLAUDE.md](../../commit/f4bece8)
+- [📝 docs: add emoji usage guideline to CLAUDE.md](../../commit/d5e678d)
+- [docs: document new agents and command conversion examples](../../commit/8c90b15)
+- [refactor: simplify tests to smoke tests only](../../commit/f84cac6)
+- [refactor: optimize docs command for token efficiency](../../commit/3ad4b0d)
+- [refactor: optimize tdd command for token efficiency](../../commit/a022c17)
