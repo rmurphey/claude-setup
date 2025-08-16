@@ -10,8 +10,8 @@ Safe push workflow with pre-push quality validation, branch management, and remo
 ## Context
 - Current branch: !`git branch --show-current 2>/dev/null || echo "unknown"`
 - Unpushed commits: !`git rev-list --count @{u}..HEAD 2>/dev/null || echo "0"`
-- Git status: !`git status --porcelain | wc -l | xargs`+ uncommitted changes
-- Remote status: !`git fetch >/dev/null 2>&1 && git status -uno | grep -q "behind" && echo "behind" || echo "up-to-date"`
+- Check git status for uncommitted changes
+- Run 'git fetch' to check remote status
 
 ## Your Task
 Execute safe push workflow with quality validation:
