@@ -71,6 +71,25 @@ function updateLastSaveInfo(info) {
   fs.writeFileSync(LAST_SAVE_FILE, JSON.stringify(info, null, 2));
 }
 
+function getClaudeMetadata() {
+  const metadata = {
+    timestamp: new Date().toISOString(),
+    claudeVersion: 'unknown',
+    environment: process.env.CLAUDE_CODE_ENTRYPOINT || 'cli'
+  };
+  
+  // Get Claude Code version
+  try {
+    const version = execSync('claude --version 2>/dev/null', {encoding: 'utf8'}).trim();
+    metadata.claudeVersion = version;
+  } catch (e) {
+    // Fallback - version unavailable
+    metadata.claudeVersion = 'Claude Code (version unknown)';
+  }
+  
+  return metadata;
+}
+
 // Command implementations
 function saveSession(description = '') {
   const sessionDir = getSessionDirectory();
@@ -90,6 +109,21 @@ function saveSession(description = '') {
   console.log(`Note: Manual save to ${filename}`);
   console.log('Copy your conversation and save to:', filepath);
   
+  // Create metadata file
+  const metadata = getClaudeMetadata();
+  const metadataFile = filepath.replace('.txt', '.meta.json');
+  
+  fs.writeFileSync(metadataFile, JSON.stringify({
+    ...metadata,
+    sessionNumber: sessionNum,
+    description: description || 'Manual save',
+    saveType: 'full',
+    date: getDateString(),
+    time: timestamp
+  }, null, 2));
+  
+  console.log(`\n📋 Metadata saved: Claude ${metadata.claudeVersion}`);
+  
   // Update last save info
   updateLastSaveInfo({
     date: getDateString(),
@@ -97,6 +131,13 @@ function saveSession(description = '') {
     file: filepath,
     sessionNumber: sessionNum
   });
+  
+  console.log('\nSuggested session header:');
+  console.log('='.repeat(40));
+  console.log(`Date: ${getDateString()}`);
+  console.log(`Time: ${new Date().toTimeString().split(' ')[0]}`);
+  console.log(`Claude Code: ${metadata.claudeVersion}`);
+  console.log('='.repeat(40));
   
   console.log('\n✅ Session save prepared');
   console.log(`📁 Location: ${filepath}`);
@@ -123,6 +164,22 @@ function saveDelta() {
   
   console.log(`Note: Save conversation delta to ${filename}`);
   console.log('Copy conversation since last marker to:', filepath);
+  
+  // Save metadata for delta
+  const metadata = getClaudeMetadata();
+  const metadataFile = filepath.replace('.txt', '.meta.json');
+  
+  fs.writeFileSync(metadataFile, JSON.stringify({
+    ...metadata,
+    sessionNumber: sessionNum,
+    description: 'Delta save',
+    saveType: 'delta',
+    previousSave: lastSave ? lastSave.file : null,
+    date: getDateString(),
+    time: timestamp
+  }, null, 2));
+  
+  console.log(`\n📋 Metadata saved: Claude ${metadata.claudeVersion}`);
   
   // Update last save info
   updateLastSaveInfo({
@@ -169,11 +226,33 @@ function listSessions() {
     if (files.length > 0) {
       console.log(`\n📅 ${date}`);
       files.forEach(file => {
+        // Skip metadata files in listing
+        if (file.endsWith('.meta.json')) return;
+        
         const stats = fs.statSync(path.join(dateDir, file));
         const size = (stats.size / 1024).toFixed(1);
         const isDelta = file.includes('delta');
         const icon = isDelta ? '📊' : '📄';
-        console.log(`  ${icon} ${file} (${size} KB)`);
+        
+        // Check for metadata
+        const metaFile = file.replace('.txt', '.meta.json');
+        const metaPath = path.join(dateDir, metaFile);
+        let versionInfo = '';
+        
+        if (fs.existsSync(metaPath)) {
+          try {
+            const meta = JSON.parse(fs.readFileSync(metaPath, 'utf8'));
+            if (meta.claudeVersion && meta.claudeVersion !== 'unknown') {
+              // Shorten version display
+              const shortVersion = meta.claudeVersion.replace(' (Claude Code)', '');
+              versionInfo = ` [v${shortVersion}]`;
+            }
+          } catch (e) {
+            // Ignore metadata read errors
+          }
+        }
+        
+        console.log(`  ${icon} ${file} (${size} KB)${versionInfo}`);
       });
     }
   });
