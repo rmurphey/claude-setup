@@ -2,6 +2,8 @@
 
 > **🔔 IMPORTANT**: Session saving is **ENTIRELY OPTIONAL**. Claude Code works perfectly without saving any session history. This feature exists only for users who want to preserve conversations for their own reference, learning, or analysis. There is no requirement or expectation to save sessions.
 
+> **📚 About This Repository's Sessions**: Since this is a living reference implementation, we save our own development sessions to provide real examples. These saved sessions demonstrate the feature and provide learning material. Your projects don't need to do this.
+
 This directory preserves raw Claude Code session transcripts for historical analysis and learning.
 
 ## Purpose (OPTIONAL FEATURE)
