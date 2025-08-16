@@ -66,10 +66,6 @@ logs/
 *.log
 !session-history/**/*.log
 
-# Package manager files
-pnpm-lock.yaml
-yarn.lock
-
 # Optional: Archive directories
 archive/
 old/
