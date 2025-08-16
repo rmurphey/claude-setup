@@ -82,3 +82,4 @@ Examples of honest responses:
 - Performance: Monitor code complexity and file sizes
 - ALWAYS use atomic commits
 - use emojis, judiciously
+- NEVER Update() a file before you Read() the file.
