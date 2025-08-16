@@ -1,57 +1,49 @@
-# retrospective
+---
+allowed-tools: [Bash]
+description: Capture current session with metadata for future analysis
+---
 
-Analyze session history, identify patterns, and capture learnings.
+# Session Retrospective Capture
 
-## Usage
+Capture the current development session with metadata for pattern analysis and learning extraction.
 
-<bash>
-npm run retrospective --silent
-</bash>
-
-## What It Does
-
-1. **Analyzes Git History**: Reviews recent commits for patterns
-2. **Identifies Patterns**: Finds recurring themes and decisions  
-3. **Captures Learnings**: Extracts insights from the session
-4. **Updates Documentation**: Adds learnings to LEARNINGS.md
-5. **Generates Report**: Creates retrospective summary
-
-## Output
-
-- Session metrics (commits, files, lines changed)
-- Identified patterns and anti-patterns
-- Key decisions and their outcomes
-- Learnings captured
-- Recommendations for next session
-
-## When to Use
-
-- After completing a major feature
-- At the end of a long session
-- Before context compaction
-- Weekly for ongoing projects
-- After encountering significant issues
-
-## Options
-
-The npm script supports these options:
-- `--since`: Analyze from specific date
-- `--commits`: Number of commits to analyze
-- `--update`: Auto-update LEARNINGS.md
-- `--metrics`: Include detailed metrics
-
-## Examples
+## Your Task
+Save the current session with comprehensive metadata:
 
 ```bash
-# Basic retrospective
-npm run retrospective
+#!/bin/bash
 
-# Analyze last 20 commits
-npm run retrospective -- --commits=20
+echo "📝 Capturing session for retrospective analysis..."
 
-# Analyze since yesterday
-npm run retrospective -- --since="1 day ago"
+# Use session history script to capture with metadata
+npm run session:save "retrospective-$(date +%Y%m%d-%H%M)" --silent
 
-# Include metrics and auto-update
-npm run retrospective -- --metrics --update
+echo "✅ Session captured with metadata"
+echo ""
+echo "📊 For deep analysis and insights:"
+echo "Use the session-retrospective agent to analyze your captured sessions and extract development patterns."
+echo ""
+echo "📁 Session files saved to session-history/$(date +%Y-%m-%d)/"
 ```
+
+## What This Captures
+- **Session Transcript**: Complete conversation history
+- **Metadata**: Claude version, timestamp, environment
+- **Context**: Current project state and session focus
+- **File Structure**: Organized by date for easy retrieval
+
+## When to Use
+- End of productive development sessions
+- After completing major features or fixes
+- Before taking breaks or switching contexts
+- Weekly to maintain session history
+
+## For Analysis
+After capturing sessions, use the **session-retrospective agent** for:
+- Pattern analysis across multiple sessions
+- Learning extraction and documentation
+- Development workflow insights
+- Productivity optimization recommendations
+
+## Philosophy
+This command handles the **routine task** of session capture. The **intelligence work** of analyzing patterns and extracting insights is handled by the session-retrospective agent.
