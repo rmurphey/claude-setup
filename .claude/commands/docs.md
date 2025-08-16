@@ -1,47 +1,27 @@
 ---
 allowed-tools: [Bash]
-description: Self-updating documentation generation and maintenance
+description: Documentation maintenance and validation
 ---
 
 # Documentation Command
 
-Maintain and update project documentation efficiently.
+Efficiently manage documentation using the dedicated docs script.
 
 ## Usage
 
 <bash>
 #!/bin/bash
 
-COMMAND="${1:-help}"
-TARGET="${2:-all}"
-
-case "$COMMAND" in
-  "update")
-    echo "📝 Updating documentation: $TARGET"
-    npm run docs:update -- --target="$TARGET" --silent
-    ;;
-    
-  "validate")
-    echo "✅ Validating documentation..."
-    npm run docs:validate --silent
-    ;;
-    
-  "check-citations")
-    echo "🔍 Checking citations..."
-    npm run docs:citations --silent
-    ;;
-    
-  *)
-    echo "📚 Documentation Commands:"
-    echo "  /docs update [target]     - Update documentation"
-    echo "  /docs validate           - Validate all docs"
-    echo "  /docs check-citations    - Verify citations"
-    echo ""
-    echo "Targets: all, readme, best-practices, patterns, commands"
-    ;;
-esac
+# Delegate to the documentation script
+node scripts/docs.js "$@"
 </bash>
 
 ## Notes
 
-This is the minimal version. For advanced documentation operations, use the detailed version in `.claude/commands/detailed/docs.md`.
+Token-efficient command that delegates to `scripts/docs.js` for:
+- Update README badges and stats
+- Validate internal links
+- Show documentation statistics
+- List available commands
+
+For advanced operations, see `.claude/commands/detailed/docs-detailed.md`.
