@@ -1,9 +1,0 @@
-{
-  "enabled": true,
-  "delayMinutes": 10,
-  "archiveLocation": ".kiro/specs/archive",
-  "notificationLevel": "minimal",
-  "backupEnabled": true,
-  "_version": "1.0",
-  "_lastUpdated": "2025-07-21T01:21:07.912Z"
-}
