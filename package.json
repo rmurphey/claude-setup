@@ -1,10 +1,10 @@
 {
-  "name": "claude-code-commands",
-  "version": "1.0.0",
-  "description": "Reference collection of professional Claude Code command templates. Curated development workflow commands for consistent AI-assisted development.",
+  "name": "@rmurphey/claude-code-commands",
+  "version": "2.0.0",
+  "description": "Professional command templates for structured AI-assisted development with Claude Code - Living Reference Implementation",
   "scripts": {
-    "validate": "echo 'Validating command templates...' && find templates/commands -name '*.md' -exec echo 'Checking {}' \\; -exec head -5 {} \\;",
-    "list-commands": "ls -1 templates/commands/*.md | sed 's|templates/commands/||' | sed 's|\\.md$||' | sort",
+    "validate": "echo 'Validating command templates...' && find .claude/commands -name '*.md' -exec echo 'Checking {}' \\; -exec head -5 {} \\;",
+    "list-commands": "ls -1 .claude/commands/*.md | sed 's|.claude/commands/||' | sed 's|\\.md$||' | sort",
     
     "// Core Workflow": "=== Core workflow commands ===",
     "hygiene": "npm run hygiene:quick --silent",
@@ -50,9 +50,11 @@
     "claude-code",
     "command-templates",
     "development-workflows",
-    "ai-assisted-development"
+    "ai-assisted-development",
+    "token-efficiency",
+    "self-documenting"
   ],
-  "author": "Claude Code Commands",
+  "author": "Rebecca Murphey",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -63,9 +65,15 @@
   },
   "homepage": "https://github.com/rmurphey/claude-setup#readme",
   "files": [
-    "templates/",
+    ".claude/",
     "docs/",
+    "scripts/",
+    "CLAUDE.md",
+    "ACTIVE_WORK.md",
     "README.md",
     "LICENSE"
-  ]
+  ],
+  "engines": {
+    "node": ">=18.0.0"
+  }
 }
