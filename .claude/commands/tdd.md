@@ -9,6 +9,7 @@ description: Test-driven development workflow with red-green-refactor cycle
 This command is self-updating. To regenerate:
 In Claude Code: /docs update tdd-command
 Last updated: 2025-01-16
+Git SHA: 9af0fdc7e42e3e0fff960e73cf8520a9c32e7dcb
 -->
 
 Implements the red-green-refactor cycle for test-driven development, helping you write better code through test-first methodology.

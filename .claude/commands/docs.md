@@ -9,6 +9,7 @@ description: Self-updating documentation generation and maintenance system
 This command is self-updating. To regenerate:
 In Claude Code: /docs update docs-command
 Last updated: 2025-01-16
+Git SHA: 9af0fdc7e42e3e0fff960e73cf8520a9c32e7dcb
 -->
 
 Comprehensive self-updating documentation system that maintains all project documentation automatically.

@@ -9,6 +9,7 @@ description: Optimize Claude Code context window usage and manage conversation m
 This command is self-updating. To regenerate:
 In Claude Code: /docs update context-manage-command
 Last updated: 2025-01-16
+Git SHA: 9af0fdc7e42e3e0fff960e73cf8520a9c32e7dcb
 -->
 
 Helps manage Claude's context window efficiently, preventing token overflow and maintaining conversation coherence.
