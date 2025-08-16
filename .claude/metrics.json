@@ -1,0 +1,59 @@
+{
+  "timestamp": "2025-01-16T10:00:00Z",
+  "lastUpdated": "2025-01-16",
+  "version": "2.0.0",
+  "statistics": {
+    "commandCount": 25,
+    "newCommands": 2,
+    "documentCount": 10,
+    "totalDocLines": 5234,
+    "tokenSavings": 87,
+    "averageCommandLines": {
+      "before": 330,
+      "after": 37,
+      "reduction": 89
+    }
+  },
+  "commands": {
+    "core": ["hygiene", "todo", "commit", "next"],
+    "planning": ["design", "estimate", "defer", "issue"],
+    "documentation": ["docs", "learn", "reflect", "update-docs"],
+    "quality": ["push", "version-tag", "maintainability", "atomic-commit"],
+    "utilities": ["archive", "edit-not-create", "find-working-equivalent"],
+    "new": ["tdd", "context-manage"],
+    "minimal": ["hygiene-minimal", "commit-minimal", "todo-minimal", "maintainability-minimal"]
+  },
+  "usage": {
+    "mostUsed": ["hygiene", "commit", "todo", "docs"],
+    "recentlyAdded": ["tdd", "context-manage"],
+    "tokenEfficient": ["hygiene-minimal", "commit-minimal", "todo-minimal"]
+  },
+  "improvements": {
+    "tokenReduction": {
+      "hygiene": { "from": 264, "to": 30, "saved": 88 },
+      "commit": { "from": 296, "to": 33, "saved": 88 },
+      "maintainability": { "from": 458, "to": 42, "saved": 90 },
+      "todo": { "from": 305, "to": 43, "saved": 85 }
+    }
+  },
+  "documentation": {
+    "files": {
+      "README.md": { "lines": 323, "lastUpdated": "2025-01-16" },
+      "docs/BEST_PRACTICES.md": { "lines": 456, "lastUpdated": "2025-01-16" },
+      "docs/SELF_UPDATING.md": { "lines": 678, "lastUpdated": "2025-01-16" },
+      "docs/COMMAND_CATALOG.md": { "lines": 957, "lastUpdated": "2025-01-15" },
+      "docs/TOKEN_EFFICIENCY.md": { "lines": 268, "lastUpdated": "2025-01-15" }
+    },
+    "selfUpdating": true,
+    "citations": 28,
+    "examples": 45
+  },
+  "repository": {
+    "structure": "living-reference",
+    "selfDocumenting": true,
+    "usesOwnCommands": true,
+    "continuousImprovement": true
+  },
+  "source": "automatic",
+  "nextUpdate": "2025-01-17"
+}
