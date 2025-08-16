@@ -4,6 +4,7 @@
 This document is self-updating. To regenerate:
 In Claude Code: /docs update self-updating
 Last updated: 2025-01-16
+Git SHA: 9af0fdc7e42e3e0fff960e73cf8520a9c32e7dcb
 -->
 
 ## Overview
@@ -38,6 +39,7 @@ Every documentation file includes a self-update header:
 This document is self-updating. To regenerate:
 In Claude Code: /docs update [document-name]
 Last updated: YYYY-MM-DD
+Git SHA: [git rev-parse HEAD]
 -->
 ```
 
@@ -532,4 +534,5 @@ Planned improvements:
 
 ---
 
-*This document demonstrates self-documentation. Run `/docs update self-updating` to regenerate.*
+*Last updated: 2025-01-16 (SHA: 9af0fdc7)*
+*Run `/docs update self-updating` to regenerate.*

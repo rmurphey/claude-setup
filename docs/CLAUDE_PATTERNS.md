@@ -1,5 +1,12 @@
 # Claude Code Patterns
 
+<!-- 
+This document is self-updating. To regenerate:
+In Claude Code: /docs update claude-patterns
+Last updated: 2025-01-16
+Git SHA: 9af0fdc7e42e3e0fff960e73cf8520a9c32e7dcb
+-->
+
 Discovered patterns and strategies specific to Claude Code development sessions.
 
 ## Table of Contents
@@ -457,6 +464,6 @@ graph TD
 
 ---
 
-*Last updated: 2025-01-16*
-*Pattern count: 15 major patterns documented*
+*Last updated: 2025-01-16 (SHA: 9af0fdc7)*
+*Pattern count: 16 major patterns documented*
 *Next review: After next significant session*
