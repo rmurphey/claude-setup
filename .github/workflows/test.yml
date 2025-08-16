@@ -12,7 +12,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [16.x, 18.x, 20.x]
+        node-version: [20.x, 22.x]
 
     steps:
     - uses: actions/checkout@v3
@@ -40,11 +40,11 @@ jobs:
         npm run docs validate || true
     
     - name: Run tests with coverage
-      if: matrix.node-version == '20.x'  # Only run coverage on one version
+      if: matrix.node-version == '22.x'  # Only run coverage on one version
       run: npm run test:coverage || echo "Coverage not configured"
     
     - name: Upload coverage to Codecov
-      if: matrix.node-version == '20.x'
+      if: matrix.node-version == '22.x'
       uses: codecov/codecov-action@v3
       with:
         file: ./coverage/lcov.info
