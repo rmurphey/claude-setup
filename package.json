@@ -1,7 +1,7 @@
 {
-  "name": "@rmurphey/claude-code-commands",
+  "name": "claude-setup",
   "version": "2.0.0",
-  "description": "Professional command templates for structured AI-assisted development with Claude Code - Living Reference Implementation",
+  "description": "Professional command templates and tools for structured AI-assisted development with Claude Code",
   "scripts": {
     "validate": "echo 'Validating command templates...' && find .claude/commands -name '*.md' -exec echo 'Checking {}' \\; -exec head -5 {} \\;",
     "list-commands": "ls -1 .claude/commands/*.md | sed 's|.claude/commands/||' | sed 's|\\.md$||' | sort",
@@ -99,7 +99,11 @@
     "node": ">=22.0.0"
   },
   "bin": {
-    "claude-setup": "./scripts/setup.js"
+    "claude-setup": "./scripts/cli.js",
+    "claude-learn": "./scripts/learn.js",
+    "claude-tdd": "./scripts/tdd.js",
+    "claude-docs": "./scripts/docs.js",
+    "claude-monitor": "./scripts/monitor-repo.js"
   },
   "devDependencies": {}
 }

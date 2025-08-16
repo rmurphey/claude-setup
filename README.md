@@ -3,7 +3,7 @@
 **A living reference implementation of professional Claude Code commands and workflows**
 
 [![Version](https://img.shields.io/badge/version-2.0.0-blue)](https://github.com/rmurphey/claude-setup)
-[![Commands](https://img.shields.io/badge/commands-13-green)](.claude/commands/)
+[![Commands](https://img.shields.io/badge/commands-14-green)](.claude/commands/)
 [![License](https://img.shields.io/badge/license-MIT-purple)](LICENSE)
 [![Token Efficiency](https://img.shields.io/badge/token%20savings-87%25-orange)](docs/TOKEN_EFFICIENCY.md)
 
@@ -13,21 +13,33 @@ This is a **working reference repository** that demonstrates best practices for 
 
 ## Quick Start (Choose Your Method)
 
-### Method 1: Direct Use
+### Method 1: Direct Use via NPX (No Installation)
+```bash
+# Try the tools without installing anything
+npx claude-setup                     # Initialize in current project
+npx claude-setup learn add "insight" # Capture a learning
+npx claude-setup tdd start           # Start TDD workflow
+npx claude-setup docs                # Analyze documentation
+npx claude-setup monitor status      # Check repo health
+```
+
+### Method 2: Global Installation
+```bash
+# Install globally for frequent use
+npm install -g claude-setup
+claude-setup          # Initialize commands
+claude-learn add "insight"
+claude-tdd start
+claude-docs
+claude-monitor status
+```
+
+### Method 3: Clone Repository
 ```bash
 # Clone and use as your project base
 git clone https://github.com/rmurphey/claude-setup.git my-project
 cd my-project
 # Commands are ready to use in .claude/commands/
-```
-
-### Method 2: Copy Commands
-```bash
-# Copy the .claude directory to your existing project
-git clone https://github.com/rmurphey/claude-setup.git temp-claude
-cp -r temp-claude/.claude your-project/
-cp temp-claude/CLAUDE.md your-project/
-cp temp-claude/ACTIVE_WORK.md your-project/
 ```
 
 ## Why This Repository is Useful, Maybe
@@ -457,17 +469,17 @@ MIT License - see [LICENSE](LICENSE) file for details.
 - [🔴 test: add failing tests for learn.js functions (TDD RED)](../../commit/8b90d58)
 - [🔴 test: add failing tests for formatBytes and estimateTokens (TDD RED)](../../commit/1fdac58)
 - [🔴 test: add failing tests for findBrokenLinks (TDD RED phase)](../../commit/8ec6319)
-- [✨ feat: make /docs update ALL documentation by default](../../commit/0275a8f)
-- [🟢 feat: export tdd.js functions for testing (TDD GREEN)](../../commit/b344bc7)
-- [🟢 feat: export learn.js functions for testing (TDD GREEN)](../../commit/1c417af)
-- [🟢 feat: export formatBytes and estimateTokens (TDD GREEN)](../../commit/d0af9df)
-- [🟢 feat: extract and export findBrokenLinks (TDD GREEN phase)](../../commit/c446afe)
+- [feat: add specification keyword recognition to tone agent](../../commit/ee8b0a1)
+- [feat: add tone agent invocation to /docs command](../../commit/914540a)
+- [feat: add documentation-tone agent for friendly docs](../../commit/5ee6ca4)
+- [feat: add TDD templates and README section](../../commit/5bd9acb)
+- [feat: add automatic commit example updates to docs (TDD)](../../commit/aa00002)
+- [fix: remove broken links from README to fix CI](../../commit/dec5953)
+- [fix: add package-lock.json to fix GitHub Actions npm cache error](../../commit/63283a3)
 - [🟢 fix: use process.cwd() instead of __dirname for paths (TDD GREEN)](../../commit/e2e81e6)
-- [🔧 fix: make 'update' the default mode for /docs command](../../commit/237c279)
-- [fix: simplify push command to just git push](../../commit/9c58ba6)
-- [📚 docs: add file read requirement to CLAUDE.md](../../commit/f4bece8)
-- [📝 docs: add emoji usage guideline to CLAUDE.md](../../commit/d5e678d)
-- [docs: document new agents and command conversion examples](../../commit/8c90b15)
+- [docs: capture learnings from test watch simplification](../../commit/4668363)
+- [docs: improve documentation tone and specification keyword consistency](../../commit/9a0d86b)
+- [docs: add persuasive TDD guides for skeptics](../../commit/5dfc663)
+- [refactor: switch test watching from Vite to Node.js --watch](../../commit/09c904e)
 - [refactor: simplify tests to smoke tests only](../../commit/f84cac6)
 - [refactor: optimize docs command for token efficiency](../../commit/3ad4b0d)
-- [refactor: optimize tdd command for token efficiency](../../commit/a022c17)
