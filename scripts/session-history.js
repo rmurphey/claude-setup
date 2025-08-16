@@ -104,25 +104,31 @@ function saveSession(description = '') {
   
   const filepath = path.join(sessionDir, filename);
   
-  // Get current conversation (this is a placeholder - actual implementation would need Claude's API)
-  console.log('\n📝 Saving session history...');
-  console.log(`Note: Manual save to ${filename}`);
-  console.log('Copy your conversation and save to:', filepath);
-  
-  // Create metadata file
+  // Get metadata
   const metadata = getClaudeMetadata();
-  const metadataFile = filepath.replace('.txt', '.meta.json');
   
-  fs.writeFileSync(metadataFile, JSON.stringify({
-    ...metadata,
-    sessionNumber: sessionNum,
-    description: description || 'Manual save',
-    saveType: 'full',
-    date: getDateString(),
-    time: timestamp
-  }, null, 2));
+  // Create session file with metadata header
+  const header = `# Claude Code Session Transcript - ${getDateString()}
+
+## Metadata
+- **Date**: ${getDateString()}
+- **Time**: ${new Date().toTimeString().split(' ')[0]}
+- **Claude Version**: ${metadata.claudeVersion}
+- **Environment**: ${metadata.environment}
+- **Session Number**: ${sessionNum}
+- **Save Type**: full
+- **Description**: ${description || 'Manual save'}
+- **Timestamp**: ${metadata.timestamp}
+
+## Session Content
+[Session transcript will be added here by Claude]
+`;
   
-  console.log(`\n📋 Metadata saved: Claude ${metadata.claudeVersion}`);
+  // Write the header to the file
+  fs.writeFileSync(filepath, header);
+  
+  console.log('\n📝 Session file created with metadata header');
+  console.log(`Claude Version: ${metadata.claudeVersion}`);
   
   // Update last save info
   updateLastSaveInfo({
@@ -131,13 +137,6 @@ function saveSession(description = '') {
     file: filepath,
     sessionNumber: sessionNum
   });
-  
-  console.log('\nSuggested session header:');
-  console.log('='.repeat(40));
-  console.log(`Date: ${getDateString()}`);
-  console.log(`Time: ${new Date().toTimeString().split(' ')[0]}`);
-  console.log(`Claude Code: ${metadata.claudeVersion}`);
-  console.log('='.repeat(40));
   
   console.log('\n✅ Session save prepared');
   console.log(`📁 Location: ${filepath}`);
@@ -162,24 +161,31 @@ function saveDelta() {
   const filename = `session-${sessionNum}-${timestamp}-delta.txt`;
   const filepath = path.join(sessionDir, filename);
   
-  console.log(`Note: Save conversation delta to ${filename}`);
-  console.log('Copy conversation since last marker to:', filepath);
-  
-  // Save metadata for delta
+  // Get metadata
   const metadata = getClaudeMetadata();
-  const metadataFile = filepath.replace('.txt', '.meta.json');
   
-  fs.writeFileSync(metadataFile, JSON.stringify({
-    ...metadata,
-    sessionNumber: sessionNum,
-    description: 'Delta save',
-    saveType: 'delta',
-    previousSave: lastSave ? lastSave.file : null,
-    date: getDateString(),
-    time: timestamp
-  }, null, 2));
+  // Create delta file with metadata header
+  const header = `# Claude Code Session Delta - ${getDateString()}
+
+## Metadata
+- **Date**: ${getDateString()}
+- **Time**: ${new Date().toTimeString().split(' ')[0]}
+- **Claude Version**: ${metadata.claudeVersion}
+- **Environment**: ${metadata.environment}
+- **Session Number**: ${sessionNum}
+- **Save Type**: delta
+- **Previous Save**: ${lastSave ? lastSave.file : 'none'}
+- **Timestamp**: ${metadata.timestamp}
+
+## Delta Content (since ${lastSave.date} ${lastSave.time})
+[Delta transcript will be added here by Claude]
+`;
   
-  console.log(`\n📋 Metadata saved: Claude ${metadata.claudeVersion}`);
+  // Write the header to the file
+  fs.writeFileSync(filepath, header);
+  
+  console.log('\n📝 Delta file created with metadata header');
+  console.log(`Claude Version: ${metadata.claudeVersion}`);
   
   // Update last save info
   updateLastSaveInfo({
@@ -226,7 +232,7 @@ function listSessions() {
     if (files.length > 0) {
       console.log(`\n📅 ${date}`);
       files.forEach(file => {
-        // Skip metadata files in listing
+        // Skip metadata files if they still exist (backwards compatibility)
         if (file.endsWith('.meta.json')) return;
         
         const stats = fs.statSync(path.join(dateDir, file));
@@ -234,21 +240,32 @@ function listSessions() {
         const isDelta = file.includes('delta');
         const icon = isDelta ? '📊' : '📄';
         
-        // Check for metadata
-        const metaFile = file.replace('.txt', '.meta.json');
-        const metaPath = path.join(dateDir, metaFile);
+        // Try to extract version from file header (new format) or .meta.json (old format)
         let versionInfo = '';
+        const filePath = path.join(dateDir, file);
         
-        if (fs.existsSync(metaPath)) {
-          try {
-            const meta = JSON.parse(fs.readFileSync(metaPath, 'utf8'));
-            if (meta.claudeVersion && meta.claudeVersion !== 'unknown') {
-              // Shorten version display
-              const shortVersion = meta.claudeVersion.replace(' (Claude Code)', '');
-              versionInfo = ` [v${shortVersion}]`;
+        try {
+          // First try to read from file header
+          const content = fs.readFileSync(filePath, 'utf8');
+          const versionMatch = content.match(/- \*\*Claude Version\*\*: (.+)/);
+          if (versionMatch) {
+            const shortVersion = versionMatch[1].replace(' (Claude Code)', '');
+            versionInfo = ` [v${shortVersion}]`;
+          }
+        } catch (e) {
+          // Fallback to .meta.json for backwards compatibility
+          const metaFile = file.replace('.txt', '.meta.json');
+          const metaPath = path.join(dateDir, metaFile);
+          if (fs.existsSync(metaPath)) {
+            try {
+              const meta = JSON.parse(fs.readFileSync(metaPath, 'utf8'));
+              if (meta.claudeVersion && meta.claudeVersion !== 'unknown') {
+                const shortVersion = meta.claudeVersion.replace(' (Claude Code)', '');
+                versionInfo = ` [v${shortVersion}]`;
+              }
+            } catch (e) {
+              // Ignore metadata read errors
             }
-          } catch (e) {
-            // Ignore metadata read errors
           }
         }
         
