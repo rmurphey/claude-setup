@@ -9,7 +9,7 @@ const fs = require('fs');
 const path = require('path');
 const { execSync } = require('child_process');
 
-const command = process.argv[2] || 'help';
+const command = process.argv[2] || 'update';
 
 function countCommands() {
   try {
@@ -33,7 +33,7 @@ function updateReadme() {
     
     // Update command count badge
     if (content.includes('commands-')) {
-      content = content.replace(/commands-\d+/g, `commands-${commandCount}`);
+      content = content.replace(/commands-\d+\+?/g, `commands-${commandCount}`);
       fs.writeFileSync(readmePath, content);
       console.log(`  ✓ Updated command count badge to ${commandCount}`);
     }
@@ -172,6 +172,7 @@ function showHelp() {
   console.log('========================');
   console.log('');
   console.log('Available commands:');
+  console.log('  /docs           - Update README (default)');
   console.log('  /docs update    - Update README with current stats');
   console.log('  /docs validate  - Check for broken links');
   console.log('  /docs stats     - Show documentation statistics');
