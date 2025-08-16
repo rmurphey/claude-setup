@@ -1,25 +1,44 @@
 ---
-allowed-tools: [Edit]
-description: Quick task capture to ACTIVE_WORK.md
+allowed-tools: [Bash, Read, Write]
+description: Task management and tracking system with ACTIVE_WORK.md integration
 ---
 
-# Quick Task Capture
+# Todo Management Command
 
-## Context
-- Current active work: @internal/ACTIVE_WORK.md
+Manage tasks efficiently using ACTIVE_WORK.md.
 
-## Your task
-Add the user's task to the Quick Capture section of ACTIVE_WORK.md with timestamp.
+## Your Task
+Handle todo operations:
 
-**Format**: `- [ ] [YYYY-MM-DD HH:MM] {task description}`
+```bash
+#!/bin/bash
 
-**Example**:
-```
-- [ ] [2025-01-04 14:30] Implement user authentication
-```
+COMMAND="${1:-list}"
+shift
+ARGS="$*"
 
-After adding the task, confirm completion with:
-```
-✅ Added task to internal/ACTIVE_WORK.md:
-   {task description}
+case "$COMMAND" in
+  "list"|"show")
+    echo "📋 Current Tasks:"
+    npm run todo:list --silent
+    echo ""
+    npm run todo:count --silent
+    ;;
+    
+  "add")
+    echo "➕ Adding task: $ARGS"
+    echo "- [ ] $ARGS" >> ACTIVE_WORK.md
+    echo "✅ Task added"
+    ;;
+    
+  "done")
+    LINE_NUM="$1"
+    echo "✅ Completing task #$LINE_NUM"
+    sed -i.bak "${LINE_NUM}s/\\[ \\]/[x]/" ACTIVE_WORK.md && rm ACTIVE_WORK.md.bak
+    ;;
+    
+  *)
+    echo "Usage: /todo [list|add|done] [args]"
+    ;;
+esac
 ```
