@@ -46,39 +46,50 @@ function updateReadme() {
   console.log('✅ README updated successfully');
 }
 
+function findBrokenLinks(content, filename) {
+  const brokenLinks = [];
+  const linkRegex = /\[([^\]]+)\]\(([^http][^)]+\.md[^)]*)\)/g;
+  let match;
+  
+  while ((match = linkRegex.exec(content)) !== null) {
+    const linkPath = match[2].split('#')[0];
+    
+    // Check if file exists relative to repo root
+    const possiblePaths = [
+      linkPath,
+      path.join('docs', linkPath),
+      path.join('.claude', 'commands', linkPath)
+    ];
+    
+    if (!possiblePaths.some(p => fs.existsSync(p))) {
+      brokenLinks.push(linkPath);
+    }
+  }
+  
+  return brokenLinks;
+}
+
 function validateDocs() {
   console.log('🔍 Validating documentation...');
   console.log('');
   console.log('Checking internal links...');
   
-  let brokenLinks = 0;
+  let totalBroken = 0;
   const files = ['README.md', ...fs.readdirSync('docs').filter(f => f.endsWith('.md')).map(f => `docs/${f}`)];
   
   for (const file of files) {
     if (!fs.existsSync(file)) continue;
     
     const content = fs.readFileSync(file, 'utf8');
-    const linkRegex = /\[([^\]]+)\]\(([^http][^)]+\.md[^)]*)\)/g;
-    let match;
+    const brokenLinks = findBrokenLinks(content, file);
     
-    while ((match = linkRegex.exec(content)) !== null) {
-      const linkPath = match[2].split('#')[0];
-      
-      // Check if file exists relative to repo root
-      const possiblePaths = [
-        linkPath,
-        path.join('docs', linkPath),
-        path.join('.claude', 'commands', linkPath)
-      ];
-      
-      if (!possiblePaths.some(p => fs.existsSync(p))) {
-        console.log(`  ❌ Broken link in ${path.basename(file)}: ${linkPath}`);
-        brokenLinks++;
-      }
-    }
+    brokenLinks.forEach(link => {
+      console.log(`  ❌ Broken link in ${path.basename(file)}: ${link}`);
+      totalBroken++;
+    });
   }
   
-  if (brokenLinks === 0) {
+  if (totalBroken === 0) {
     console.log('  ✓ All internal links valid');
   }
   
@@ -193,6 +204,7 @@ if (require.main === module) {
 } else {
   // Export for testing
   module.exports = {
-    countCommands
+    countCommands,
+    findBrokenLinks
   };
 }
