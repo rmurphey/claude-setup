@@ -32,3 +32,7 @@ Co-Authored-By: Claude <noreply@anthropic.com>"
 
 echo "💡 Use 'npm run git:status:summary' to verify"
 ```
+
+## Notes
+
+For advanced commit operations with more options, use `/commit-detailed`.

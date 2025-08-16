@@ -41,3 +41,7 @@ echo ""
 echo "📈 Maintainability Summary:"
 npm run maintain:summary --silent
 ```
+
+## Notes
+
+For advanced maintainability analysis with more options, use `/maintainability-detailed`.

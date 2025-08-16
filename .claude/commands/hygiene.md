@@ -29,3 +29,7 @@ echo "  npm run maintain:debt   - Technical debt"
 ```
 
 This streamlined command delegates to npm scripts, reducing token usage by 95% while maintaining full functionality.
+
+## Notes
+
+For advanced hygiene operations with more options, use `/hygiene-detailed`.

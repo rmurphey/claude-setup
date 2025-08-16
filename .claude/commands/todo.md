@@ -42,3 +42,7 @@ case "$COMMAND" in
     ;;
 esac
 ```
+
+## Notes
+
+For advanced todo operations with more options, use `/todo-detailed`.
