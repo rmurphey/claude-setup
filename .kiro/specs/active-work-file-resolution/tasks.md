@@ -14,7 +14,7 @@
   - Ensure syncIssues() method always has a valid file path before proceeding
   - _Requirements: 1.1, 1.2, 4.1, 4.2, 4.3_
 
-- [ ] 3. Update CLI utils handleSyncIssues function to use new resolver
+- [x] 3. Update CLI utils handleSyncIssues function to use new resolver
   - Remove the current file existence check and error exit logic
   - Let the GitHubSync class handle file resolution automatically
   - Simplify the function to just call syncGitHubIssues without path checking

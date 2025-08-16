@@ -4,7 +4,7 @@
     "primary": "js",
     "name": "JavaScript/TypeScript",
     "confidence": "high",
-    "detected": "2025-07-28T01:29:57.549Z",
+    "detected": "2025-07-29T01:36:25.644Z",
     "evidence": {
       "foundFiles": [
         "package.json",
