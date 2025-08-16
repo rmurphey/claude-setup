@@ -109,14 +109,14 @@ test('function works', () => {
 **Decision Framework**: When evaluating technical sophistication, ask:
 1. What specific user problem does this solve?
 2. What's the simplest solution that works reliably?
-3. Does the complexity serve the end goal or just technical elegance?
+3. Does the complexity serve the end goal or technical elegance?
 
 **Result**: From 0 functions detected (AST failures) to 42 functions detected (text patterns) - simpler approach was demonstrably better.
 
 ### 2025-07-05 - Systematic Test Recovery
 **Problem**: ES module conversion broke 6 of 7 test files due to haphazard approach to systematic changes.
 
-**Lesson**: Never take haphazard approach to systematic changes. When conversion broke tests, deleted all broken tests and rebuilt with 1 comprehensive test file using proven working patterns.
+**Lesson**: NEVER take a haphazard approach to systematic changes. When conversion broke tests, deleted all broken tests and rebuilt with 1 comprehensive test file using proven working patterns.
 
 **Key Pattern**: Use working examples as templates, don't assume behavior will transfer across major changes.
 

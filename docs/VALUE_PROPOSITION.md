@@ -138,13 +138,13 @@ The Claude Setup Tool provides comprehensive project infrastructure setup with A
 
 ### vs Other Scaffolding Tools
 - **AI-Optimized**: Built specifically for AI-assisted development workflows
-- **Quality-First**: Not just structure, but complete quality infrastructure
+- **Quality-First**: Not only structure, but complete quality infrastructure
 - **Recovery-Capable**: Unique ability to restore broken setups
 - **Language-Agnostic**: Supports multiple languages with consistent patterns
 
 ### vs Template Repositories
 - **Interactive**: Customizes based on project needs
-- **Complete**: Includes development workflows, not just code structure
+- **Complete**: Includes development workflows, not only code structure
 - **Maintainable**: Central updates vs per-template maintenance
 - **Intelligent**: Smart detection and configuration
 

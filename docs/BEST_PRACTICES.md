@@ -243,7 +243,7 @@ Implement these checks before allowing commits:
 **Source**: [Software Development Best Practices 2025](https://codewave.com/insights/ai-automation-software-development/)
 
 1. **AI-Generated Documentation**
-   - Document the "why" not just the "what"
+   - Document the "why" not only the "what"
    - Include context for AI decisions
    - Link to relevant issues/PRs
 

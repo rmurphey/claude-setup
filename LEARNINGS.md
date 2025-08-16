@@ -21,7 +21,7 @@ Captured insights, discoveries, and knowledge gained during development.
 Transformed a template repository into a living reference that uses its own commands, proving the patterns it teaches through actual implementation.
 
 #### Critical Insights
-1. **Living Reference > Template**: A reference implementation must actually implement, not just template
+1. **Living Reference > Template**: A reference implementation must actually implement, not template
 2. **Token Efficiency is Paramount**: 87-91% reduction through npm script delegation changes everything
 3. **Subdirectory Organization Works**: `.claude/commands/detailed/` provides clean scalability
 4. **Self-Documentation is Sustainable**: Commands that update their own docs stay current
@@ -80,7 +80,7 @@ npm run script-name --silent  # Test immediately
 **Solution**: Atomic from the start
 - Plan atomic commits before making changes
 - Commit immediately after each logical unit
-- Never exceed 500 lines per commit
+- NEVER exceed 500 lines per commit (maintains reviewability and atomic focus)
 
 ---
 
@@ -156,7 +156,7 @@ npm run docs:validate
    - Compact context if over 30 interactions
 
 4. **Atomic Commits from Start**
-   - Never start work without clear commit plan
+   - NEVER start work without clear commit plan (prevents scope creep and ensures atomic commits)
    - Use `/atomic-commit` command proactively
    - Break features into <200 line commits
 
@@ -241,7 +241,7 @@ npm run docs:validate
 ## Meta-Learning
 
 The act of documenting these learnings is itself a learning:
-- Documentation is most valuable immediately after experience
+- Documentation is most valuable when captured immediately after experience
 - Structured reflection enhances retention
 - Sharing failures is as important as sharing successes
 - Patterns emerge through systematic analysis
