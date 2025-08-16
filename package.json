@@ -1,100 +1,20 @@
 {
-  "name": "claude-project-setup",
+  "name": "claude-code-commands",
   "version": "1.0.0",
-  "description": "Interactive CLI to set up Claude Code projects with professional development standards. Transforms any directory into a professional development environment with quality tools, documentation systems, and structured workflows.",
-  "type": "module",
-  "main": "./bin/cli.js",
-  "bin": {
-    "claude-setup": "./bin/cli.js"
-  },
+  "description": "Reference collection of professional Claude Code command templates. Curated development workflow commands for consistent AI-assisted development.",
   "scripts": {
-    "build": "if [ -d \"src\" ] && [ \"$(ls -A src 2>/dev/null)\" ]; then tsc; else echo \"No TypeScript source files yet - skipping build\"; fi",
-    "build:watch": "tsc --watch",
-    "build:clean": "rm -rf dist && npm run build",
-    "clean": "rm -rf dist",
-    "prebuild": "npm run clean",
-    "build:test": "if [ -f \"tsconfig.test.json\" ]; then tsc -p tsconfig.test.json; else echo \"No test TypeScript config - skipping test build\"; fi",
-    "type-check": "if [ -d \"src\" ] && [ \"$(ls -A src 2>/dev/null)\" ]; then tsc --noEmit; else echo \"No TypeScript source files yet - skipping type check\"; fi",
-    "type-check:test": "if [ -f \"tsconfig.test.json\" ]; then tsc -p tsconfig.test.json --noEmit; else echo \"No test TypeScript config - skipping test type check\"; fi",
-    "test:type-check": "npm run type-check:test",
-    "pretest": "npm run build",
-    "test": "NODE_ENV=test node --test __tests__/**/*.js",
-    "test:watch": "NODE_ENV=test node --test --watch __tests__/**/*.js",
-    "test:coverage": "npm run build && NODE_ENV=test c8 node --test __tests__/**/*.js",
-    "lint": "eslint .",
-    "lint:fix": "eslint . --fix",
-    "lint:changed": "eslint $(git diff --name-only --diff-filter=ACMR HEAD | grep '\\.(js|ts)$' | xargs)",
-    "lint:changed:fix": "eslint $(git diff --name-only --diff-filter=ACMR HEAD | grep '\\.(js|ts)$' | xargs) --fix",
-    "update-readme": "node -e \"import('./dist/lib/readme-updater.js').then(m => m.updateReadme().then(r => console.log('README updated:', r.commandCount, 'commands')))\"",
-    "update-docs": "node -e \"import('./dist/lib/readme-updater.js').then(m => m.updateAllDocs().then(r => console.log('Docs updated: README(' + r.readme.commandCount + ' commands), ESTIMATES(' + (r.estimates.updated ? 'updated' : 'no changes') + ')')))\"",
-    "archive-completed": "node bin/archive-completed-specs.js --verbose",
-    "docs:validate": "node dist/lib/readme-updater.js validate",
-    "docs:update": "npm run update-docs && echo 'Documentation updated successfully'",
-    "prepare": "husky",
-    "release:patch": "npm version patch && git push && git push --tags",
-    "release:minor": "npm version minor && git push && git push --tags",
-    "release:major": "npm version major && git push && git push --tags"
+    "validate": "echo 'Validating command templates...' && find templates/commands -name '*.md' -exec echo 'Checking {}' \\; -exec head -5 {} \\;",
+    "list-commands": "ls -1 templates/commands/*.md | sed 's|templates/commands/||' | sed 's|\\.md$||' | sort"
   },
   "keywords": [
     "claude",
     "claude-code",
-    "project-setup",
-    "development-standards",
-    "quality-tools",
-    "cli",
-    "setup",
-    "linting",
-    "typescript",
-    "javascript",
-    "python",
-    "go",
-    "rust",
-    "java",
-    "swift",
-    "eslint",
-    "git",
-    "ci-cd",
-    "github-actions",
-    "devcontainer",
-    "codespaces"
+    "command-templates",
+    "development-workflows",
+    "ai-assisted-development"
   ],
-  "author": "Claude Code Setup System",
+  "author": "Claude Code Commands",
   "license": "MIT",
-  "dependencies": {
-    "chalk": "^5.3.0",
-    "fs-extra": "^11.1.1",
-    "inquirer": "^9.2.0",
-    "minimatch": "^10.0.3",
-    "remark-gfm": "^4.0.1",
-    "remark-parse": "^11.0.0",
-    "remark-stringify": "^11.0.0",
-    "unified": "^11.0.5",
-    "unist-util-visit": "^5.0.0",
-    "yargs": "^17.7.2"
-  },
-  "devDependencies": {
-    "@eslint/eslintrc": "^3.3.1",
-    "@types/eslint": "^9.6.1",
-    "@types/fs-extra": "^11.0.4",
-    "@types/inquirer": "^9.0.8",
-    "@types/markdown-it": "^14.1.2",
-    "@types/node": "^24.0.14",
-    "@types/unist": "^3.0.3",
-    "@types/yargs": "^17.0.32",
-    "@typescript-eslint/eslint-plugin": "^8.37.0",
-    "@typescript-eslint/parser": "^8.37.0",
-    "c8": "^10.1.3",
-    "eslint": "^8.57.0",
-    "eslint-plugin-import": "^2.32.0",
-    "eslint-plugin-node": "^11.1.0",
-    "husky": "^9.1.7",
-    "lint-staged": "^16.1.2",
-    "markdown-it": "^14.1.0",
-    "typescript": "^5.8.3"
-  },
-  "engines": {
-    "node": ">=16.0.0"
-  },
   "repository": {
     "type": "git",
     "url": "https://github.com/rmurphey/claude-setup.git"
@@ -104,16 +24,9 @@
   },
   "homepage": "https://github.com/rmurphey/claude-setup#readme",
   "files": [
-    "bin/",
-    "dist/",
     "templates/",
     "docs/",
     "README.md",
     "LICENSE"
-  ],
-  "lint-staged": {
-    "*.{js,mjs,cjs,ts}": [
-      "eslint --fix"
-    ]
-  }
+  ]
 }

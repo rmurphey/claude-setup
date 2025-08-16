@@ -68,31 +68,18 @@ run_quality_checks() {
     fi
   fi
   
-  # 3. Test check (run only tests for changed files if possible)
+  # 3. Test check (if test script exists)
   if [ -f "package.json" ] && grep -q "test" package.json; then
     echo "  🧪 Running tests..."
-    
-    # Try to run tests for specific files if test runner supports it
-    CHANGED_TEST_FILES=$(git diff --cached --name-only --diff-filter=ACM | grep -E '\.(test\.|spec\.)' | head -5)
-    
-    if [ -n "$CHANGED_TEST_FILES" ]; then
-      # Run only changed test files
-      if ! npm test -- $CHANGED_TEST_FILES >/dev/null 2>&1; then
-        echo "  ❌ Tests failed for changed files"
-        npm test -- $CHANGED_TEST_FILES 2>&1 | tail -10
-        has_errors=true
-      else
-        echo "  ✅ Tests passed for changed files"
-      fi
+    if ! npm test >/dev/null 2>&1; then
+      echo "  ❌ Tests failed - fix before committing"
+      npm test 2>&1 | tail -10
+      has_errors=true
     else
-      # Run quick test suite or skip if no test files changed
-      if ! timeout 30s npm test >/dev/null 2>&1; then
-        echo "  ⚠️  Tests failed or timed out - review manually"
-        echo "     Run 'npm test' manually to see full results"
-      else
-        echo "  ✅ Quick test suite passed"
-      fi
+      echo "  ✅ Tests passed"
     fi
+  else
+    echo "  ⏭️  No test script configured - skipping test check"
   fi
   
   # 4. Build check (if build script exists)

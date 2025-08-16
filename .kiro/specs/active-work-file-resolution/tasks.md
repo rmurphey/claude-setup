@@ -20,7 +20,7 @@
   - Simplify the function to just call syncGitHubIssues without path checking
   - _Requirements: 1.1, 1.3, 2.3_
 
-- [ ] 4. Add comprehensive unit tests for ActiveWorkFileResolver
+- [-] 4. Add comprehensive unit tests for ActiveWorkFileResolver
   - Test findExistingFile() with various file existence scenarios
   - Test createActiveWorkFile() with different project structures
   - Test resolveActiveWorkFile() end-to-end functionality
