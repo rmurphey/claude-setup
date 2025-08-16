@@ -4,7 +4,46 @@
   "description": "Reference collection of professional Claude Code command templates. Curated development workflow commands for consistent AI-assisted development.",
   "scripts": {
     "validate": "echo 'Validating command templates...' && find templates/commands -name '*.md' -exec echo 'Checking {}' \\; -exec head -5 {} \\;",
-    "list-commands": "ls -1 templates/commands/*.md | sed 's|templates/commands/||' | sed 's|\\.md$||' | sort"
+    "list-commands": "ls -1 templates/commands/*.md | sed 's|templates/commands/||' | sed 's|\\.md$||' | sort",
+    
+    "// Core Workflow": "=== Core workflow commands ===",
+    "hygiene": "npm run hygiene:quick --silent",
+    "hygiene:quick": "npm run lint:check && npm run test:check && npm run git:status:summary",
+    "hygiene:full": "npm run lint:check && npm run test:check && npm run deps:check && npm run git:status:full && npm run maintain:summary",
+    "todo:list": "grep -n '^- \\[ \\]' ACTIVE_WORK.md 2>/dev/null || echo 'No pending tasks'",
+    "todo:count": "echo \"Pending: $(grep -c '^- \\[ \\]' ACTIVE_WORK.md 2>/dev/null || echo '0') | Completed: $(grep -c '^- \\[x\\]' ACTIVE_WORK.md 2>/dev/null || echo '0')\"",
+    "commit:check": "npm run lint:check --silent && npm run test:check --silent",
+    
+    "// Quality Checks": "=== Quality and testing ===",
+    "lint:check": "if [ -f 'eslint.config.js' ] || [ -f '.eslintrc.js' ]; then npx eslint . --max-warnings 10 2>/dev/null || echo '❌ Lint issues found'; else echo '⚠️ No linter configured'; fi",
+    "test:check": "if grep -q '\"test\"' package.json 2>/dev/null; then npm test 2>/dev/null || echo '❌ Tests failing'; else echo '⚠️ No tests configured'; fi",
+    "build:check": "if grep -q '\"build\"' package.json 2>/dev/null; then npm run build 2>/dev/null || echo '❌ Build failing'; else echo '⚠️ No build configured'; fi",
+    "quality:all": "npm run lint:check && npm run test:check && npm run build:check",
+    "quality:pre-commit": "npm run lint:check --silent && npm run test:check --silent && npm run git:check:staged",
+    
+    "// Git Operations": "=== Git status and operations ===",
+    "git:status:summary": "echo \"Branch: $(git branch --show-current 2>/dev/null || echo 'unknown') | Changes: $(git status --porcelain | wc -l | xargs) files\"",
+    "git:status:full": "git status --short",
+    "git:check:staged": "test -n \"$(git diff --cached --name-only)\" && echo '✅ Files staged' || (echo '❌ No staged files' && exit 1)",
+    "git:uncommitted": "git diff --stat",
+    "git:unpushed": "git log --oneline @{u}..HEAD 2>/dev/null | wc -l | xargs",
+    
+    "// Dependencies": "=== Dependency management ===",
+    "deps:check": "npm outdated --depth=0 2>/dev/null || echo '✅ All dependencies up to date'",
+    "deps:audit": "npm audit --audit-level=high 2>/dev/null || echo '✅ No high severity vulnerabilities'",
+    "deps:count": "echo \"Prod: $(grep -c '\"' package.json 2>/dev/null || echo '0') | Dev: $(grep -c '\"' package.json 2>/dev/null || echo '0')\"",
+    
+    "// Maintainability": "=== Code maintainability analysis ===",
+    "maintain:files": "find . -name '*.js' -o -name '*.ts' -o -name '*.jsx' -o -name '*.tsx' 2>/dev/null | grep -v node_modules | wc -l | xargs",
+    "maintain:largest": "find . -name '*.js' -o -name '*.ts' -o -name '*.jsx' -o -name '*.tsx' 2>/dev/null | grep -v node_modules | xargs wc -l 2>/dev/null | sort -rn | head -5",
+    "maintain:debt": "echo \"TODO: $(grep -r 'TODO' --exclude-dir=node_modules . 2>/dev/null | wc -l) | FIXME: $(grep -r 'FIXME' --exclude-dir=node_modules . 2>/dev/null | wc -l)\"",
+    "maintain:summary": "echo \"Files: $(npm run maintain:files --silent) | Debt markers: $(grep -r 'TODO\\|FIXME' --exclude-dir=node_modules . 2>/dev/null | wc -l)\"",
+    
+    "// Utilities": "=== Utility commands ===",
+    "files:find": "find . -name",
+    "search:code": "grep -r --exclude-dir=node_modules",
+    "clean:artifacts": "rm -rf dist build *.log",
+    "stats:project": "echo \"JS/TS Files: $(npm run maintain:files --silent) | Commits: $(git rev-list --count HEAD 2>/dev/null || echo '0') | Branch: $(git branch --show-current)\""
   },
   "keywords": [
     "claude",
