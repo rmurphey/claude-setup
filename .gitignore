@@ -69,7 +69,6 @@ logs/
 # Package manager files
 pnpm-lock.yaml
 yarn.lock
-package-lock.json
 
 # Optional: Archive directories
 archive/
