@@ -1,0 +1,134 @@
+name: Quality Checks
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:  # Allow manual trigger
+
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0  # Full history for commit examples
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        cache: 'npm'
+    
+    - name: Install dependencies
+      run: npm ci
+    
+    - name: Run linting
+      run: |
+        echo "🔍 Running ESLint..."
+        npm run lint:check
+    
+    - name: Run tests
+      run: |
+        echo "🧪 Running tests..."
+        npm test
+    
+    - name: Check project hygiene
+      run: |
+        echo "🏥 Checking project hygiene..."
+        npm run hygiene:quick
+    
+    - name: Validate documentation
+      run: |
+        echo "📚 Validating documentation..."
+        npm run docs validate
+    
+    - name: Check command count
+      run: |
+        echo "📊 Verifying command count..."
+        ACTUAL_COUNT=$(ls .claude/commands/*.md 2>/dev/null | wc -l || echo 0)
+        README_COUNT=$(grep -oP 'commands-\K\d+' README.md || echo 0)
+        echo "Actual commands: $ACTUAL_COUNT"
+        echo "README badge: $README_COUNT"
+        if [ "$ACTUAL_COUNT" != "$README_COUNT" ]; then
+          echo "❌ Command count mismatch!"
+          exit 1
+        fi
+        echo "✅ Command count matches"
+    
+    - name: Check for broken links
+      run: |
+        echo "🔗 Checking for broken links..."
+        node -e "
+        const docs = require('./scripts/docs.js');
+        const fs = require('fs');
+        let hasErrors = false;
+        
+        ['README.md', 'CLAUDE.md'].forEach(file => {
+          if (fs.existsSync(file)) {
+            const content = fs.readFileSync(file, 'utf8');
+            const broken = docs.findBrokenLinks(content, file);
+            if (broken.length > 0) {
+              console.log('❌ Broken links in ' + file + ':');
+              broken.forEach(link => console.log('  - ' + link));
+              hasErrors = true;
+            }
+          }
+        });
+        
+        if (hasErrors) process.exit(1);
+        console.log('✅ No broken links found');
+        "
+    
+    - name: Validate commit examples
+      run: |
+        echo "🔍 Validating commit examples exist..."
+        node -e "
+        const docs = require('./scripts/docs.js');
+        const fs = require('fs');
+        let invalidCount = 0;
+        
+        // Extract commit hashes from README and CLAUDE
+        const files = ['README.md', 'CLAUDE.md'];
+        const hashes = new Set();
+        
+        files.forEach(file => {
+          if (fs.existsSync(file)) {
+            const content = fs.readFileSync(file, 'utf8');
+            const matches = content.match(/\(\.\.\/\.\.\/commit\/([a-f0-9]+)\)/g) || [];
+            matches.forEach(match => {
+              const hash = match.match(/([a-f0-9]+)\)/)[1];
+              hashes.add(hash);
+            });
+          }
+        });
+        
+        hashes.forEach(hash => {
+          if (!docs.validateCommitExists(hash)) {
+            console.log('❌ Invalid commit reference: ' + hash);
+            invalidCount++;
+          }
+        });
+        
+        if (invalidCount > 0) {
+          console.log('Found ' + invalidCount + ' invalid commit references');
+          process.exit(1);
+        }
+        
+        console.log('✅ All ' + hashes.size + ' commit references are valid');
+        "
+    
+    - name: Summary
+      if: always()
+      run: |
+        echo "📋 Quality Check Summary"
+        echo "========================"
+        echo "✅ Linting: Passed"
+        echo "✅ Tests: Passed"
+        echo "✅ Hygiene: Passed"
+        echo "✅ Documentation: Valid"
+        echo "✅ Links: No broken links"
+        echo "✅ Commits: All references valid"

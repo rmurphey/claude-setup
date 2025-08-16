@@ -59,6 +59,12 @@
     "// Testing": "=== Testing commands ===",
     "test": "node test/run-tests.js",
     "test:verbose": "node test/run-tests.js --verbose",
+    "test:coverage": "echo 'Coverage not yet configured' && npm test",
+    
+    "// CI/CD": "=== Continuous Integration commands ===",
+    "quality:ci": "npm run lint:check && npm test && npm run docs validate",
+    "ci:pre-push": "npm run quality:ci && npm run git:unpushed",
+    "ci:validate-docs": "node -e \"const d=require('./scripts/docs.js');process.exit(d.validateCommitExists('HEAD')?0:1)\"",
     
     "// Utilities": "=== Utility commands ===",
     "files:find": "find . -name",
