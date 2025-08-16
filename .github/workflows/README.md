@@ -1,8 +1,8 @@
 # GitHub Actions Workflows
 
-This repository uses GitHub Actions for continuous integration and automated documentation updates.
+This repository uses GitHub Actions for continuous integration.
 
-## Workflows
+## Active Workflows
 
 ### 1. Test Suite (`test.yml`)
 - **Triggers**: Push to main/develop, Pull requests
@@ -26,24 +26,26 @@ This repository uses GitHub Actions for continuous integration and automated doc
   - Broken link detection
   - Commit reference validation
 
-### 3. Scheduled Documentation Update (`docs-update.yml`)
-- **Triggers**: Weekly (Monday 2 AM UTC), Manual
-- **Purpose**: Keep documentation current
-- **Features**:
-  - Update README command count
-  - Refresh commit examples
-  - Update command catalog
-  - Validate all links
-  - Create PR with changes
-  - Bot commits with proper attribution
+## Removed Workflows (Available in Git History)
 
-### 4. Release (`release.yml`)
-- **Triggers**: Version tags
-- **Purpose**: Automated releases
+The following workflows were removed to prevent false positive failures on push events:
 
-### 5. Publish (`publish.yml`)
-- **Triggers**: Release creation
-- **Purpose**: NPM package publishing
+### ~~Scheduled Documentation Update (`docs-update.yml`)~~ 
+- **Status**: Removed - not needed yet
+- **Would trigger**: Weekly schedule or manual
+- **To restore**: `git checkout 76eb3b7 -- .github/workflows/docs-update.yml`
+
+### ~~Release (`release.yml`)~~
+- **Status**: Removed - not doing releases yet  
+- **Would trigger**: Version tags
+- **To restore**: `git checkout 76eb3b7 -- .github/workflows/release.yml`
+
+### ~~Publish (`publish.yml`)~~
+- **Status**: Removed - not publishing to NPM yet
+- **Would trigger**: Release creation
+- **To restore**: `git checkout 76eb3b7 -- .github/workflows/publish.yml`
+
+**Why removed?** GitHub evaluates all workflow files on every push, marking them as "failed" when their trigger conditions don't match. This created noise in monitoring and CI status.
 
 ## Local Testing
 
