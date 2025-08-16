@@ -5,7 +5,6 @@
   "scripts": {
     "validate": "echo 'Validating command templates...' && find .claude/commands -name '*.md' -exec echo 'Checking {}' \\; -exec head -5 {} \\;",
     "list-commands": "ls -1 .claude/commands/*.md | sed 's|.claude/commands/||' | sed 's|\\.md$||' | sort",
-    
     "// Core Workflow": "=== Core workflow commands ===",
     "hygiene": "npm run hygiene:quick --silent",
     "hygiene:quick": "npm run lint:check && npm run test:check && npm run git:status:summary",
@@ -13,59 +12,54 @@
     "todo:list": "grep -n '^- \\[ \\]' ACTIVE_WORK.md 2>/dev/null || echo 'No pending tasks'",
     "todo:count": "echo \"Pending: $(grep -c '^- \\[ \\]' ACTIVE_WORK.md 2>/dev/null || echo '0') | Completed: $(grep -c '^- \\[x\\]' ACTIVE_WORK.md 2>/dev/null || echo '0')\"",
     "commit:check": "npm run lint:check --silent && npm run test:check --silent",
-    
     "// Quality Checks": "=== Quality and testing ===",
     "lint:check": "if [ -f 'eslint.config.js' ] || [ -f '.eslintrc.js' ]; then npx eslint . --max-warnings 10 2>/dev/null || echo '❌ Lint issues found'; else echo '⚠️ No linter configured'; fi",
     "test:check": "if grep -q '\"test\"' package.json 2>/dev/null; then npm test 2>/dev/null || echo '❌ Tests failing'; else echo '⚠️ No tests configured'; fi",
     "build:check": "if grep -q '\"build\"' package.json 2>/dev/null; then npm run build 2>/dev/null || echo '❌ Build failing'; else echo '⚠️ No build configured'; fi",
     "quality:all": "npm run lint:check && npm run test:check && npm run build:check",
     "quality:pre-commit": "npm run lint:check --silent && npm run test:check --silent && npm run git:check:staged",
-    
     "// Git Operations": "=== Git status and operations ===",
     "git:status:summary": "echo \"Branch: $(git branch --show-current 2>/dev/null || echo 'unknown') | Changes: $(git status --porcelain | wc -l | xargs) files\"",
     "git:status:full": "git status --short",
     "git:check:staged": "test -n \"$(git diff --cached --name-only)\" && echo '✅ Files staged' || (echo '❌ No staged files' && exit 1)",
     "git:uncommitted": "git diff --stat",
     "git:unpushed": "git log --oneline @{u}..HEAD 2>/dev/null | wc -l | xargs",
-    
     "// Dependencies": "=== Dependency management ===",
     "deps:check": "npm outdated --depth=0 2>/dev/null || echo '✅ All dependencies up to date'",
     "deps:audit": "npm audit --audit-level=high 2>/dev/null || echo '✅ No high severity vulnerabilities'",
     "deps:count": "echo \"Prod: $(grep -c '\"' package.json 2>/dev/null || echo '0') | Dev: $(grep -c '\"' package.json 2>/dev/null || echo '0')\"",
-    
     "// Maintainability": "=== Code maintainability analysis ===",
     "maintain:files": "find . -name '*.js' -o -name '*.ts' -o -name '*.jsx' -o -name '*.tsx' 2>/dev/null | grep -v node_modules | wc -l | xargs",
     "maintain:largest": "find . -name '*.js' -o -name '*.ts' -o -name '*.jsx' -o -name '*.tsx' 2>/dev/null | grep -v node_modules | xargs wc -l 2>/dev/null | sort -rn | head -5",
     "maintain:debt": "echo \"TODO: $(grep -r 'TODO' --exclude-dir=node_modules . 2>/dev/null | wc -l) | FIXME: $(grep -r 'FIXME' --exclude-dir=node_modules . 2>/dev/null | wc -l)\"",
     "maintain:summary": "echo \"Files: $(npm run maintain:files --silent) | Debt markers: $(grep -r 'TODO\\|FIXME' --exclude-dir=node_modules . 2>/dev/null | wc -l)\"",
-    
     "// Session Management": "=== Session analysis and retrospectives ===",
     "retrospective": "node scripts/retrospective.js",
     "session:save": "node scripts/session-history.js save",
     "session:delta": "node scripts/session-history.js delta",
     "session:list": "node scripts/session-history.js list",
     "session:archive": "node scripts/session-history.js archive",
-    
     "// Documentation": "=== Documentation management ===",
     "docs": "node scripts/docs.js",
     "docs:examples": "node scripts/docs.js examples",
     "update-examples": "node scripts/docs.js examples",
-    
     "// Advanced Commands": "=== Advanced workflow commands ===",
     "context": "node scripts/context-manage.js",
     "learn": "node scripts/learn.js",
     "tdd": "node scripts/tdd.js",
-    
+    "// Monitoring": "=== GitHub monitoring commands ===",
+    "monitor:start": "node scripts/monitor-repo.js &",
+    "monitor:status": "node scripts/monitor-repo.js status",
+    "monitor:stop": "pkill -f 'node scripts/monitor-repo.js' || echo 'Monitor not running'",
     "// Testing": "=== Testing commands ===",
     "test": "node test/run-tests.js",
     "test:verbose": "node test/run-tests.js --verbose",
     "test:coverage": "echo 'Coverage not yet configured' && npm test",
-    
+    "test:watch": "node --watch test/run-tests.js",
     "// CI/CD": "=== Continuous Integration commands ===",
     "quality:ci": "npm run lint:check && npm test && npm run docs validate",
     "ci:pre-push": "npm run quality:ci && npm run git:unpushed",
     "ci:validate-docs": "node -e \"const d=require('./scripts/docs.js');process.exit(d.validateCommitExists('HEAD')?0:1)\"",
-    
     "// Utilities": "=== Utility commands ===",
     "files:find": "find . -name",
     "search:code": "grep -r --exclude-dir=node_modules",
@@ -106,5 +100,6 @@
   },
   "bin": {
     "claude-setup": "./scripts/setup.js"
-  }
+  },
+  "devDependencies": {}
 }

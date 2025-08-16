@@ -359,6 +359,12 @@ Adapt templates as you learn what works for your team
 
 ## Advanced Usage
 
+### Continuous Testing
+Run tests automatically as you code:
+```bash
+npm run test:watch    # Node.js watch mode - reruns on file changes
+```
+
 ### Chaining Commands
 ```bash
 /hygiene && /todo list && /next
