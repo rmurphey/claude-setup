@@ -30,12 +30,6 @@ cp temp-claude/CLAUDE.md your-project/
 cp temp-claude/ACTIVE_WORK.md your-project/
 ```
 
-### Method 3: NPM Installation (Coming Soon)
-```bash
-npm install -g @rmurphey/claude-commands
-claude-setup init
-```
-
 That's it! You now have 25+ professional development commands ready to use.
 
 ## Why This Repository Is Different
@@ -82,6 +76,46 @@ That's it! You now have 25+ professional development commands ready to use.
 - **`/ai-review`** - Automated PR review (Coming Soon)
 - **`/context-manage`** - Context window optimization (Coming Soon)
 - **`/security-scan`** - Security vulnerability check (Coming Soon)
+
+## 🤖 Claude Code Agents
+
+**When commands aren't enough, agents provide intelligent analysis and complex automation.**
+
+### Commands vs Agents
+- **Commands**: Routine tasks you do the same way every time (`/hygiene`, `/commit`)
+- **Agents**: Complex analysis requiring intelligence and decision-making
+
+### Available Agents
+
+#### 📊 Analysis & Optimization
+- **`command-analyzer`** - Analyzes command usage patterns and suggests optimizations
+- **`session-insights`** - Extracts patterns from development session history  
+- **`documentation-auditor`** - Audits documentation completeness and consistency
+- **`command-optimizer`** - Optimizes commands for token efficiency and performance
+
+#### 🔄 Workflow & Automation  
+- **`workflow-composer`** - Creates custom command sequences for complex tasks
+
+### When to Use Agents
+Use agents when you need:
+- 🧠 **Intelligence**: Analysis across multiple files with pattern recognition
+- 📈 **Insights**: Deep understanding of your development practices
+- 🔧 **Optimization**: Strategic improvements to your workflows
+- 📋 **Planning**: Custom workflows for complex, multi-step processes
+
+### Quick Examples
+```bash
+# Use a command for routine tasks
+/hygiene
+
+# Use an agent for analysis
+"Use the session-insights agent to analyze my development patterns from the last 3 months"
+
+# Use an agent for optimization  
+"Use the command-analyzer agent to find opportunities to streamline my command library"
+```
+
+**📖 See [AGENTS.md](AGENTS.md) for the complete guide on when and why to use agents vs commands.**
 
 ## Real-World Usage Examples
 
