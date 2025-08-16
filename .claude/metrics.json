@@ -3,7 +3,8 @@
   "lastUpdated": "2025-01-16",
   "version": "2.0.0",
   "statistics": {
-    "commandCount": 25,
+    "commandCount": 27,
+    "detailedCommands": 4,
     "newCommands": 2,
     "documentCount": 10,
     "totalDocLines": 5234,
@@ -14,6 +15,13 @@
       "reduction": 89
     }
   },
+  "structure": {
+    "root": 27,
+    "subdirectories": {
+      "detailed": 4
+    },
+    "total": 31
+  },
   "commands": {
     "core": ["hygiene", "todo", "commit", "next"],
     "planning": ["design", "estimate", "defer", "issue"],
@@ -21,12 +29,12 @@
     "quality": ["push", "version-tag", "maintainability", "atomic-commit"],
     "utilities": ["archive", "edit-not-create", "find-working-equivalent"],
     "new": ["tdd", "context-manage"],
-    "minimal": ["hygiene-minimal", "commit-minimal", "todo-minimal", "maintainability-minimal"]
+    "detailed": ["detailed/hygiene", "detailed/commit", "detailed/todo", "detailed/maintainability"]
   },
   "usage": {
     "mostUsed": ["hygiene", "commit", "todo", "docs"],
     "recentlyAdded": ["tdd", "context-manage"],
-    "tokenEfficient": ["hygiene-minimal", "commit-minimal", "todo-minimal"]
+    "tokenEfficient": ["hygiene", "commit", "todo", "maintainability"]
   },
   "improvements": {
     "tokenReduction": {
