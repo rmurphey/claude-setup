@@ -66,6 +66,20 @@ Is this something you do routinely?
 **Solution:** `command-optimizer` agent (complex analysis across many files)
 **Why not command:** Requires intelligence to identify patterns and opportunities
 
+### Scenario 5: Real Example - The Push Command Problem
+**Situation:** We had a 320-line "safe push workflow" command that did quality validation
+**Problem:** Users just wanted `git push`, not a QA audit
+**Solution:** Simplified `/push` to `git push`, moved git complexities to `/push-detailed`
+**Lesson:** Commands should handle routine operations, CI/CD should handle validation
+
+### Scenario 6: Major Command → Agent Conversions
+**Problem:** Several commands were doing analysis work instead of routine tasks
+**Examples:**
+- `/next` (400+ lines) → `next-priorities` agent
+- `/estimate` (330+ lines) → `usage-estimator` agent  
+- `/retrospective` → Split into session capture (command) + analysis (agent)
+**Result:** Massive token reduction while improving intelligence capabilities
+
 ## Cost-Benefit Analysis
 
 ### Commands
@@ -106,6 +120,21 @@ Is this something you do routinely?
 **When to use:** You want to make your commands more efficient
 **What it does:** Finds token-saving and performance optimization opportunities
 **Example situation:** "My commands feel slow and verbose, how can I improve them?"
+
+### `next-priorities`
+**When to use:** You want intelligent analysis of what to work on next
+**What it does:** Analyzes project state, git status, tasks, and context to recommend actions
+**Example situation:** "I'm not sure what to prioritize next in my development work"
+
+### `usage-estimator`
+**When to use:** You want accurate estimates for Claude usage on tasks
+**What it does:** Analyzes your project and patterns to provide personalized estimates
+**Example situation:** "How much will it cost to add authentication to my app?"
+
+### `session-retrospective`
+**When to use:** You want insights from your development session history
+**What it does:** Analyzes captured sessions to extract productivity and learning patterns
+**Example situation:** "I want to understand my development patterns and optimize my workflow"
 
 ## When to Create a New Agent
 
