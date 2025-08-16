@@ -123,4 +123,5 @@
 - **Citations**: 28+ authoritative sources
 
 ---
-*Last Updated: 2025-01-16 | Session Duration: ~2 hours | Claude Interactions: ~50*
+*Last Updated: 2025-01-16 | Session Duration: ~2 hours | Claude Interactions: ~50*- [ ] create a VERY SIMPLE script that can be used via npx to add these commands to your project.
+- [ ] create an agent that recommends opportunities to add tests

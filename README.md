@@ -30,9 +30,7 @@ cp temp-claude/CLAUDE.md your-project/
 cp temp-claude/ACTIVE_WORK.md your-project/
 ```
 
-That's it! You now have 25+ professional development commands ready to use.
-
-## Why This Repository Is Different
+## Why This Repository is Useful, Maybe
 
 ✅ **Living Reference**: This repo uses its own commands - see our git history  
 ✅ **Token-Efficient**: 87% reduction through npm script delegation ([proven metrics](docs/TOKEN_EFFICIENCY.md))  
