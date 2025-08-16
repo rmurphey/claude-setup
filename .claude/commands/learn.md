@@ -8,9 +8,9 @@ description: Capture insights and learnings from development work
 Capture and organize insights, learnings, and knowledge gained during development work for future reference and team sharing.
 
 ## Context
-- Learning entries: !`find . -name "LEARNINGS.md" -o -name ".claude/learnings/*" | wc -l | xargs`+ files
-- Recent insights: !`grep -c "^##" LEARNINGS.md 2>/dev/null || echo "0"`+ topics
-- Last entry: !`tail -1 LEARNINGS.md 2>/dev/null | grep "Date:" | cut -d: -f2 | xargs || echo "none"`
+- Main learnings file: LEARNINGS.md
+- Additional insights in .claude/learnings/
+- Run command to add, list, or review learnings
 
 ## Your Task
 Document insights, discoveries, and learnings for knowledge retention and sharing:
