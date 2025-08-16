@@ -46,6 +46,14 @@
     "session:list": "node scripts/session-history.js list",
     "session:archive": "node scripts/session-history.js archive",
     
+    "// Documentation": "=== Documentation management ===",
+    "docs": "node scripts/docs.js",
+    
+    "// Advanced Commands": "=== Advanced workflow commands ===",
+    "context": "node scripts/context-manage.js",
+    "learn": "node scripts/learn.js",
+    "tdd": "node scripts/tdd.js",
+    
     "// Utilities": "=== Utility commands ===",
     "files:find": "find . -name",
     "search:code": "grep -r --exclude-dir=node_modules",
