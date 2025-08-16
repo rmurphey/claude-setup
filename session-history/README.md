@@ -1,23 +1,19 @@
 # Session History
 
-> **🔔 IMPORTANT**: Session saving is **ENTIRELY OPTIONAL**. Claude Code works perfectly without saving any session history. This feature exists only for users who want to preserve conversations for their own reference, learning, or analysis. There is no requirement or expectation to save sessions.
-
-> **📚 About This Repository's Sessions**: Since this is a living reference implementation, we save our own development sessions to provide real examples. These saved sessions demonstrate the feature and provide learning material. Your projects don't need to do this.
+> **Note**: Session saving is optional. This repository saves its own development sessions as examples of the feature in use.
 
 This directory preserves raw Claude Code session transcripts for historical analysis and learning.
 
-## Purpose (OPTIONAL FEATURE)
+## Purpose
 
-**Session saving is completely optional.** You can use Claude Code effectively without ever saving a session.
-
-This feature is available if you want to:
+Session history is for users who want to:
 - Keep a personal record of interesting conversations
 - Analyze your own learning patterns
 - Reference solutions from previous sessions
 - Build your own knowledge base
 
 Session history serves a different purpose than checkpoints:
-- **Session History**: Raw conversation preservation for analysis and learning (optional)
+- **Session History**: Raw conversation preservation for analysis and learning
 - **Checkpoints**: Structured save points for resuming work
 
 ## Directory Structure
