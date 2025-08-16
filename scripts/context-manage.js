@@ -219,22 +219,32 @@ function showHelp() {
 }
 
 // Main execution
-switch (action) {
-  case 'status':
-  case 'check':
-    showStatus();
-    break;
-  case 'clear':
-  case 'reset':
-    clearContext();
-    break;
-  case 'focus':
-    focusContext(target);
-    break;
-  case 'optimize':
-    optimizeContext();
-    break;
-  case 'help':
-  default:
-    showHelp();
+if (require.main === module) {
+  // CLI execution
+  switch (action) {
+    case 'status':
+    case 'check':
+      showStatus();
+      break;
+    case 'clear':
+    case 'reset':
+      clearContext();
+      break;
+    case 'focus':
+      focusContext(target);
+      break;
+    case 'optimize':
+      optimizeContext();
+      break;
+    case 'help':
+    default:
+      showHelp();
+  }
+} else {
+  // Export for testing
+  module.exports = {
+    formatBytes,
+    estimateTokens,
+    getFileSize
+  };
 }
