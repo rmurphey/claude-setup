@@ -81,3 +81,4 @@ Examples of honest responses:
 - Error handling: Graceful failures with clear messages
 - Performance: Monitor code complexity and file sizes
 - ALWAYS use atomic commits
+- use emojis, judiciously
