@@ -1,36 +1,34 @@
 ---
 allowed-tools: [Bash]
-description: Quality-checked commit with proper formatting
+description: Quality-checked commit workflow with automatic pre-commit validation
 ---
 
-# Quality-Checked Commit
+# Quality-Checked Commit Command
 
-## Context
-- Current git status: !`git status`
-- Lint check: !`npm run lint:changed`
-- Test status: !`npm test`
+Create commits with quality validation using npm scripts.
 
-## Your task
-Create a quality-checked commit following this process:
+## Your Task
+Execute quality-checked commit:
 
-1. **Quality Gates**: Ensure these pass before committing:
-   - No lint errors (warnings acceptable for this project)
-   - All tests passing
-   - No critical issues
+```bash
+#!/bin/bash
 
-2. **Stage Changes**: Add relevant files to staging area
+COMMIT_TYPE="${1:-feat}"
+MESSAGE="${2:-update}"
 
-3. **Commit Message Format**:
-   ```
-   {Descriptive summary of changes}
-   
-   {Optional detailed description}
-   
-   🤖 Generated with [Claude Code](https://claude.ai/code)
-   
-   Co-Authored-By: Claude <noreply@anthropic.com>
-   ```
+# Quality gates
+echo "🔍 Running pre-commit checks..."
+npm run quality:pre-commit --silent || {
+  echo "❌ Quality checks failed. Fix issues and try again."
+  echo "   Use 'npm run quality:all' for detailed report"
+  exit 1
+}
 
-4. **Validation**: Confirm commit was created successfully
+# Create commit
+echo "✅ Quality checks passed. Creating commit..."
+git commit -m "${COMMIT_TYPE}: ${MESSAGE}
 
-If quality gates fail, provide specific guidance on how to fix issues before proceeding.
+Co-Authored-By: Claude <noreply@anthropic.com>"
+
+echo "💡 Use 'npm run git:status:summary' to verify"
+```
