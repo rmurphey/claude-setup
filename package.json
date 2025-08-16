@@ -54,6 +54,10 @@
     "learn": "node scripts/learn.js",
     "tdd": "node scripts/tdd.js",
     
+    "// Testing": "=== Testing commands ===",
+    "test": "node test/run-tests.js",
+    "test:verbose": "node test/run-tests.js --verbose",
+    
     "// Utilities": "=== Utility commands ===",
     "files:find": "find . -name",
     "search:code": "grep -r --exclude-dir=node_modules",
