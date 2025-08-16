@@ -59,4 +59,66 @@ describe('tdd.js unit tests', () => {
     const command = tdd.getTestCommand('vitest');
     assert.strictEqual(command, 'npx vitest');
   });
+  
+  it('should export startTDD function', () => {
+    const tdd = require('../scripts/tdd');
+    assert.strictEqual(typeof tdd.startTDD, 'function');
+  });
+  
+  it('should export redPhase function', () => {
+    const tdd = require('../scripts/tdd');
+    assert.strictEqual(typeof tdd.redPhase, 'function');
+  });
+  
+  it('should export greenPhase function', () => {
+    const tdd = require('../scripts/tdd');
+    assert.strictEqual(typeof tdd.greenPhase, 'function');
+  });
+  
+  it('should export refactorPhase function', () => {
+    const tdd = require('../scripts/tdd');
+    assert.strictEqual(typeof tdd.refactorPhase, 'function');
+  });
+  
+  it('should handle TDD workflow phases', () => {
+    const tdd = require('../scripts/tdd');
+    const fs = require('node:fs');
+    const path = require('node:path');
+    const testDir = path.join(require('os').tmpdir(), 'tdd-test-' + Date.now());
+    fs.mkdirSync(testDir, { recursive: true });
+    const cwd = process.cwd();
+    process.chdir(testDir);
+    
+    try {
+      // Create mock package.json
+      fs.writeFileSync('package.json', JSON.stringify({
+        name: 'test-project',
+        scripts: { test: 'node --test' }
+      }));
+      
+      // Capture console output
+      const originalLog = console.log;
+      let output = '';
+      console.log = (msg) => { output += msg + '\n'; };
+      
+      // Test red phase
+      tdd.redPhase('test feature');
+      assert.ok(output.includes('RED') || output.includes('red') || output.includes('failing'));
+      
+      // Test green phase
+      output = '';
+      tdd.greenPhase('test feature');
+      assert.ok(output.includes('GREEN') || output.includes('green') || output.includes('pass'));
+      
+      // Test refactor phase
+      output = '';
+      tdd.refactorPhase('test feature');
+      assert.ok(output.includes('REFACTOR') || output.includes('refactor') || output.includes('clean'));
+      
+      console.log = originalLog;
+    } finally {
+      process.chdir(cwd);
+      fs.rmSync(testDir, { recursive: true, force: true });
+    }
+  });
 });

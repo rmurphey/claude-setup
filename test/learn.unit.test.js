@@ -70,6 +70,97 @@ describe('learn.js unit tests', () => {
     assert.ok(entry.includes('### 2024-01-15 - 14:30'));
     assert.ok(entry.includes('Test insight'));
   });
+  
+  it('should export addLearning function', () => {
+    const learn = require('../scripts/learn');
+    assert.strictEqual(typeof learn.addLearning, 'function');
+  });
+  
+  it('should add learning to file', () => {
+    const learn = require('../scripts/learn');
+    const testDir = path.join(require('os').tmpdir(), 'learn-add-' + Date.now());
+    fs.mkdirSync(testDir, { recursive: true });
+    const cwd = process.cwd();
+    process.chdir(testDir);
+    
+    try {
+      learn.ensureSetup();
+      learn.addLearning('Test learning insight');
+      
+      const content = fs.readFileSync('LEARNINGS.md', 'utf8');
+      assert.ok(content.includes('Test learning insight'));
+    } finally {
+      process.chdir(cwd);
+      fs.rmSync(testDir, { recursive: true, force: true });
+    }
+  });
+  
+  it('should export listLearnings function', () => {
+    const learn = require('../scripts/learn');
+    assert.strictEqual(typeof learn.listLearnings, 'function');
+  });
+  
+  it('should list recent learnings', () => {
+    const learn = require('../scripts/learn');
+    const testDir = path.join(require('os').tmpdir(), 'learn-list-' + Date.now());
+    fs.mkdirSync(testDir, { recursive: true });
+    const cwd = process.cwd();
+    process.chdir(testDir);
+    
+    try {
+      learn.ensureSetup();
+      learn.addLearning('First learning');
+      learn.addLearning('Second learning');
+      
+      // Capture console output
+      const originalLog = console.log;
+      let output = '';
+      console.log = (msg) => { output += msg + '\n'; };
+      
+      learn.listLearnings(2);
+      
+      console.log = originalLog;
+      
+      assert.ok(output.includes('First learning') || output.includes('Second learning'));
+    } finally {
+      process.chdir(cwd);
+      fs.rmSync(testDir, { recursive: true, force: true });
+    }
+  });
+  
+  it('should export searchLearnings function', () => {
+    const learn = require('../scripts/learn');
+    assert.strictEqual(typeof learn.searchLearnings, 'function');
+  });
+  
+  it('should search learnings by keyword', () => {
+    const learn = require('../scripts/learn');
+    const testDir = path.join(require('os').tmpdir(), 'learn-search-' + Date.now());
+    fs.mkdirSync(testDir, { recursive: true });
+    const cwd = process.cwd();
+    process.chdir(testDir);
+    
+    try {
+      learn.ensureSetup();
+      learn.addLearning('Testing with Jest is great');
+      learn.addLearning('Mocha is another option');
+      
+      // Capture console output
+      const originalLog = console.log;
+      let output = '';
+      console.log = (msg) => { output += msg + '\n'; };
+      
+      learn.searchLearnings('Jest');
+      
+      console.log = originalLog;
+      
+      assert.ok(output.includes('Jest'));
+      assert.ok(!output.includes('Mocha'));
+    } finally {
+      process.chdir(cwd);
+      fs.rmSync(testDir, { recursive: true, force: true });
+    }
+  });
 });
 
 // Note: Setup/teardown handled by test runner

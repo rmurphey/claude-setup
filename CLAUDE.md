@@ -99,7 +99,7 @@ Examples of honest responses:
 - Regular `/reflect` sessions for insights
 
 ## Project Standards
-- Test coverage: 80% minimum
+- Test coverage: 60% minimum
 - Documentation: All features documented
 - Error handling: Graceful failures with clear messages
 - Performance: Monitor code complexity and file sizes

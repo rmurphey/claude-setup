@@ -41,4 +41,45 @@ describe('context-manage.js unit tests', () => {
     assert.strictEqual(context.estimateTokens('hello world'), 3);
     assert.strictEqual(context.estimateTokens('a'.repeat(100)), 25);
   });
+  
+  it('should export getFileSize function', () => {
+    const context = require('../scripts/context-manage');
+    assert.strictEqual(typeof context.getFileSize, 'function');
+  });
+  
+  it('should get file size correctly', () => {
+    const context = require('../scripts/context-manage');
+    const fs = require('node:fs');
+    const path = require('node:path');
+    const testDir = path.join(require('os').tmpdir(), 'context-test-' + Date.now());
+    fs.mkdirSync(testDir, { recursive: true });
+    
+    try {
+      const testFile = path.join(testDir, 'test.txt');
+      const testContent = 'Hello World!';
+      fs.writeFileSync(testFile, testContent);
+      
+      const size = context.getFileSize(testFile);
+      assert.strictEqual(size, Buffer.byteLength(testContent));
+    } finally {
+      fs.rmSync(testDir, { recursive: true, force: true });
+    }
+  });
+  
+  it('should handle non-existent files gracefully', () => {
+    const context = require('../scripts/context-manage');
+    const size = context.getFileSize('/non/existent/file.txt');
+    assert.strictEqual(size, 0);
+  });
+  
+  it('should handle large byte values', () => {
+    const context = require('../scripts/context-manage');
+    assert.strictEqual(context.formatBytes(1073741824), '1.0 GB');
+    assert.strictEqual(context.formatBytes(1099511627776), '1.0 TB');
+  });
+  
+  it('should handle negative byte values', () => {
+    const context = require('../scripts/context-manage');
+    assert.strictEqual(context.formatBytes(-1), '0 B');
+  });
 });

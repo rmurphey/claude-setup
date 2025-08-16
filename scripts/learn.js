@@ -61,13 +61,25 @@ function addLearning(insight) {
   const date = new Date().toISOString().split('T')[0];
   const time = new Date().toTimeString().slice(0, 5);
   
-  console.log(`📝 Capturing learning: ${insight}`);
+  // Check for category prefix (pattern: [category] insight)
+  const categoryMatch = insight.match(/^\[(\w+)\]\s*(.*)/);
+  let category = '';
+  let cleanInsight = insight;
+  
+  if (categoryMatch) {
+    category = categoryMatch[1].toUpperCase();
+    cleanInsight = categoryMatch[2];
+    console.log(`📝 Capturing ${category} learning: ${cleanInsight}`);
+  } else {
+    console.log(`📝 Capturing learning: ${insight}`);
+    cleanInsight = insight;
+  }
   
   // Read current content
   let content = fs.readFileSync(LEARNINGS_FILE, 'utf8');
   
   // Add to Recent Insights section
-  const entry = formatLearningEntry(insight, date, time);
+  const entry = formatLearningEntry(cleanInsight, date, time);
   content = content.replace(
     '## Recent Insights',
     `## Recent Insights\n${entry}`
@@ -75,9 +87,11 @@ function addLearning(insight) {
   
   fs.writeFileSync(LEARNINGS_FILE, content);
   
-  // Also save to dated file
+  // Also save to dated file with category
   const monthFile = path.join(LEARNINGS_DIR, `${date.slice(0, 7)}.md`);
-  const monthEntry = `## ${date} - ${time}\n${insight}\n\n`;
+  const monthEntry = category 
+    ? `## ${date} - ${time} [${category}]\n${cleanInsight}\n\n`
+    : `## ${date} - ${time}\n${cleanInsight}\n\n`;
   
   if (fs.existsSync(monthFile)) {
     fs.appendFileSync(monthFile, monthEntry);

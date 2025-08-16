@@ -351,29 +351,40 @@ Notes:
 }
 
 // Main execution
-switch (command) {
-  case 'save':
-    saveSession(args.join('-'));
-    break;
-  
-  case 'delta':
-    saveDelta();
-    break;
-  
-  case 'list':
-    listSessions();
-    break;
-  
-  case 'archive':
-    archiveSessions(parseInt(args[0]) || 30);
-    break;
-  
-  case 'help':
-    showHelp();
-    break;
-  
-  default:
-    console.log(`Unknown command: ${command}`);
-    console.log('Use "help" to see available commands');
-    process.exit(1);
+if (require.main === module) {
+  switch (command) {
+    case 'save':
+      saveSession(args.join('-'));
+      break;
+    
+    case 'delta':
+      saveDelta();
+      break;
+    
+    case 'list':
+      listSessions();
+      break;
+    
+    case 'archive':
+      archiveSessions(parseInt(args[0]) || 30);
+      break;
+    
+    case 'help':
+      showHelp();
+      break;
+    
+    default:
+      console.log(`Unknown command: ${command}`);
+      console.log('Use "help" to see available commands');
+      process.exit(1);
+  }
+} else {
+  // Export for testing
+  module.exports = {
+    formatDelta,
+    getSessionNumber,
+    saveSession,
+    listSessions,
+    archiveSessions
+  };
 }
