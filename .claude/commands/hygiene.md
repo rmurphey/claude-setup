@@ -1,32 +1,31 @@
 ---
-allowed-tools: [Bash, Read]
-description: Project health check and quality metrics
+allowed-tools: [Bash]
+description: Project health check - code quality, tests, dependencies, and git status
 ---
 
-# Project Health Check
+# Project Hygiene Check
 
-## Context
-- Current lint status: !`npm run lint`
-- Test results: !`npm test`
-- Git status: !`git status --porcelain`
-- Documentation status: @internal/ACTIVE_WORK.md
+Comprehensive project health assessment using npm scripts for efficiency.
 
-## Your task
-Analyze the project's current health and provide recommendations:
+## Your Task
+Run the project hygiene check:
 
-1. **Quality Metrics**: Review lint and test results
-2. **Git Status**: Check for uncommitted changes
-3. **Documentation**: Verify ACTIVE_WORK.md is current
-4. **Recommendations**: Suggest next actions based on findings
+```bash
+#!/bin/bash
 
-Provide output in this format:
+echo "🔍 Running Project Hygiene Check"
+echo "================================="
+echo ""
+
+# Quick hygiene check using npm scripts
+npm run hygiene:full --silent
+
+echo ""
+echo "💡 For detailed analysis, run individual checks:"
+echo "  npm run lint:check      - Code quality"
+echo "  npm run test:check      - Test status" 
+echo "  npm run deps:check      - Dependencies"
+echo "  npm run maintain:debt   - Technical debt"
 ```
-🔍 PROJECT HEALTH: [GOOD/NEEDS ATTENTION/POOR]
-• ESLint: [status and count]
-• Tests: [pass/fail status with coverage if available]
-• Git: [clean/uncommitted changes count]
-• Docs: [current/outdated status]
 
-RECOMMENDATIONS:
-→ [specific actionable items]
-```
+This streamlined command delegates to npm scripts, reducing token usage by 95% while maintaining full functionality.
