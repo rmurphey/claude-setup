@@ -1,10 +1,8 @@
 # session-history
 
-**⚠️ OPTIONAL**: This feature is entirely optional. You do not need to save sessions to use Claude Code effectively.
+Save Claude Code conversation transcripts for historical analysis (optional feature).
 
-> **Note for this repository**: As a living reference, we demonstrate session saving by using it ourselves. You'll find saved sessions in `session-history/` showing real development work. This is to provide examples, not because it's required.
-
-Preserve raw Claude Code conversation transcripts for historical analysis.
+> **Repository note**: This repo saves its development sessions as examples. See `session-history/` for real usage.
 
 ## Usage
 
@@ -26,21 +24,15 @@ Session files are saved in `session-history/YYYY-MM-DD/` with format:
 - `session-NNN-HHMM.txt` for full saves
 - `session-NNN-HHMM-delta.txt` for delta saves
 
-## When to Use (All Optional)
+## When to Use
 
-**Remember: Session saving is entirely optional.** These are suggestions if you choose to use this feature:
+Consider saving sessions:
+- Before context compaction
+- After solving complex problems
+- When discovering interesting patterns
+- Before ending productive sessions
 
-### You Might Save
-- Before context compaction (if you want to preserve the conversation)
-- After solving a complex problem (if you want to reference it later)
-- When discovering interesting patterns (for your own learning)
-- Before ending a long productive session (for your records)
-
-### It's Perfectly Fine To
-- Never save any sessions
-- Only save occasionally when something is particularly valuable
-- Use Claude Code for months without saving a single session
-- Ignore this feature completely
+Or don't - this feature is entirely optional.
 
 ## Options
 
