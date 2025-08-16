@@ -39,6 +39,13 @@
     "maintain:debt": "echo \"TODO: $(grep -r 'TODO' --exclude-dir=node_modules . 2>/dev/null | wc -l) | FIXME: $(grep -r 'FIXME' --exclude-dir=node_modules . 2>/dev/null | wc -l)\"",
     "maintain:summary": "echo \"Files: $(npm run maintain:files --silent) | Debt markers: $(grep -r 'TODO\\|FIXME' --exclude-dir=node_modules . 2>/dev/null | wc -l)\"",
     
+    "// Session Management": "=== Session analysis and retrospectives ===",
+    "retrospective": "node scripts/retrospective.js",
+    "session:save": "node scripts/session-history.js save",
+    "session:delta": "node scripts/session-history.js delta",
+    "session:list": "node scripts/session-history.js list",
+    "session:archive": "node scripts/session-history.js archive",
+    
     "// Utilities": "=== Utility commands ===",
     "files:find": "find . -name",
     "search:code": "grep -r --exclude-dir=node_modules",
