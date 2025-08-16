@@ -22,11 +22,11 @@ const colors = {
   reset: '\x1b[0m'
 };
 
-function detectTestFramework() {
+function detectTestFramework(packageJson) {
   try {
-    if (fs.existsSync('package.json')) {
-      const pkg = JSON.parse(fs.readFileSync('package.json', 'utf8'));
-      const deps = { ...pkg.dependencies, ...pkg.devDependencies };
+    // If packageJson provided (for testing), use it
+    if (packageJson) {
+      const deps = { ...packageJson.dependencies, ...packageJson.devDependencies };
       
       if (deps.jest) return 'jest';
       if (deps.vitest) return 'vitest';
@@ -34,6 +34,14 @@ function detectTestFramework() {
       if (deps.jasmine) return 'jasmine';
       if (deps['@playwright/test']) return 'playwright';
       if (deps.cypress) return 'cypress';
+      
+      return 'unknown';
+    }
+    
+    // Otherwise read from filesystem
+    if (fs.existsSync('package.json')) {
+      const pkg = JSON.parse(fs.readFileSync('package.json', 'utf8'));
+      return detectTestFramework(pkg);
     }
     
     // Python frameworks
@@ -52,8 +60,11 @@ function detectTestFramework() {
   }
 }
 
-function getTestCommand() {
-  const framework = detectTestFramework();
+function getTestCommand(framework) {
+  // If no framework provided, detect it
+  if (!framework) {
+    framework = detectTestFramework();
+  }
   
   switch (framework) {
     case 'jest':
@@ -329,33 +340,46 @@ function showHelp() {
 }
 
 // Main execution
-switch (command) {
-  case 'start':
-  case 'begin':
-    startTDD(feature);
-    break;
-  case 'red':
-    redPhase();
-    break;
-  case 'green':
-    greenPhase();
-    break;
-  case 'refactor':
-    refactorPhase();
-    break;
-  case 'test':
-  case 'run':
-    runTests(options.includes('--watch'));
-    break;
-  case 'cycle':
-  case 'overview':
-    showCycle();
-    break;
-  case 'stats':
-  case 'statistics':
-    showStats();
-    break;
-  case 'help':
-  default:
-    showHelp();
+if (require.main === module) {
+  // CLI execution
+  switch (command) {
+    case 'start':
+    case 'begin':
+      startTDD(feature);
+      break;
+    case 'red':
+      redPhase();
+      break;
+    case 'green':
+      greenPhase();
+      break;
+    case 'refactor':
+      refactorPhase();
+      break;
+    case 'test':
+    case 'run':
+      runTests(options.includes('--watch'));
+      break;
+    case 'cycle':
+    case 'overview':
+      showCycle();
+      break;
+    case 'stats':
+    case 'statistics':
+      showStats();
+      break;
+    case 'help':
+    default:
+      showHelp();
+  }
+} else {
+  // Export for testing
+  module.exports = {
+    detectTestFramework,
+    getTestCommand,
+    startTDD,
+    redPhase,
+    greenPhase,
+    refactorPhase
+  };
 }
