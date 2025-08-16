@@ -8,9 +8,9 @@ description: Push commits with quality checks and branch management
 Safe push workflow with pre-push quality validation, branch management, and remote synchronization.
 
 ## Context
-- Current branch: !`git branch --show-current 2>/dev/null || echo "unknown"`
-- Unpushed commits: !`git rev-list --count @{u}..HEAD 2>/dev/null || echo "0"`
-- Check git status for uncommitted changes
+- Check current branch with 'git branch --show-current'
+- Check unpushed commits with 'git status'
+- Check for uncommitted changes with 'git status'
 - Run 'git fetch' to check remote status
 
 ## Your Task
