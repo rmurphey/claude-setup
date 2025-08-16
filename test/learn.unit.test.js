@@ -30,20 +30,29 @@ describe('learn.js unit tests', () => {
   });
   
   it('should create LEARNINGS.md and directory structure', () => {
-    // 🔴 RED - testing setup functionality
+    // Test in a temp directory
     const learn = require('../scripts/learn');
+    const testDir = path.join(require('os').tmpdir(), 'learn-test-' + Date.now());
+    fs.mkdirSync(testDir, { recursive: true });
+    const cwd = process.cwd();
+    process.chdir(testDir);
     
-    assert.ok(!fs.existsSync('LEARNINGS.md'));
-    assert.ok(!fs.existsSync('.claude/learnings'));
-    
-    learn.ensureSetup();
-    
-    assert.ok(fs.existsSync('LEARNINGS.md'));
-    assert.ok(fs.existsSync('.claude/learnings'));
-    
-    const content = fs.readFileSync('LEARNINGS.md', 'utf8');
-    assert.ok(content.includes('# Project Learnings'));
-    assert.ok(content.includes('## Recent Insights'));
+    try {
+      assert.ok(!fs.existsSync('LEARNINGS.md'));
+      assert.ok(!fs.existsSync('.claude/learnings'));
+      
+      learn.ensureSetup();
+      
+      assert.ok(fs.existsSync('LEARNINGS.md'));
+      assert.ok(fs.existsSync('.claude/learnings'));
+      
+      const content = fs.readFileSync('LEARNINGS.md', 'utf8');
+      assert.ok(content.includes('# Project Learnings'));
+      assert.ok(content.includes('## Recent Insights'));
+    } finally {
+      process.chdir(cwd);
+      fs.rmSync(testDir, { recursive: true, force: true });
+    }
   });
   
   it('should export formatLearningEntry function', () => {
@@ -62,8 +71,4 @@ describe('learn.js unit tests', () => {
   });
 });
 
-// Run setup/teardown
-if (typeof beforeEach === 'function') beforeEach();
-if (typeof afterEach === 'function') {
-  process.on('exit', afterEach);
-}
+// Note: Setup/teardown handled by test runner

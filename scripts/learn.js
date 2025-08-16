@@ -45,6 +45,10 @@ Captured insights, discoveries, and knowledge gained during development.
   }
 }
 
+function formatLearningEntry(insight, date, time) {
+  return `\n### ${date} - ${time}\n${insight}\n`;
+}
+
 function addLearning(insight) {
   if (!insight) {
     console.log('❌ Please provide a learning topic or insight');
@@ -63,7 +67,7 @@ function addLearning(insight) {
   let content = fs.readFileSync(LEARNINGS_FILE, 'utf8');
   
   // Add to Recent Insights section
-  const entry = `\n### ${date} - ${time}\n${insight}\n`;
+  const entry = formatLearningEntry(insight, date, time);
   content = content.replace(
     '## Recent Insights',
     `## Recent Insights\n${entry}`
@@ -255,29 +259,41 @@ function showHelp() {
 }
 
 // Main execution
-switch (command) {
-  case 'add':
-  case 'new':
-  case 'capture':
-    addLearning(args);
-    break;
-  case 'list':
-  case 'show':
-    listLearnings(args);
-    break;
-  case 'search':
-  case 'find':
-    searchLearnings(args);
-    break;
-  case 'review':
-  case 'random':
-    reviewLearnings();
-    break;
-  case 'categories':
-  case 'cats':
-    showCategories();
-    break;
-  case 'help':
-  default:
-    showHelp();
+if (require.main === module) {
+  // CLI execution
+  switch (command) {
+    case 'add':
+    case 'new':
+    case 'capture':
+      addLearning(args);
+      break;
+    case 'list':
+    case 'show':
+      listLearnings(args);
+      break;
+    case 'search':
+    case 'find':
+      searchLearnings(args);
+      break;
+    case 'review':
+    case 'random':
+      reviewLearnings();
+      break;
+    case 'categories':
+    case 'cats':
+      showCategories();
+      break;
+    case 'help':
+    default:
+      showHelp();
+  }
+} else {
+  // Export for testing
+  module.exports = {
+    ensureSetup,
+    formatLearningEntry,
+    addLearning,
+    listLearnings,
+    searchLearnings
+  };
 }
