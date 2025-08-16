@@ -171,20 +171,28 @@ function showHelp() {
 }
 
 // Main execution
-switch (command) {
-  case 'update':
-    updateReadme();
-    break;
-  case 'validate':
-    validateDocs();
-    break;
-  case 'stats':
-    showStats();
-    break;
-  case 'catalog':
-    showCatalog();
-    break;
-  case 'help':
-  default:
-    showHelp();
+if (require.main === module) {
+  // CLI execution
+  switch (command) {
+    case 'update':
+      updateReadme();
+      break;
+    case 'validate':
+      validateDocs();
+      break;
+    case 'stats':
+      showStats();
+      break;
+    case 'catalog':
+      showCatalog();
+      break;
+    case 'help':
+    default:
+      showHelp();
+  }
+} else {
+  // Export for testing
+  module.exports = {
+    countCommands
+  };
 }
