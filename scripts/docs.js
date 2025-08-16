@@ -13,7 +13,7 @@ const command = process.argv[2] || 'all';
 
 function countCommands() {
   try {
-    const commandsDir = path.join(__dirname, '..', '.claude', 'commands');
+    const commandsDir = path.join(process.cwd(), '.claude', 'commands');
     const files = fs.readdirSync(commandsDir).filter(f => f.endsWith('.md'));
     return files.length;
   } catch {
@@ -27,7 +27,7 @@ function updateReadme() {
   const commandCount = countCommands();
   console.log(`  Found ${commandCount} commands in .claude/commands/`);
   
-  const readmePath = path.join(__dirname, '..', 'README.md');
+  const readmePath = path.join(process.cwd(), 'README.md');
   if (fs.existsSync(readmePath)) {
     let content = fs.readFileSync(readmePath, 'utf8');
     
@@ -150,8 +150,8 @@ function showStats() {
 function updateCommandCatalog() {
   console.log('  📖 Updating Command Catalog...');
   
-  const catalogPath = path.join(__dirname, '..', 'docs', 'COMMAND_CATALOG.md');
-  const commandsDir = path.join(__dirname, '..', '.claude', 'commands');
+  const catalogPath = path.join(process.cwd(), 'docs', 'COMMAND_CATALOG.md');
+  const commandsDir = path.join(process.cwd(), '.claude', 'commands');
   const files = fs.readdirSync(commandsDir).filter(f => f.endsWith('.md'));
   
   let catalogContent = `# Command Catalog
@@ -196,7 +196,7 @@ function showCatalog() {
   console.log('');
   console.log('Available Commands:');
   
-  const commandsDir = path.join(__dirname, '..', '.claude', 'commands');
+  const commandsDir = path.join(process.cwd(), '.claude', 'commands');
   const files = fs.readdirSync(commandsDir).filter(f => f.endsWith('.md'));
   
   for (const file of files) {
@@ -221,7 +221,7 @@ function updateAll() {
   const commandCount = countCommands();
   console.log(`  Found ${commandCount} commands in .claude/commands/`);
   
-  const readmePath = path.join(__dirname, '..', 'README.md');
+  const readmePath = path.join(process.cwd(), 'README.md');
   if (fs.existsSync(readmePath)) {
     let content = fs.readFileSync(readmePath, 'utf8');
     
