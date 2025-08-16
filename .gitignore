@@ -32,6 +32,10 @@ coverage/
 .claude/issues/
 .claude/designs/
 
+# Monitoring status
+.monitor-status.json
+.monitor-status-*.json
+
 # OS files
 .DS_Store
 .DS_Store?

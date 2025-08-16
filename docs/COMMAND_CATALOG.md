@@ -62,6 +62,14 @@ Location: `.claude/commands/learn.md`
 
 ---
 
+### /monitor
+
+Monitor GitHub repository for test failures and pull requests
+
+Location: `.claude/commands/monitor.md`
+
+---
+
 ### /next
 
 Get AI-recommended next steps and development priorities
@@ -96,7 +104,7 @@ Location: `.claude/commands/retrospective.md`
 
 ### /tdd
 
-Test-driven development workflow with red-green-refactor cycle
+Your new best friend - TDD workflow that makes Claude amazing
 
 Location: `.claude/commands/tdd.md`
 
@@ -111,4 +119,4 @@ Location: `.claude/commands/todo.md`
 ---
 
 
-## Total Commands: 13
+## Total Commands: 14
