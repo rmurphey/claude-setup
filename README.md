@@ -47,32 +47,32 @@ cp temp-claude/ACTIVE_WORK.md your-project/
 - **`/next`** - AI-recommended next steps ([view command](.claude/commands/next.md))
 
 ### 📋 Planning & Design
-- **`/design`** - Feature planning documentation ([view command](.claude/commands/design.md))
-- **`/estimate`** - Claude usage cost estimation ([view command](.claude/commands/estimate.md))
-- **`/defer`** - Task deferral management ([view command](.claude/commands/defer.md))
-- **`/issue`** - GitHub issue workflow ([view command](.claude/commands/issue.md))
+- **`/design`** - Feature planning documentation (Coming Soon)
+- **`/estimate`** - Claude usage cost estimation (Coming Soon)
+- **`/defer`** - Task deferral management (Coming Soon)
+- **`/issue`** - GitHub issue workflow (Coming Soon)
 
 ### 📚 Documentation & Learning
 - **`/docs`** - Documentation generation ([view command](.claude/commands/docs.md))
 - **`/learn`** - Capture insights ([view command](.claude/commands/learn.md))
-- **`/reflect`** - Session reflection ([view command](.claude/commands/reflect.md))
-- **`/update-docs`** - Auto-update docs ([view command](.claude/commands/update-docs.md))
+- **`/reflect`** - Session reflection (Coming Soon)
+- **`/update-docs`** - Auto-update docs (Coming Soon)
 
 ### 🚀 Release & Quality
 - **`/push`** - Push with quality checks ([view command](.claude/commands/push.md))
-- **`/version-tag`** - Version management ([view command](.claude/commands/version-tag.md))
-- **`/maintainability`** - Code analysis ([view command](.claude/commands/maintainability.md))
+- **`/version-tag`** - Version management (Coming Soon)
+- **`/maintainability`** - Code analysis (Coming Soon)
 - **`/atomic-commit`** - Small commits ([view command](.claude/commands/atomic-commit.md))
 
 ### 🛠️ Development Utilities
-- **`/archive`** - Archive completed work ([view command](.claude/commands/archive.md))
+- **`/archive`** - Archive completed work (Coming Soon)
 - **`/edit-not-create`** - Prefer editing ([view command](.claude/commands/edit-not-create.md))
-- **`/find-working-equivalent`** - Find examples ([view command](.claude/commands/find-working-equivalent.md))
+- **`/find-working-equivalent`** - Find examples (Coming Soon)
 
 ### 🆕 New Commands (2025 Best Practices)
-- **`/tdd`** - Test-driven development workflow (Coming Soon)
+- **`/tdd`** - Test-driven development workflow ([view command](.claude/commands/tdd.md))
 - **`/ai-review`** - Automated PR review (Coming Soon)
-- **`/context-manage`** - Context window optimization (Coming Soon)
+- **`/context-manage`** - Context window optimization ([view command](.claude/commands/context-manage.md))
 - **`/security-scan`** - Security vulnerability check (Coming Soon)
 
 ## 🤖 Claude Code Agents
@@ -426,7 +426,7 @@ We welcome contributions! This repository serves as a reference, so all contribu
 - Provide citations for claims
 - Pass our test suite
 
-See [CONTRIBUTING.md](CONTRIBUTING.md) for detailed guidelines.
+Contributing guidelines coming soon.
 
 ## Version History
 
