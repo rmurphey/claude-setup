@@ -1,10 +1,11 @@
+const { describe, it } = require('node:test');
 /**
  * Unit tests for docs.js functions
  * Following TDD approach: Red-Green-Refactor
  */
 
-const assert = require('assert');
-const path = require('path');
+const assert = require('node:assert');
+const path = require('node:path');
 
 describe('docs.js unit tests', () => {
   
@@ -52,7 +53,7 @@ describe('docs.js unit tests', () => {
   it('should generate command catalog with correct content', () => {
     // 🔴 RED phase - test catalog generation
     const docs = require('../scripts/docs');
-    const fs = require('fs');
+    const fs = require('node:fs');
     const os = require('os');
     
     // Create test environment

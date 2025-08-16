@@ -1,11 +1,12 @@
+const { describe, it } = require('node:test');
 /**
  * Unit tests for GitHub repository monitoring
  * TDD RED phase - all tests should fail initially
  */
 
-const assert = require('assert');
-const fs = require('fs');
-const path = require('path');
+const assert = require('node:assert');
+const fs = require('node:fs');
+const path = require('node:path');
 
 describe('monitor-repo.js', () => {
   

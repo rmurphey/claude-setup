@@ -1,9 +1,10 @@
+const { describe, it } = require('node:test');
 /**
  * Unit tests for context-manage.js functions
  * TDD approach: Red-Green-Refactor
  */
 
-const assert = require('assert');
+const assert = require('node:assert');
 
 describe('context-manage.js unit tests', () => {
   

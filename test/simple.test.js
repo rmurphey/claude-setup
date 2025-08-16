@@ -3,10 +3,11 @@
  * Tests that scripts can run without errors
  */
 
-const assert = require('assert');
-const { execSync } = require('child_process');
-const path = require('path');
-const fs = require('fs');
+const { describe, it } = require('node:test');
+const assert = require('node:assert');
+const { execSync } = require('node:child_process');
+const path = require('node:path');
+const fs = require('node:fs');
 
 describe('Script Smoke Tests', () => {
   

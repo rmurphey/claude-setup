@@ -1,11 +1,12 @@
+const { describe, it } = require('node:test');
 /**
  * Unit tests for documentation example management functions
  * TDD RED phase - all tests should fail initially
  */
 
-const assert = require('assert');
-const path = require('path');
-const fs = require('fs');
+const assert = require('node:assert');
+const path = require('node:path');
+const fs = require('node:fs');
 
 describe('docs.js example management', () => {
   

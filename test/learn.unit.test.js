@@ -1,11 +1,12 @@
+const { describe, it } = require('node:test');
 /**
  * Unit tests for learn.js functions
  * TDD approach: Red-Green-Refactor
  */
 
-const assert = require('assert');
-const fs = require('fs');
-const path = require('path');
+const assert = require('node:assert');
+const fs = require('node:fs');
+const path = require('node:path');
 const { createTempDir, cleanupTempDir } = require('./test-helpers');
 
 describe('learn.js unit tests', () => {
