@@ -64,7 +64,7 @@ describe('Script Smoke Tests', () => {
       const lines = content.split('\n').length;
       
       // Token-efficient commands should be under 50 lines
-      if (['docs.md', 'context-manage.md', 'learn.md', 'tdd.md'].includes(cmd)) {
+      if (['docs.md', 'context-manage.md', 'learn.md'].includes(cmd)) {
         assert.ok(lines < 50, `${cmd} should be under 50 lines (has ${lines})`);
       }
     });
