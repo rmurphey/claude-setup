@@ -62,7 +62,7 @@ Analyze and improve the tone of all documentation to ensure it maintains a profe
 ##### Red Flags (Must Fix)
 - Condescending language ("obviously", "simply", "just", "trivial")
 - Dismissive phrases ("you should know", "as everyone knows")
-- Aggressive tone ("you must", "never do this", "wrong way")
+- Aggressive commands without context ("do this now", "wrong way")
 - Exclusionary language ("real developers", "anyone who knows")
 - Impatient phrasing ("hurry up", "don't waste time")
 
@@ -98,6 +98,7 @@ Different documentation types need different tones:
 - **Goal**: Provide clear information
 - **Tone**: Professional, precise, helpful
 - **Focus**: Accuracy, examples, completeness
+- **Keywords**: Heavy use of MUST/SHOULD/MAY expected
 
 #### Tutorials/Guides
 - **Goal**: Teach and guide
@@ -142,6 +143,48 @@ Identify recurring issues:
 - Missing empathy patterns
 - Jargon clusters
 
+### Phase 6: Specification Keywords Analysis
+
+#### Recognize Technical Specification Keywords
+These keywords convey precise technical requirements and SHOULD NOT be flagged as aggressive:
+
+##### RFC 2119 Keywords (Technical Requirements)
+- **MUST/MUST NOT**: Absolute requirements
+- **SHOULD/SHOULD NOT**: Strong recommendations with valid exceptions
+- **MAY/OPTIONAL**: Truly optional features
+- **REQUIRED/SHALL**: Mandatory behavior
+
+##### Emphasis Keywords (Important Points)
+- **IMPORTANT**: Highlights critical information
+- **CRITICAL**: Indicates high-priority items
+- **MANDATORY**: Non-negotiable requirements
+- **ALWAYS/NEVER**: Invariant rules
+- **WARNING/CAUTION**: Safety or risk indicators
+
+#### Analyze Specification Keyword Usage
+
+##### Check for Proper Usage
+1. **Consistency**
+   - Keywords capitalized uniformly (prefer ALL CAPS)
+   - Used for actual requirements, not casual emphasis
+   - Applied at appropriate requirement levels
+
+2. **Context**
+   - Each MUST/SHOULD has clear rationale
+   - Requirements explain consequences
+   - Optional items marked clearly as MAY
+
+3. **Meaningful Application**
+   - MUST for non-negotiable requirements
+   - SHOULD for best practices with exceptions
+   - MAY for truly optional enhancements
+
+##### Flag Improper Usage
+- Casual use of MUST for preferences
+- Inconsistent capitalization (must vs MUST)
+- Missing context for requirements
+- Overuse diluting importance
+
 ## Tone Transformation Examples
 
 ### Condescending → Helpful
@@ -152,9 +195,14 @@ Identify recurring issues:
 ❌ "Just run the tests, it's simple"
 ✅ "You can run the tests with this command"
 
-### Aggressive → Encouraging
-❌ "Never commit without running tests!"
+### Aggressive → Encouraging (Non-Specification)
+❌ "Never commit without running tests!" (casual command)
 ✅ "Remember to run tests before committing"
+
+### Proper Specification Keyword Usage
+✅ "You MUST run tests before committing to main branch" (technical requirement)
+✅ "Applications SHOULD handle errors gracefully" (best practice)
+✅ "You MAY add custom validators" (optional feature)
 
 ### Technical → Clear
 ❌ "Leverage the abstraction layer for DI"
@@ -190,14 +238,15 @@ Create `.claude/agents/reports/tone-analysis-[date].md`:
 | Professionalism | 88/100 | ✅ Good | ↑ |
 | Empathy | 78/100 | ⚠️ Needs Work | ↑ |
 | Inclusivity | 90/100 | ✅ Excellent | → |
+| Specification Clarity | 95/100 | ✅ Excellent | → |
 
 ## Critical Issues (Red Flags)
 
 ### 1. Condescending Language
 **File**: docs/SETUP.md:45
 **Current**: "Obviously, you must configure this first"
-**Suggested**: "Start by configuring this setting"
-**Impact**: Makes new users feel unwelcome
+**Suggested**: "You MUST configure this setting first" (if requirement) or "Start by configuring this setting" (if guidance)
+**Impact**: "Obviously" is condescending; determine if MUST is appropriate
 **Priority**: High
 
 ### 2. Dismissive Phrasing
@@ -263,9 +312,10 @@ Run with `--fix` flag to apply:
 Based on analysis, recommend adding to style guide:
 
 ### Do's
-- Use "you can" instead of "you must"
+- Use specification keywords (MUST/SHOULD) for requirements
+- Use "you can" for options and possibilities
 - Acknowledge complexity when present
-- Provide context for requirements
+- Provide context for all requirements
 - Celebrate user progress
 
 ### Don'ts
@@ -316,8 +366,9 @@ Based on analysis, recommend adding to style guide:
 1. Never use "obviously" or "clearly"
 2. Avoid "just" when describing actions
 3. Replace "simple/trivial" with "straightforward"
-4. Use "you can" instead of "you must" where appropriate
-5. Include context for requirements
+4. Distinguish specification keywords (MUST/SHOULD) from casual commands
+5. Include context for all requirements
+6. Use specification keywords consistently and meaningfully
 
 ### Context-Specific Rules
 
