@@ -375,6 +375,166 @@ Implement these checks before allowing commits:
 
 ---
 
+## Lessons from Production Sessions
+
+### Real-World Session Management
+
+**Source**: Actual 2.5-hour transformation session (2025-01-16)
+
+Production sessions with Claude Code require different strategies than demo or learning sessions:
+
+#### 1. Directory Discipline
+**Learning**: Always return to repository root after operations
+
+```bash
+# Anti-pattern - Getting lost in subdirectories
+cd .claude/commands/
+# ... operations ...
+# Forget to return, next operations fail
+
+# Best Practice - Always return home
+REPO_ROOT=$(pwd)
+cd .claude/commands/
+# ... operations ...
+cd "$REPO_ROOT"
+```
+
+#### 2. Atomic Commit Discipline
+**Learning**: Plan commits before making changes, not after
+
+```markdown
+# Anti-pattern - Retroactive splitting
+- Make 1000+ line changes
+- Try to split into logical commits
+- Lose context and grouping
+
+# Best Practice - Plan first
+1. Define commit boundaries (<200 lines)
+2. Make focused changes
+3. Commit immediately
+4. Move to next atomic unit
+```
+
+#### 3. Test-As-You-Go Principle
+**Learning**: Test immediately after each implementation
+
+```bash
+# Anti-pattern
+for script in scripts/*; do
+  npm_script_name=$(basename "$script")
+  # Create npm script
+done
+# Test everything at end - cascading failures
+
+# Best Practice
+for script in scripts/*; do
+  npm_script_name=$(basename "$script")
+  # Create npm script
+  npm run "$npm_script_name" --silent || echo "Failed: $npm_script_name"
+done
+```
+
+#### 4. Context Management Strategy
+**Learning**: Proactive context management prevents confusion
+
+| Checkpoint Trigger | Action Required |
+|-------------------|-----------------|
+| 30 minutes elapsed | Save checkpoint, assess progress |
+| 30 interactions | Consider compaction |
+| Major decision made | Document rationale immediately |
+| Error encountered | Capture state before fixing |
+
+#### 5. Real-Time Documentation
+**Learning**: Document decisions as they're made, not retrospectively
+
+```markdown
+# ACTIVE_WORK.md - Update in real-time
+## Decision: Use NPM Script Delegation
+- Time: 14:32
+- Rationale: 87% token reduction measured
+- Tradeoff: Slight indirection vs massive efficiency
+- Result: Implemented across all commands
+```
+
+### Production Patterns That Work
+
+#### 1. Living Reference Architecture
+**Proven**: Repository that uses its own tools validates patterns
+
+Benefits discovered:
+- Immediate feedback on command usability
+- Real-world testing of patterns
+- Credibility through actual use
+- Natural evolution through practice
+
+#### 2. Token Efficiency First
+**Proven**: 87-91% reduction transforms development velocity
+
+Real metrics from session:
+- Before: 264 lines per command (~3000 tokens)
+- After: 30 lines per command (~300 tokens)
+- Impact: 10x more iterations possible
+
+#### 3. Subdirectory Organization
+**Proven**: `.claude/commands/detailed/` pattern scales cleanly
+
+Advantages realized:
+- No namespace pollution
+- Clear variant hierarchy
+- Future-proof structure
+- Easy discovery
+
+### Session Anti-patterns to Avoid
+
+1. **Assumption Cascade**
+   - Making changes based on unverified assumptions
+   - Solution: Verify state before each operation
+
+2. **Context Tunnel Vision**
+   - Losing sight of original goals
+   - Solution: Regular goal alignment checks
+
+3. **Documentation Debt**
+   - "I'll document later" never happens
+   - Solution: Document inline with implementation
+
+4. **Test Skipping**
+   - Moving forward without validation
+   - Solution: Test before marking complete
+
+### Production Session Checklist
+
+Before starting:
+- [ ] Read CLAUDE.md and ACTIVE_WORK.md
+- [ ] Check recent git history
+- [ ] Create session plan with checkpoints
+- [ ] Estimate token budget
+
+During session:
+- [ ] Update todo list continuously
+- [ ] Test after each implementation
+- [ ] Document decisions real-time
+- [ ] Return to root after operations
+- [ ] Checkpoint every 30 minutes
+
+After session:
+- [ ] Save session transcript (optional)
+- [ ] Document learnings
+- [ ] Update metrics
+- [ ] Plan next session
+
+### Session Preservation (Optional)
+
+If you choose to save sessions, consider:
+- **Before context compaction**: Preserve conversation before reset
+- **After major features**: Capture successful implementations
+- **Pattern discoveries**: Save when finding reusable solutions
+- **Every 30-60 minutes**: For long sessions you want to preserve
+
+Remember: Session saving is optional. Use it when it provides value to you.
+
+---
+
 ## Metrics and Validation
 
 ### Tracking Success
