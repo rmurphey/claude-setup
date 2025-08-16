@@ -4,7 +4,6 @@
 This document is self-updating. To regenerate:
 In Claude Code: /docs update best-practices
 Last updated: 2025-01-16
-Git SHA: 9af0fdc7e42e3e0fff960e73cf8520a9c32e7dcb
 -->
 
 ## Table of Contents
@@ -572,5 +571,5 @@ Key metrics to track:
 
 ---
 
-*Last updated: 2025-01-16 (SHA: 9af0fdc7)*
+*Last updated: 2025-01-16*
 *For updates, run `/docs update best-practices` in Claude Code.*
