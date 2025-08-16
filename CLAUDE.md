@@ -1,27 +1,27 @@
 # CLAUDE.md - Project AI Guidelines
 
-## 🚀 Development Method: TDD (It's Actually Amazing with Claude)
+## Development Method: TDD
 
-**MANDATORY: Use Test-Driven Development for all new features**
+**RECOMMENDED: Use Test-Driven Development for new features**
 
-Why? Because TDD transforms Claude from an overeager junior dev into a focused, methodical senior engineer. Seriously.
+TDD helps Claude produce more focused, correct code by clarifying requirements upfront and reducing wildly wrong approaches.
 
-### The Magic of TDD + Claude
-- **Before TDD**: Claude writes 500 lines, 300 are wrong, good luck debugging
-- **With TDD**: Claude writes exactly what's needed, all verified, ship it
+### Benefits of TDD with Claude
+- **Without TDD**: Claude may over-engineer or miss requirements
+- **With TDD**: Claude writes targeted code that meets specific criteria
 
-### Your New Workflow
-1. 🔴 **RED**: Write a failing test (Claude helps define requirements)
-2. 🟢 **GREEN**: Claude writes ONLY enough code to pass
-3. 🔄 **REFACTOR**: Clean up with confidence
-4. 🎉 **COMMIT**: Atomic, working, beautiful
+### TDD Workflow
+1. 🔴 **RED**: Write a failing test to define requirements
+2. 🟢 **GREEN**: Write minimal code to pass the test
+3. 🔄 **REFACTOR**: Improve code with test safety net
+4. ✓ **COMMIT**: Ship working, tested code
 
 ### The TDD Command
 ```bash
-/tdd start "your feature"  # Claude guides you through the entire cycle
+/tdd start "your feature"  # Guides through the TDD cycle
 ```
 
-No exceptions. Every feature. Trust the process.
+Consider TDD especially for complex features or when requirements are unclear.
 
 ## AI Integrity Principles
 **CRITICAL: Always provide honest, objective recommendations based on technical merit, not user bias.**
