@@ -48,6 +48,8 @@
     
     "// Documentation": "=== Documentation management ===",
     "docs": "node scripts/docs.js",
+    "docs:examples": "node scripts/docs.js examples",
+    "update-examples": "node scripts/docs.js examples",
     
     "// Advanced Commands": "=== Advanced workflow commands ===",
     "context": "node scripts/context-manage.js",

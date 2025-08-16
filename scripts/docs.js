@@ -236,6 +236,10 @@ function updateAll() {
   // Update Command Catalog
   const catalogCount = updateCommandCatalog();
   
+  // Update Examples
+  console.log('');
+  updateExamples();
+  
   // Show doc stats
   const docCount = execSync('find docs -name "*.md" 2>/dev/null | wc -l', { encoding: 'utf8' }).trim();
   
@@ -245,6 +249,7 @@ function updateAll() {
   console.log('📊 Summary:');
   console.log(`  • README.md updated (badge: ${commandCount} commands)`);
   console.log(`  • COMMAND_CATALOG.md updated (${catalogCount} commands documented)`);
+  console.log(`  • Commit examples updated in README.md and CLAUDE.md`);
   console.log(`  • Total documentation files: ${docCount}`);
 }
 
@@ -256,12 +261,246 @@ function showHelp() {
   console.log('  /docs           - Update all documentation (default)');
   console.log('  /docs all       - Update all documentation');
   console.log('  /docs readme    - Update only README.md');
+  console.log('  /docs examples  - Update commit examples in docs');
   console.log('  /docs validate  - Check for broken links');
   console.log('  /docs stats     - Show documentation statistics');
   console.log('  /docs catalog   - Show available commands');
   console.log('  /docs help      - Show this help message');
   console.log('');
   console.log('For advanced operations, see .claude/commands/detailed/docs-detailed.md');
+}
+
+/**
+ * Find exemplary commits matching a pattern
+ * @param {string} pattern - Pattern to search for in commit messages
+ * @param {number} limit - Maximum number of commits to return (default 5)
+ * @returns {Array} Array of commit objects with hash and message
+ */
+function findExemplaryCommits(pattern, limit = 5) {
+  try {
+    const output = execSync(
+      `git log --grep="${pattern}" --oneline -${limit} 2>/dev/null || echo ""`,
+      { encoding: 'utf8' }
+    ).trim();
+    
+    if (!output) return [];
+    
+    return output.split('\n').map(line => {
+      const [hash, ...messageParts] = line.split(' ');
+      return {
+        hash,
+        message: messageParts.join(' ')
+      };
+    });
+  } catch (error) {
+    return [];
+  }
+}
+
+/**
+ * Categorize a commit message by its type
+ * @param {string} message - Commit message to categorize
+ * @returns {string} Category of the commit
+ */
+function categorizeCommit(message) {
+  if (message.includes('🔴') || (message.includes('test:') && message.toLowerCase().includes('fail'))) {
+    return 'tdd-red';
+  }
+  if (message.includes('🟢') || (message.includes('feat:') && message.toLowerCase().includes('pass'))) {
+    return 'tdd-green';
+  }
+  if (message.startsWith('feat:')) {
+    return 'feature';
+  }
+  if (message.startsWith('fix:')) {
+    return 'fix';
+  }
+  if (message.startsWith('docs:')) {
+    return 'docs';
+  }
+  if (message.startsWith('refactor:')) {
+    return 'refactor';
+  }
+  if (message.startsWith('test:')) {
+    return 'test';
+  }
+  return 'other';
+}
+
+/**
+ * Format a commit as a markdown link
+ * @param {string} hash - Commit hash
+ * @param {string} message - Commit message
+ * @returns {string} Formatted markdown link
+ */
+function formatCommitReference(hash, message) {
+  const maxLength = 80;
+  let displayMessage = message;
+  
+  if (message.length > maxLength) {
+    displayMessage = message.substring(0, maxLength - 3) + '...';
+  }
+  
+  return `[${displayMessage}](../../commit/${hash})`;
+}
+
+/**
+ * Update a section in markdown content with examples
+ * @param {string} content - Original markdown content
+ * @param {string} sectionName - Name of the section to update
+ * @param {Array} examples - Array of example commits
+ * @returns {string} Updated content
+ */
+function updateExampleSection(content, sectionName, examples) {
+  const sectionHeader = `### ${sectionName}`;
+  const formattedExamples = examples.map(ex => 
+    `- ${formatCommitReference(ex.hash, ex.message)}`
+  ).join('\n');
+  
+  // Check if section exists
+  if (content.includes(sectionHeader)) {
+    // Find section boundaries
+    const startIndex = content.indexOf(sectionHeader);
+    const afterHeader = startIndex + sectionHeader.length;
+    
+    // Find next section (### or ##)
+    let endIndex = content.indexOf('\n###', afterHeader);
+    if (endIndex === -1) {
+      endIndex = content.indexOf('\n##', afterHeader);
+    }
+    if (endIndex === -1) {
+      endIndex = content.length;
+    }
+    
+    // Replace section content
+    return content.substring(0, afterHeader) + 
+           '\n\n' + formattedExamples + '\n' +
+           content.substring(endIndex);
+  } else {
+    // Add new section at the end
+    return content + '\n\n' + sectionHeader + '\n\n' + formattedExamples + '\n';
+  }
+}
+
+/**
+ * Validate if a commit exists in the repository
+ * @param {string} hash - Commit hash to validate
+ * @returns {boolean} True if commit exists, false otherwise
+ */
+function validateCommitExists(hash) {
+  if (!hash) return false;
+  
+  try {
+    execSync(`git rev-parse ${hash} 2>/dev/null`, { encoding: 'utf8' });
+    return true;
+  } catch (error) {
+    return false;
+  }
+}
+
+/**
+ * Update documentation with commit examples
+ * Updates both README.md and CLAUDE.md with relevant commit examples
+ */
+function updateExamples() {
+  console.log('📚 Updating documentation with commit examples...');
+  console.log('');
+  
+  // Define example categories and patterns
+  const categories = [
+    { name: 'TDD Workflow', patterns: ['🔴', '🟢', 'TDD'], limit: 5 },
+    { name: 'Features', patterns: ['feat:'], limit: 5 },
+    { name: 'Fixes', patterns: ['fix:'], limit: 3 },
+    { name: 'Documentation', patterns: ['docs:'], limit: 3 },
+    { name: 'Refactoring', patterns: ['refactor:'], limit: 3 }
+  ];
+  
+  let totalExamples = 0;
+  const allExamples = {};
+  
+  // Collect examples for each category
+  categories.forEach(category => {
+    console.log(`  Searching for ${category.name} examples...`);
+    const examples = [];
+    
+    category.patterns.forEach(pattern => {
+      const commits = findExemplaryCommits(pattern, category.limit);
+      commits.forEach(commit => {
+        // Avoid duplicates
+        if (!examples.find(ex => ex.hash === commit.hash)) {
+          examples.push(commit);
+        }
+      });
+    });
+    
+    // Take only the limit amount
+    allExamples[category.name] = examples.slice(0, category.limit);
+    totalExamples += allExamples[category.name].length;
+    console.log(`    Found ${allExamples[category.name].length} examples`);
+  });
+  
+  // Update README.md
+  const readmePath = path.join(process.cwd(), 'README.md');
+  if (fs.existsSync(readmePath)) {
+    console.log('');
+    console.log('  Updating README.md...');
+    let readmeContent = fs.readFileSync(readmePath, 'utf8');
+    
+    // Create examples section content
+    let examplesSection = '### Living Examples from This Repository\n\n';
+    
+    Object.entries(allExamples).forEach(([category, examples]) => {
+      if (examples.length > 0) {
+        examplesSection += `#### ${category}\n`;
+        examples.forEach(ex => {
+          examplesSection += `- ${formatCommitReference(ex.hash, ex.message)}\n`;
+        });
+        examplesSection += '\n';
+      }
+    });
+    
+    // Update or add the section
+    readmeContent = updateExampleSection(readmeContent, 'Living Examples from This Repository', 
+      Object.values(allExamples).flat());
+    
+    fs.writeFileSync(readmePath, readmeContent);
+    console.log('    ✓ Updated README.md with examples');
+  }
+  
+  // Update CLAUDE.md
+  const claudePath = path.join(process.cwd(), 'CLAUDE.md');
+  if (fs.existsSync(claudePath)) {
+    console.log('  Updating CLAUDE.md...');
+    let claudeContent = fs.readFileSync(claudePath, 'utf8');
+    
+    // Only add TDD examples to CLAUDE.md
+    const tddExamples = allExamples['TDD Workflow'] || [];
+    if (tddExamples.length > 0) {
+      claudeContent = updateExampleSection(claudeContent, 'TDD Examples', tddExamples);
+      fs.writeFileSync(claudePath, claudeContent);
+      console.log('    ✓ Updated CLAUDE.md with TDD examples');
+    }
+  }
+  
+  console.log('');
+  console.log(`✅ Updated documentation with ${totalExamples} commit examples`);
+  
+  // Validate all examples still exist
+  console.log('');
+  console.log('  Validating commit references...');
+  let invalidCount = 0;
+  Object.values(allExamples).flat().forEach(ex => {
+    if (!validateCommitExists(ex.hash)) {
+      console.log(`    ⚠️  Invalid commit: ${ex.hash}`);
+      invalidCount++;
+    }
+  });
+  
+  if (invalidCount === 0) {
+    console.log('    ✓ All commit references are valid');
+  } else {
+    console.log(`    ⚠️  Found ${invalidCount} invalid references`);
+  }
 }
 
 // Main execution
@@ -274,6 +513,9 @@ if (require.main === module) {
       break;
     case 'readme':
       updateReadme();
+      break;
+    case 'examples':
+      updateExamples();
       break;
     case 'validate':
       validateDocs();
@@ -296,6 +538,12 @@ if (require.main === module) {
     countCommands,
     findBrokenLinks,
     updateAll,
-    updateCommandCatalog
+    updateCommandCatalog,
+    findExemplaryCommits,
+    categorizeCommit,
+    formatCommitReference,
+    updateExampleSection,
+    validateCommitExists,
+    updateExamples
   };
 }
