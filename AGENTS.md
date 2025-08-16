@@ -116,6 +116,11 @@ Is this something you do routinely?
 **What it does:** Audits all documentation for completeness and consistency
 **Example situation:** "I want to make sure my project documentation is professional"
 
+### `documentation-tone`
+**When to use:** You want to ensure friendly, professional tone across all docs
+**What it does:** Analyzes documentation for tone issues, detects condescending language, and suggests improvements
+**Example situation:** "Make sure our documentation is welcoming and not condescending"
+
 ### `command-optimizer`
 **When to use:** You want to make your commands more efficient
 **What it does:** Finds token-saving and performance optimization opportunities
