@@ -37,18 +37,21 @@ Analyze and optimize command implementations to maximize token efficiency, impro
    - Repeated operations across multiple commands
    - Complex operations suitable for script extraction
    - Token-heavy commands with simple core functionality
+   - **EXCLUDE**: `-explain` educational variants (preserve for teaching)
 
 2. **Code Consolidation Opportunities**
    - Shared validation logic
    - Common error handling patterns
    - Repeated file operations
    - Similar workflow structures
+   - **PRESERVE**: Educational commands showing direct implementation
 
 3. **Template Standardization**
    - Commands not following current best practices
    - Inconsistent frontmatter usage
    - Variable instruction formatting
    - Missing optimization patterns
+   - **EXCEPTION**: `-explain` commands may use different patterns for education
 
 ### Phase 3: package.json Integration Analysis
 1. **Existing Script Utilization**
@@ -94,6 +97,26 @@ Analyze and optimize command implementations to maximize token efficiency, impro
    - Confirm execution time benefits
    - Validate user experience improvements
    - Test integration with existing workflows
+
+## Educational Command Preservation
+
+### Commands to NEVER Optimize
+1. **`-explain` Variants**
+   - Purpose: Show direct implementation for learning
+   - Value: Teach Claude's problem-solving approach
+   - Example: `/docs-explain` shows both direct and delegated approaches
+   
+2. **Educational Metadata**
+   - Commands with `approach: direct-implementation`
+   - Commands with `best-for: Learning patterns`
+   - Commands explicitly marked as educational
+
+### Preservation Rules
+- **NEVER** convert `-explain` commands to use scripts
+- **MAINTAIN** verbose explanations in educational commands
+- **PRESERVE** step-by-step demonstrations
+- **KEEP** token cost comparisons to show tradeoffs
+- **DOCUMENT** why certain commands remain "inefficient"
 
 ## Optimization Patterns
 
@@ -168,6 +191,17 @@ Create `.claude/agents/reports/command-optimization-[date].md`:
    - [current inefficient code]
    + npm run efficient-script --silent
    ```
+
+## Educational Commands (DO NOT OPTIMIZE)
+
+### Preserved for Teaching Value
+1. **Command**: /docs-explain
+   **Reason**: Shows both approaches for learning
+   **Educational value**: Demonstrates tradeoffs
+   
+2. **Command**: /[any]-explain variants
+   **Reason**: Direct implementation teaches patterns
+   **Educational value**: Shows Claude's problem-solving
 
 ### Performance Improvements
 1. **Parallel Execution Opportunity**
