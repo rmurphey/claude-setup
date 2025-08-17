@@ -7,6 +7,8 @@ description: Save and manage Claude Code conversation transcripts for analysis
 
 Save Claude Code conversation transcripts for historical analysis (optional feature).
 
+**IMPORTANT**: If adding dates to any files, always use `date "+%Y-%m-%d"` to get the current date. Never guess or assume dates.
+
 > **Repository note**: This repo saves its development sessions as examples. See `session-history/` for real usage.
 
 ## Usage

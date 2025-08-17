@@ -10,6 +10,8 @@ Manage tasks efficiently using ACTIVE_WORK.md.
 ## Your Task
 Handle todo operations:
 
+**IMPORTANT**: If adding dates, always use `date "+%Y-%m-%d"` to get the current date. Never guess or assume dates.
+
 ```bash
 #!/bin/bash
 

@@ -11,6 +11,8 @@ Archive completed designs, implementations, and development phases while capturi
 ## Behavior
 When `/archive` is executed, perform the following systematic process:
 
+**IMPORTANT**: Always use `date "+%Y-%m-%d"` to get the current date for timestamps. Never guess or assume dates.
+
 ### 1. Analyze Completed Work
 - Review `ACTIVE_WORK.md` to identify completed phases or major achievements
 - Identify designs in `designs/` directory that have been fully implemented
