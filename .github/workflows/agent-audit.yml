@@ -1,0 +1,118 @@
+name: Agent Audit with Claude Code
+
+on:
+  workflow_dispatch:
+  # schedule:
+  #   - cron: '0 0 * * 0'  # Weekly on Sundays - uncomment when ready
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0  # Full history for complete analysis
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '22'
+        cache: 'npm'
+    
+    - name: Install dependencies
+      run: npm ci
+    
+    - name: Install Claude Code CLI
+      run: npm install -g @anthropic-ai/claude-code
+    
+    - name: Create reports directory
+      run: mkdir -p reports
+    
+    - name: Run Agent Auditor
+      env:
+        ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+      run: |
+        echo "🤖 Running Agent Audit with Claude Code..."
+        
+        # Run the agent auditor using Claude Code CLI
+        # The CLI reads the API key from the environment variable
+        claude -p "$(cat .claude/agents/agent-auditor.md)" \
+          --max-tokens 8000 \
+          > reports/agent-audit-$(date +%Y%m%d).md
+        
+        echo "✅ Audit complete"
+    
+    - name: Check for Critical Issues
+      id: check
+      run: |
+        REPORT_FILE=$(ls reports/agent-audit-*.md | head -1)
+        if grep -q "❌" "$REPORT_FILE"; then
+          echo "has_critical=true" >> $GITHUB_OUTPUT
+          echo "⚠️ Critical issues found in audit"
+        else
+          echo "has_critical=false" >> $GITHUB_OUTPUT
+          echo "✅ No critical issues found"
+        fi
+        
+        if grep -q "⚠️" "$REPORT_FILE"; then
+          echo "has_warnings=true" >> $GITHUB_OUTPUT
+        else
+          echo "has_warnings=false" >> $GITHUB_OUTPUT
+        fi
+    
+    - name: Upload Audit Report
+      uses: actions/upload-artifact@v4
+      with:
+        name: agent-audit-${{ github.run_number }}
+        path: reports/agent-audit-*.md
+    
+    - name: Create Issue if Critical Issues Found
+      if: steps.check.outputs.has_critical == 'true' && github.event_name == 'schedule'
+      uses: actions/github-script@v7
+      with:
+        script: |
+          const fs = require('fs');
+          const glob = require('glob');
+          
+          // Find the report file
+          const reportFiles = glob.sync('reports/agent-audit-*.md');
+          if (reportFiles.length === 0) {
+            console.log('No report file found');
+            return;
+          }
+          
+          const report = fs.readFileSync(reportFiles[0], 'utf8');
+          
+          // Extract critical issues section
+          const criticalMatch = report.match(/## Critical Issues[\s\S]*?(?=##|$)/);
+          const criticalSection = criticalMatch ? criticalMatch[0] : 'See full report';
+          
+          await github.rest.issues.create({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            title: '🚨 Agent Audit: Critical Issues Found',
+            body: `The weekly agent audit found critical issues that need attention:\n\n${criticalSection}\n\n[View full report](https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId})`,
+            labels: ['agents', 'maintenance', 'automated', 'critical']
+          });
+    
+    - name: Add Summary to GitHub Actions
+      if: always()
+      run: |
+        REPORT_FILE=$(ls reports/agent-audit-*.md | head -1)
+        echo "# 🤖 Agent Audit Summary" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        
+        # Extract summary section from report
+        if [ -f "$REPORT_FILE" ]; then
+          # Get the first 50 lines or until the first ## after Summary
+          sed -n '/## Summary/,/^##[^#]/p' "$REPORT_FILE" | head -50 >> $GITHUB_STEP_SUMMARY
+        else
+          echo "No report generated" >> $GITHUB_STEP_SUMMARY
+        fi
+        
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "---" >> $GITHUB_STEP_SUMMARY
+        echo "Critical Issues: ${{ steps.check.outputs.has_critical || 'unknown' }}" >> $GITHUB_STEP_SUMMARY
+        echo "Warnings: ${{ steps.check.outputs.has_warnings || 'unknown' }}" >> $GITHUB_STEP_SUMMARY
