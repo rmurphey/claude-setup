@@ -1,0 +1,15 @@
+{
+  "watchTestsOnly": false,
+  "notifications": {
+    "enabled": true,
+    "sound": false,
+    "desktop": false
+  },
+  "alertThresholds": {
+    "failureCount": 1,
+    "consecutiveFailures": 3
+  },
+  "watchedWorkflows": [],
+  "checkInterval": 300000,
+  "comment": "Monitor configuration - customize as needed"
+}
