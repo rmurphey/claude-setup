@@ -3,7 +3,7 @@
 Complete list of all available Claude Code commands organized by category.
 
 Last updated: 2025-08-16  
-Total Commands: 37
+Total Commands: 33
 
 ## Core Workflow Commands (6)
 
@@ -107,24 +107,6 @@ Location: `.claude/commands/detailed/push-detailed.md`
 Task management and tracking system with ACTIVE_WORK.md integration (detailed version)  
 Location: `.claude/commands/detailed/todo-detailed.md`
 
-## Recovery Commands (4)
-
-### /recovery-assess
-Comprehensive codebase health assessment  
-Location: `.claude/commands/recovery/recovery-assess.md`
-
-### /recovery-plan
-Generate prioritized improvement roadmap  
-Location: `.claude/commands/recovery/recovery-plan.md`
-
-### /recovery-execute
-Execute automated recovery improvements safely  
-Location: `.claude/commands/recovery/recovery-execute.md`
-
-### /find-working-equivalent
-Comparison-driven debugging - find similar working code for efficient debugging  
-Location: `.claude/commands/recovery/find-working-equivalent.md`
-
 ## Maintenance Commands (8)
 
 ### /archive
@@ -180,13 +162,12 @@ Location: `.claude/commands/edit-not-create.md`
 | Planning | 6 | Planning and ideation |
 | Reflection | 3 | Session analysis |
 | Detailed Variants | 5 | Extended versions |
-| Recovery | 4 | Codebase recovery |
 | Maintenance | 8 | Repository maintenance |
 | Special Purpose | 2 | Specific workflows |
 
 ## Notes
 
-- Commands with missing descriptions have been identified for updating
+- Recovery commands have been removed (4 commands deleted)
 - Some commands overlap in functionality (will be consolidated)
-- Recovery commands are scheduled for removal
 - Detailed variants will be replaced with flags
+- Target: 23 commands after consolidation
