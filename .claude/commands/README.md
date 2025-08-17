@@ -4,15 +4,14 @@
 
 Commands are organized by frequency of use and purpose:
 
-### Root Level - Core Workflow (12 commands)
+### Root Level - Core Workflow (11 commands)
 Always-useful commands for daily development:
 - `atomic-commit` - Enforce atomic commit discipline
 - `commit` - Git commit with quality checks
-- `context-manage` - Manage Claude context window
 - `docs` - Documentation maintenance
-- `edit-not-create` - Enforce edit-first principle
 - `hygiene` - Code quality checks
 - `learn` - Capture insights and learnings
+- `monitor` - GitHub repository monitoring
 - `next` - Get workflow guidance
 - `push` - Git push with validations
 - `retrospective` - Session analysis

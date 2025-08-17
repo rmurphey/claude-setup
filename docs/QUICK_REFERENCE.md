@@ -46,8 +46,7 @@
 ### 🛠️ Development Utilities
 ```bash
 /archive              # Archive completed work
-/edit-not-create      # Prefer editing existing files
-/find-working-equivalent "pattern"  # Find similar code
+/monitor              # GitHub repository monitoring
 ```
 
 ## Common Workflows
