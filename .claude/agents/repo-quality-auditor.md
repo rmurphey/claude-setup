@@ -2,6 +2,7 @@
 agent-type: general-purpose
 allowed-tools: [Read, Glob, Grep, LS, Write]
 description: Comprehensive repository audit for completeness, conflicts, and utility assessment
+last-updated: 2025-08-17
 ---
 
 # Repository Quality Auditor Agent
@@ -93,8 +94,8 @@ QUESTIONABLE UTILITY:
 1. Four separate recovery commands - recommend complete removal
 2. Detailed variants - unclear when to use vs regular
 3. Multiple reflection mechanisms - /reflect, /retrospective, /learn
-4. Task/idea management overlap - /todo, /idea, /defer all write to ACTIVE_WORK.md
-5. Overlapping planning commands - /idea, /ideation, /design
+4. Task management in /todo
+5. Multiple reflection mechanisms
 6. Session management spread across multiple tools
 7. Multiple commands writing to same file (ACTIVE_WORK.md)
 ```
@@ -146,7 +147,7 @@ RECOMMENDED ACTIONS:
 1. Remove all recovery commands entirely (not needed)
 2. Merge /reflect and /retrospective into unified reflection system
 3. Consolidate /hygiene variants into single command with flags
-4. Enhance /todo to handle ideas and deferrals (merge /idea, /defer)
+4. Keep /todo focused on task management
 5. Combine detailed variants using --detailed flag
 6. Target: 23 commands (from 37)
 ```
@@ -205,11 +206,10 @@ Create `.claude/agents/reports/repo-quality-audit-[date].md`:
    - `/learn`: Insight capture
    - **Recommendation**: Consolidate into single reflection system
 
-2. **Planning Commands**
-   - `/idea`: Quick idea capture
-   - `/ideation`: AI-powered ideation
-   - `/design`: Feature planning
-   - **Recommendation**: Create unified planning workflow
+2. **Learning Commands**
+   - `/learn`: Insight capture
+   - `/reflect`: Session reflection
+   - **Recommendation**: Keep both for different purposes
 
 ### Contradictory Guidance
 1. **Tone Requirements**
@@ -237,7 +237,7 @@ Create `.claude/agents/reports/repo-quality-audit-[date].md`:
 - /commit, /hygiene, /todo, /learn, /tdd
 
 **Medium Value** (Simplify):
-- /reflect, /design, /monitor
+- /reflect, /monitor
 
 **Low Value** (Consider removing):
 - Recovery commands (overly complex)

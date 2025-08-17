@@ -2,6 +2,7 @@
 agent-type: general-purpose
 allowed-tools: [Read, Glob, Write, Bash]
 description: Creates custom command sequences and workflows for complex development tasks
+last-updated: 2025-08-17
 ---
 
 # Workflow Composer Agent
@@ -49,14 +50,14 @@ Generate optimized command sequences and custom workflows based on development g
 ## Workflow Categories
 
 ### Development Workflows
-- **Feature Development**: /design → /estimate → /todo → implementation cycle → /commit → /push
-- **Bug Investigation**: /hygiene → /find-working-equivalent → analysis → /atomic-commit
-- **Refactoring**: /maintainability → planning → incremental changes → /commit cycles
-- **Release Preparation**: /hygiene → /docs → /version-tag → /push
+- **Feature Development**: /todo → /tdd → implementation cycle → /commit → /push
+- **Bug Investigation**: /hygiene → analysis → /atomic-commit
+- **Refactoring**: /hygiene → planning → incremental changes → /atomic-commit cycles
+- **Release Preparation**: /hygiene → /docs → /push
 
 ### Maintenance Workflows
-- **Repository Cleanup**: /archive → /maintainability → cleanup actions
-- **Documentation Update**: /docs → /update-docs → validation → /commit
+- **Repository Cleanup**: /hygiene → cleanup actions → /commit
+- **Documentation Update**: /docs → validation → /commit
 - **Quality Assurance**: /hygiene → issue resolution → /commit → /push
 
 ### Learning Workflows

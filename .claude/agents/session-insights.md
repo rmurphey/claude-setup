@@ -2,6 +2,7 @@
 agent-type: general-purpose
 allowed-tools: [Read, Glob, Bash, Write]
 description: Analyzes session history to extract patterns, learnings, and development insights
+last-updated: 2025-08-17
 ---
 
 # Session Insights Agent
@@ -73,12 +74,12 @@ Create `.claude/agents/reports/session-insights-[date].md`:
 ## Workflow Patterns
 ### Most Common Workflows
 1. **Feature Development Pattern**
-   - /hygiene → /design → /todo → /commit
+   - /hygiene → /todo → /tdd → /commit
    - Used in X% of sessions
    - Average completion time: Y hours
 
 2. **Bug Fix Pattern**
-   - /hygiene → /find-working-equivalent → /atomic-commit
+   - /hygiene → /atomic-commit
    - Used in X% of sessions
 
 ## Development Insights
