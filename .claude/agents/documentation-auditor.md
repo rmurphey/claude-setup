@@ -1,13 +1,14 @@
 ---
 agent-type: general-purpose
 allowed-tools: [Read, Glob, Grep, Write]
-description: Audits documentation completeness and consistency across the command library
-last-updated: 2025-08-17---
+description: Audits documentation completeness, consistency, and tone across the command library
+last-updated: 2025-08-17
+---
 
 # Documentation Auditor Agent
 
 ## Objective
-Perform comprehensive audit of documentation quality, completeness, and consistency across commands, agents, and project documentation to ensure professional standards.
+Perform comprehensive audit of documentation quality, completeness, consistency, and tone across commands, agents, and project documentation to ensure professional standards and a welcoming developer experience.
 
 ## Task Instructions
 
@@ -70,7 +71,27 @@ For each command file, verify:
    - Troubleshooting information is adequate
    - Learning path is clear
 
-### Phase 5: Standards Compliance
+### Phase 5: Tone and Voice Analysis
+1. **Tone Assessment**
+   - Professional but not stiff
+   - Friendly but not unprofessional
+   - Helpful but not condescending
+   - Clear but not oversimplified
+   - Encouraging but not patronizing
+   - Inclusive but not verbose
+2. **Problem Patterns**
+   - Words to avoid: "obviously", "clearly", "just", "simply", "trivial"
+   - Assumptions about skill level
+   - Overly complex jargon
+   - Dismissive language
+   - Passive voice overuse
+3. **Positive Examples**
+   - Active, direct language
+   - Supportive guidance
+   - Context-aware explanations
+   - Respectful assumptions
+
+### Phase 6: Standards Compliance
 1. **Format Consistency**
    - Heading hierarchy is consistent
    - Code block formatting is uniform
@@ -192,11 +213,29 @@ Create `.claude/agents/reports/documentation-audit-[date].md`:
 3. Improve cross-references
 4. Create quick reference guide
 
+## Tone and Voice Assessment
+
+### Files with Excellent Tone
+1. **[file.md]**: Professional yet approachable
+2. **[file.md]**: Clear guidance without condescension
+
+### Tone Issues to Address
+1. **[file.md]** - Line X: Uses "obviously" - suggest removing
+2. **[file.md]** - Line Y: Overly complex jargon - simplify
+3. **[file.md]** - Line Z: Dismissive tone - rewrite supportively
+
+### Tone Improvement Recommendations
+- Replace "just do X" with "you can do X"
+- Change "simply run" to "run"
+- Avoid "trivial" when describing tasks
+- Use active voice consistently
+
 ## Quality Metrics
 - Average examples per command: X
 - Commands with complete documentation: Y%
 - Cross-reference accuracy: Z%
 - Format consistency score: W%
+- Tone quality score: V%
 
 ## Automated Checks Recommendations
 1. Create linter for frontmatter validation
@@ -222,7 +261,9 @@ Create `.claude/agents/reports/documentation-audit-[date].md`:
 - Clear prioritization of improvements
 - Actionable recommendations with specific steps
 - Quality metrics for tracking progress
+- Tone and voice consistency assessment
 - Process recommendations for ongoing maintenance
+- Welcoming developer experience validation
 
 ## Error Handling
 - Skip unreadable files but log them
