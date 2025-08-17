@@ -49,7 +49,7 @@ jobs:
     - name: Check command count
       run: |
         echo "📊 Verifying command count..."
-        ACTUAL_COUNT=$(ls .claude/commands/*.md 2>/dev/null | wc -l || echo 0)
+        ACTUAL_COUNT=$(find .claude/commands -name "*.md" -not -name "README.md" 2>/dev/null | wc -l || echo 0)
         README_COUNT=$(grep -oP 'commands-\K\d+' README.md || echo 0)
         echo "Actual commands: $ACTUAL_COUNT"
         echo "README badge: $README_COUNT"

@@ -3,9 +3,9 @@
 Complete list of all available Claude Code commands organized by category.
 
 Last updated: 2025-08-17  
-Total Commands: 18
+Total Commands: 17
 
-## Core Workflow Commands (14)
+## Core Workflow Commands (13)
 
 ### /atomic-commit
 Enforce atomic commit discipline for 1-3 file changes  
@@ -83,6 +83,6 @@ Location: `.claude/commands/maintenance/update-docs.md`
 
 | Category | Count | Purpose |
 |----------|-------|---------|
-| Core Workflow | 14 | Daily development tasks |
+| Core Workflow | 13 | Daily development tasks |
 | Maintenance | 4 | Repository maintenance |
 | Planning | 0 | Planning and ideation |
