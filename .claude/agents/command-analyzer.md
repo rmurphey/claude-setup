@@ -1,13 +1,14 @@
 ---
 agent-type: general-purpose
-allowed-tools: [Read, Grep, Glob, Bash, Write]
-description: Analyzes command usage patterns in the repository and provides optimization insights
-last-updated: 2025-08-17---
+allowed-tools: [Read, Grep, Glob, Bash, Write, Edit]
+description: Analyzes command usage patterns and optimizes for token efficiency and performance
+last-updated: 2025-08-17
+---
 
-# Command Analyzer Agent
+# Command Analyzer & Optimizer Agent
 
 ## Objective
-Perform comprehensive analysis of the command library in `.claude/commands/` to identify usage patterns, redundancies, and optimization opportunities.
+Analyze and optimize command implementations to identify usage patterns, maximize token efficiency, improve performance, and maintain consistency with established patterns.
 
 ## Task Instructions
 
@@ -37,17 +38,36 @@ Perform comprehensive analysis of the command library in `.claude/commands/` to 
 2. Identify commands that could delegate more to npm scripts
 3. Find verbose commands that could be simplified
 4. Suggest token-saving optimizations
+5. Performance Metrics:
+   - Analyze command execution time patterns
+   - Identify bottlenecks in command workflows
+   - Map complexity to actual usage frequency
 
-### Phase 5: Recommendations Report
+### Phase 5: Optimization Implementation
+1. NPM Script Delegation:
+   - Create new npm scripts for complex operations
+   - Replace verbose implementations with script calls
+   - Standardize error handling through scripts
+2. Code Simplification:
+   - Remove redundant instructions
+   - Consolidate duplicate logic
+   - Improve clarity while reducing tokens
+3. Pattern Standardization:
+   - Align all commands with best practices
+   - Ensure consistent error handling
+   - Standardize output formats
+
+### Phase 6: Recommendations Report
 Generate a comprehensive report including:
 - Command usage statistics
 - Top 5 most used commands
 - Unused or rarely used commands
 - Command combination patterns
 - Redundancy analysis
-- Token optimization opportunities
+- Token optimization opportunities and implementations
 - Suggested new commands based on usage patterns
 - Commands that could be consolidated
+- Performance improvements achieved
 
 ## Output Format
 
@@ -73,11 +93,18 @@ Create or update `.claude/agents/reports/command-analysis-[date].md` with:
 ## Optimization Opportunities
 ### Token Reduction
 - /command-name: Delegate X to npm script (save ~Y tokens)
+  - Before: X tokens
+  - After: Y tokens
+  - Reduction: Z%
 - ...
 
 ### Command Consolidation
 - Merge /command1 and /command2 into /unified-command
 - ...
+
+### Performance Improvements
+- /command-name: Reduced execution time by X%
+- /command-name: Eliminated redundant operations
 
 ## Workflow Patterns
 ### Common Sequences
@@ -88,13 +115,29 @@ Create or update `.claude/agents/reports/command-analysis-[date].md` with:
 1. High Priority: [specific action]
 2. Medium Priority: [specific action]
 3. Low Priority: [specific action]
+
+## Optimizations Applied
+### Commands Optimized
+1. /command-name: [optimization summary]
+2. ...
+
+### NPM Scripts Created
+- `npm run script-name`: [purpose]
+- ...
+
+### Token Savings Summary
+- Total tokens before: X
+- Total tokens after: Y
+- Overall reduction: Z%
 ```
 
 ## Success Criteria
 - Complete inventory of all commands
 - Accurate usage statistics from repository analysis
 - At least 3 actionable optimization recommendations
-- Clear documentation of findings
+- Achieve 20%+ token reduction for high-usage commands
+- Implement performance improvements where possible
+- Clear documentation of findings and optimizations
 - Executable suggestions for improvements
 
 ## Error Handling
