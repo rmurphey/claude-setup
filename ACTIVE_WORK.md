@@ -1,21 +1,9 @@
 # Active Work - Claude Setup Repository
 
-## Current Sprint
-- [x] Create command testing suite - COMPLETED: Determined scripts aren't worth unit testing
-- [ ] Create an agent that recommends opportunities to add tests
-- [ ] Create a VERY SIMPLE script that can be used via npx to add these commands to your project
-
-### Testing Scripts Learning (2025-08-16)
-- ✅ Explored testing scripts vs utilities
-- **Learning**: Scripts are entry points, not worth unit testing
-- **Decision**: Test utility functions, not script orchestration
-- Scripts change frequently and are mostly glue code
-- Integration tests > unit tests for scripts
-- Removed retrospective.js tests and reverted changes
+## Potential Next Tasks
 
 ## Ideas & Planning  
 - ⏸️ VS Code extension integration
-
 
 ## Deferred/Backlog
 
