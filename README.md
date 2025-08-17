@@ -106,7 +106,6 @@ Each command in this repository includes metadata showing its approach and typic
 
 ### 🚀 Release & Quality
 - **`/push`** - Push with quality checks ([view command](.claude/commands/push.md))
-- **`/atomic-commit`** - Small commits ([view command](.claude/commands/atomic-commit.md))
 - **`/tdd`** - Test-driven development workflow ([view command](.claude/commands/tdd.md))
 
 ## 🤖 Claude Code Agents
@@ -262,8 +261,8 @@ git commit -m "feat: add Claude Code command templates"
 # Shows current task list
 
 # During work: Atomic commits
-/atomic-commit
-# Enforces small, focused commits
+/commit
+# Enforces small, focused commits (1-3 files)
 
 # Capture insights
 /learn "Using middleware for auth is cleaner than decorators"
@@ -312,7 +311,7 @@ cp .claude/commands/hygiene.md .claude/commands/deploy.md
 `/docs`, `/learn`, `/retrospective`
 
 ### 🔧 Development Workflow
-`/commit`, `/push`, `/atomic-commit`, `/tdd`
+`/commit`, `/push`, `/tdd`
 
 ## Understanding Command Templates
 
