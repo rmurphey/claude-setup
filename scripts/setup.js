@@ -7,6 +7,25 @@ const { execSync } = require('child_process');
 console.log('🤖 Claude Code Commands Setup');
 console.log('==============================');
 
+// Safety check: Don't run setup in the claude-setup repo itself
+const packageJsonPath = path.join(process.cwd(), 'package.json');
+if (fs.existsSync(packageJsonPath)) {
+  const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf8'));
+  if (packageJson.name === 'claude-setup') {
+    console.log('');
+    console.log('⚠️  WARNING: Cannot run setup in the claude-setup repository itself!');
+    console.log('');
+    console.log('This script copies commands FROM this repo TO other projects.');
+    console.log('Running it here would create duplicate directories.');
+    console.log('');
+    console.log('To use these commands in another project:');
+    console.log('1. Navigate to your project directory');
+    console.log('2. Run: npx claude-setup');
+    console.log('');
+    process.exit(1);
+  }
+}
+
 // Check if we're in a git repository
 try {
   execSync('git status', { stdio: 'ignore' });
