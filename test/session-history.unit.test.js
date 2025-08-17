@@ -14,7 +14,7 @@ describe('session-history.js unit tests', () => {
     assert.strictEqual(typeof sessionHistory.saveSession, 'function');
   });
   
-  it('should save session to file', () => {
+  it('should save session to file with git data', () => {
     const sessionHistory = require('../scripts/session-history');
     const testDir = path.join(require('os').tmpdir(), 'session-save-' + Date.now());
     fs.mkdirSync(testDir, { recursive: true });
@@ -22,11 +22,20 @@ describe('session-history.js unit tests', () => {
     process.chdir(testDir);
     
     try {
+      // Initialize a test git repo
+      require('child_process').execSync('git init', { stdio: 'ignore' });
+      require('child_process').execSync('git config user.email "test@test.com"', { stdio: 'ignore' });
+      require('child_process').execSync('git config user.name "Test User"', { stdio: 'ignore' });
+      
       const sessionFile = sessionHistory.saveSession('Test session content');
       assert.ok(fs.existsSync(sessionFile));
       
+      // Verify content includes git data
       const content = fs.readFileSync(sessionFile, 'utf8');
-      assert.ok(content.includes('Test session content'));
+      assert.ok(content.includes('Claude Code Session'), 'should have header');
+      assert.ok(content.includes('Git Activity'), 'should have git section');
+      assert.ok(content.includes('Test Results'), 'should have test section');
+      assert.ok(content.includes('Test session content'), 'should include description');
     } finally {
       process.chdir(cwd);
       fs.rmSync(testDir, { recursive: true, force: true });

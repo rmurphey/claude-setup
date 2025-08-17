@@ -90,6 +90,78 @@ function getClaudeMetadata() {
   return metadata;
 }
 
+function captureGitActivity() {
+  const activity = {
+    commits: [],
+    filesChanged: [],
+    branch: 'unknown'
+  };
+  
+  try {
+    // Get current branch
+    activity.branch = execSync('git branch --show-current', {encoding: 'utf8'}).trim();
+    
+    // Get recent commits (last 20)
+    const commits = execSync('git log --oneline -20', {encoding: 'utf8'}).trim().split('\n');
+    activity.commits = commits.map(c => {
+      const [hash, ...messageParts] = c.split(' ');
+      return {
+        hash: hash.substring(0, 7),
+        message: messageParts.join(' ')
+      };
+    });
+    
+    // Get files changed in working directory
+    const changes = execSync('git status --porcelain', {encoding: 'utf8'}).trim();
+    if (changes) {
+      activity.filesChanged = changes.split('\n').map(line => {
+        const [status, ...fileParts] = line.trim().split(' ');
+        return {
+          status: status,
+          file: fileParts.join(' ')
+        };
+      });
+    }
+  } catch (e) {
+    // Not in a git repo or git not available
+    console.log('⚠️  Git information unavailable');
+  }
+  
+  return activity;
+}
+
+function captureTestResults() {
+  const results = {
+    lastRun: null,
+    passing: 0,
+    failing: 0
+  };
+  
+  try {
+    // Try to run tests and capture output
+    const output = execSync('npm test 2>&1', {encoding: 'utf8'});
+    
+    // Parse test output (Node.js test runner format)
+    const passMatch = output.match(/# pass (\d+)/);
+    const failMatch = output.match(/# fail (\d+)/);
+    
+    if (passMatch) results.passing = parseInt(passMatch[1]);
+    if (failMatch) results.failing = parseInt(failMatch[1]);
+    
+    results.lastRun = new Date().toISOString();
+  } catch (e) {
+    // Tests failed or not configured
+    const output = e.stdout || '';
+    const passMatch = output.match(/# pass (\d+)/);
+    const failMatch = output.match(/# fail (\d+)/);
+    
+    if (passMatch) results.passing = parseInt(passMatch[1]);
+    if (failMatch) results.failing = parseInt(failMatch[1]);
+  }
+  
+  return results;
+}
+
 // Command implementations
 function saveSession(description = '') {
   const sessionDir = getSessionDirectory();
@@ -107,28 +179,82 @@ function saveSession(description = '') {
   // Get metadata
   const metadata = getClaudeMetadata();
   
-  // Create session file with metadata header
-  const header = `# Claude Code Session Transcript - ${getDateString()}
+  // Capture actual session data
+  const gitActivity = captureGitActivity();
+  const testResults = captureTestResults();
+  
+  // Build session content
+  let content = `# Claude Code Session - ${getDateString()} ${new Date().toTimeString().split(' ')[0]}
 
-## Metadata
-- **Date**: ${getDateString()}
-- **Time**: ${new Date().toTimeString().split(' ')[0]}
-- **Claude Version**: ${metadata.claudeVersion}
-- **Environment**: ${metadata.environment}
-- **Session Number**: ${sessionNum}
-- **Save Type**: full
-- **Description**: ${description || 'Manual save'}
-- **Timestamp**: ${metadata.timestamp}
-
-## Session Content
-[Session transcript will be added here by Claude]
 `;
   
-  // Write the header to the file
-  fs.writeFileSync(filepath, header);
+  content += `## Session Metadata
+`;
+  content += `- **Date**: ${getDateString()}\n`;
+  content += `- **Time**: ${new Date().toTimeString().split(' ')[0]}\n`;
+  content += `- **Session Number**: ${sessionNum}\n`;
+  content += `- **Description**: ${description || 'Development session'}\n\n`;
   
-  console.log('\n📝 Session file created with metadata header');
-  console.log(`Claude Version: ${metadata.claudeVersion}`);
+  // Git Activity Section
+  content += `## Git Activity\n`;
+  content += `**Branch**: ${gitActivity.branch}\n\n`;
+  
+  if (gitActivity.commits.length > 0) {
+    content += `### Recent Commits (${gitActivity.commits.length})\n`;
+    gitActivity.commits.slice(0, 10).forEach(commit => {
+      content += `- \`${commit.hash}\` ${commit.message}\n`;
+    });
+    content += '\n';
+  }
+  
+  if (gitActivity.filesChanged.length > 0) {
+    content += `### Working Directory Changes (${gitActivity.filesChanged.length} files)\n`;
+    gitActivity.filesChanged.forEach(change => {
+      const statusMap = {
+        'M': 'Modified',
+        'A': 'Added',
+        'D': 'Deleted',
+        '??': 'Untracked',
+        'AM': 'Added+Modified'
+      };
+      const status = statusMap[change.status] || change.status;
+      content += `- **${status}**: ${change.file}\n`;
+    });
+    content += '\n';
+  }
+  
+  // Test Results Section
+  content += `## Test Results\n`;
+  if (testResults.lastRun) {
+    content += `- **Passing**: ${testResults.passing}\n`;
+    content += `- **Failing**: ${testResults.failing}\n`;
+    content += `- **Status**: ${testResults.failing === 0 ? '✅ All tests passing' : '❌ Tests failing'}\n`;
+  } else {
+    content += `- Tests not run in this session\n`;
+  }
+  content += '\n';
+  
+  // Session Summary
+  content += `## Session Summary\n`;
+  content += `This session captured at ${new Date().toLocaleString()}\n\n`;
+  
+  if (description) {
+    content += `### Description\n${description}\n\n`;
+  }
+  
+  content += `### Metrics\n`;
+  content += `- Commits: ${gitActivity.commits.length}\n`;
+  content += `- Files changed: ${gitActivity.filesChanged.length}\n`;
+  content += `- Tests: ${testResults.passing}/${testResults.passing + testResults.failing} passing\n`;
+  
+  // Write the content to file
+  fs.writeFileSync(filepath, content);
+  
+  console.log('\n📝 Session saved with actual data');
+  console.log(`  Branch: ${gitActivity.branch}`);
+  console.log(`  Commits: ${gitActivity.commits.length}`);
+  console.log(`  Files changed: ${gitActivity.filesChanged.length}`);
+  console.log(`  Tests: ${testResults.passing}/${testResults.passing + testResults.failing} passing`);
   
   // Update last save info
   updateLastSaveInfo({
@@ -138,7 +264,7 @@ function saveSession(description = '') {
     sessionNumber: sessionNum
   });
   
-  console.log('\n✅ Session save prepared');
+  console.log('\n✅ Session saved successfully');
   console.log(`📁 Location: ${filepath}`);
   
   return filepath;
