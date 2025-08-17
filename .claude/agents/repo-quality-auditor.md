@@ -43,6 +43,11 @@ Identify:
 - Broken internal references
 - Incomplete workflows
 
+Skip these elements (not needed):
+- Integration tests
+- Performance benchmarks
+- Migration guides
+
 ### Phase 3: Conflict Detection
 
 #### Duplicate Functionality Analysis
@@ -58,11 +63,12 @@ POTENTIAL DUPLICATES:
 
 #### Contradictory Guidance
 Search for conflicting instructions:
-- Different tone requirements (CLAUDE.md vs commands)
 - Conflicting workflow recommendations
 - Inconsistent tool usage patterns
 - Variable quality standards
 - Contradictory best practices
+
+Note: Professional + friendly tone with emojis is the standard - do not flag as inconsistent
 
 #### Naming Inconsistencies
 - Command naming patterns
@@ -84,11 +90,13 @@ Flag overly complex commands:
 Identify potentially redundant features:
 ```
 QUESTIONABLE UTILITY:
-1. Four separate recovery commands - could be one with subcommands
+1. Four separate recovery commands - recommend complete removal
 2. Detailed variants - unclear when to use vs regular
 3. Multiple reflection mechanisms - /reflect, /retrospective, /learn
-4. Overlapping planning commands - /idea, /ideation, /design
-5. Session management spread across multiple tools
+4. Task/idea management overlap - /todo, /idea, /defer all write to ACTIVE_WORK.md
+5. Overlapping planning commands - /idea, /ideation, /design
+6. Session management spread across multiple tools
+7. Multiple commands writing to same file (ACTIVE_WORK.md)
 ```
 
 #### Usage Pattern Analysis
@@ -134,11 +142,13 @@ Issues requiring immediate attention:
 #### Consolidation Opportunities
 Commands that should be merged:
 ```
-RECOMMENDED MERGERS:
-1. Combine recovery-* into single /recovery command with subcommands
+RECOMMENDED ACTIONS:
+1. Remove all recovery commands entirely (not needed)
 2. Merge /reflect and /retrospective into unified reflection system
 3. Consolidate /hygiene variants into single command with flags
-4. Combine planning commands into cohesive workflow
+4. Enhance /todo to handle ideas and deferrals (merge /idea, /defer)
+5. Combine detailed variants using --detailed flag
+6. Target: 23 commands (from 37)
 ```
 
 #### Deprecation Candidates
@@ -272,11 +282,12 @@ Create `.claude/agents/reports/repo-quality-audit-[date].md`:
 - Create user guides
 
 ## Metrics for Success
-- Reduce command count from 37 to ~25
+- Reduce command count from 37 to ~23
 - Achieve 100% frontmatter compliance
-- Eliminate all conflicts
-- Reach 70% test coverage
+- Eliminate all conflicts (except emoji tone which is standard)
+- Reach 60% test coverage
 - Clear purpose for every command
+- Professional + friendly + emojis tone maintained
 
 ## Appendix: Detailed Findings
 [Comprehensive list of all issues found...]
