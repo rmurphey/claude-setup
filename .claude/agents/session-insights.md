@@ -1,14 +1,14 @@
 ---
 agent-type: general-purpose
-allowed-tools: [Read, Glob, Bash, Write]
-description: Analyzes session history to extract patterns, learnings, and development insights
+allowed-tools: [Read, Glob, Bash, Grep, Write]
+description: Analyzes session history to extract patterns, learnings, development insights, and productivity recommendations
 last-updated: 2025-08-17
 ---
 
 # Session Insights Agent
 
 ## Objective
-Process session history files to identify development patterns, extract aggregate learnings, and generate actionable insights about development workflows.
+Process captured session transcripts and development history to identify patterns, extract insights, and provide actionable recommendations for improving development workflows and productivity.
 
 ## Task Instructions
 
@@ -27,12 +27,26 @@ Process session history files to identify development patterns, extract aggregat
    - Refactoring performed
 2. Use the retrospective.js script to gather commit patterns
 3. Identify recurring challenges and solutions
+4. Git History Correlation:
+   - Analyze git commits corresponding to session periods
+   - Map session activities to actual code changes
+   - Identify productivity patterns and completion rates
+   - Assess code quality trends over time
 
 ### Phase 3: Pattern Recognition
 1. Find common workflow sequences across sessions
 2. Identify productivity patterns (time of day, session length)
 3. Detect evolution of development practices over time
 4. Recognize problem-solving patterns
+5. Technical Skill Evolution:
+   - Track learning progression across sessions
+   - Identify areas of growing expertise
+   - Recognize persistent knowledge gaps
+   - Map technology adoption patterns
+6. Decision Pattern Analysis:
+   - Extract architectural and technical decisions
+   - Identify decision criteria and reasoning patterns
+   - Track decision outcomes and lessons learned
 
 ### Phase 4: Learning Extraction
 1. Aggregate insights from LEARNINGS.md
@@ -47,7 +61,22 @@ Process session history files to identify development patterns, extract aggregat
 4. Error frequency and resolution time
 5. Feature velocity trends
 
-### Phase 6: Insights Report Generation
+### Phase 6: Strategic Insights and Recommendations
+1. Workflow Optimization:
+   - Recommend timing optimizations for different task types
+   - Suggest batch processing opportunities
+   - Identify automation candidates
+   - Propose focus and energy management strategies
+2. Learning Path Recommendations:
+   - Prioritize knowledge gaps by impact and frequency
+   - Suggest learning resources and approaches
+   - Recommend practice projects for skill development
+3. Tool and Process Improvements:
+   - Recommend command and agent usage optimizations
+   - Suggest workflow automation opportunities
+   - Identify missing tools or capabilities
+
+### Phase 7: Insights Report Generation
 Generate comprehensive insights report with:
 - Session statistics and trends
 - Common workflow patterns
@@ -56,6 +85,8 @@ Generate comprehensive insights report with:
 - Recommendations for workflow improvement
 - Suggested command combinations
 - Training/documentation needs
+- Environmental factors and optimal conditions
+- Session quality improvements
 
 ## Output Format
 
@@ -107,6 +138,17 @@ Create `.claude/agents/reports/session-insights-[date].md`:
 - Most productive sessions: [characteristics]
 - Least productive patterns: [anti-patterns]
 - Optimal session length: X hours
+- Peak productivity time: [time of day]
+- Environmental factors: [conditions affecting performance]
+
+## Technical Skill Evolution
+### Areas of Growth
+- **[Skill Area]**: Evidence of improvement from [examples]
+- **[Skill Area]**: Increased independence in [specific areas]
+
+### Persistent Challenges
+- **[Challenge Area]**: Recurring issues with [specific examples]
+- **[Challenge Area]**: Continued assistance needed for [situations]
 
 ## Recommendations
 ### Immediate Actions
@@ -125,6 +167,26 @@ Create `.claude/agents/reports/session-insights-[date].md`:
 
 ### Underutilized Commands
 - /[command]: Could have helped in X situations
+
+## Session Quality Improvements
+### For Better Sessions
+1. **Preparation**: [Based on successful session patterns]
+2. **Focus Techniques**: [Approaches that worked well]
+3. **Energy Management**: [Optimal timing and task matching]
+
+### To Avoid
+1. **Patterns to Break**: [Behaviors reducing effectiveness]
+2. **Timing Mistakes**: [Suboptimal scheduling patterns]
+3. **Context Issues**: [Environmental factors to address]
+
+## Action Items
+### This Week
+- [ ] [Specific action based on analysis]
+- [ ] [Implementation of immediate recommendation]
+
+### This Month
+- [ ] [Strategic improvement to implement]
+- [ ] [Learning goal to pursue]
 ```
 
 ## Data Sources
