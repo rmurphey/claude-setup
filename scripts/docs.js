@@ -14,8 +14,23 @@ const command = process.argv[2] || 'all';
 function countCommands() {
   try {
     const commandsDir = path.join(process.cwd(), '.claude', 'commands');
-    const files = fs.readdirSync(commandsDir).filter(f => f.endsWith('.md'));
-    return files.length;
+    let count = 0;
+    
+    function countInDir(dir) {
+      const items = fs.readdirSync(dir);
+      for (const item of items) {
+        const fullPath = path.join(dir, item);
+        const stat = fs.statSync(fullPath);
+        if (stat.isDirectory()) {
+          countInDir(fullPath);
+        } else if (item.endsWith('.md') && item !== 'README.md') {
+          count++;
+        }
+      }
+    }
+    
+    countInDir(commandsDir);
+    return count;
   } catch {
     return 0;
   }
@@ -152,37 +167,80 @@ function updateCommandCatalog() {
   
   const catalogPath = path.join(process.cwd(), 'docs', 'COMMAND_CATALOG.md');
   const commandsDir = path.join(process.cwd(), '.claude', 'commands');
-  const files = fs.readdirSync(commandsDir).filter(f => f.endsWith('.md'));
+  
+  // Recursively find all command files
+  const commands = [];
+  
+  function scanDir(dir, prefix = '') {
+    const items = fs.readdirSync(dir);
+    for (const item of items) {
+      const fullPath = path.join(dir, item);
+      const stat = fs.statSync(fullPath);
+      if (stat.isDirectory()) {
+        scanDir(fullPath, prefix ? `${prefix}/${item}` : item);
+      } else if (item.endsWith('.md') && item !== 'README.md') {
+        const content = fs.readFileSync(fullPath, 'utf8');
+        const descMatch = content.match(/^description:\s*(.+)$/m);
+        const name = item.replace('.md', '');
+        const desc = descMatch ? descMatch[1] : 'No description';
+        const location = prefix ? `${prefix}/${name}` : name;
+        commands.push({ 
+          name, 
+          desc, 
+          location,
+          category: prefix || 'Core'
+        });
+      }
+    }
+  }
+  
+  scanDir(commandsDir);
+  
+  // Group by category
+  const categories = {};
+  commands.forEach(cmd => {
+    if (!categories[cmd.category]) {
+      categories[cmd.category] = [];
+    }
+    categories[cmd.category].push(cmd);
+  });
+  
+  // Sort categories and commands
+  const categoryOrder = ['Core', 'maintenance', 'planning'];
+  const sortedCategories = categoryOrder.filter(cat => categories[cat]);
+  
+  // Format categories nicely
+  const categoryNames = {
+    'Core': 'Core Workflow Commands',
+    'maintenance': 'Maintenance Commands',
+    'planning': 'Planning Commands'
+  };
   
   let catalogContent = `# Command Catalog
 
-Complete list of available Claude Code commands.
+Complete list of all available Claude Code commands organized by category.
 
-Last updated: ${new Date().toISOString().split('T')[0]}
-
-## Available Commands
+Last updated: ${new Date().toISOString().split('T')[0]}  
+Total Commands: ${commands.length}
 
 `;
   
-  // Group commands by category (could be enhanced)
-  const commands = [];
-  for (const file of files) {
-    const content = fs.readFileSync(path.join(commandsDir, file), 'utf8');
-    const descMatch = content.match(/^description:\s*(.+)$/m);
-    const name = file.replace('.md', '');
-    const desc = descMatch ? descMatch[1] : 'No description';
-    commands.push({ name, desc });
+  for (const cat of sortedCategories) {
+    const cmds = categories[cat];
+    catalogContent += `## ${categoryNames[cat] || cat} (${cmds.length})\n\n`;
+    cmds.sort((a, b) => a.name.localeCompare(b.name));
+    cmds.forEach(cmd => {
+      catalogContent += `### /${cmd.name}\n${cmd.desc}  \nLocation: \`.claude/commands/${cmd.location}.md\`\n\n`;
+    });
   }
   
-  // Sort alphabetically
-  commands.sort((a, b) => a.name.localeCompare(b.name));
-  
-  // Add to catalog
-  commands.forEach(cmd => {
-    catalogContent += `### /${cmd.name}\n\n${cmd.desc}\n\nLocation: \`.claude/commands/${cmd.name}.md\`\n\n---\n\n`;
-  });
-  
-  catalogContent += `\n## Total Commands: ${commands.length}\n`;
+  // Add summary table
+  catalogContent += `---\n\n## Command Categories Summary\n\n`;
+  catalogContent += `| Category | Count | Purpose |\n`;
+  catalogContent += `|----------|-------|---------|\n`;
+  catalogContent += `| Core Workflow | ${categories['Core']?.length || 0} | Daily development tasks |\n`;
+  catalogContent += `| Maintenance | ${categories['maintenance']?.length || 0} | Repository maintenance |\n`;
+  catalogContent += `| Planning | ${categories['planning']?.length || 0} | Planning and ideation |\n`;
   
   // Write catalog file
   fs.writeFileSync(catalogPath, catalogContent);
