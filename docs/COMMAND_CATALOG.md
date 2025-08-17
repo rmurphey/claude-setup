@@ -3,7 +3,7 @@
 Complete list of all available Claude Code commands organized by category.
 
 Last updated: 2025-08-17  
-Total Commands: 22
+Total Commands: 17
 
 ## Core Workflow Commands (13)
 
@@ -77,28 +77,6 @@ Location: `.claude/commands/maintenance/session-history.md`
 Update README with current command count and descriptions  
 Location: `.claude/commands/maintenance/update-docs.md`
 
-## Planning Commands (5)
-
-### /defer
-Task deferral and backlog management system  
-Location: `.claude/commands/planning/defer.md`
-
-### /design
-Feature planning and design documentation system  
-Location: `.claude/commands/planning/design.md`
-
-### /estimate
-Get intelligent Claude usage estimates for development tasks  
-Location: `.claude/commands/planning/estimate.md`
-
-### /idea
-Quick capture of ideas for future consideration  
-Location: `.claude/commands/planning/idea.md`
-
-### /ideation
-AI-powered development ideation and brainstorming based on code analysis  
-Location: `.claude/commands/planning/ideation.md`
-
 ---
 
 ## Command Categories Summary
@@ -107,4 +85,4 @@ Location: `.claude/commands/planning/ideation.md`
 |----------|-------|---------|
 | Core Workflow | 13 | Daily development tasks |
 | Maintenance | 4 | Repository maintenance |
-| Planning | 5 | Planning and ideation |
+| Planning | 0 | Planning and ideation |

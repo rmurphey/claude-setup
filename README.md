@@ -3,7 +3,7 @@
 **A living reference implementation of professional Claude Code commands and workflows**
 
 [![Version](https://img.shields.io/badge/version-2.0.0-blue)](https://github.com/rmurphey/claude-setup)
-[![Commands](https://img.shields.io/badge/commands-22-green)](.claude/commands/)
+[![Commands](https://img.shields.io/badge/commands-17-green)](.claude/commands/)
 [![License](https://img.shields.io/badge/license-MIT-purple)](LICENSE)
 [![Token Efficiency](https://img.shields.io/badge/token%20savings-87%25-orange)](docs/TOKEN_EFFICIENCY.md)
 
@@ -474,12 +474,12 @@ MIT License - see [LICENSE](LICENSE) file for details.
 - [feat: remove all recovery commands per quality audit](../../commit/50be84f)
 - [feat: add repo-quality-auditor agent for comprehensive quality analysis](../../commit/e498add)
 - [feat: implement test coverage using Node's built-in test runner](../../commit/fca9905)
+- [fix: update docs script to count all commands recursively](../../commit/30f57e8)
 - [fix: remove duplicate /planning/reflect command](../../commit/d00bd7c)
 - [fix: add missing frontmatter to 5 commands](../../commit/73f0e62)
-- [fix: update COMMAND_CATALOG with all 37 commands and improve auditor](../../commit/6c3351a)
 - [docs: update COMMAND_CATALOG to reflect consolidation complete](../../commit/15815ad)
 - [docs: update COMMAND_CATALOG after recovery removal](../../commit/838bdcd)
 - [docs: tone down TDD cheerleading to be more realistic](../../commit/4466c42)
-- [refactor: remove edit-not-create command](../../commit/087df25)
-- [refactor: switch test watching from Vite to Node.js --watch](../../commit/09c904e)
-- [refactor: simplify tests to smoke tests only](../../commit/f84cac6)
+- [refactor: reorganize ACTIVE_WORK.md with simplified planning structure](../../commit/870aede)
+- [refactor: remove remaining complex planning commands](../../commit/b93bae0)
+- [refactor: remove complex planning commands (design, defer)](../../commit/baa0b7c)
