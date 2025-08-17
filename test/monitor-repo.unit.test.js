@@ -8,6 +8,23 @@ const assert = require('node:assert');
 const fs = require('node:fs');
 
 describe('monitor-repo.js', () => {
+  const fs = require('node:fs');
+  const path = require('node:path');
+  
+  // Clean up test files after tests
+  const testFiles = [
+    '.monitor-status-test.json',
+    '.monitor-history-test.json',
+    '.monitor-config-test.json'
+  ];
+  
+  function cleanupTestFiles() {
+    testFiles.forEach(file => {
+      if (fs.existsSync(file)) {
+        fs.unlinkSync(file);
+      }
+    });
+  }
   
   describe('exports', () => {
     it('should export checkWorkflowStatus function', () => {
@@ -34,6 +51,15 @@ describe('monitor-repo.js', () => {
       const monitor = require('../scripts/monitor-repo');
       assert.strictEqual(typeof monitor.checkStatus, 'function');
     });
+    
+    it('should export new functions for enhanced monitoring', () => {
+      const monitor = require('../scripts/monitor-repo');
+      assert.strictEqual(typeof monitor.getFailureDetails, 'function', 'should export getFailureDetails');
+      assert.strictEqual(typeof monitor.loadConfig, 'function', 'should export loadConfig');
+      assert.strictEqual(typeof monitor.loadHistory, 'function', 'should export loadHistory');
+      assert.strictEqual(typeof monitor.saveToHistory, 'function', 'should export saveToHistory');
+      assert.strictEqual(typeof monitor.isNewFailure, 'function', 'should export isNewFailure');
+    });
   });
 
   describe('checkWorkflowStatus', () => {
@@ -50,6 +76,20 @@ describe('monitor-repo.js', () => {
         assert('status' in runs[0], 'should have status field');
         assert('name' in runs[0], 'should have name field');
       }
+    });
+    
+    it('should filter for test workflows when testsOnly option is true', async () => {
+      const monitor = require('../scripts/monitor-repo');
+      const runs = await monitor.checkWorkflowStatus({ testsOnly: true });
+      assert(Array.isArray(runs), 'should return an array');
+      // All returned runs should have 'test' in the name
+      runs.forEach(run => {
+        const hasTest = (run.workflowName?.toLowerCase().includes('test') || 
+                        run.name?.toLowerCase().includes('test'));
+        if (runs.length > 0) {
+          assert(hasTest, 'filtered runs should contain "test" in name');
+        }
+      });
     });
   });
 
@@ -87,6 +127,24 @@ describe('monitor-repo.js', () => {
       assert(typeof report === 'string', 'should return a string');
       assert(report.includes('Test'), 'should include workflow name');
       assert(report.includes('Test PR'), 'should include PR title');
+    });
+    
+    it('should separate test failures from other failures', () => {
+      const monitor = require('../scripts/monitor-repo');
+      const mockStatus = {
+        timestamp: new Date().toISOString(),
+        workflows: [
+          { name: 'Test Suite', workflowName: 'Test Suite', status: 'completed', conclusion: 'failure' },
+          { name: 'Quality Checks', workflowName: 'Quality Checks', status: 'completed', conclusion: 'failure' }
+        ],
+        pullRequests: []
+      };
+      
+      const report = monitor.formatReport(mockStatus);
+      assert(typeof report === 'string', 'should return a string');
+      // Should have separate sections for test failures
+      assert(report.includes('Failed Tests') || report.includes('Failed Workflows'), 
+        'should categorize failures');
     });
 
     it('should handle empty status gracefully', () => {
@@ -146,6 +204,72 @@ describe('monitor-repo.js', () => {
           instance.stop(); // Stop immediately if it returns a handle
         }
       });
+    });
+  });
+  
+  describe('loadConfig', () => {
+    it('should return default config when no file exists', () => {
+      const monitor = require('../scripts/monitor-repo');
+      const config = monitor.loadConfig();
+      
+      assert(typeof config === 'object', 'should return an object');
+      assert('watchTestsOnly' in config, 'should have watchTestsOnly');
+      assert('notifications' in config, 'should have notifications');
+      assert('alertThresholds' in config, 'should have alertThresholds');
+    });
+  });
+  
+  describe('loadHistory', () => {
+    it('should return empty array when no history exists', () => {
+      const monitor = require('../scripts/monitor-repo');
+      const history = monitor.loadHistory();
+      
+      assert(Array.isArray(history), 'should return an array');
+    });
+  });
+  
+  describe('saveToHistory', () => {
+    it('should save failure to history file', () => {
+      const monitor = require('../scripts/monitor-repo');
+      const failure = {
+        name: 'Test Workflow',
+        conclusion: 'failure',
+        workflowName: 'Test Suite',
+        headBranch: 'main'
+      };
+      
+      // Save and verify it can be loaded
+      monitor.saveToHistory(failure);
+      const history = monitor.loadHistory();
+      
+      assert(history.length > 0, 'history should have entries');
+      assert(history[0].name === failure.name, 'should save correct data');
+      
+      // Cleanup
+      cleanupTestFiles();
+    });
+  });
+  
+  describe('isNewFailure', () => {
+    it('should identify new failures correctly', () => {
+      const monitor = require('../scripts/monitor-repo');
+      const failure = {
+        name: 'New Test',
+        workflowName: 'Test Suite',
+        headBranch: 'feature-branch'
+      };
+      
+      // First failure should be new
+      assert(monitor.isNewFailure(failure), 'first occurrence should be new');
+      
+      // Save it
+      monitor.saveToHistory(failure);
+      
+      // Same failure should not be new
+      assert(!monitor.isNewFailure(failure), 'repeated failure should not be new');
+      
+      // Cleanup
+      cleanupTestFiles();
     });
   });
 });
