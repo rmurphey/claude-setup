@@ -21,7 +21,7 @@ npm run session:save "retrospective-$(date +%Y%m%d-%H%M)" --silent
 echo "✅ Session captured with metadata"
 echo ""
 echo "📊 For deep analysis and insights:"
-echo "Use the session-retrospective agent to analyze your captured sessions and extract development patterns."
+echo "Use the session-insights agent to analyze your captured sessions and extract development patterns."
 echo ""
 echo "📁 Session files saved to session-history/$(date +%Y-%m-%d)/"
 ```
@@ -39,11 +39,11 @@ echo "📁 Session files saved to session-history/$(date +%Y-%m-%d)/"
 - Weekly to maintain session history
 
 ## For Analysis
-After capturing sessions, use the **session-retrospective agent** for:
+After capturing sessions, use the **session-insights agent** for:
 - Pattern analysis across multiple sessions
 - Learning extraction and documentation
 - Development workflow insights
 - Productivity optimization recommendations
 
 ## Philosophy
-This command handles the **routine task** of session capture. The **intelligence work** of analyzing patterns and extracting insights is handled by the session-retrospective agent.
+This command handles the **routine task** of session capture. The **intelligence work** of analyzing patterns and extracting insights is handled by the session-insights agent.

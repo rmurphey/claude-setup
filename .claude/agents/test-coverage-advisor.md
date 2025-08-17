@@ -261,7 +261,7 @@ describe('validateUserCredentials', () => {
 - Provide framework-agnostic recommendations when possible
 
 ## Integration Points
-- Use code complexity analysis from `command-optimizer`
+- Use code complexity analysis from `command-analyzer`
 - Reference patterns from `documentation-auditor`
 - Coordinate with `session-insights` for development patterns
 - Align with project testing practices in CLAUDE.md

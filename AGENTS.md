@@ -30,7 +30,7 @@
 
 **Examples:**
 - "Analyze my development patterns over 6 months" → `session-insights` agent
-- "Find optimization opportunities in my commands" → `command-optimizer` agent
+- "Find optimization opportunities in my commands" → `command-analyzer` agent
 - "Audit my documentation for completeness" → `documentation-auditor` agent
 
 ## Quick Decision Tree
@@ -62,7 +62,7 @@ Is this something you do routinely?
 
 ### Scenario 4: Repository Optimization
 **Situation:** Want to optimize your entire command library for efficiency
-**Solution:** `command-optimizer` agent (complex analysis across many files)
+**Solution:** `command-analyzer` agent (complex analysis across many files)
 **Why not command:** Requires intelligence to identify patterns and opportunities
 
 ### Scenario 5: Real Example - The Push Command Problem
@@ -97,29 +97,20 @@ Is this something you do routinely?
 
 ### `command-analyzer`
 **When to use:** You want to optimize your command library
-**What it does:** Analyzes usage patterns, finds redundancies, suggests improvements
-**Example situation:** "I have 20+ commands and want to streamline them"
+**What it does:** Analyzes usage patterns, finds redundancies, optimizes for token efficiency
+**Example situation:** "I have 20+ commands and want to streamline them" or "My commands feel slow and verbose"
 
 ### `session-insights`
 **When to use:** You want to understand your development patterns
-**What it does:** Processes session history to extract learning patterns
-**Example situation:** "I want to see how my productivity has changed over time"
+**What it does:** Processes session history to extract patterns, productivity insights, and recommendations
+**Example situation:** "I want to see how my productivity has changed over time" or "What are my development patterns?"
 
 
 ### `documentation-auditor`
 **When to use:** You want to ensure documentation quality
-**What it does:** Audits all documentation for completeness and consistency
-**Example situation:** "I want to make sure my project documentation is professional"
+**What it does:** Audits all documentation for completeness, consistency, and tone
+**Example situation:** "I want to make sure my project documentation is professional and welcoming"
 
-### `documentation-tone`
-**When to use:** You want to ensure friendly, professional tone across all docs
-**What it does:** Analyzes documentation for tone issues, detects condescending language, and suggests improvements
-**Example situation:** "Make sure our documentation is welcoming and not condescending"
-
-### `command-optimizer`
-**When to use:** You want to make your commands more efficient
-**What it does:** Finds token-saving and performance optimization opportunities
-**Example situation:** "My commands feel slow and verbose, how can I improve them?"
 
 ### `next-priorities`
 **When to use:** You want intelligent analysis of what to work on next
@@ -131,10 +122,6 @@ Is this something you do routinely?
 **What it does:** Analyzes your project and patterns to provide personalized estimates
 **Example situation:** "How much will it cost to add authentication to my app?"
 
-### `session-retrospective`
-**When to use:** You want insights from your development session history
-**What it does:** Analyzes captured sessions to extract productivity and learning patterns
-**Example situation:** "I want to understand my development patterns and optimize my workflow"
 
 ## When to Create a New Agent
 

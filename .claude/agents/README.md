@@ -16,7 +16,6 @@ Agents are autonomous, multi-step task handlers that can:
 - **command-analyzer** - Analyzes command usage patterns and suggests optimizations
 - **session-insights** - Extracts patterns from session history
 - **documentation-auditor** - Ensures documentation completeness and consistency
-- **command-optimizer** - Optimizes commands for token efficiency
 
 ## Agent Structure
 

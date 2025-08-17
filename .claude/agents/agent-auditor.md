@@ -209,6 +209,6 @@ When Claude CLI becomes available:
 - Always complete full audit even with errors
 
 ## Integration Points
-- Works with command-optimizer for consistency
+- Works with command-analyzer for consistency
 - Complements documentation-auditor for docs
 - Enables self-maintaining repository vision

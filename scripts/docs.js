@@ -333,18 +333,19 @@ function showHelp() {
 // We now use manual curation for commit examples (see /docs-explain)
 
 /**
- * Run tone analysis using the documentation-tone agent
+ * Run tone analysis using the documentation-auditor agent
  * Provides instructions for invoking the agent via Claude's Task tool
  */
 function runToneAnalysis() {
   console.log('🎨 Documentation Tone Analysis');
   console.log('==============================');
   console.log('');
-  console.log('The documentation-tone agent analyzes your documentation for:');
+  console.log('The documentation-auditor agent analyzes your documentation for:');
   console.log('  • Professional yet friendly tone');
   console.log('  • Clear and inclusive language');
   console.log('  • Helpful and encouraging phrasing');
   console.log('  • Consistent voice across files');
+  console.log('  • Completeness and consistency');
   console.log('');
   console.log('To run the tone analysis, use Claude\'s Task tool:');
   console.log('');
@@ -352,19 +353,20 @@ function runToneAnalysis() {
   console.log('───────────────────────────');
   console.log('Use the Task tool with:');
   console.log('  • subagent_type: "general-purpose"');
-  console.log('  • description: "Analyze documentation tone"');
-  console.log('  • prompt: Read and follow the instructions in .claude/agents/documentation-tone.md');
+  console.log('  • description: "Analyze documentation tone and quality"');
+  console.log('  • prompt: Read and follow the instructions in .claude/agents/documentation-auditor.md');
   console.log('');
   console.log('The agent will:');
   console.log('  1. Scan all documentation files');
   console.log('  2. Score tone across multiple dimensions');
-  console.log('  3. Identify problematic patterns');
-  console.log('  4. Suggest specific improvements');
-  console.log('  5. Generate a report in .claude/agents/reports/');
+  console.log('  3. Check completeness and consistency');
+  console.log('  4. Identify problematic patterns');
+  console.log('  5. Suggest specific improvements');
+  console.log('  6. Generate a report in .claude/agents/reports/');
   console.log('');
-  console.log('Agent location: .claude/agents/documentation-tone.md');
+  console.log('Agent location: .claude/agents/documentation-auditor.md');
   console.log('');
-  console.log('💡 Tip: The agent can also fix issues automatically with the --fix flag');
+  console.log('💡 Tip: The agent provides comprehensive documentation quality analysis');
 }
 
 /**

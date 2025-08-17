@@ -141,7 +141,6 @@ Each command in this repository includes metadata showing its approach and typic
 - **`command-analyzer`** - Analyzes command usage patterns and suggests optimizations
 - **`session-insights`** - Extracts patterns from development session history  
 - **`documentation-auditor`** - Audits documentation completeness and consistency
-- **`command-optimizer`** - Optimizes commands for token efficiency and performance
 
 
 ### When to Use Agents
