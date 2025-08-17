@@ -38,7 +38,7 @@ async function checkWorkflowStatus(options = {}) {
     }
     
     return runs;
-  } catch {
+  } catch (error) {
     // Return empty array if gh command fails (e.g., not in a git repo)
     return [];
   }
@@ -99,7 +99,9 @@ function loadConfig() {
     if (fs.existsSync(CONFIG_FILE)) {
       return JSON.parse(fs.readFileSync(CONFIG_FILE, 'utf8'));
     }
-  } catch {}
+  } catch (error) {
+    // Ignore errors and use defaults
+  }
   
   // Default configuration
   return {
@@ -126,7 +128,9 @@ function loadHistory() {
     if (fs.existsSync(HISTORY_FILE)) {
       return JSON.parse(fs.readFileSync(HISTORY_FILE, 'utf8'));
     }
-  } catch {}
+  } catch (error) {
+    // Return empty array on error
+  }
   return [];
 }
 
@@ -450,7 +454,7 @@ if (require.main === module) {
             // Try to get details
             const details = await getFailureDetails(failure.databaseId);
             if (details && details.failedJobs.length > 0) {
-              console.log(`   Failed Jobs:`);
+              console.log('   Failed Jobs:');
               details.failedJobs.forEach(job => {
                 console.log(`     • ${job.name}`);
                 if (job.steps.length > 0) {

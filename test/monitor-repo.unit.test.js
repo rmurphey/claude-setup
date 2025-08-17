@@ -8,9 +8,6 @@ const assert = require('node:assert');
 const fs = require('node:fs');
 
 describe('monitor-repo.js', () => {
-  const fs = require('node:fs');
-  const path = require('node:path');
-  
   // Clean up test files after tests
   const testFiles = [
     '.monitor-status-test.json',
