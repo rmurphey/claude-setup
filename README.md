@@ -51,6 +51,15 @@ cd my-project
 ✅ **Production-Tested**: Commands refined through real-world usage  
 ✅ **Self-Documenting**: The repository demonstrates every pattern it teaches
 
+## 🤖 Automated Intelligence Features
+
+This repository includes agents that can use the Claude API for advanced automation:
+- **Automated agent quality audits** via GitHub Actions
+- **Intelligent code analysis** beyond simple pattern matching
+- **Deep project insights** using Claude's reasoning capabilities
+
+👉 **[See API Setup Guide](docs/API_SETUP.md)** for configuration instructions
+
 ## 🎯 Repository Philosophy: Teaching Through Balance
 
 This repository demonstrates various ways of setting up Claude Code commands, including methods that limit token usage. You'll see these three methods:
@@ -152,7 +161,7 @@ Use agents when you need:
 
 ### Why TDD + Claude = ❤️
 
-Without TDD, Claude is like a brilliant intern with no supervision:
+Without TDD, Claude is like an over-eager intern with no supervision:
 - Writes 1000 lines when you need 100
 - Adds "helpful" features you didn't ask for
 - Creates bugs you'll debug for hours
@@ -169,8 +178,6 @@ Look at our history - every `🔴 RED` commit followed by `🟢 GREEN`:
 git log --grep="TDD\|🔴\|🟢" --oneline | head -10
 ```
 
-That's not just process, that's **shipping with confidence**.
-
 ### Your First TDD Experience
 
 ```bash
@@ -178,8 +185,6 @@ That's not just process, that's **shipping with confidence**.
 ```
 
 **New to TDD?** Start here: [TDD with Claude - Why It's Actually Cool](docs/TDD_WITH_CLAUDE.md)
-
-**Want proof?** See real examples: [TDD Success Stories](docs/TDD_SUCCESS_STORIES.md)
 
 ### The Numbers Don't Lie
 
@@ -206,18 +211,6 @@ Check our project health:
 See our active work:
 ```bash
 cat ACTIVE_WORK.md
-```
-
-### 👥 Team Adoption
-
-```bash
-# 1. Review and customize templates as a team
-# 2. Add to your repository
-git add .claude/
-git commit -m "feat: add Claude Code command templates"
-
-# 3. Document team-specific workflows in CLAUDE.md
-# 4. Share command usage patterns in team docs
 ```
 
 ## Real-World Example Workflow
@@ -425,7 +418,7 @@ Use command patterns in your automation:
 ✅ **Best Practices** - Based on Anthropic guidelines and industry standards  
 ✅ **Self-Improving** - Repository uses its own commands for development  
 
-### Based on Research From
+### Informed By ... 
 - [Anthropic's Claude Code Best Practices](https://www.anthropic.com/engineering/claude-code-best-practices)
 - [How Anthropic Teams Use Claude Code](https://www.anthropic.com/news/how-anthropic-teams-use-claude-code)
 - [Conventional Commits v1.0.0](https://www.conventionalcommits.org/)
@@ -444,27 +437,13 @@ See [.claude/metrics.json](.claude/metrics.json) for current data.
 
 ## 🤖 Automated Agent Audits
 
-This repository uses Claude Code CLI to automatically audit agents for quality and correctness.
+This repository uses Claude Code CLI to automatically audit agents via GitHub Actions.
 
-### Setup
-1. **Add your API key to GitHub Secrets:**
-   - Go to Settings → Secrets and variables → Actions
-   - Click "New repository secret"
-   - Name: `ANTHROPIC_API_KEY`
-   - Value: Your Anthropic API key (never commit this!)
+**Quick Setup**: Add `ANTHROPIC_API_KEY` to GitHub Secrets → Actions
 
-2. **Enable the workflow:**
-   - The audit runs weekly (Sunday at midnight UTC)
-   - Or trigger manually from the Actions tab
-   - Check the badge above for current status
+👉 **[Complete API Setup Guide](docs/API_SETUP.md)** - Detailed configuration, security, and troubleshooting
 
-### What It Does
-- Validates all agent command references exist
-- Checks agent quality and freshness
-- Uploads detailed audit reports as artifacts
-- Uses actual Claude intelligence, not just pattern matching
-
-See `.claude/agents/agent-auditor.md` for the audit logic.
+The audit runs weekly and validates agent quality using Claude's intelligence, not just pattern matching. See `.claude/agents/agent-auditor.md` for the audit logic.
 
 ## Contributing
 
