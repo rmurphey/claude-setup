@@ -3,7 +3,7 @@
 Complete list of all available Claude Code commands organized by category.
 
 Last updated: 2025-08-16  
-Total Commands: 33
+Total Commands: 26
 
 ## Core Workflow Commands (6)
 
@@ -71,43 +71,17 @@ Location: `.claude/commands/planning/defer.md`
 Get AI-recommended next steps and development priorities  
 Location: `.claude/commands/next.md`
 
-## Reflection Commands (3)
+## Reflection Commands (2)
 
 ### /reflect
 Pause and reflect on current work  
 Location: `.claude/commands/reflect.md`
 
-### /planning/reflect
-Session reflection and insights capture  
-Location: `.claude/commands/planning/reflect.md`
-
 ### /retrospective
 Capture current session with metadata for future analysis  
 Location: `.claude/commands/retrospective.md`
 
-## Detailed Command Variants (5)
-
-### /commit-detailed
-Quality-checked commit workflow with automatic pre-commit validation (detailed version)  
-Location: `.claude/commands/detailed/commit-detailed.md`
-
-### /docs-detailed
-Self-updating documentation generation and maintenance system  
-Location: `.claude/commands/detailed/docs-detailed.md`
-
-### /hygiene-detailed
-Project health check - code quality, tests, dependencies, and git status (detailed version)  
-Location: `.claude/commands/detailed/hygiene-detailed.md`
-
-### /push-detailed
-Push commands with git-specific options for complex scenarios  
-Location: `.claude/commands/detailed/push-detailed.md`
-
-### /todo-detailed
-Task management and tracking system with ACTIVE_WORK.md integration (detailed version)  
-Location: `.claude/commands/detailed/todo-detailed.md`
-
-## Maintenance Commands (8)
+## Maintenance Commands (7)
 
 ### /archive
 Archive old files and directories  
@@ -120,10 +94,6 @@ Location: `.claude/commands/maintenance/issue.md`
 ### /maintainability
 Code maintainability analysis and improvement recommendations  
 Location: `.claude/commands/maintenance/maintainability.md`
-
-### /maintainability-detailed
-Code maintainability analysis and improvement recommendations (detailed version)  
-Location: `.claude/commands/maintenance/maintainability-detailed.md`
 
 ### /session-history
 Manage and analyze session history  
@@ -160,14 +130,15 @@ Location: `.claude/commands/edit-not-create.md`
 | Core Workflow | 6 | Daily development tasks |
 | Documentation | 3 | Docs and learning capture |
 | Planning | 6 | Planning and ideation |
-| Reflection | 3 | Session analysis |
-| Detailed Variants | 5 | Extended versions |
-| Maintenance | 8 | Repository maintenance |
+| Reflection | 2 | Session analysis |
+| Maintenance | 7 | Repository maintenance |
 | Special Purpose | 2 | Specific workflows |
 
 ## Notes
 
-- Recovery commands have been removed (4 commands deleted)
-- Some commands overlap in functionality (will be consolidated)
-- Detailed variants will be replaced with flags
-- Target: 23 commands after consolidation
+- **Completed Consolidation**: Reduced from 37 to 26 commands
+- Removed: 4 recovery commands (overly complex)
+- Removed: 6 detailed variants (saved 1919 lines!)
+- Removed: 1 duplicate reflect command
+- **Token Efficiency**: Commands now delegate to npm scripts
+- Some large commands remain (issue, version-tag, design) for future simplification
