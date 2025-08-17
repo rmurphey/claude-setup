@@ -211,18 +211,5 @@ ${learnings.map(l => `- ${l}`).join('\n') || '- Session focused on implementatio
   }
 }
 
-// Export for testing
-if (require.main === module) {
-  // Run the retrospective when called directly
-  generateReport();
-} else {
-  // Export functions for testing
-  module.exports = {
-    generateReport,
-    analyzeGitHistory,
-    getMetrics,
-    identifyLearnings,
-    updateLearnings,
-    runCommand
-  };
-}
+// Run the retrospective
+generateReport();
