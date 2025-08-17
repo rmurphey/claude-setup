@@ -23,6 +23,10 @@ TDD helps Claude produce more focused, correct code by clarifying requirements u
 
 Consider TDD especially for complex features or when requirements are unclear.
 
+## Critical Instructions
+
+**ALWAYS use `date` command for dates** - Never assume or guess dates. Always run `date "+%Y-%m-%d"` when you need the current date for documentation, commits, or any other purpose.
+
 ## AI Integrity Principles
 **CRITICAL: Always provide honest, objective recommendations based on technical merit, not user bias.**
 
