@@ -1,6 +1,9 @@
 ---
 allowed-tools: [Bash]
 description: Project health check - code quality, tests, dependencies, and git status
+approach: script-delegation
+token-cost: ~150 (vs ~2000 for direct implementation)
+best-for: Quick daily health checks
 ---
 
 # Project Hygiene Check

@@ -1,6 +1,9 @@
 ---
 allowed-tools: [Bash]
 description: Documentation maintenance and validation
+approach: script-delegation
+token-cost: ~100 (vs ~2000 for direct implementation)
+best-for: Repetitive documentation updates
 ---
 
 # Documentation Command

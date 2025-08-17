@@ -1,6 +1,9 @@
 ---
 allowed-tools: [Bash]
 description: Capture insights and learnings from development work
+approach: script-delegation
+token-cost: ~80 (vs ~500 for direct file management)
+best-for: Quick knowledge capture
 ---
 
 # Learn Command

@@ -1,6 +1,9 @@
 ---
 allowed-tools: [Bash]
 description: Your new best friend - TDD workflow that makes Claude amazing
+approach: script-delegation
+token-cost: ~100 (vs ~1500 for manual TDD guidance)
+best-for: Structured test-driven development
 ---
 
 # TDD Command - Your New Best Friend 🚀

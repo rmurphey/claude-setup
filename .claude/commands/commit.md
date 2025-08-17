@@ -1,6 +1,9 @@
 ---
 allowed-tools: [Bash]
 description: Quality-checked commit workflow with automatic pre-commit validation
+approach: hybrid
+token-cost: ~200 (script runs checks, Claude formats message)
+best-for: Ensuring consistent commit quality
 ---
 
 # Quality-Checked Commit Command
