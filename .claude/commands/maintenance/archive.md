@@ -1,3 +1,8 @@
+---
+allowed-tools: [Read, Write, Bash]
+description: Archive completed work and capture lessons learned
+---
+
 # Archive Command
 
 ## Purpose

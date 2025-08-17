@@ -1,3 +1,8 @@
+---
+allowed-tools: [Bash, Read]
+description: Enforce atomic commit discipline for 1-3 file changes
+---
+
 # Atomic Commit - 1-3 File Change Discipline
 
 Enforce atomic commit discipline: "COMMIT EVERY 1-3 file changes that create working functionality"

@@ -1,3 +1,8 @@
+---
+allowed-tools: [Bash, Read, Write, WebFetch]
+description: Create and manage GitHub issues with branch creation and context setup
+---
+
 #!/usr/bin/env node
 
 /**

@@ -1,3 +1,8 @@
+---
+allowed-tools: [Bash, Read, Write]
+description: Save and manage Claude Code conversation transcripts for analysis
+---
+
 # session-history
 
 Save Claude Code conversation transcripts for historical analysis (optional feature).

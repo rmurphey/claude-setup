@@ -1,9 +1,6 @@
 ---
-allowed_tools:
-  - bash
-  - str_replace_editor
-  - file_editor
-  - mcp__ide__executeCode
+allowed-tools: [Bash, Read, Write, Edit]
+description: AI-powered development ideation and brainstorming based on code analysis
 ---
 
 # Development Ideation Command
