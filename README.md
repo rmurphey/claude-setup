@@ -6,6 +6,7 @@
 [![Commands](https://img.shields.io/badge/commands-18-green)](.claude/commands/)
 [![License](https://img.shields.io/badge/license-MIT-purple)](LICENSE)
 [![Token Efficiency](https://img.shields.io/badge/token%20savings-87%25-orange)](docs/TOKEN_EFFICIENCY.md)
+[![Agent Audit](https://github.com/rmurphey/claude-setup/workflows/Agent%20Audit%20with%20Claude%20Code/badge.svg)](https://github.com/rmurphey/claude-setup/actions/workflows/agent-audit.yml)
 
 ## What This Is
 
@@ -151,6 +152,7 @@ Use agents when you need:
 - 📈 **Insights**: Deep understanding of your development practices
 - 🔧 **Optimization**: Strategic improvements to your workflows
 - 📋 **Planning**: Custom workflows for complex, multi-step processes
+- 🤖 **Self-Maintenance**: Automated quality audits via GitHub Actions
 
 ### Quick Examples
 ```bash
@@ -474,6 +476,31 @@ This repository tracks its own usage metrics:
 - Real workflow timings
 
 See [.claude/metrics.json](.claude/metrics.json) for current data.
+
+## 🤖 Automated Agent Audits
+
+This repository uses Claude Code CLI to automatically audit agents for quality and correctness.
+
+### Setup
+1. **Add your API key to GitHub Secrets:**
+   - Go to Settings → Secrets and variables → Actions
+   - Click "New repository secret"
+   - Name: `ANTHROPIC_API_KEY`
+   - Value: Your Anthropic API key (never commit this!)
+
+2. **Enable the workflow:**
+   - The audit runs weekly (Sunday at midnight UTC)
+   - Or trigger manually from the Actions tab
+   - Check the badge above for current status
+
+### What It Does
+- Validates all agent command references exist
+- Checks agent quality and freshness
+- Creates GitHub issues for critical problems
+- Uploads detailed audit reports as artifacts
+- Uses actual Claude intelligence, not just pattern matching
+
+See `.claude/agents/agent-auditor.md` for the audit logic.
 
 ## Contributing
 
