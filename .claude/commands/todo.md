@@ -45,4 +45,4 @@ esac
 
 ## Notes
 
-For advanced todo operations with more options, use `/todo-detailed`.
+This command delegates to npm scripts for token efficiency.
