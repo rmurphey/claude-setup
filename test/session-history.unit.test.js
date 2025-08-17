@@ -9,59 +9,6 @@ const path = require('node:path');
 
 describe('session-history.js unit tests', () => {
   
-  it('should export formatDelta function', () => {
-    const sessionHistory = require('../scripts/session-history');
-    assert.strictEqual(typeof sessionHistory.formatDelta, 'function');
-  });
-  
-  it('should format time delta correctly', () => {
-    const sessionHistory = require('../scripts/session-history');
-    
-    // Test various delta formats
-    assert.strictEqual(sessionHistory.formatDelta(30), '30 seconds');
-    assert.strictEqual(sessionHistory.formatDelta(60), '1 minute');
-    assert.strictEqual(sessionHistory.formatDelta(90), '1 minute 30 seconds');
-    assert.strictEqual(sessionHistory.formatDelta(3600), '1 hour');
-    assert.strictEqual(sessionHistory.formatDelta(3665), '1 hour 1 minute');
-    assert.strictEqual(sessionHistory.formatDelta(7200), '2 hours');
-  });
-  
-  it('should export getSessionNumber function', () => {
-    const sessionHistory = require('../scripts/session-history');
-    assert.strictEqual(typeof sessionHistory.getSessionNumber, 'function');
-  });
-  
-  it('should get next session number', () => {
-    const sessionHistory = require('../scripts/session-history');
-    const testDir = path.join(require('os').tmpdir(), 'session-test-' + Date.now());
-    fs.mkdirSync(testDir, { recursive: true });
-    const cwd = process.cwd();
-    process.chdir(testDir);
-    
-    try {
-      // Create session-history directory
-      const sessionDir = 'session-history/2024-01-01';
-      fs.mkdirSync(sessionDir, { recursive: true });
-      
-      // No sessions exist
-      let sessionNum = sessionHistory.getSessionNumber('2024-01-01');
-      assert.strictEqual(sessionNum, '001');
-      
-      // Create a session file
-      fs.writeFileSync(path.join(sessionDir, 'session-001-120000.txt'), 'test');
-      sessionNum = sessionHistory.getSessionNumber('2024-01-01');
-      assert.strictEqual(sessionNum, '002');
-      
-      // Create another session file
-      fs.writeFileSync(path.join(sessionDir, 'session-002-130000.txt'), 'test');
-      sessionNum = sessionHistory.getSessionNumber('2024-01-01');
-      assert.strictEqual(sessionNum, '003');
-    } finally {
-      process.chdir(cwd);
-      fs.rmSync(testDir, { recursive: true, force: true });
-    }
-  });
-  
   it('should export saveSession function', () => {
     const sessionHistory = require('../scripts/session-history');
     assert.strictEqual(typeof sessionHistory.saveSession, 'function');

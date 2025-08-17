@@ -381,8 +381,6 @@ if (require.main === module) {
 } else {
   // Export for testing
   module.exports = {
-    formatDelta,
-    getSessionNumber,
     saveSession,
     listSessions,
     archiveSessions

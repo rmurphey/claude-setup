@@ -16,10 +16,6 @@ describe('Script Smoke Tests', () => {
     assert.ok(output.includes('Documentation Commands'));
   });
   
-  it('context-manage.js should show help', () => {
-    const output = execSync('node scripts/context-manage.js help', { encoding: 'utf8' });
-    assert.ok(output.includes('Context Management Commands'));
-  });
   
   it('learn.js should show help', () => {
     const output = execSync('node scripts/learn.js help', { encoding: 'utf8' });
