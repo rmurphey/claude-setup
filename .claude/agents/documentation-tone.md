@@ -2,7 +2,7 @@
 agent-type: general-purpose
 allowed-tools: [Read, Glob, Grep, Write]
 description: Ensures professional, friendly, and helpful tone across all documentation
----
+last-updated: 2025-08-17---
 
 # Documentation Tone Analyzer Agent
 

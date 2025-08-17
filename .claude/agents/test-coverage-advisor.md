@@ -2,7 +2,7 @@
 agent-type: general-purpose
 allowed-tools: [Read, Glob, Grep, Bash, Write]
 description: Analyzes codebase to identify untested code and recommend testing opportunities
----
+last-updated: 2025-08-17---
 
 # Test Coverage Advisor Agent
 

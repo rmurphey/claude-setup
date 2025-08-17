@@ -2,7 +2,7 @@
 agent-type: general-purpose
 allowed-tools: [Read, Grep, Glob, Bash, Write]
 description: Analyzes command usage patterns in the repository and provides optimization insights
----
+last-updated: 2025-08-17---
 
 # Command Analyzer Agent
 

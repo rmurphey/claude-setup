@@ -2,6 +2,7 @@
 agent-type: general-purpose
 allowed-tools: [Read, Glob, Bash, Write, Edit]
 description: Optimizes commands for token efficiency and performance through npm script delegation and code improvements
+last-updated: 2025-08-17
 ---
 
 # Command Optimizer Agent

@@ -2,7 +2,7 @@
 agent-type: general-purpose
 allowed-tools: [Read, Bash, Grep, Glob, Write]
 description: Analyzes captured session history to extract development patterns, insights, and learning opportunities
----
+last-updated: 2025-08-17---
 
 # Session Retrospective Agent
 

@@ -2,7 +2,7 @@
 agent-type: general-purpose
 allowed-tools: [Read, Glob, Grep, Write]
 description: Audits documentation completeness and consistency across the command library
----
+last-updated: 2025-08-17---
 
 # Documentation Auditor Agent
 
