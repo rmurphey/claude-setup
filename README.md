@@ -3,7 +3,7 @@
 **A living reference implementation of professional Claude Code commands and workflows**
 
 [![Version](https://img.shields.io/badge/version-2.0.0-blue)](https://github.com/rmurphey/claude-setup)
-[![Commands](https://img.shields.io/badge/commands-17-green)](.claude/commands/)
+[![Commands](https://img.shields.io/badge/commands-18-green)](.claude/commands/)
 [![License](https://img.shields.io/badge/license-MIT-purple)](LICENSE)
 [![Token Efficiency](https://img.shields.io/badge/token%20savings-87%25-orange)](docs/TOKEN_EFFICIENCY.md)
 
@@ -50,6 +50,46 @@ cd my-project
 ✅ **Production-Tested**: Commands refined through real-world usage  
 ✅ **Self-Documenting**: The repository demonstrates every pattern it teaches
 
+## 🎯 Repository Philosophy: Teaching Through Balance
+
+This repository demonstrates that **token efficiency isn't about hiding work in scripts—it's about choosing the right tool for the job.**
+
+### Three Approaches We Demonstrate
+
+| Approach | Token Cost | Best For | Example |
+|----------|------------|----------|---------|
+| **Direct Implementation** | ~2000 tokens | Learning patterns, one-off tasks, custom logic | Claude analyzes and formats commits directly |
+| **Script Delegation** | ~100 tokens | Repetitive tasks, stable operations | `npm run lint` instead of manual checks |
+| **Hybrid Approach** | ~500 tokens | Complex orchestration, intelligent automation | Script collects data, Claude makes decisions |
+
+### When to Use Each Approach
+
+**Use Direct Implementation when:**
+- Teaching or learning new patterns
+- Solving unique, one-time problems
+- Customization is more valuable than efficiency
+- You need to see Claude's problem-solving process
+
+**Use Script Delegation when:**
+- The task is repetitive and well-defined
+- The logic rarely changes
+- Speed and consistency matter more than flexibility
+- You're doing the same thing multiple times per session
+
+**Use Hybrid Approach when:**
+- You need both efficiency and intelligence
+- The task has stable parts and variable parts
+- You want to leverage existing tools with AI judgment
+- Real-world complexity requires both patterns
+
+### The Key Insight
+
+A reference repository that only shows token-saving tricks fails its educational mission. By demonstrating multiple approaches and explaining tradeoffs, we teach users to make intelligent decisions rather than blindly copying patterns.
+
+> **"Teach thinking, not just tricks."**
+
+Each command in this repository includes metadata showing its approach and typical token usage, helping you understand the real costs and benefits of different patterns.
+
 ## Command Categories
 
 ### 🎯 Core Workflow Commands
@@ -84,7 +124,6 @@ cd my-project
 ### 🆕 New Commands (2025 Best Practices)
 - **`/tdd`** - Test-driven development workflow ([view command](.claude/commands/tdd.md))
 - **`/ai-review`** - Automated PR review (Coming Soon)
-- **`/context-manage`** - Context window optimization ([view command](.claude/commands/context-manage.md))
 - **`/security-scan`** - Security vulnerability check (Coming Soon)
 
 ## 🤖 Claude Code Agents
@@ -462,24 +501,25 @@ MIT License - see [LICENSE](LICENSE) file for details.
 *A living reference implementation for the Claude Code community*  
 *This repository uses its own commands - explore our git history to see them in action*
 
-### Living Examples from This Repository
+### 📚 Living Examples: Learning from Our History
 
-- [🔴 test: add failing test for updateCommandCatalog isolation (TDD RED)](../../commit/00e7a22)
-- [🔴 test: add failing tests for tdd.js framework detection (TDD RED)](../../commit/2ce43d1)
-- [🔴 test: add failing tests for learn.js functions (TDD RED)](../../commit/8b90d58)
-- [🔴 test: add failing tests for formatBytes and estimateTokens (TDD RED)](../../commit/1fdac58)
-- [🔴 test: add failing tests for findBrokenLinks (TDD RED phase)](../../commit/8ec6319)
-- [feat: remove 3 more complex maintenance commands](../../commit/993dd82)
-- [feat: remove all detailed command variants for token efficiency](../../commit/0e46070)
-- [feat: remove all recovery commands per quality audit](../../commit/50be84f)
-- [feat: add repo-quality-auditor agent for comprehensive quality analysis](../../commit/e498add)
-- [feat: implement test coverage using Node's built-in test runner](../../commit/fca9905)
-- [fix: update docs script to count all commands recursively](../../commit/30f57e8)
-- [fix: remove duplicate /planning/reflect command](../../commit/d00bd7c)
-- [fix: add missing frontmatter to 5 commands](../../commit/73f0e62)
-- [docs: update COMMAND_CATALOG to reflect consolidation complete](../../commit/15815ad)
-- [docs: update COMMAND_CATALOG after recovery removal](../../commit/838bdcd)
-- [docs: tone down TDD cheerleading to be more realistic](../../commit/4466c42)
-- [refactor: reorganize ACTIVE_WORK.md with simplified planning structure](../../commit/870aede)
-- [refactor: remove remaining complex planning commands](../../commit/b93bae0)
-- [refactor: remove complex planning commands (design, defer)](../../commit/baa0b7c)
+Explore how we use our own tools in practice. Each example demonstrates a key principle:
+
+#### Test-Driven Development
+- [🔴 test: add failing tests for learn.js functions (TDD RED)](../../commit/8b90d58) — Start with clear failure
+- [🟢 test: implement formatBytes and estimateTokens functions](../../commit/1fdac58) — Make tests pass minimally
+- [test: add tests for retrospective.js testability and add tests](../../commit/101686e) — Refactor with confidence
+
+#### Simplification & Token Efficiency  
+- [feat: remove all detailed command variants for token efficiency](../../commit/0e46070) — Less is more
+- [feat: remove 3 more complex maintenance commands](../../commit/993dd82) — Ruthless simplification
+- [refactor: remove script tests in favor of utility testing](../../commit/18f164d) — Focus testing effort
+
+#### Architecture & Design
+- [feat: rewrite setup.js with intelligent conflict handling](../../commit/3adfa17) — Smart automation
+- [feat: add repo-quality-auditor agent for comprehensive quality analysis](../../commit/e498add) — Agent vs command pattern
+- [refactor: reorganize ACTIVE_WORK.md with simplified planning structure](../../commit/870aede) — Evolving workflow
+
+#### Continuous Improvement
+- [fix: update docs script to count all commands recursively](../../commit/30f57e8) — Iterative refinement
+- [docs: add critical instruction to always use date command](../../commit/33b2c2f) — Learning from mistakes

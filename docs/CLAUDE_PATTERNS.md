@@ -179,7 +179,7 @@ const CONTEXT_PRIORITY = {
 | Action | verb | `commit`, `test`, `deploy` |
 | Query | noun | `status`, `metrics`, `report` |
 | Management | verb-noun | `update-docs`, `check-quality` |
-| Meta | meta-action | `context-manage`, `token-check` |
+| Meta | meta-action | `token-check`, `session-save` |
 
 ### Command Discovery
 ```bash

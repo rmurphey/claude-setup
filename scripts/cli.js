@@ -32,10 +32,6 @@ const commands = {
   retrospective: {
     script: 'retrospective.js',
     description: 'Session retrospective analysis'
-  },
-  'context-manage': {
-    script: 'context-manage.js',
-    description: 'Manage Claude context window'
   }
 };
 
