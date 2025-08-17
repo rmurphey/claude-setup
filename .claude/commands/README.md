@@ -4,10 +4,9 @@
 
 Commands are organized by frequency of use and purpose:
 
-### Root Level - Core Workflow (11 commands)
+### Root Level - Core Workflow (10 commands)
 Always-useful commands for daily development:
-- `atomic-commit` - Enforce atomic commit discipline
-- `commit` - Git commit with quality checks
+- `commit` - Atomic commits with quality checks (1-3 files)
 - `docs` - Documentation maintenance
 - `hygiene` - Code quality checks
 - `learn` - Capture insights and learnings
