@@ -10,9 +10,9 @@ const fs = require('node:fs');
 describe('monitor-repo.js', () => {
   // Clean up test files after tests
   const testFiles = [
-    '.monitor-status-test.json',
-    '.monitor-history-test.json',
-    '.monitor-config-test.json'
+    '.monitor-status.json',
+    '.monitor-history.json',
+    '.monitor-config.json'
   ];
   
   function cleanupTestFiles() {
@@ -249,6 +249,9 @@ describe('monitor-repo.js', () => {
   
   describe('isNewFailure', () => {
     it('should identify new failures correctly', () => {
+      // Clean up before test to ensure clean state
+      cleanupTestFiles();
+      
       const monitor = require('../scripts/monitor-repo');
       const failure = {
         name: 'New Test',

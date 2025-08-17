@@ -38,7 +38,7 @@ async function checkWorkflowStatus(options = {}) {
     }
     
     return runs;
-  } catch (error) {
+  } catch {
     // Return empty array if gh command fails (e.g., not in a git repo)
     return [];
   }
@@ -99,7 +99,7 @@ function loadConfig() {
     if (fs.existsSync(CONFIG_FILE)) {
       return JSON.parse(fs.readFileSync(CONFIG_FILE, 'utf8'));
     }
-  } catch (error) {
+  } catch {
     // Ignore errors and use defaults
   }
   
@@ -128,7 +128,7 @@ function loadHistory() {
     if (fs.existsSync(HISTORY_FILE)) {
       return JSON.parse(fs.readFileSync(HISTORY_FILE, 'utf8'));
     }
-  } catch (error) {
+  } catch {
     // Return empty array on error
   }
   return [];
