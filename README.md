@@ -99,33 +99,15 @@ Each command in this repository includes metadata showing its approach and typic
 - **`/commit`** - Quality-checked commits ([view command](.claude/commands/commit.md))
 - **`/next`** - AI-recommended next steps ([view command](.claude/commands/next.md))
 
-### 📋 Planning & Design
-- **`/design`** - Feature planning documentation (Coming Soon)
-- **`/estimate`** - Claude usage cost estimation (Coming Soon)
-- **`/defer`** - Task deferral management (Coming Soon)
-- **`/issue`** - GitHub issue workflow (Coming Soon)
 
 ### 📚 Documentation & Learning
 - **`/docs`** - Documentation generation ([view command](.claude/commands/docs.md))
 - **`/learn`** - Capture insights ([view command](.claude/commands/learn.md))
-- **`/reflect`** - Session reflection (Coming Soon)
-- **`/update-docs`** - Auto-update docs (Coming Soon)
 
 ### 🚀 Release & Quality
 - **`/push`** - Push with quality checks ([view command](.claude/commands/push.md))
-- **`/version-tag`** - Version management (Coming Soon)
-- **`/maintainability`** - Code analysis (Coming Soon)
 - **`/atomic-commit`** - Small commits ([view command](.claude/commands/atomic-commit.md))
-
-### 🛠️ Development Utilities
-- **`/archive`** - Archive completed work (Coming Soon)
-- **`/edit-not-create`** - Prefer editing ([view command](.claude/commands/edit-not-create.md))
-- **`/find-working-equivalent`** - Find examples (Coming Soon)
-
-### 🆕 New Commands (2025 Best Practices)
 - **`/tdd`** - Test-driven development workflow ([view command](.claude/commands/tdd.md))
-- **`/ai-review`** - Automated PR review (Coming Soon)
-- **`/security-scan`** - Security vulnerability check (Coming Soon)
 
 ## 🤖 Claude Code Agents
 
@@ -248,28 +230,23 @@ git commit -m "feat: add Claude Code command templates"
 /hygiene
 # Output: ✅ All checks passing
 
-# 2. Create design for new feature
-/design user authentication
-# Creates: .claude/designs/user-authentication.md
+# 2. Start with TDD
+/tdd start "new feature"
+# Creates test file and guides through red-green-refactor
 
-# 3. Estimate Claude usage
-/estimate feature medium
-# Output: 50-120 messages estimated
+# 3. Track your work
+/todo add "Write failing tests"
+/todo add "Implement feature"
+/todo add "Refactor and optimize"
 
-# 4. Track your work
-/todo add "Implement login endpoint"
-/todo add "Add password validation"
-/todo add "Create user session handling"
+# 4. Capture learnings
+/learn "TDD helps clarify requirements before coding"
 
 # 5. Make quality-checked commits
-/commit feat "add user authentication endpoint"
-# Runs: lint, tests, security checks before committing
+/commit feat "add new feature with tests"
+# Runs: lint, tests before committing
 
-# 6. Check maintainability
-/maintainability
-# Output: Score: 85/100 - Good maintainability
-
-# 7. Push when ready
+# 6. Push when ready
 /push
 # Validates and pushes to remote
 ```
@@ -316,7 +293,6 @@ Extend commands with your tools:
 # In .claude/commands/commit.md
 # Add your specific checks
 npm run typecheck
-npm run security-scan
 npm run your-custom-check
 ```
 
@@ -330,19 +306,13 @@ cp .claude/commands/hygiene.md .claude/commands/deploy.md
 ## Command Categories
 
 ### 🏃 Quick Actions (< 1 min)
-`/todo`, `/next`, `/defer`, `/archive`
+`/todo`, `/next`, `/hygiene`
 
-### 🔍 Analysis Commands (1-5 min)
-`/hygiene`, `/maintainability`, `/estimate`
-
-### 📝 Documentation (5-15 min)
-`/design`, `/docs`, `/learn`, `/reflect`
+### 📝 Documentation & Learning
+`/docs`, `/learn`, `/retrospective`
 
 ### 🔧 Development Workflow
-`/commit`, `/push`, `/atomic-commit`, `/issue`
-
-### 🎯 Code Quality
-`/edit-not-create`, `/find-working-equivalent`, `/update-docs`
+`/commit`, `/push`, `/atomic-commit`, `/tdd`
 
 ## Understanding Command Templates
 
@@ -374,10 +344,9 @@ When you type `/command` in Claude Code:
 │   ├── commit.md      # Quality-checked commits
 │   ├── todo.md        # Task management
 │   └── ...            # More production-ready commands
-├── designs/           # Feature design documents
-├── issues/            # GitHub issue contexts
-├── metrics.json       # Usage metrics (self-tracking)
-└── learnings.md       # Captured insights from usage
+├── learnings/         # Monthly learning archives
+├── agents/            # Claude Code agents
+└── session-history/   # Development session archives
 
 CLAUDE.md              # Project AI guidelines
 ACTIVE_WORK.md         # Current session tracking
@@ -493,7 +462,6 @@ This repository uses Claude Code CLI to automatically audit agents for quality a
 ### What It Does
 - Validates all agent command references exist
 - Checks agent quality and freshness
-- Creates GitHub issues for critical problems
 - Uploads detailed audit reports as artifacts
 - Uses actual Claude intelligence, not just pattern matching
 
