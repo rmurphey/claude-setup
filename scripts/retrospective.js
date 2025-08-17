@@ -220,8 +220,8 @@ if (require.main === module) {
   module.exports = {
     generateReport,
     analyzeGitHistory,
-    analyzeFileChanges,
-    generateSummary,
+    getMetrics,
+    identifyLearnings,
     updateLearnings,
     runCommand
   };

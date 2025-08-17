@@ -8,6 +8,7 @@
 ## Ideas & Planning  
 - ⏸️ VS Code extension integration
 
+
 ## Deferred/Backlog
 
 ---
