@@ -6,16 +6,9 @@
 - [ ] Create a VERY SIMPLE script that can be used via npx to add these commands to your project
 
 ## Ideas & Planning  
-- 💡 Add more production commands (ai-review, security-scan, breaking-change)
-- 💡 Build metrics dashboard visualization
-- 💡 Set up GitHub Actions for documentation validation
+- ⏸️ VS Code extension integration
 
 ## Deferred/Backlog
-- ⏸️ Create framework-specific command sets (React, Python, Go, Rust)
-- ⏸️ Multi-language command sets (beyond JS/TS)
-- ⏸️ Visual metrics dashboard
-- ⏸️ VS Code extension integration
-- ⏸️ Team collaboration features
 
 ---
 
