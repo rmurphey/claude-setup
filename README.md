@@ -53,9 +53,7 @@ cd my-project
 
 ## 🎯 Repository Philosophy: Teaching Through Balance
 
-This repository demonstrates that **token efficiency isn't about hiding work in scripts—it's about choosing the right tool for the job.**
-
-### Three Approaches We Demonstrate
+This repository demonstrates various ways of setting up Claude Code commands, including methods that limit token usage. You'll see these three methods:
 
 | Approach | Token Cost | Best For | Example |
 |----------|------------|----------|---------|
@@ -83,12 +81,6 @@ This repository demonstrates that **token efficiency isn't about hiding work in 
 - You want to leverage existing tools with AI judgment
 - Real-world complexity requires both patterns
 
-### The Key Insight
-
-A reference repository that only shows token-saving tricks fails its educational mission. By demonstrating multiple approaches and explaining tradeoffs, we teach users to make intelligent decisions rather than blindly copying patterns.
-
-> **"Teach thinking, not just tricks."**
-
 Each command in this repository includes metadata showing its approach and typical token usage, helping you understand the real costs and benefits of different patterns.
 
 ## Command Categories
@@ -114,7 +106,7 @@ Each command in this repository includes metadata showing its approach and typic
 
 ### Commands vs Agents
 - **Commands**: Routine tasks you do the same way every time (`/hygiene`, `/commit`)
-- **Agents**: Complex analysis requiring intelligence and decision-making
+- **Agents**: Complex analysis requiring "intelligence" and decision-making
 
 ### Available Agents
 
@@ -122,11 +114,19 @@ Each command in this repository includes metadata showing its approach and typic
 - **`command-analyzer`** - Analyzes command usage patterns and suggests optimizations
 - **`session-insights`** - Extracts patterns from development session history  
 - **`documentation-auditor`** - Audits documentation completeness and consistency
+- **`repo-quality-auditor`** - Comprehensive repository audit for completeness and conflicts
 
+#### 🎯 Planning & Guidance
+- **`next-priorities`** - Analyzes project state to recommend next development priorities
+- **`usage-estimator`** - Provides intelligent Claude usage estimates for development tasks
+
+#### 🧪 Testing & Quality
+- **`test-coverage-advisor`** - Identifies untested code and recommends testing opportunities
+- **`agent-auditor`** - Audits other agents for quality, correctness, and relevance
 
 ### When to Use Agents
 Use agents when you need:
-- 🧠 **Intelligence**: Analysis across multiple files with pattern recognition
+- 🧠 **Analysis**: Analysis across multiple files with pattern recognition
 - 📈 **Insights**: Deep understanding of your development practices
 - 🔧 **Optimization**: Strategic improvements to your workflows
 - 📋 **Planning**: Custom workflows for complex, multi-step processes
@@ -157,7 +157,7 @@ Without TDD, Claude is like a brilliant intern with no supervision:
 - Adds "helpful" features you didn't ask for
 - Creates bugs you'll debug for hours
 
-With TDD, Claude becomes a senior engineer:
+With TDD, Claude becomes somewhat more capable and predictable:
 - Writes exactly what tests specify
 - Stops when tests pass
 - Ships working code every time
@@ -468,13 +468,13 @@ See `.claude/agents/agent-auditor.md` for the audit logic.
 
 ## Contributing
 
-We welcome contributions! This repository serves as a reference, so all contributions must:
+This repository serves as a reference, so all contributions must:
+
 - Include working examples
 - Document token efficiency
 - Provide citations for claims
 - Pass our test suite
-
-Contributing guidelines coming soon.
+- Include tests as appropriate
 
 ## Version History
 
