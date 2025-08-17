@@ -308,7 +308,6 @@ Create `.claude/agents/reports/command-optimization-[date].md`:
 ## Integration Considerations
 - Coordinate with documentation-auditor for consistency
 - Reference command-analyzer findings
-- Align with workflow-composer patterns
 - Consider session-insights usage patterns
 
 ## Validation Process

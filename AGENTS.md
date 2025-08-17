@@ -32,7 +32,6 @@
 - "Analyze my development patterns over 6 months" → `session-insights` agent
 - "Find optimization opportunities in my commands" → `command-optimizer` agent
 - "Audit my documentation for completeness" → `documentation-auditor` agent
-- "Create a workflow for feature development" → `workflow-composer` agent
 
 ## Quick Decision Tree
 
@@ -106,10 +105,6 @@ Is this something you do routinely?
 **What it does:** Processes session history to extract learning patterns
 **Example situation:** "I want to see how my productivity has changed over time"
 
-### `workflow-composer`
-**When to use:** You need a custom workflow for a complex task
-**What it does:** Creates optimized command sequences for specific goals
-**Example situation:** "I need a workflow for feature development that includes design, implementation, and testing"
 
 ### `documentation-auditor`
 **When to use:** You want to ensure documentation quality
@@ -169,10 +164,6 @@ I want to understand how my development practices have evolved. Use the session-
 /hygiene
 ```
 
-### Creating a Custom Workflow with an Agent
-```
-I'm implementing user authentication for my app. Use the workflow-composer agent to create a comprehensive workflow that includes design, implementation, testing, and deployment phases.
-```
 
 ## Best Practices
 
@@ -222,9 +213,7 @@ I'm implementing user authentication for my app. Use the workflow-composer agent
 
 ### Project Planning: Mixed
 ```bash
-# Start with agent for planning
-# workflow-composer agent: Create feature workflow
-# Then use commands for execution
+# Use commands for execution
 /design "feature-name"
 /estimate feature
 /commit feat "implement feature"

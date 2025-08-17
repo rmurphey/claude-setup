@@ -241,7 +241,6 @@ Create `.claude/agents/reports/documentation-audit-[date].md`:
 ## Integration Points
 - Reference existing style guides
 - Use command-analyzer results for accuracy checks
-- Coordinate with workflow-composer for example validation
 - Align with session-insights for real-world usage patterns
 
 Execute this audit systematically to ensure the documentation maintains professional quality and serves users effectively.

@@ -211,5 +211,4 @@ When Claude CLI becomes available:
 ## Integration Points
 - Works with command-optimizer for consistency
 - Complements documentation-auditor for docs
-- Feeds into workflow-composer for gaps
 - Enables self-maintaining repository vision

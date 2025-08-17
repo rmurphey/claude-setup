@@ -143,8 +143,6 @@ Each command in this repository includes metadata showing its approach and typic
 - **`documentation-auditor`** - Audits documentation completeness and consistency
 - **`command-optimizer`** - Optimizes commands for token efficiency and performance
 
-#### 🔄 Workflow & Automation  
-- **`workflow-composer`** - Creates custom command sequences for complex tasks
 
 ### When to Use Agents
 Use agents when you need:

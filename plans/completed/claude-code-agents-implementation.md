@@ -30,7 +30,6 @@ Designed agents that serve the repository itself:
 ├── reports/                     # Agent output directory
 ├── command-analyzer.md          # Usage pattern analysis
 ├── session-insights.md          # Development pattern extraction
-├── workflow-composer.md         # Custom workflow creation
 ├── documentation-auditor.md     # Quality assurance auditing
 └── command-optimizer.md         # Token efficiency optimization
 ```
@@ -55,7 +54,6 @@ Each agent serves the repository's own improvement:
 - **session-insights**: Learns from actual development sessions
 - **documentation-auditor**: Maintains documentation quality
 - **command-optimizer**: Improves token efficiency
-- **workflow-composer**: Creates custom development processes
 
 ## Key Innovation: When/Why Framework
 
@@ -85,7 +83,6 @@ Is this a routine task you do the same way every time?
 2. **session-insights**: Extracts patterns from real development sessions
 3. **documentation-auditor**: Ensures professional documentation quality
 4. **command-optimizer**: Finds token-saving opportunities
-5. **workflow-composer**: Creates custom workflows for complex tasks
 
 ### For Users
 - Clear guidance on when to use each approach

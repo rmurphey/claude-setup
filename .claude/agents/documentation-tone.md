@@ -358,7 +358,6 @@ Based on analysis, recommend adding to style guide:
 ## Integration with Other Agents
 - Coordinate with `documentation-auditor` for technical accuracy
 - Use `session-insights` to understand user pain points
-- Reference `workflow-composer` for user journey context
 
 ## Tone Checking Rules
 

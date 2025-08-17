@@ -78,7 +78,6 @@ Measurable outcomes
 - Provides usage examples and documentation
 - Considers integration with existing systems
 
-**Example**: `workflow-composer`
 
 **When to use**: When you need to create custom solutions for complex problems
 
@@ -166,10 +165,6 @@ Agents that provide insights about development practices:
 - `session-insights` - Analyzes development patterns
 - Future: `productivity-analyzer`, `learning-tracker`
 
-### Workflow Automation Agents
-Agents that create or optimize processes:
-- `workflow-composer` - Creates custom workflows
-- Future: `automation-builder`, `process-optimizer`
 
 ## Usage Patterns
 
@@ -191,11 +186,6 @@ Agents that create or optimize processes:
 "Use the documentation-auditor agent to ensure all docs are complete"
 ```
 
-### Custom Workflow Creation
-```bash
-# Use when starting new projects or processes
-"Use the workflow-composer agent to create a workflow for API development"
-```
 
 ## Performance Considerations
 
@@ -218,10 +208,7 @@ Agents that create or optimize processes:
 
 ### Complementary Usage
 ```bash
-# Agent creates the plan
-"Use workflow-composer to create feature development workflow"
-
-# Commands execute the plan
+# Commands execute plans
 /design "feature-name"
 /estimate feature medium
 /todo add "implement core logic"

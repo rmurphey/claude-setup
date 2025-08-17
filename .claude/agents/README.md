@@ -15,7 +15,6 @@ Agents are autonomous, multi-step task handlers that can:
 ### Meta-Repository Agents
 - **command-analyzer** - Analyzes command usage patterns and suggests optimizations
 - **session-insights** - Extracts patterns from session history
-- **workflow-composer** - Creates custom command sequences for complex tasks
 - **documentation-auditor** - Ensures documentation completeness and consistency
 - **command-optimizer** - Optimizes commands for token efficiency
 
