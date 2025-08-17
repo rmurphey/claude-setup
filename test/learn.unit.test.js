@@ -1,4 +1,4 @@
-const { describe, it } = require('node:test');
+const { describe, it, beforeEach, afterEach } = require('node:test');
 /**
  * Unit tests for learn.js functions
  * TDD approach: Red-Green-Refactor
