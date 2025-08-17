@@ -29,7 +29,7 @@ args.forEach(arg => {
 function runCommand(cmd) {
   try {
     return execSync(cmd, { encoding: 'utf8', stdio: ['pipe', 'pipe', 'ignore'] }).trim();
-  } catch (e) {
+  } catch {
     return '';
   }
 }
@@ -107,14 +107,14 @@ function generateReport() {
   
   if (options.metrics) {
     const metrics = getMetrics();
-    console.log(`\n📈 Metrics:`);
+    console.log('\n📈 Metrics:');
     console.log(`  Files Changed: ${metrics.filesChanged}`);
     console.log(`  Lines Added: ${metrics.insertions}`);
     console.log(`  Lines Removed: ${metrics.deletions}`);
     console.log(`  Net Change: ${metrics.insertions - metrics.deletions}`);
   }
   
-  console.log(`\n🔍 Commit Patterns:`);
+  console.log('\n🔍 Commit Patterns:');
   Object.entries(patterns)
     .filter(([, count]) => count > 0)
     .sort(([, a], [, b]) => b - a)
@@ -123,20 +123,20 @@ function generateReport() {
       console.log(`  ${type}: ${count} (${percentage}%)`);
     });
   
-  console.log(`\n💡 Recent Changes:`);
+  console.log('\n💡 Recent Changes:');
   commits.slice(0, 5).forEach(commit => {
     console.log(`  • ${commit}`);
   });
   
   const learnings = identifyLearnings(commits);
   if (learnings.length > 0) {
-    console.log(`\n🎓 Potential Learnings:`);
+    console.log('\n🎓 Potential Learnings:');
     learnings.forEach(learning => {
       console.log(`  • ${learning}`);
     });
   }
   
-  console.log(`\n📝 Recommendations:`);
+  console.log('\n📝 Recommendations:');
   
   // Generate recommendations based on patterns
   if (patterns.test === 0) {
@@ -201,7 +201,6 @@ ${learnings.map(l => `- ${l}`).join('\n') || '- Session focused on implementatio
   const index = content.indexOf(marker);
   
   if (index !== -1) {
-    const nextSection = content.indexOf('\n##', index + marker.length);
     const insertPoint = content.indexOf('\n', index + marker.length) + 1;
     
     content = content.slice(0, insertPoint) + entry + content.slice(insertPoint);

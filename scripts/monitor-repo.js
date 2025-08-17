@@ -7,7 +7,6 @@
 
 const { execSync } = require('child_process');
 const fs = require('fs');
-const path = require('path');
 
 const DEFAULT_INTERVAL = 5 * 60 * 1000; // 5 minutes
 const STATUS_FILE = '.monitor-status.json';
@@ -23,7 +22,7 @@ async function checkWorkflowStatus() {
       stdio: ['pipe', 'pipe', 'pipe']
     });
     return JSON.parse(output);
-  } catch (error) {
+  } catch {
     // Return empty array if gh command fails (e.g., not in a git repo)
     return [];
   }
@@ -40,7 +39,7 @@ async function checkPullRequests() {
       stdio: ['pipe', 'pipe', 'pipe']
     });
     return JSON.parse(output);
-  } catch (error) {
+  } catch {
     // Return empty array if gh command fails
     return [];
   }
@@ -54,7 +53,7 @@ async function checkPullRequests() {
 function formatReport(status) {
   let report = [];
   
-  report.push(`📊 Repository Status Report`);
+  report.push('📊 Repository Status Report');
   report.push(`🕐 ${new Date(status.timestamp).toLocaleString()}`);
   report.push('');
   
@@ -108,7 +107,7 @@ function checkStatus(file = STATUS_FILE) {
       const content = fs.readFileSync(file, 'utf8');
       return JSON.parse(content);
     }
-  } catch (error) {
+  } catch {
     // Return null if can't read or parse
   }
   return null;
@@ -190,7 +189,7 @@ if (require.main === module) {
   
   switch (command) {
     case '--status':
-    case 'status':
+    case 'status': {
       const status = checkStatus();
       if (status) {
         console.log(formatReport(status));
@@ -198,6 +197,7 @@ if (require.main === module) {
         console.log('No monitoring status found. Start monitoring first.');
       }
       break;
+    }
       
     case '--help':
     case 'help':
@@ -209,10 +209,11 @@ if (require.main === module) {
       console.log('  node monitor-repo.js help    Show this help');
       break;
       
-    default:
+    default: {
       // Start monitoring
       const interval = process.argv[3] ? parseInt(process.argv[3]) * 1000 : DEFAULT_INTERVAL;
       startMonitoring(interval);
+    }
   }
 }
 

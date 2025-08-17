@@ -59,7 +59,7 @@ function getLastSaveInfo() {
   if (fs.existsSync(LAST_SAVE_FILE)) {
     try {
       return JSON.parse(fs.readFileSync(LAST_SAVE_FILE, 'utf8'));
-    } catch (e) {
+    } catch {
       return null;
     }
   }
@@ -82,7 +82,7 @@ function getClaudeMetadata() {
   try {
     const version = execSync('claude --version 2>/dev/null', {encoding: 'utf8'}).trim();
     metadata.claudeVersion = version;
-  } catch (e) {
+  } catch {
     // Fallback - version unavailable
     metadata.claudeVersion = 'Claude Code (version unknown)';
   }
@@ -252,7 +252,7 @@ function listSessions() {
             const shortVersion = versionMatch[1].replace(' (Claude Code)', '');
             versionInfo = ` [v${shortVersion}]`;
           }
-        } catch (e) {
+        } catch {
           // Fallback to .meta.json for backwards compatibility
           const metaFile = file.replace('.txt', '.meta.json');
           const metaPath = path.join(dateDir, metaFile);
@@ -263,7 +263,7 @@ function listSessions() {
                 const shortVersion = meta.claudeVersion.replace(' (Claude Code)', '');
                 versionInfo = ` [v${shortVersion}]`;
               }
-            } catch (e) {
+            } catch {
               // Ignore metadata read errors
             }
           }

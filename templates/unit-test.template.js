@@ -7,7 +7,7 @@
  * This test should FAIL initially. That's the point!
  */
 
-const assert = require('assert');
+// const assert = require('assert'); // Uncomment when using assertions
 // const { YourFunction } = require('../src/your-module');  // Uncomment when implementing
 
 describe('YourFeature', () => {
@@ -15,8 +15,8 @@ describe('YourFeature', () => {
   // Start with the happy path
   it('should do exactly what you need', () => {
     // 1. Arrange - Set up your test data
-    const input = 'your test input';
-    const expected = 'expected output';
+    // const input = 'your test input'; // Uncomment and update when implementing
+    // const expected = 'expected output'; // Uncomment and update when implementing
     
     // 2. Act - Call the function (this will fail at first!)
     // const result = YourFunction(input);

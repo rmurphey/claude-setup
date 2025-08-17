@@ -7,7 +7,6 @@
 
 const fs = require('fs');
 const path = require('path');
-const { execSync } = require('child_process');
 
 const command = process.argv[2] || 'help';
 const args = process.argv.slice(3).join(' ');

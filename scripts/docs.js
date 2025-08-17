@@ -61,7 +61,7 @@ function updateReadme() {
   console.log('✅ README updated successfully');
 }
 
-function findBrokenLinks(content, filename) {
+function findBrokenLinks(content, _filename) {
   const brokenLinks = [];
   const linkRegex = /\[([^\]]+)\]\(([^http][^)]+\.md[^)]*)\)/g;
   let match;
@@ -235,9 +235,9 @@ Total Commands: ${commands.length}
   }
   
   // Add summary table
-  catalogContent += `---\n\n## Command Categories Summary\n\n`;
-  catalogContent += `| Category | Count | Purpose |\n`;
-  catalogContent += `|----------|-------|---------|\n`;
+  catalogContent += '---\n\n## Command Categories Summary\n\n';
+  catalogContent += '| Category | Count | Purpose |\n';
+  catalogContent += '|----------|-------|---------|\n';
   catalogContent += `| Core Workflow | ${categories['Core']?.length || 0} | Daily development tasks |\n`;
   catalogContent += `| Maintenance | ${categories['maintenance']?.length || 0} | Repository maintenance |\n`;
   catalogContent += `| Planning | ${categories['planning']?.length || 0} | Planning and ideation |\n`;
@@ -266,7 +266,7 @@ function showCatalog() {
   }
   
   console.log('');
-  console.log("Use '/docs validate' to check for issues");
+  console.log('Use \'/docs validate\' to check for issues');
 }
 
 function updateAll() {
@@ -307,7 +307,7 @@ function updateAll() {
   console.log('📊 Summary:');
   console.log(`  • README.md updated (badge: ${commandCount} commands)`);
   console.log(`  • COMMAND_CATALOG.md updated (${catalogCount} commands documented)`);
-  console.log(`  • Commit examples updated in README.md and CLAUDE.md`);
+  console.log('  • Commit examples updated in README.md and CLAUDE.md');
   console.log(`  • Total documentation files: ${docCount}`);
 }
 
@@ -380,7 +380,7 @@ function validateCommitExists(hash) {
   try {
     execSync(`git rev-parse ${hash} 2>/dev/null`, { encoding: 'utf8' });
     return true;
-  } catch (error) {
+  } catch {
     return false;
   }
 }

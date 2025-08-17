@@ -6,7 +6,6 @@
  */
 
 const fs = require('fs');
-const path = require('path');
 const { execSync, spawn } = require('child_process');
 
 const command = process.argv[2] || 'help';
@@ -244,7 +243,7 @@ function runTests(watch = false) {
       const result = execSync(testCmd.replace('--watch', ''), { encoding: 'utf8' });
       console.log(result);
     }
-  } catch (error) {
+  } catch {
     console.log(`${colors.red}Tests failed!${colors.reset}`);
     console.log('');
     console.log('This is expected in the RED phase.');

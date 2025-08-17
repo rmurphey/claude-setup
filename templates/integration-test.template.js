@@ -5,10 +5,10 @@
  * Perfect for CLI commands, API endpoints, file operations.
  */
 
-const assert = require('assert');
+// const assert = require('assert'); // Uncomment when using assertions
 const fs = require('fs');
 const path = require('path');
-const { execSync } = require('child_process');
+// const { execSync } = require('child_process'); // Uncomment when executing commands
 
 describe('YourFeature Integration', () => {
   

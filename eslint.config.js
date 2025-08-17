@@ -15,7 +15,11 @@ export default [
         global: 'readonly',
         module: 'readonly',
         require: 'readonly',
-        exports: 'readonly'
+        exports: 'readonly',
+        setInterval: 'readonly',
+        clearInterval: 'readonly',
+        setTimeout: 'readonly',
+        clearTimeout: 'readonly'
       }
     },
     rules: {
@@ -26,7 +30,7 @@ export default [
     }
   },
   {
-    files: ['**/*.test.js', '**/*.spec.js'],
+    files: ['**/*.test.js', '**/*.spec.js', '**/templates/*.js'],
     languageOptions: {
       globals: {
         describe: 'readonly',

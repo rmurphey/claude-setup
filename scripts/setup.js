@@ -40,7 +40,7 @@ function isGitRepo() {
   try {
     execSync('git status', { stdio: 'ignore' });
     return true;
-  } catch (e) {
+  } catch {
     return false;
   }
 }

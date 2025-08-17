@@ -109,5 +109,8 @@
     "claude-docs": "./scripts/docs.js",
     "claude-monitor": "./scripts/monitor-repo.js"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "@eslint/js": "^9.33.0",
+    "eslint": "^9.33.0"
+  }
 }

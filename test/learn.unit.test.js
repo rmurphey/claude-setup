@@ -13,16 +13,16 @@ describe('learn.js unit tests', () => {
   let tempDir;
   let originalCwd;
   
-  beforeEach = () => {
+  beforeEach(() => {
     tempDir = createTempDir();
     originalCwd = process.cwd();
     process.chdir(tempDir);
-  };
+  });
   
-  afterEach = () => {
+  afterEach(() => {
     process.chdir(originalCwd);
     cleanupTempDir(tempDir);
-  };
+  });
   
   it('should export ensureSetup function', () => {
     // 🔴 RED - function not exported yet
