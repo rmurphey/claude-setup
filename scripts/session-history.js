@@ -194,7 +194,7 @@ function saveSession(description = '', options = {}) {
   
   // Detect session type and check if we should skip
   const sessionType = options.sessionType || detectSessionType();
-  if (sessionType === 'test' && !options.forceSave) {
+  if (sessionType === 'test' && !options.forceSave && !options.testing) {
     console.log('⏭️  Skipping test session save');
     return null;
   }
@@ -506,6 +506,12 @@ Notes:
 
 // Main execution
 if (require.main === module) {
+  // If no command provided and no args, show help instead of defaulting to save
+  if (!process.argv[2]) {
+    showHelp();
+    process.exit(0);
+  }
+  
   switch (command) {
     case 'save':
       saveSession(args.join('-'));
