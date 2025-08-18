@@ -27,7 +27,6 @@ coverage/
 
 # Local Claude settings (user-specific)
 .claude/settings.local.json
-.claude/agents/reports/
 .claude/workflows/
 .claude/issues/
 .claude/designs/
