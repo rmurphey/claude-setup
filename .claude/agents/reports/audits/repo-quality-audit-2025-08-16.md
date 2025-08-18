@@ -28,7 +28,6 @@ The repository shows strong engineering principles and extensive functionality, 
 
 ### Commands Missing Frontmatter
 1. `/atomic-commit` - Critical workflow command missing metadata
-2. `/archive` - Maintenance command missing structure
 3. `/issue` - GitHub integration command missing tools specification
 4. `/session-history` - Session management missing allowed-tools
 
@@ -174,7 +173,7 @@ The repository shows strong engineering principles and extensive functionality, 
    - Update project CLAUDE.md to align with global guidelines
 
 3. **Address Missing Frontmatter**
-   - Add required frontmatter to atomic-commit.md, archive.md, issue.md, session-history.md
+   - Add required frontmatter to atomic-commit.md, issue.md, session-history.md
    - Ensure all commands specify allowed-tools and description
 
 4. **Update README Badge Accuracy**
@@ -300,7 +299,7 @@ AFTER: /plan with workflow:
 - /design, /estimate, /defer, /idea, /ideation
 
 #### Recovery & Maintenance (8 commands)
-- /recovery-assess, /recovery-plan, /recovery-execute, /find-working-equivalent, /archive, /issue, /maintainability, /maintainability-detailed
+- /recovery-assess, /recovery-plan, /recovery-execute, /find-working-equivalent, /issue, /maintainability, /maintainability-detailed
 
 #### Development Utilities (7 commands)
 - /edit-not-create, /context-manage, /monitor, /tdd, /sync-issues, /version-tag, /update-docs

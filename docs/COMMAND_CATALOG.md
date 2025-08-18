@@ -61,9 +61,6 @@ Location: `.claude/commands/todo.md`
 
 ## Maintenance Commands (4)
 
-### /archive
-Archive completed work and capture lessons learned  
-Location: `.claude/commands/maintenance/archive.md`
 
 ### /maintainability
 Code maintainability analysis and improvement recommendations  

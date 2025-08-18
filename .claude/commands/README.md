@@ -26,9 +26,8 @@ Planning and ideation commands:
 - `ideation` - Brainstorming sessions
 - `reflect` - Periodic reflection
 
-### maintenance/ - Repository Upkeep (7 commands)
+### maintenance/ - Repository Upkeep (6 commands)
 Maintenance and management commands:
-- `archive` - Archive old files
 - `issue` - GitHub issue management
 - `maintainability` - Code quality analysis
 - `session-history` - Session preservation

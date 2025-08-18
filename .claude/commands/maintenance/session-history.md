@@ -23,7 +23,6 @@ Manages raw session history separate from checkpoints:
 - **save**: Capture full conversation transcript
 - **delta**: Save only changes since last save
 - **list**: Show recent session files
-- **archive**: Move old sessions to archive
 
 ## Output
 
@@ -53,8 +52,6 @@ npm run session:delta
 # List recent sessions
 npm run session:list
 
-# Archive old sessions (default: 30 days)
-npm run session:archive -- 60
 ```
 
 ## Important Notes
@@ -68,5 +65,4 @@ npm run session:archive -- 60
 
 1. Save before any context reset
 2. Use descriptive names for important sessions
-3. Archive old sessions periodically
 4. Review saved sessions for patterns
