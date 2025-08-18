@@ -123,6 +123,20 @@ Is this something you do routinely?
 **Example situation:** "How much will it cost to add authentication to my app?"
 
 
+## Agent Structure
+
+Each agent file contains frontmatter metadata followed by detailed instructions:
+
+```yaml
+---
+agent-type: general-purpose | specialized
+allowed-tools: [List of tools the agent can use]
+description: Brief description of the agent's purpose
+---
+```
+
+Followed by detailed instructions for the agent's task execution.
+
 ## When to Create a New Agent
 
 Create a new agent when you have a task that:
@@ -138,6 +152,14 @@ Create a new agent when you have a task that:
 - Routine checks that are always the same
 - Tasks with predictable, standard steps
 - Quick actions you do frequently
+
+### Creating Custom Agents
+
+1. Copy an existing agent template from `.claude/agents/`
+2. Modify the frontmatter metadata
+3. Define clear objectives and steps
+4. Test with real repository data
+5. Document usage examples
 
 ## Usage Examples
 
