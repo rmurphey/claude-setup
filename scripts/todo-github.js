@@ -29,7 +29,6 @@ function formatIssue(issue) {
   const state = parts[1];
   const title = parts[2];
   const labels = parts[3] || '';
-  const updated = parts[4] || '';
   
   const stateIcon = state === 'OPEN' ? '🔵' : '✅';
   const labelStr = labels ? ` [${labels}]` : '';

@@ -269,7 +269,7 @@ async function main() {
   
   // Copy essential root files (only if they don't exist)
   console.log('\n📦 Setting up configuration files...');
-  const filesToCopy = ['CLAUDE.md', 'AGENTS.md', 'ACTIVE_WORK.md'];
+  const filesToCopy = ['CLAUDE.md', 'AGENTS.md'];
   let configCopied = 0;
   
   filesToCopy.forEach(file => {

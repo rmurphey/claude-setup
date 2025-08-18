@@ -156,7 +156,7 @@ function generateReport() {
   }
   
   console.log('  • Review LEARNINGS.md for captured patterns');
-  console.log('  • Update ACTIVE_WORK.md with session insights');
+  console.log('  • Create GitHub issues for next priorities');
   console.log('  • Run tests before next session');
   
   if (options.update) {

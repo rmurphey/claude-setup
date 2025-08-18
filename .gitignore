@@ -91,6 +91,6 @@ ENV/
 # - .claude/agents/ (core product)  
 # - .claude/metrics.json (self-tracking)
 # - session-history/ (learning system)
-# - ACTIVE_WORK.md (workflow tracking)
+# - archive/ (archived workflow files)
 # - internal/ (project decisions)
 # - plans/ (project planning)

@@ -70,7 +70,7 @@ This repository demonstrates balanced approaches to Claude Code commands, optimi
 
 ### 🎯 Core Workflow Commands
 - **`/hygiene`** - Comprehensive project health check ([view command](.claude/commands/hygiene.md))
-- **`/todo`** - Task management with ACTIVE_WORK.md ([view command](.claude/commands/todo.md))
+- **`/todo`** - Task management with GitHub Issues ([view command](.claude/commands/todo.md))
 - **`/commit`** - Quality-checked commits ([view command](.claude/commands/commit.md))
 - **`/next`** - AI-recommended next steps ([view command](.claude/commands/next.md))
 
@@ -151,7 +151,7 @@ Check our project health:
 
 See our active work:
 ```bash
-cat ACTIVE_WORK.md
+npm run todo:list  # Shows open GitHub issues
 ```
 
 ## Example Workflow
@@ -225,6 +225,7 @@ When you type `/<command>` in Claude Code:
 2. Executes the workflow described in the template
 3. Uses only the allowed tools specified
 4. Provides consistent, professional assistance
+```
 
 ## Repository Structure
 
@@ -240,7 +241,7 @@ When you type `/<command>` in Claude Code:
 └── session-history/   # Development session archives
 
 CLAUDE.md              # Project AI guidelines
-ACTIVE_WORK.md         # Current session tracking
+GitHub Issues          # Task tracking (via /todo command)
 package.json           # NPM scripts for token efficiency
 
 docs/
