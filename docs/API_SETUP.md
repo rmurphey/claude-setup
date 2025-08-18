@@ -1,23 +1,49 @@
-# Claude API Setup Guide
+# Claude API Setup Guide for GitHub CI/CD
 
-This guide covers how to configure and use the Claude API for automated agent audits and intelligent analysis features.
+> **TL;DR:** This enables **GitHub Actions** to automatically run the **Agent Auditor** (`.claude/agents/agent-auditor.md`) on a schedule, auditing all your AI agents for quality issues without manual intervention.
 
-## What the API Enables
+This guide covers how to configure the Claude API so **GitHub Actions CI/CD** can automatically run the Agent Auditor agent to perform weekly quality audits of your AI agent library.
 
-With the Claude API configured, you can:
-- 🤖 **Automated Agent Audits** - Weekly quality checks via GitHub Actions
-- 🧠 **Intelligent Analysis** - Beyond simple pattern matching
-- 📊 **Deep Insights** - Claude's reasoning applied to your codebase
-- 🔄 **CI/CD Integration** - Automated quality gates in your pipeline
+## What This Enables: Automated CI/CD Agent Auditing
 
-## Quick Setup (GitHub Actions)
+The API setup allows **GitHub Actions** to run the **Agent Auditor** automatically:
 
-### 1. Get Your API Key
+### The GitHub Actions Workflow
+- 🔄 **Runs automatically** every Sunday at midnight UTC
+- 🤖 **No manual intervention** - CI/CD handles everything
+- 📊 **Creates audit reports** directly in your repository
+- ✅ **Can block merges** if agents fail quality checks
+- 🔔 **Can notify** on Slack/email when issues are found
+
+### What the Agent Auditor Checks
+The **`.claude/agents/agent-auditor.md`** agent that GitHub Actions runs will:
+- 📋 **Audit all agents** in `.claude/agents/` for quality and completeness
+- 🔍 **Validate frontmatter** ensuring proper agent-type and allowed-tools
+- 📝 **Check documentation** for clear instructions and success criteria
+- 🎯 **Verify task focus** ensuring each agent has a single, clear purpose
+- 🚨 **Flag security issues** like overly broad tool access
+
+### Why Use GitHub Actions for This?
+Without automated CI/CD auditing:
+- ❌ You manually review each agent (time-consuming)
+- ❌ Quality issues slip through to production
+- ❌ No consistent quality enforcement across team members
+- ❌ No audit trail of agent quality over time
+
+With GitHub Actions + Claude API:
+- ✅ Automatic weekly quality audits
+- ✅ Consistent quality standards enforced
+- ✅ Historical reports tracked in git
+- ✅ Team notified of issues automatically
+
+## Quick Setup: Enable GitHub Actions CI/CD for Agent Auditing
+
+### 1. Get Your Claude API Key
 - Visit [Anthropic Console](https://console.anthropic.com/)
 - Navigate to API Keys section
 - Create a new key for this project
 
-### 2. Add to GitHub Secrets
+### 2. Add API Key to GitHub Secrets (Required for CI/CD)
 1. Go to your repository on GitHub
 2. Navigate to **Settings** → **Secrets and variables** → **Actions**
 3. Click **"New repository secret"**
@@ -28,10 +54,12 @@ With the Claude API configured, you can:
 
 ⚠️ **NEVER commit your API key to the repository!**
 
-### 3. Enable the Workflow
-The agent audit workflow runs:
-- **Automatically**: Every Sunday at midnight UTC
-- **Manually**: Via Actions tab → Agent Audit → Run workflow
+### 3. GitHub Actions Workflow is Now Enabled
+Once the secret is added, the `.github/workflows/agent-audit.yml` workflow will:
+- **Run automatically**: Every Sunday at midnight UTC
+- **Run manually**: Via Actions tab → Agent Audit → Run workflow
+- **Use the API key**: To run Claude and audit your agents
+- **Commit reports**: Back to your repository for review
 
 ## Local Development Setup
 
@@ -85,29 +113,39 @@ claude config set api-key sk-ant-...
 
 ## Workflow Examples
 
-### Automated Agent Audit
+### Automated Agent Audit (Primary Use Case)
 ```yaml
 # .github/workflows/agent-audit.yml
+# Runs the Agent Auditor to check all agents in your library
 - uses: rmurphey/claude-code-cli@v1
   with:
     api-key: ${{ secrets.ANTHROPIC_API_KEY }}
     command: run .claude/agents/agent-auditor.md
 ```
+This runs the **Agent Auditor** which:
+1. Scans all `.claude/agents/*.md` files
+2. Validates each agent's configuration
+3. Creates a report at `.claude/agents/reports/agent-audit-[date].md`
 
-### Manual Agent Run
+### Manual Local Audit
 ```bash
-# With API key configured
-claude run .claude/agents/repo-quality-auditor.md
+# Run the Agent Auditor locally (requires API key configured)
+claude run .claude/agents/agent-auditor.md
+
+# View the generated report
+cat .claude/agents/reports/agent-audit-*.md
 ```
 
-### CI/CD Quality Gate
-```yaml
-# In your CI pipeline
-- name: Quality Check with Claude
-  env:
-    ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
-  run: |
-    npx claude-code-cli run .claude/agents/test-coverage-advisor.md
+### Other Available Agents (Also Require API)
+```bash
+# Documentation Auditor - checks all documentation
+claude run .claude/agents/documentation-auditor.md
+
+# Session Insights Analyzer - analyzes development patterns
+claude run .claude/agents/session-insights-analyzer.md
+
+# Command Analyzer - audits command templates
+claude run .claude/agents/command-analyzer.md
 ```
 
 ## Troubleshooting
