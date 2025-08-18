@@ -155,43 +155,10 @@ Use agents when you need:
 
 **📖 See [AGENTS.md](AGENTS.md) for the complete guide on when and why to use agents vs commands.**
 
-## 🎯 Development Method: TDD (Yes, Really)
+## Development Method
 
-**We use TDD because it turns Claude from a code volcano into a precision instrument.**
-
-### Why TDD + Claude = ❤️
-
-Without TDD, Claude is like an over-eager intern with no supervision:
-- Writes 1000 lines when you need 100
-- Adds "helpful" features you didn't ask for
-- Creates bugs you'll debug for hours
-
-With TDD, Claude becomes somewhat more capable and predictable:
-- Writes exactly what tests specify
-- Stops when tests pass
-- Ships working code every time
-
-### The Proof Is In Our Commits
-
-Look at our history - every `🔴 RED` commit followed by `🟢 GREEN`:
-```bash
-git log --grep="TDD\|🔴\|🟢" --oneline | head -10
-```
-
-### Your First TDD Experience
-
-```bash
-/tdd start "your feature"  # Claude guides you through the magic
-```
-
-**New to TDD?** Start here: [TDD with Claude - Why It's Actually Cool](docs/TDD_WITH_CLAUDE.md)
-
-### The Numbers Don't Lie
-
-- **Time to implement feature**: 12 minutes average
-- **Bugs in production**: Near zero
-- **Refactoring confidence**: 100%
-- **Developer happiness**: 📈
+This repository uses Test-Driven Development (TDD) which helps Claude write focused, correct code. 
+See [TDD with Claude Guide](docs/TDD_WITH_CLAUDE.md) for why it works so well with AI assistance.
 
 ## Real-World Usage Examples
 
@@ -474,11 +441,6 @@ MIT License - see [LICENSE](LICENSE) file for details.
 ### 📚 Living Examples: Learning from Our History
 
 Explore how we use our own tools in practice. Each example demonstrates a key principle:
-
-#### Test-Driven Development
-- [🔴 test: add failing tests for learn.js functions (TDD RED)](../../commit/8b90d58) — Start with clear failure
-- [🟢 test: implement formatBytes and estimateTokens functions](../../commit/1fdac58) — Make tests pass minimally
-- [test: add tests for retrospective.js testability and add tests](../../commit/101686e) — Refactor with confidence
 
 #### Simplification & Token Efficiency  
 - [feat: remove all detailed command variants for token efficiency](../../commit/0e46070) — Less is more
