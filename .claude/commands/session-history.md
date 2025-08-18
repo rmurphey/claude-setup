@@ -65,4 +65,4 @@ npm run session:list
 
 1. Save before any context reset
 2. Use descriptive names for important sessions
-4. Review saved sessions for patterns
+3. Review saved sessions for patterns
