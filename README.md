@@ -3,7 +3,7 @@
 **A living reference implementation of professional Claude Code commands and workflows**
 
 [![Version](https://img.shields.io/badge/version-2.0.0-blue)](https://github.com/rmurphey/claude-setup)
-[![Commands](https://img.shields.io/badge/commands-17-green)](.claude/commands/)
+[![Commands](https://img.shields.io/badge/commands-14-green)](.claude/commands/)
 [![License](https://img.shields.io/badge/license-MIT-purple)](LICENSE)
 [![Token Efficiency](https://img.shields.io/badge/token%20savings-87%25-orange)](docs/TOKEN_EFFICIENCY.md)
 [![Agent Audit](https://github.com/rmurphey/claude-setup/workflows/Agent%20Audit%20with%20Claude%20Code/badge.svg)](https://github.com/rmurphey/claude-setup/actions/workflows/agent-audit.yml)

@@ -249,7 +249,7 @@ Implement these checks before allowing commits:
 
 2. **Living Documentation**
    - Update docs with code changes
-   - Use `/update-docs` command regularly
+   - Use `/docs` command regularly
    - Track documentation metrics
 
 3. **Citation Requirements**

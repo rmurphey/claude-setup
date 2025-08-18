@@ -302,7 +302,7 @@ AFTER: /plan with workflow:
 - /recovery-assess, /recovery-plan, /recovery-execute, /find-working-equivalent, /issue, /maintainability, /maintainability-detailed
 
 #### Development Utilities (7 commands)
-- /edit-not-create, /context-manage, /monitor, /tdd, /sync-issues, /version-tag, /update-docs
+- /edit-not-create, /context-manage, /monitor, /tdd, /sync-issues, /version-tag
 
 #### Detailed Variants (5 commands)
 - /todo-detailed, /commit-detailed, /push-detailed, /hygiene-detailed, /session-history

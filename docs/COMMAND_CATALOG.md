@@ -2,17 +2,13 @@
 
 Complete list of all available Claude Code commands organized by category.
 
-Last updated: 2025-08-17  
-Total Commands: 17
+Last updated: 2025-08-18  
+Total Commands: 14
 
-## Core Workflow Commands (13)
-
-### /atomic-commit
-Enforce atomic commit discipline for 1-3 file changes  
-Location: `.claude/commands/atomic-commit.md`
+## Core Workflow Commands (12)
 
 ### /commit
-Quality-checked commit workflow with automatic pre-commit validation  
+Atomic commits with quality checks - 1-3 files at a time  
 Location: `.claude/commands/commit.md`
 
 ### /docs
@@ -59,8 +55,7 @@ Location: `.claude/commands/tdd.md`
 Task management and tracking system with ACTIVE_WORK.md integration  
 Location: `.claude/commands/todo.md`
 
-## Maintenance Commands (4)
-
+## Maintenance Commands (2)
 
 ### /maintainability
 Code maintainability analysis and improvement recommendations  
@@ -70,16 +65,11 @@ Location: `.claude/commands/maintenance/maintainability.md`
 Save and manage Claude Code conversation transcripts for analysis  
 Location: `.claude/commands/maintenance/session-history.md`
 
-### /update-docs
-Update README with current command count and descriptions  
-Location: `.claude/commands/maintenance/update-docs.md`
-
 ---
 
 ## Command Categories Summary
 
 | Category | Count | Purpose |
 |----------|-------|---------|
-| Core Workflow | 13 | Daily development tasks |
-| Maintenance | 4 | Repository maintenance |
-| Planning | 0 | Planning and ideation |
+| Core Workflow | 12 | Daily development tasks |
+| Maintenance | 2 | Repository maintenance |

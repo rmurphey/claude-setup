@@ -4,48 +4,25 @@
 
 Commands are organized by frequency of use and purpose:
 
-### Root Level - Core Workflow (10 commands)
+### Root Level - Core Workflow (12 commands)
 Always-useful commands for daily development:
 - `commit` - Atomic commits with quality checks (1-3 files)
 - `docs` - Documentation maintenance
+- `docs-explain` - Educational documentation walkthrough
 - `hygiene` - Code quality checks
 - `learn` - Capture insights and learnings
 - `monitor` - GitHub repository monitoring
 - `next` - Get workflow guidance
 - `push` - Git push with validations
+- `reflect` - Periodic reflection
 - `retrospective` - Session analysis
 - `tdd` - Test-driven development
 - `todo` - Task management
 
-### planning/ - Pre-Development (6 commands)
-Planning and ideation commands:
-- `defer` - Defer tasks for later
-- `design` - Feature design and planning
-- `estimate` - Estimate Claude usage
-- `idea` - Quick idea capture
-- `ideation` - Brainstorming sessions
-- `reflect` - Periodic reflection
-
-### maintenance/ - Repository Upkeep (6 commands)
+### maintenance/ - Repository Upkeep (2 commands)
 Maintenance and management commands:
-- `issue` - GitHub issue management
 - `maintainability` - Code quality analysis
 - `session-history` - Session preservation
-- `sync-issues` - Sync GitHub issues
-- `update-docs` - Update documentation
-- `version-tag` - Version tagging
-
-### recovery/ - Emergency Operations (4 commands)
-Recovery and troubleshooting commands:
-- `find-working-equivalent` - Find alternative solutions
-- `recovery-assess` - Assess system state
-- `recovery-execute` - Execute recovery plan
-- `recovery-plan` - Plan recovery strategy
-
-### detailed/ - Verbose Versions
-Detailed versions of minimal commands (when needed):
-- Contains verbose implementations
-- Used as fallback when more detail required
 
 ## Usage
 
