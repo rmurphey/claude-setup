@@ -106,9 +106,10 @@ git add -A
 git commit -m "checkpoint: $(date)"
 
 # Document decisions
-echo "## Checkpoint $(date)" >> ACTIVE_WORK.md
-echo "- Completed: X, Y, Z" >> ACTIVE_WORK.md
-echo "- Next: A, B, C" >> ACTIVE_WORK.md
+# Create checkpoint as GitHub issue comment
+gh issue comment 1 --body "## Checkpoint $(date)
+- Completed: X, Y, Z
+- Next: A, B, C"
 
 # Compact if needed
 if [ $INTERACTION_COUNT -gt 30 ]; then
@@ -293,7 +294,7 @@ graph LR
 #### 1. Planning Phase
 ```markdown
 1. Read CLAUDE.md for project context
-2. Check ACTIVE_WORK.md for current state  
+2. Check GitHub issues for current state  
 3. Review recent git history
 4. Create todo list
 5. Estimate token usage

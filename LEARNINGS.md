@@ -161,7 +161,7 @@ npm run docs:validate
    - Break features into <200 line commits
 
 5. **Document in Real-Time**
-   - Keep ACTIVE_WORK.md open
+   - Keep GitHub issues dashboard open
    - Update after each significant decision
    - Capture rationale immediately
 

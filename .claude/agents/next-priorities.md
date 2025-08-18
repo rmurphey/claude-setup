@@ -25,7 +25,7 @@ Perform intelligent analysis of the current project state across multiple dimens
    - Identify technical debt markers
 
 3. **Task Management Analysis**
-   - Review ACTIVE_WORK.md for pending tasks
+   - Review GitHub issues for pending tasks
    - Assess task priorities and completion rates
    - Check for stale or blocked tasks
    - Evaluate workload balance
@@ -227,7 +227,7 @@ Based on current state, these commands will be most helpful:
 
 ## Integration Points
 - Use `hygiene` command results for health assessment
-- Reference ACTIVE_WORK.md for task context
+- Reference GitHub issues for task context
 - Leverage git history for activity patterns
 - Coordinate with other agents for specialized analysis
 - Consider time patterns from session history

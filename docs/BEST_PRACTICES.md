@@ -448,7 +448,7 @@ done
 **Learning**: Document decisions as they're made, not retrospectively
 
 ```markdown
-# ACTIVE_WORK.md - Update in real-time
+# GitHub Issues - Update in real-time
 ## Decision: Use NPM Script Delegation
 - Time: 14:32
 - Rationale: 87% token reduction measured
@@ -505,7 +505,7 @@ Advantages realized:
 ### Production Session Checklist
 
 Before starting:
-- [ ] Read CLAUDE.md and ACTIVE_WORK.md
+- [ ] Read CLAUDE.md and check GitHub issues
 - [ ] Check recent git history
 - [ ] Create session plan with checkpoints
 - [ ] Estimate token budget

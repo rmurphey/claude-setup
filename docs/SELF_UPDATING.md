@@ -102,7 +102,7 @@ Documentation updates automatically when:
 | `.claude/metrics.json` | Usage statistics | On each command use |
 | `.claude/learnings.md` | Captured insights | Via `/learn` command |
 | `.claude/documentation-log.json` | Update history | On each doc update |
-| `ACTIVE_WORK.md` | Current tasks | Via `/todo` command |
+| `GitHub Issues` | Current tasks | Via `/todo` command |
 
 ## Updating Specific Sections
 

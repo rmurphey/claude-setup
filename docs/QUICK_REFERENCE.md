@@ -14,7 +14,7 @@
 ### 🎯 Core Workflow
 ```bash
 /hygiene              # Check project health (lint, tests, deps)
-/todo [add|done|list] # Manage tasks in ACTIVE_WORK.md
+/todo [add|done|list] # Manage tasks in GitHub Issues
 /commit               # Commit with quality checks
 /next                 # AI-recommended next actions
 /push                 # Push with quality checks
@@ -126,7 +126,7 @@ End of session?
 - Quick way to ensure everything is working
 
 ### `/todo` - Task Management
-- Maintains tasks in ACTIVE_WORK.md
+- Maintains tasks in GitHub Issues
 - Supports add, done, remove, list operations
 - Tracks task completion
 - Archives completed tasks
@@ -197,7 +197,7 @@ End of session?
 │   └── ...
 └── learnings/       # Archived insights (/learn)
 
-ACTIVE_WORK.md       # Current tasks (/todo)
+GitHub Issues        # Current tasks (/todo)
 LEARNINGS.md         # Captured insights (/learn)
 CLAUDE.md            # AI guidelines
 ```

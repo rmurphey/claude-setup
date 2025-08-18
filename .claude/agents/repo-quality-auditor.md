@@ -97,7 +97,7 @@ QUESTIONABLE UTILITY:
 4. Task management in /todo
 5. Multiple reflection mechanisms
 6. Session management spread across multiple tools
-7. Multiple commands writing to same file (ACTIVE_WORK.md)
+7. Multiple commands accessing GitHub issues (via API)
 ```
 
 #### Usage Pattern Analysis

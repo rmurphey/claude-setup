@@ -383,7 +383,7 @@ Explore how we use our own tools in practice. Each example demonstrates a key pr
 #### Architecture & Design
 - [feat: rewrite setup.js with intelligent conflict handling](../../commit/3adfa17) — Smart automation
 - [feat: add repo-quality-auditor agent for comprehensive quality analysis](../../commit/e498add) — Agent vs command pattern
-- [refactor: reorganize ACTIVE_WORK.md with simplified planning structure](../../commit/870aede) — Evolving workflow
+- [refactor: migrate to GitHub Issues for task management](../../commit/bac950b) — Modern workflow
 
 #### Continuous Improvement
 - [fix: update docs script to count all commands recursively](../../commit/30f57e8) — Iterative refinement

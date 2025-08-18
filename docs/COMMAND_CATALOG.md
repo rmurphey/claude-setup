@@ -60,7 +60,7 @@ Your new best friend - TDD workflow that makes Claude amazing
 Location: `.claude/commands/tdd.md`
 
 ### /todo
-Task management and tracking system with ACTIVE_WORK.md integration  
+Task management and tracking system with GitHub Issues integration  
 Location: `.claude/commands/todo.md`
 
 ---
