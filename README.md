@@ -10,7 +10,7 @@
 
 ## What This Is
 
-This is a **working reference repository** that demonstrates best practices for Claude Code command development. The commands in `.claude/commands/` are actively used in this repository's development, making it a living example of the patterns it teaches.
+This is a **working reference repository** that demonstrates an opinionated set of practices for Claude Code development. The commands in `.claude/commands/` are actively used in this repository's development, making it a living example of the patterns it teaches.
 
 ## Quick Start (Choose Your Method)
 
@@ -60,37 +60,11 @@ This repository includes agents that can use the Claude API for advanced automat
 
 👉 **[See API Setup Guide](docs/API_SETUP.md)** for configuration instructions
 
-## 🎯 Repository Philosophy: Teaching Through Balance
+## 🎯 Repository Philosophy
 
-This repository demonstrates various ways of setting up Claude Code commands, including methods that limit token usage. You'll see these three methods:
+This repository demonstrates balanced approaches to Claude Code commands, optimizing for both learning and efficiency. We achieve **87% token reduction** through strategic script delegation while maintaining flexibility where needed.
 
-| Approach | Token Cost | Best For | Example |
-|----------|------------|----------|---------|
-| **Direct Implementation** | ~2000 tokens | Learning patterns, one-off tasks, custom logic | Claude analyzes and formats commits directly |
-| **Script Delegation** | ~100 tokens | Repetitive tasks, stable operations | `npm run lint` instead of manual checks |
-| **Hybrid Approach** | ~500 tokens | Complex orchestration, intelligent automation | Script collects data, Claude makes decisions |
-
-### When to Use Each Approach
-
-**Use Direct Implementation when:**
-- Teaching or learning new patterns
-- Solving unique, one-time problems
-- Customization is more valuable than efficiency
-- You need to see Claude's problem-solving process
-
-**Use Script Delegation when:**
-- The task is repetitive and well-defined
-- The logic rarely changes
-- Speed and consistency matter more than flexibility
-- You're doing the same thing multiple times per session
-
-**Use Hybrid Approach when:**
-- You need both efficiency and intelligence
-- The task has stable parts and variable parts
-- You want to leverage existing tools with AI judgment
-- Real-world complexity requires both patterns
-
-Each command in this repository includes metadata showing its approach and typical token usage, helping you understand the real costs and benefits of different patterns.
+👉 **[See Token Efficiency Guide](docs/TOKEN_EFFICIENCY.md)** for detailed guidance on when to use different command approaches.
 
 ## Command Categories
 
@@ -180,57 +154,16 @@ See our active work:
 cat ACTIVE_WORK.md
 ```
 
-## Real-World Example Workflow
-
-### Feature Development Flow
+## Example Workflow
 
 ```bash
-# 1. Check project health
-/hygiene
-# Output: ✅ All checks passing
-
-# 2. Start with TDD
-/tdd start "new feature"
-# Creates test file and guides through red-green-refactor
-
-# 3. Track your work
-/todo add "Write failing tests"
-/todo add "Implement feature"
-/todo add "Refactor and optimize"
-
-# 4. Capture learnings
-/learn "TDD helps clarify requirements before coding"
-
-# 5. Make quality-checked commits
-/commit feat "add new feature with tests"
-# Runs: lint, tests before committing
-
-# 6. Push when ready
-/push
-# Validates and pushes to remote
+/hygiene                          # Check project health
+/tdd start "new feature"          # Start with tests
+/commit feat "add user auth"      # Quality-checked commit
+/learn "TDD clarified the API"    # Capture insights
 ```
 
-### Daily Development Flow
-
-```bash
-# Morning: Check status and priorities
-/next
-# Output: Recommends highest priority task
-
-/todo list
-# Shows current task list
-
-# During work: Atomic commits
-/commit
-# Enforces small, focused commits (1-3 files)
-
-# Capture insights
-/learn "Using middleware for auth is cleaner than decorators"
-
-# End of day: Reflect
-/reflect
-# Captures session learnings
-```
+👉 **[See Complete Workflows Guide](docs/WORKFLOWS.md)** for detailed development patterns
 
 ## Customization Guide
 

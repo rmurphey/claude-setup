@@ -4,6 +4,38 @@
 
 This repository demonstrates a token-efficient approach to Claude Code commands, reducing AI token consumption by **85-90%** through npm script delegation.
 
+## 🎯 Choosing the Right Approach
+
+This repository demonstrates various ways of setting up Claude Code commands, including methods that limit token usage. You'll see these three methods:
+
+| Approach | Token Cost | Best For | Example |
+|----------|------------|----------|---------|
+| **Direct Implementation** | ~2000 tokens | Learning patterns, one-off tasks, custom logic | Claude analyzes and formats commits directly |
+| **Script Delegation** | ~100 tokens | Repetitive tasks, stable operations | `npm run lint` instead of manual checks |
+| **Hybrid Approach** | ~500 tokens | Complex orchestration, intelligent automation | Script collects data, Claude makes decisions |
+
+### When to Use Each Approach
+
+**Use Direct Implementation when:**
+- Teaching or learning new patterns
+- Solving unique, one-time problems
+- Customization is more valuable than efficiency
+- You need to see Claude's problem-solving process
+
+**Use Script Delegation when:**
+- The task is repetitive and well-defined
+- The logic rarely changes
+- Speed and consistency matter more than flexibility
+- You're doing the same thing multiple times per session
+
+**Use Hybrid Approach when:**
+- You need both efficiency and intelligence
+- The task has stable parts and variable parts
+- You want to leverage existing tools with AI judgment
+- Real-world complexity requires both patterns
+
+Each command in this repository includes metadata showing its approach and typical token usage, helping you understand the real costs and benefits of different patterns.
+
 ## The Problem
 
 Traditional Claude Code commands embed all logic directly in markdown files:
