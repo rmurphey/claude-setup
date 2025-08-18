@@ -426,7 +426,7 @@ This repository serves as a reference, so all contributions must:
 - **v2.0.0** - Complete restructure as living reference implementation
 - **v1.0.0** - Initial template collection
 
-See [CHANGELOG.md](CHANGELOG.md) for detailed history.
+See git history for detailed change log.
 
 ## License
 

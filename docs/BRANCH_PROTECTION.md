@@ -45,7 +45,7 @@ git push origin main
 **Test GitHub Actions**:
 - All pushes to main trigger test suite
 - PRs to main require passing tests
-- Matrix testing on Node.js 16, 18, 20
+- Matrix testing on Node.js 20, 22
 
 ## Emergency Override
 

@@ -88,7 +88,6 @@ The Claude Setup Tool provides comprehensive project infrastructure setup with A
 ### Rapid Prototyping
 - Quick bootstrap for testing ideas
 - Multiple language support for different frameworks
-- DevContainer support for consistent environments
 - Focus on logic, not setup
 
 ### Production Applications

@@ -13,10 +13,9 @@ npx github:rmurphey/claude-setup
 
 **Should display:**
 1. **Welcome message**: `🤖 Claude Code Project Setup`
-2. **Mode selection prompt**: Interactive menu with 3 options:
+2. **Mode selection prompt**: Interactive menu with 2 options:
    - `🚀 Set up new project infrastructure`
-   - `🏥 Assess and recover existing codebase` 
-   - `📦 Generate GitHub Codespaces DevContainer only`
+   - `🏥 Assess and recover existing codebase`
 
 ### Setup Mode (Default Flow)
 
@@ -53,13 +52,6 @@ When user selects "Assess and recover existing codebase":
 2. **Installation**: Adds recovery commands to `.claude/commands/`
 3. **Guidance**: Provides commands for assessment and improvement
 
-### DevContainer Mode
-
-When user selects "Generate GitHub Codespaces DevContainer only":
-
-1. **Language Detection**: Same as setup mode
-2. **DevContainer Creation**: Creates `.devcontainer/devcontainer.json` only
-3. **Guidance**: Instructions for using with GitHub Codespaces
 
 ## Command Line Arguments
 
@@ -107,7 +99,6 @@ After successful npx execution in empty directory:
 - `CLAUDE.md`, `ACTIVE_WORK.md`, `.gitignore`
 - `.claude/commands/` with 15+ command files
 - Language-specific config files (package.json, requirements.txt, etc.)
-- `.devcontainer/devcontainer.json` (if requested)
 
 ✅ **Git State:**
 - Repository initialized

@@ -19,12 +19,11 @@
 /next                 # AI-recommended next actions
 ```
 
-### 📋 Planning & Design
+### 📋 Planning & Monitoring
 ```bash
-/design "feature"     # Create design document
-/estimate [task]      # Estimate Claude usage/time
-/defer "task"         # Defer to backlog
-/issue [number]       # Work on GitHub issue
+/monitor              # Check GitHub CI status
+/next                 # Get AI recommendations
+/retrospective        # Analyze git history
 ```
 
 ### 📚 Documentation & Learning
@@ -38,16 +37,8 @@
 ### 🚀 Release & Quality
 ```bash
 /push                 # Push with quality checks
-/version-tag [type]   # Semantic versioning (patch/minor/major)
-/maintainability      # Analyze code health (score 0-100)
-/atomic-commit        # Enforce small commits (1-3 files)
 ```
 
-### 🛠️ Development Utilities
-```bash
-/archive              # Archive completed work
-/monitor              # GitHub repository monitoring
-```
 
 ## Common Workflows
 
