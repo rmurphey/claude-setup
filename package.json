@@ -70,7 +70,8 @@
     "files:find": "find . -name",
     "search:code": "grep -r --exclude-dir=node_modules",
     "clean:artifacts": "rm -rf dist build *.log",
-    "stats:project": "echo \"JS Files: $(npm run maintain:files --silent) | Commits: $(git rev-list --count HEAD 2>/dev/null || echo '0') | Branch: $(git branch --show-current)\""
+    "stats:project": "echo \"JS Files: $(npm run maintain:files --silent) | Commits: $(git rev-list --count HEAD 2>/dev/null || echo '0') | Branch: $(git branch --show-current)\"",
+    "prepare": "husky"
   },
   "keywords": [
     "claude",
@@ -113,6 +114,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.33.0",
-    "eslint": "^9.33.0"
+    "eslint": "^9.33.0",
+    "husky": "^9.1.7"
   }
 }
