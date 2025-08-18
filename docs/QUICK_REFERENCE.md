@@ -6,7 +6,7 @@
 |---------|---------|---------|
 | `/hygiene` | Project health check | `/hygiene` |
 | `/todo` | Task management | `/todo add "Fix bug"` |
-| `/commit` | Quality-checked commits | `/commit feat "add feature"` |
+| `/commit` | Quality-checked commits | `/commit` |
 | `/next` | Get AI recommendations | `/next` |
 
 ## All Commands by Category
@@ -15,30 +15,25 @@
 ```bash
 /hygiene              # Check project health (lint, tests, deps)
 /todo [add|done|list] # Manage tasks in ACTIVE_WORK.md
-/commit [type] [msg]  # Commit with quality checks
+/commit               # Commit with quality checks
 /next                 # AI-recommended next actions
+/push                 # Push with quality checks
 ```
 
-### 📋 Planning & Monitoring
+### 📋 Development & Testing
 ```bash
+/tdd start "feature"  # Start Test-Driven Development workflow
+/retrospective        # Analyze git history and patterns
 /monitor              # Check GitHub CI status
-/next                 # Get AI recommendations
-/retrospective        # Analyze git history
 ```
 
 ### 📚 Documentation & Learning
 ```bash
-/docs [type]          # Generate/update documentation
+/docs                 # Analyze and update documentation
+/docs-explain         # Explain documentation structure
 /learn "insight"      # Capture development insights
 /reflect              # End-of-session reflection
-/update-docs          # Update all documentation
 ```
-
-### 🚀 Release & Quality
-```bash
-/push                 # Push with quality checks
-```
-
 
 ## Common Workflows
 
@@ -52,16 +47,15 @@
 ### 💻 During Development
 ```bash
 /todo add "task"      # Track new work
-/find-working-equivalent "auth"  # Find examples
-/atomic-commit        # Keep commits small
+/tdd start "feature"  # TDD for new features
 /learn "insight"      # Capture discoveries
 ```
 
 ### 🌙 End of Session
 ```bash
-/commit              # Commit changes
-/reflect             # Capture session learnings
-/todo cleanup        # Archive completed tasks
+/commit               # Commit changes
+/reflect              # Capture session learnings
+/push                 # Push to remote
 ```
 
 ## Task Management (`/todo`)
@@ -82,15 +76,17 @@
 
 ## Commit Types (`/commit`)
 
+The `/commit` command will guide you through creating quality-checked commits with proper formatting.
+
 | Type | Use For | Example |
 |------|---------|---------|
-| `feat` | New features | `/commit feat "add auth"` |
-| `fix` | Bug fixes | `/commit fix "resolve crash"` |
-| `docs` | Documentation | `/commit docs "update README"` |
-| `test` | Adding tests | `/commit test "add unit tests"` |
-| `refactor` | Code restructuring | `/commit refactor "simplify logic"` |
-| `chore` | Maintenance | `/commit chore "update deps"` |
-| `style` | Formatting | `/commit style "fix indentation"` |
+| `feat` | New features | `feat: add authentication` |
+| `fix` | Bug fixes | `fix: resolve login crash` |
+| `docs` | Documentation | `docs: update README` |
+| `test` | Adding tests | `test: add unit tests` |
+| `refactor` | Code restructuring | `refactor: simplify logic` |
+| `chore` | Maintenance | `chore: update dependencies` |
+| `style` | Formatting | `style: fix indentation` |
 
 ## Quick Decision Tree
 
@@ -99,48 +95,95 @@ Need to know project status?
   → /hygiene
 
 Starting new feature?
-  → /design → /estimate → /todo add
+  → /tdd start "feature name"
 
 Ready to commit?
-  → /commit (auto-detects type)
+  → /commit
 
 Not sure what to do?
   → /next
 
 Found a bug?
-  → /todo add → fix it → /commit fix
+  → /todo add "fix bug" → fix it → /commit
 
-Code getting messy?
-  → /maintainability → /refactor
+Need to understand project?
+  → /docs-explain
 
-Working on GitHub issue?
-  → /issue 123
+Want to check CI?
+  → /monitor
 
 End of session?
   → /reflect → /commit → /push
 ```
 
-## Command Shortcuts & Tips
+## Command Details
 
-### Combine Commands
-```bash
-# Full status check
-/hygiene && /todo list && /next
+### `/hygiene` - Project Health Check
+- Runs linting checks
+- Executes test suite
+- Checks for outdated dependencies
+- Shows git status summary
+- Quick way to ensure everything is working
 
-# Complete development cycle
-/design "feature" && /estimate feature && /todo add "implement"
-```
+### `/todo` - Task Management
+- Maintains tasks in ACTIVE_WORK.md
+- Supports add, done, remove, list operations
+- Tracks task completion
+- Archives completed tasks
 
-### Smart Defaults
-- `/commit` - Auto-detects type and generates message
-- `/todo done 1` - Complete by number
-- `/todo done "partial text"` - Complete by match
-- `/next` - Analyzes everything automatically
+### `/commit` - Quality Commits
+- Runs quality checks before committing
+- Enforces atomic commits (1-3 files recommended)
+- Adds co-author attribution for Claude
+- Follows conventional commit format
 
-### Quality Gates
-- `/commit` - Runs lint, tests, build before committing
-- `/push` - Validates before pushing
-- `/hygiene` - Comprehensive health check
+### `/next` - AI Recommendations
+- Analyzes project state
+- Suggests next logical steps
+- Considers pending tasks and recent changes
+- Helps when you're unsure what to do
+
+### `/tdd` - Test-Driven Development
+- Guides through RED-GREEN-REFACTOR cycle
+- Creates failing tests first
+- Implements minimal code to pass
+- Refactors with test safety net
+
+### `/monitor` - CI Monitoring
+- Checks GitHub Actions status
+- Shows recent workflow runs
+- Identifies test failures
+- Tracks pull request status
+
+### `/docs` - Documentation Management
+- Updates command catalog
+- Checks for broken links
+- Maintains documentation consistency
+- Auto-generates documentation
+
+### `/learn` - Knowledge Capture
+- Records development insights
+- Maintains LEARNINGS.md
+- Archives learnings by date
+- Searchable knowledge base
+
+### `/reflect` - Session Reflection
+- Captures end-of-session insights
+- Reviews accomplishments
+- Identifies patterns
+- Builds learning history
+
+### `/retrospective` - Git Analysis
+- Analyzes commit patterns
+- Shows productivity metrics
+- Identifies improvement areas
+- Historical code analysis
+
+### `/push` - Safe Push
+- Runs quality checks
+- Validates before pushing
+- Ensures CI readiness
+- Prevents breaking builds
 
 ## File Locations
 
@@ -149,10 +192,10 @@ End of session?
 ├── commands/         # Command templates (customize here)
 │   ├── hygiene.md
 │   ├── todo.md
+│   ├── commit.md
+│   ├── tdd.md
 │   └── ...
-├── designs/         # Feature designs (/design)
-├── issues/          # Issue contexts (/issue)
-└── usage.log        # Usage tracking (/estimate)
+└── learnings/       # Archived insights (/learn)
 
 ACTIVE_WORK.md       # Current tasks (/todo)
 LEARNINGS.md         # Captured insights (/learn)
@@ -166,66 +209,26 @@ Edit files in `.claude/commands/`:
 ```bash
 # Make hygiene stricter
 vim .claude/commands/hygiene.md
-# Change: --max-warnings 10 → --max-warnings 0
+# Adjust quality thresholds
 ```
 
-### Add Project Checks
-Extend existing commands:
+### Create Command Aliases
 ```bash
-# In .claude/commands/commit.md
-# Add: npm run security-check
-```
-
-### Create New Commands
-```bash
-cp .claude/commands/hygiene.md .claude/commands/deploy.md
-# Edit for your deployment workflow
-```
-
-## Keyboard Shortcuts
-
-While not keyboard shortcuts, these are the fastest ways to work:
-
-- `/h` → Could alias to `/hygiene`
-- `/t` → Could alias to `/todo`
-- `/c` → Could alias to `/commit`
-- `/n` → Could alias to `/next`
-
-Create aliases by copying command files:
-```bash
+# Create short aliases
 cp .claude/commands/hygiene.md .claude/commands/h.md
-```
-
-## Emergency Commands
-
-```bash
-# Something's broken?
-/hygiene              # Full diagnostic
-
-# Lost track of work?
-/todo list            # See all tasks
-/next                 # Get guidance
-
-# Need to understand code?
-/find-working-equivalent "pattern"
-
-# Commit too large?
-/atomic-commit        # Split it up
-
-# Project getting messy?
-/maintainability      # Get health score
+cp .claude/commands/todo.md .claude/commands/t.md
 ```
 
 ## Best Practices
 
 1. **Start with `/hygiene`** - Know your project state
-2. **Use `/todo` continuously** - Never lose track
-3. **Keep commits small** - Use `/atomic-commit`
+2. **Use `/todo` continuously** - Never lose track of work
+3. **Commit frequently** - Use `/commit` for quality checks
 4. **Document insights** - Use `/learn` regularly
-5. **Review regularly** - `/maintainability` weekly
-6. **Plan features** - `/design` before coding
-7. **Estimate work** - `/estimate` for planning
+5. **Use TDD** - `/tdd start` for new features
+6. **Check CI** - `/monitor` before pushing
+7. **Reflect regularly** - `/reflect` at session end
 
 ---
 
-*Keep this reference handy for efficient Claude Code development!*
+*This reference covers all actual commands available in the claude-setup project.*
