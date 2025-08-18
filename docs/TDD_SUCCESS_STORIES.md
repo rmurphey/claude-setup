@@ -180,23 +180,6 @@ Pick any feature you need to implement.
 - Zero debugging
 - Story to share
 
-## The Ultimate Proof
-
-This entire repository is the success story. Look at our commits:
-- Every 🔴 RED commit has a corresponding 🟢 GREEN
-- Features work as intended
-- Refactors don't break anything
-- Documentation stays in sync
-
-## Try It Yourself
-
-```bash
-# Start your own success story
-/tdd start "your feature"
-```
-
-Join the ranks of developers who've discovered that TDD with Claude isn't just good practice - it's a superpower.
-
 ---
 
 *Have your own TDD + Claude success story? Add it to this file and submit a PR!*
