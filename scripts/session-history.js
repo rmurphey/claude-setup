@@ -141,36 +141,17 @@ function captureGitActivity(sinceCommit = null) {
   return activity;
 }
 
-function captureTestResults() {
-  const results = {
+// Removed test capture to avoid recursive loops
+// Tests should be captured separately, not during session saves
+function getTestResultsFromCache() {
+  // This could read from a .test-results.json file if needed
+  // For now, just return empty results to avoid running tests
+  return {
     lastRun: null,
     passing: 0,
-    failing: 0
+    failing: 0,
+    skipped: true
   };
-  
-  try {
-    // Try to run tests and capture output
-    const output = execSync('npm test 2>&1', {encoding: 'utf8'});
-    
-    // Parse test output (Node.js test runner format)
-    const passMatch = output.match(/# pass (\d+)/);
-    const failMatch = output.match(/# fail (\d+)/);
-    
-    if (passMatch) results.passing = parseInt(passMatch[1]);
-    if (failMatch) results.failing = parseInt(failMatch[1]);
-    
-    results.lastRun = new Date().toISOString();
-  } catch (e) {
-    // Tests failed or not configured
-    const output = e.stdout || '';
-    const passMatch = output.match(/# pass (\d+)/);
-    const failMatch = output.match(/# fail (\d+)/);
-    
-    if (passMatch) results.passing = parseInt(passMatch[1]);
-    if (failMatch) results.failing = parseInt(failMatch[1]);
-  }
-  
-  return results;
 }
 
 // Get last git commit hash from previous save
@@ -206,6 +187,11 @@ function detectSessionType() {
 
 // Command implementations
 function saveSession(description = '', options = {}) {
+  // Check environment variable to skip saves
+  if (process.env.SKIP_SESSION_SAVE === '1' || process.env.SKIP_SESSION_SAVE === 'true') {
+    return null;
+  }
+  
   // Detect session type and check if we should skip
   const sessionType = options.sessionType || detectSessionType();
   if (sessionType === 'test' && !options.forceSave) {
@@ -235,13 +221,26 @@ function saveSession(description = '', options = {}) {
   
   // Capture actual session data (with delta if requested)
   const gitActivity = captureGitActivity(lastCommit);
-  const testResults = sessionType !== 'test' ? captureTestResults() : { passing: 0, failing: 0 };
+  const testResults = getTestResultsFromCache(); // Don't run tests during saves
   
-  // Check if any actual changes were made
-  const hasChanges = gitActivity.commits.length > 0 || gitActivity.filesChanged.length > 0;
-  if (!hasChanges && !options.forceSave) {
-    console.log('ℹ️  No changes detected, skipping save');
+  // Check if any actual changes were made (require at least 2 files or 1 commit)
+  const significantChanges = gitActivity.commits.length > 0 || gitActivity.filesChanged.length > 2;
+  if (!significantChanges && !options.forceSave) {
+    console.log('ℹ️  No significant changes detected, skipping save');
     return null;
+  }
+  
+  // Check minimum time between saves (5 minutes)
+  const lastSave = getLastSaveInfo();
+  if (lastSave && !options.forceSave) {
+    const lastSaveTime = new Date(`${lastSave.date} ${lastSave.time.replace(/(\d{2})(\d{2})(\d{2})/, '$1:$2:$3')}`);
+    const timeSinceLastSave = Date.now() - lastSaveTime.getTime();
+    const fiveMinutes = 5 * 60 * 1000;
+    
+    if (timeSinceLastSave < fiveMinutes) {
+      console.log(`⏱️  Last save was ${Math.floor(timeSinceLastSave / 1000)}s ago, skipping (minimum 5 minutes)`);
+      return null;
+    }
   }
   
   // Build session content

@@ -15,6 +15,10 @@ describe('session-history.js unit tests', () => {
   });
   
   it('should save session to file with git data', () => {
+    // Temporarily allow saves for this specific test
+    const originalSkip = process.env.SKIP_SESSION_SAVE;
+    delete process.env.SKIP_SESSION_SAVE;
+    
     const sessionHistory = require('../scripts/session-history');
     const testDir = path.join(require('os').tmpdir(), 'session-save-' + Date.now());
     fs.mkdirSync(testDir, { recursive: true });
@@ -39,6 +43,10 @@ describe('session-history.js unit tests', () => {
     } finally {
       process.chdir(cwd);
       fs.rmSync(testDir, { recursive: true, force: true });
+      // Restore original setting
+      if (originalSkip) {
+        process.env.SKIP_SESSION_SAVE = originalSkip;
+      }
     }
   });
   

@@ -286,10 +286,9 @@ description: Brief command description
 # Command Name
 
 Detailed instructions for Claude to execute...
-```
 
-When you type `/command` in Claude Code:
-1. Claude reads the template from `.claude/commands/command.md`
+When you type `/<command>` in Claude Code:
+1. Claude reads the template from `.claude/commands/<command>.md`
 2. Executes the workflow described in the template
 3. Uses only the allowed tools specified
 4. Provides consistent, professional assistance

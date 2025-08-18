@@ -57,7 +57,7 @@
     "monitor:clear": "node scripts/monitor-repo.js clear",
     "monitor:config": "node scripts/monitor-repo.js config",
     "// Testing": "=== Testing commands ===",
-    "test": "node --test test/*.test.js",
+    "test": "SKIP_SESSION_SAVE=1 node --test test/*.test.js",
     "test:verbose": "node --test --test-reporter=spec test/*.test.js",
     "test:coverage": "node --test --experimental-test-coverage test/*.test.js",
     "test:watch": "node --test --watch test/*.test.js",
