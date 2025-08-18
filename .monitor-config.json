@@ -2,8 +2,8 @@
   "watchTestsOnly": false,
   "notifications": {
     "enabled": true,
-    "sound": false,
-    "desktop": false
+    "sound": true,
+    "desktop": true
   },
   "alertThresholds": {
     "failureCount": 1,

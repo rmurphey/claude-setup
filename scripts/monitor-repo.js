@@ -174,6 +174,32 @@ function isNewFailure(failure) {
 }
 
 /**
+ * Send desktop notification for failures
+ * @param {String} title - Notification title
+ * @param {String} message - Notification message
+ */
+function sendNotification(title, message) {
+  const config = loadConfig();
+  if (!config.notifications.desktop) return;
+  
+  try {
+    // Use node-notifier if available, otherwise fall back to system commands
+    if (process.platform === 'darwin') {
+      // macOS
+      execSync(`osascript -e 'display notification "${message}" with title "${title}"'`, { stdio: 'ignore' });
+    } else if (process.platform === 'linux') {
+      // Linux
+      execSync(`notify-send "${title}" "${message}"`, { stdio: 'ignore' });
+    } else if (process.platform === 'win32') {
+      // Windows
+      execSync(`msg * "${title}: ${message}"`, { stdio: 'ignore' });
+    }
+  } catch {
+    // Silently fail if notification can't be sent
+  }
+}
+
+/**
  * Format status data into readable report
  * @param {Object} status - Status object with workflows and PRs
  * @returns {String} Formatted report
@@ -368,6 +394,15 @@ function startMonitoring(interval = DEFAULT_INTERVAL, dryRun = false) {
         if (config.notifications.sound) {
           process.stdout.write('\x07');
         }
+        
+        // Desktop notification
+        if (config.notifications.desktop) {
+          const failureCount = status.newFailures.length;
+          sendNotification(
+            '🚨 CI Failures Detected',
+            `${failureCount} new workflow failure${failureCount > 1 ? 's' : ''} detected`
+          );
+        }
       }
       
       console.log(`\n⚠️  Repository Alert at ${new Date().toLocaleTimeString()}`);
@@ -552,5 +587,6 @@ module.exports = {
   loadConfig,
   loadHistory,
   saveToHistory,
-  isNewFailure
+  isNewFailure,
+  sendNotification
 };

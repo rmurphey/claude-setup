@@ -122,7 +122,7 @@ function captureGitActivity() {
         };
       });
     }
-  } catch (e) {
+  } catch {
     // Not in a git repo or git not available
     console.log('⚠️  Git information unavailable');
   }
@@ -176,8 +176,8 @@ function saveSession(description = '') {
   
   const filepath = path.join(sessionDir, filename);
   
-  // Get metadata
-  const metadata = getClaudeMetadata();
+  // Get metadata (not used in regular save, kept for future use)
+  // const metadata = getClaudeMetadata();
   
   // Capture actual session data
   const gitActivity = captureGitActivity();
@@ -196,7 +196,7 @@ function saveSession(description = '') {
   content += `- **Description**: ${description || 'Development session'}\n\n`;
   
   // Git Activity Section
-  content += `## Git Activity\n`;
+  content += '## Git Activity\n';
   content += `**Branch**: ${gitActivity.branch}\n\n`;
   
   if (gitActivity.commits.length > 0) {
@@ -224,25 +224,25 @@ function saveSession(description = '') {
   }
   
   // Test Results Section
-  content += `## Test Results\n`;
+  content += '## Test Results\n';
   if (testResults.lastRun) {
     content += `- **Passing**: ${testResults.passing}\n`;
     content += `- **Failing**: ${testResults.failing}\n`;
     content += `- **Status**: ${testResults.failing === 0 ? '✅ All tests passing' : '❌ Tests failing'}\n`;
   } else {
-    content += `- Tests not run in this session\n`;
+    content += '- Tests not run in this session\n';
   }
   content += '\n';
   
   // Session Summary
-  content += `## Session Summary\n`;
+  content += '## Session Summary\n';
   content += `This session captured at ${new Date().toLocaleString()}\n\n`;
   
   if (description) {
     content += `### Description\n${description}\n\n`;
   }
   
-  content += `### Metrics\n`;
+  content += '### Metrics\n';
   content += `- Commits: ${gitActivity.commits.length}\n`;
   content += `- Files changed: ${gitActivity.filesChanged.length}\n`;
   content += `- Tests: ${testResults.passing}/${testResults.passing + testResults.failing} passing\n`;

@@ -20,6 +20,11 @@ echo "🔍 Running Project Hygiene Check"
 echo "================================="
 echo ""
 
+# Check CI status
+echo "📊 GitHub Actions Status:"
+node scripts/check-ci.js
+echo ""
+
 # Quick hygiene check using npm scripts
 npm run hygiene:full --silent
 
@@ -29,6 +34,7 @@ echo "  npm run lint:check      - Code quality"
 echo "  npm run test:check      - Test status" 
 echo "  npm run deps:check      - Dependencies"
 echo "  npm run maintain:debt   - Technical debt"
+echo "  gh run list            - Full CI history"
 ```
 
 This streamlined command delegates to npm scripts, reducing token usage by 95% while maintaining full functionality.
