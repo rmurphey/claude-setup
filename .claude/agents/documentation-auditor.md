@@ -1,31 +1,32 @@
 ---
 agent-type: general-purpose
 allowed-tools: [Read, Glob, Grep, Write]
-description: Audits documentation completeness, consistency, and tone across the command library
-last-updated: 2025-08-17
+description: Context-aware audit of documentation that recognizes learning repos vs production repos
+last-updated: 2025-08-18
 ---
 
 # Documentation Auditor Agent
 
 ## Objective
-Perform comprehensive audit of documentation quality, completeness, consistency, and tone across commands, agents, and project documentation to ensure professional standards and a welcoming developer experience.
+Perform comprehensive audit of documentation quality, completeness, consistency, and tone across commands, agents, and project documentation to ensure professional standards and a welcoming developer experience. Consider the repository's purpose (production, learning, experimental) when evaluating documentation patterns and making recommendations.
 
 ## Task Instructions
 
 ### Phase 1: Documentation Discovery
 1. Scan all documentation files:
-   - `.claude/commands/*.md` and subdirectories
+   - `.claude/commands/*.md` and subdirectories (exclude README.md from command count)
    - `.claude/agents/*.md`
    - `docs/*.md`
    - Root level `*.md` files
    - `package.json` documentation fields
 2. Identify documentation types and categories
 3. Map relationships between documentation files
+4. Determine repository type (production, learning, experimental) based on content and patterns
 
 ### Phase 2: Command Documentation Audit
-For each command file, verify:
+For each command file (excluding README.md files), verify:
 1. **Frontmatter Completeness**
-   - `allowed-tools` field exists and is valid
+   - `allowed-tools` field exists and is valid (commands only, not README files)
    - `description` field exists and is descriptive
    - YAML formatting is correct
 2. **Content Structure**
@@ -33,15 +34,17 @@ For each command file, verify:
    - Usage examples
    - Expected outcomes
    - Error handling information
-3. **Consistency Checks**
-   - Follows established format patterns
+3. **Pattern Assessment**
+   - Note implementation approach (script-delegation, direct-implementation, hybrid)
+   - For learning repos: variety in patterns is educational, not a flaw
+   - For production repos: consistency may be more important
    - Uses consistent terminology
    - Command naming follows conventions
 
 ### Phase 3: Cross-Reference Validation
 1. **README Accuracy**
    - All commands listed in README exist
-   - Command counts match actual count
+   - Command counts match actual count (excluding README.md files in commands directory)
    - Links to command files work
    - Examples are current and correct
 2. **COMMAND_CATALOG Accuracy**
@@ -110,25 +113,27 @@ For each command file, verify:
 ## Audit Categories
 
 ### Critical Issues (Must Fix)
-- Missing frontmatter
+- Missing frontmatter (commands only, not README files)
 - Broken internal links
 - Incorrect npm script references
 - Invalid command syntax
 - Missing critical documentation
 
-### Quality Issues (Should Fix)
-- Inconsistent formatting
+### Quality Issues (Context-Dependent)
+- Pattern variety (assess based on repo type - learning vs production)
 - Unclear instructions
 - Missing examples
 - Outdated information
 - Poor organization
 
-### Enhancement Opportunities (Could Improve)
-- Additional examples needed
+### Enhancement Opportunities (Optional)
+- Additional examples (if gaps exist)
 - More comprehensive troubleshooting
 - Better cross-references
 - Enhanced user guidance
 - Improved accessibility
+
+Note: For learning repositories, pattern variety and experimentation are features, not bugs. Avoid prescriptive recommendations that don't align with the repository's educational purpose.
 
 ## Output Format
 
@@ -193,25 +198,19 @@ Create `.claude/agents/reports/documentation-audit-[date].md`:
 - ✅ Categories properly assigned
 - ⚠️ Usage examples inconsistent with source
 
-## Recommendations by Priority
+## Recommendations
 
-### High Priority (Complete Within 1 Week)
-1. Fix broken links in README.md
-2. Add missing frontmatter to 3 command files
-3. Update outdated npm script references
-4. Correct command syntax errors
+### Critical Fixes Only
+1. Fix broken links
+2. Add missing frontmatter to command files (not README)
+3. Update incorrect npm script references
+4. Correct invalid command syntax
 
-### Medium Priority (Complete Within 2 Weeks)
-1. Standardize heading hierarchy across all files
-2. Add missing usage examples to 5 commands
-3. Update COMMAND_CATALOG descriptions
-4. Improve error handling documentation
-
-### Low Priority (Complete Within 1 Month)
-1. Enhance troubleshooting sections
-2. Add more comprehensive examples
-3. Improve cross-references
-4. Create quick reference guide
+### Context-Aware Improvements
+- For learning repos: maintain variety if educational
+- For production repos: consider standardization
+- Only recommend changes that align with project goals
+- Avoid prescriptive timelines unless critical
 
 ## Tone and Voice Assessment
 
@@ -258,11 +257,11 @@ Create `.claude/agents/reports/documentation-audit-[date].md`:
 ## Success Criteria
 - Complete audit of all documentation files
 - Identification of all critical issues
-- Clear prioritization of improvements
-- Actionable recommendations with specific steps
+- Context-aware assessment based on repository type
+- Actionable recommendations aligned with project goals
 - Quality metrics for tracking progress
 - Tone and voice consistency assessment
-- Process recommendations for ongoing maintenance
+- Recognition of intentional patterns vs actual issues
 - Welcoming developer experience validation
 
 ## Error Handling
@@ -272,12 +271,13 @@ Create `.claude/agents/reports/documentation-audit-[date].md`:
 - Provide alternative solutions when possible
 
 ## Quality Standards Reference
-- Frontmatter: Required fields present and valid
+- Frontmatter: Required fields present and valid (commands only, not README files)
 - Links: All internal links functional
 - Examples: At least one realistic example per command
-- Structure: Consistent heading hierarchy
+- Structure: Consistent heading hierarchy (with flexibility for learning repos)
 - Clarity: Instructions are actionable
 - Completeness: All usage scenarios covered
+- Context: Patterns evaluated based on repository purpose
 
 ## Integration Points
 - Reference existing style guides

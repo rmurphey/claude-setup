@@ -1,0 +1,47 @@
+#!/bin/bash
+
+# Run quality checks before commit
+echo "🔍 Running pre-commit quality checks..."
+
+# Run linting
+npm run lint:check --silent
+LINT_EXIT=$?
+
+if [ $LINT_EXIT -ne 0 ]; then
+  echo "❌ Lint checks failed. Fix issues and try again."
+  echo "   Run 'npm run lint:check' for details"
+  exit 1
+fi
+
+# Run tests
+npm run test:check --silent
+TEST_EXIT=$?
+
+if [ $TEST_EXIT -ne 0 ]; then
+  echo "❌ Tests failed. Fix issues and try again."
+  echo "   Run 'npm test' for details"
+  exit 1
+fi
+
+# Check staged files count for atomic commits
+STAGED_COUNT=$(git diff --cached --name-only | wc -l)
+echo "📊 Staged files: $STAGED_COUNT"
+
+if [ "$STAGED_COUNT" -gt 3 ]; then
+  echo "⚠️  Warning: $STAGED_COUNT files staged (recommended: 1-3 for atomic commits)"
+  echo "   Consider splitting into smaller commits"
+  
+  # Check if we're in an interactive terminal
+  if [ -t 0 ]; then
+    read -p "   Continue anyway? (y/n): " -n 1 -r
+    echo
+    if [[ ! $REPLY =~ ^[Yy]$ ]]; then
+      echo "📝 Use 'git reset HEAD <file>' to unstage files"
+      exit 1
+    fi
+  else
+    echo "   (Non-interactive mode - continuing with $STAGED_COUNT files)"
+  fi
+fi
+
+echo "✅ All quality checks passed!"

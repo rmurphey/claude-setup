@@ -11,6 +11,7 @@
     "hygiene:full": "npm run lint:check && npm run test:check && npm run deps:check && npm run git:status:full && npm run maintain:summary",
     "todo:list": "grep -n '^- \\[ \\]' ACTIVE_WORK.md 2>/dev/null || echo 'No pending tasks'",
     "todo:count": "echo \"Pending: $(grep -c '^- \\[ \\]' ACTIVE_WORK.md 2>/dev/null || echo '0') | Completed: $(grep -c '^- \\[x\\]' ACTIVE_WORK.md 2>/dev/null || echo '0')\"",
+    "commit": "npm run commit:check",
     "commit:check": "npm run lint:check --silent && npm run test:check --silent",
     "// Quality Checks": "=== Quality and testing ===",
     "lint:check": "if [ -f 'eslint.config.js' ] || [ -f '.eslintrc.js' ]; then npx eslint . --max-warnings 10 2>/dev/null || echo '❌ Lint issues found'; else echo '⚠️ No linter configured'; fi",
