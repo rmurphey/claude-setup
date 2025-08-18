@@ -2,12 +2,23 @@
 agent-type: general-purpose
 allowed-tools: [Read, Bash, Grep, Glob]
 description: Analyzes project state to recommend next development priorities and actions
-last-updated: 2025-08-17---
+last-updated: 2025-08-18
+---
 
 # Next Priorities Agent
 
 ## Objective
 Perform intelligent analysis of the current project state across multiple dimensions (git status, project health, active tasks, development phase) to provide prioritized recommendations for next actions.
+
+## Required Commands
+Use these specific commands to gather information:
+- `gh issue list --state open --limit 50` - Get open issues
+- `gh issue list --label "priority:high" --state open` - High priority issues
+- `gh issue list --label "status:blocked" --state open` - Blocked issues
+- `gh issue list --state closed --limit 10` - Recently closed issues
+- `git status --short` - Current repository state
+- `npm run hygiene --silent` - Project health check
+- `gh run list --limit 5` - Recent CI runs
 
 ## Task Instructions
 
@@ -25,10 +36,10 @@ Perform intelligent analysis of the current project state across multiple dimens
    - Identify technical debt markers
 
 3. **Task Management Analysis**
-   - Review GitHub issues for pending tasks
-   - Assess task priorities and completion rates
-   - Check for stale or blocked tasks
-   - Evaluate workload balance
+   - Review GitHub issues for pending tasks (via `gh issue list`)
+   - Check issue labels for priorities (priority:high, priority:medium, priority:low)
+   - Identify blocked issues (status:blocked label)
+   - Count open vs closed issues for workload assessment
 
 4. **Development Context**
    - Determine project phase (setup, development, maintenance)
@@ -173,11 +184,11 @@ Generate structured recommendations in `.claude/agents/reports/next-priorities-[
 - **Code Quality**: [linting/type issues]
 - **Dependencies**: [security/outdated issues]
 
-### Task Management
-- **Active Tasks**: [count and priorities]
-- **Completion Rate**: [recent productivity]
-- **Overdue Items**: [stale tasks needing review]
-- **Workload Balance**: [too much/too little/good]
+### Task Management (GitHub Issues)
+- **Open Issues**: [count by priority label]
+- **Recently Closed**: [issues closed in last 7 days]
+- **Blocked Issues**: [issues with status:blocked label]
+- **Issue Velocity**: [opened vs closed ratio this week]
 
 ## Context Factors
 
@@ -195,8 +206,15 @@ Generate structured recommendations in `.claude/agents/reports/next-priorities-[
 Based on current state, these commands will be most helpful:
 
 1. **`/[command]`** - [why this command now]
-2. **`/[command]`** - [what this will accomplish]
-3. **Use [agent] agent** - [for complex analysis needs]
+2. **`npm run [script]`** - [what this will accomplish]
+3. **`gh issue create --title "[title]"`** - [if new work identified]
+4. **Use [agent] agent** - [for complex analysis needs]
+
+## Issue Management Recommendations
+- **Issues to Create**: [new tasks discovered during analysis]
+- **Issues to Close**: [completed work not yet closed]
+- **Issues to Label**: [unlabeled issues needing categorization]
+- **Issues to Update**: [stale issues needing status updates]
 
 ## Productivity Insights
 - **Momentum Builders**: [quick wins available]
@@ -226,10 +244,11 @@ Based on current state, these commands will be most helpful:
 - Gracefully handle missing files or tools
 
 ## Integration Points
-- Use `hygiene` command results for health assessment
-- Reference GitHub issues for task context
+- Use `npm run hygiene` for health assessment
+- Use `gh issue list` for task context and priorities
+- Use `gh issue view [number]` for detailed task information
 - Leverage git history for activity patterns
+- Check CI status with `gh run list`
 - Coordinate with other agents for specialized analysis
-- Consider time patterns from session history
 
 Execute this analysis to provide intelligent, context-aware development priority recommendations that maximize productivity and project progress.
