@@ -1,0 +1,25 @@
+# Ignore patterns for remark-lint
+
+# Ignore node_modules
+node_modules/
+
+# Ignore agent files (can be validated separately if needed)
+.claude/agents/
+
+# Ignore session history
+session-history/
+
+# Ignore build/dist directories
+dist/
+build/
+coverage/
+
+# Ignore specific files that may have different formatting
+*.min.md
+
+# Ignore files with commit links that reference other repos
+# (uncomment specific files as needed)
+# CLAUDE.md
+# README.md
+# docs/TDD_SUCCESS_STORIES.md
+# docs/TDD_WITH_CLAUDE.md
