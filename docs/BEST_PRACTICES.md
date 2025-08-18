@@ -1,9 +1,9 @@
 # Claude Code Best Practices Guide
 
 <!-- 
-This document is self-updating. To regenerate:
-In Claude Code: /docs update best-practices
-Last updated: 2025-01-16
+This document contains best practices for using Claude Code effectively.
+Last updated: 2025-08-18
+Last reviewed: 2025-08-18
 -->
 
 ## Table of Contents
@@ -379,7 +379,7 @@ Implement these checks before allowing commits:
 
 ### Real-World Session Management
 
-**Source**: Actual 2.5-hour transformation session (2025-01-16)
+**Source**: Production usage patterns from extended Claude Code sessions
 
 Production sessions with Claude Code require different strategies than demo or learning sessions:
 
@@ -571,5 +571,5 @@ Key metrics to track:
 
 ---
 
-*Last updated: 2025-01-16*
-*For updates, run `/docs update best-practices` in Claude Code.*
+*Last updated: 2025-08-18*
+*Document maintained manually - review periodically for updates*
