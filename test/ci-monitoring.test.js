@@ -2,7 +2,7 @@ const { describe, it } = require('node:test');
 const assert = require('node:assert');
 const fs = require('node:fs');
 const path = require('node:path');
-const { execSync } = require('child_process');
+// const { execSync } = require('child_process');
 
 /**
  * TDD RED Phase - Tests for CI monitoring features
