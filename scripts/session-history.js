@@ -71,45 +71,56 @@ function updateLastSaveInfo(info) {
   fs.writeFileSync(LAST_SAVE_FILE, JSON.stringify(info, null, 2));
 }
 
-function getClaudeMetadata() {
-  const metadata = {
-    timestamp: new Date().toISOString(),
-    claudeVersion: 'unknown',
-    environment: process.env.CLAUDE_CODE_ENTRYPOINT || 'cli'
-  };
-  
-  // Get Claude Code version
-  try {
-    const version = execSync('claude --version 2>/dev/null', {encoding: 'utf8'}).trim();
-    metadata.claudeVersion = version;
-  } catch {
-    // Fallback - version unavailable
-    metadata.claudeVersion = 'Claude Code (version unknown)';
-  }
-  
-  return metadata;
-}
+// Currently unused but kept for future metadata needs
+// function getClaudeMetadata() {
+//   const metadata = {
+//     timestamp: new Date().toISOString(),
+//     claudeVersion: 'unknown',
+//     environment: process.env.CLAUDE_CODE_ENTRYPOINT || 'cli'
+//   };
+//   
+//   // Get Claude Code version
+//   try {
+//     const version = execSync('claude --version 2>/dev/null', {encoding: 'utf8'}).trim();
+//     metadata.claudeVersion = version;
+//   } catch {
+//     // Fallback - version unavailable
+//     metadata.claudeVersion = 'Claude Code (version unknown)';
+//   }
+//   
+//   return metadata;
+// }
 
-function captureGitActivity() {
+function captureGitActivity(sinceCommit = null) {
   const activity = {
     commits: [],
     filesChanged: [],
-    branch: 'unknown'
+    branch: 'unknown',
+    newCommitsOnly: false
   };
   
   try {
     // Get current branch
     activity.branch = execSync('git branch --show-current', {encoding: 'utf8'}).trim();
     
-    // Get recent commits (last 20)
-    const commits = execSync('git log --oneline -20', {encoding: 'utf8'}).trim().split('\n');
-    activity.commits = commits.map(c => {
-      const [hash, ...messageParts] = c.split(' ');
-      return {
-        hash: hash.substring(0, 7),
-        message: messageParts.join(' ')
-      };
-    });
+    // Get commits since last save or recent commits
+    let commitCommand = 'git log --oneline -20';
+    if (sinceCommit) {
+      // Only get commits since the specified commit
+      commitCommand = `git log --oneline ${sinceCommit}..HEAD`;
+      activity.newCommitsOnly = true;
+    }
+    
+    const commits = execSync(commitCommand, {encoding: 'utf8'}).trim();
+    if (commits) {
+      activity.commits = commits.split('\n').map(c => {
+        const [hash, ...messageParts] = c.split(' ');
+        return {
+          hash: hash.substring(0, 7),
+          message: messageParts.join(' ')
+        };
+      });
+    }
     
     // Get files changed in working directory
     const changes = execSync('git status --porcelain', {encoding: 'utf8'}).trim();
@@ -162,29 +173,80 @@ function captureTestResults() {
   return results;
 }
 
+// Get last git commit hash from previous save
+function getLastCommitFromSave() {
+  const lastSave = getLastSaveInfo();
+  if (!lastSave || !lastSave.file) return null;
+  
+  try {
+    const content = fs.readFileSync(lastSave.file, 'utf8');
+    // Extract the first commit hash from the previous save
+    const match = content.match(/- `([a-f0-9]{7})` /); 
+    return match ? match[1] : null;
+  } catch {
+    return null;
+  }
+}
+
+// Detect session type based on environment
+function detectSessionType() {
+  // Check if running in test environment (but not just "testing" in description)
+  if (process.env.NODE_ENV === 'test' || process.argv[1]?.includes('test.js')) {
+    return 'test';
+  }
+  
+  // Check if running automated (CI, cron, etc)
+  if (process.env.CI || process.env.GITHUB_ACTIONS) {
+    return 'automated';
+  }
+  
+  // Default to manual
+  return 'manual';
+}
+
 // Command implementations
-function saveSession(description = '') {
+function saveSession(description = '', options = {}) {
+  // Detect session type and check if we should skip
+  const sessionType = options.sessionType || detectSessionType();
+  if (sessionType === 'test' && !options.forceSave) {
+    console.log('⏭️  Skipping test session save');
+    return null;
+  }
+  
   const sessionDir = getSessionDirectory();
   const sessionNum = getNextSessionNumber(sessionDir);
   const timestamp = getTimeString();
   
+  // Check for delta mode
+  const isDelta = options.delta || false;
+  const lastCommit = isDelta ? getLastCommitFromSave() : null;
+  
   // Determine filename
   const baseFilename = `session-${sessionNum}-${timestamp}`;
+  const suffix = isDelta ? '-delta' : '';
   const filename = description 
-    ? `${baseFilename}-${description.replace(/[^a-z0-9]/gi, '-')}.txt`
-    : `${baseFilename}.txt`;
+    ? `${baseFilename}${suffix}-${description.replace(/[^a-z0-9]/gi, '-')}.txt`
+    : `${baseFilename}${suffix}.txt`;
   
   const filepath = path.join(sessionDir, filename);
   
   // Get metadata (not used in regular save, kept for future use)
   // const metadata = getClaudeMetadata();
   
-  // Capture actual session data
-  const gitActivity = captureGitActivity();
-  const testResults = captureTestResults();
+  // Capture actual session data (with delta if requested)
+  const gitActivity = captureGitActivity(lastCommit);
+  const testResults = sessionType !== 'test' ? captureTestResults() : { passing: 0, failing: 0 };
+  
+  // Check if any actual changes were made
+  const hasChanges = gitActivity.commits.length > 0 || gitActivity.filesChanged.length > 0;
+  if (!hasChanges && !options.forceSave) {
+    console.log('ℹ️  No changes detected, skipping save');
+    return null;
+  }
   
   // Build session content
-  let content = `# Claude Code Session - ${getDateString()} ${new Date().toTimeString().split(' ')[0]}
+  const sessionTitle = isDelta ? 'Delta Session' : 'Session';
+  let content = `# Claude Code ${sessionTitle} - ${getDateString()} ${new Date().toTimeString().split(' ')[0]}
 
 `;
   
@@ -193,18 +255,29 @@ function saveSession(description = '') {
   content += `- **Date**: ${getDateString()}\n`;
   content += `- **Time**: ${new Date().toTimeString().split(' ')[0]}\n`;
   content += `- **Session Number**: ${sessionNum}\n`;
-  content += `- **Description**: ${description || 'Development session'}\n\n`;
+  content += `- **Session Type**: ${sessionType}\n`;
+  content += `- **Description**: ${description || 'Development session'}\n`;
+  if (isDelta && lastCommit) {
+    content += `- **Since Commit**: ${lastCommit}\n`;
+  }
+  content += '\n';
   
   // Git Activity Section
   content += '## Git Activity\n';
   content += `**Branch**: ${gitActivity.branch}\n\n`;
   
   if (gitActivity.commits.length > 0) {
-    content += `### Recent Commits (${gitActivity.commits.length})\n`;
+    const commitTitle = gitActivity.newCommitsOnly ? 'New Commits' : 'Recent Commits';
+    content += `### ${commitTitle} (${gitActivity.commits.length})\n`;
     gitActivity.commits.slice(0, 10).forEach(commit => {
       content += `- \`${commit.hash}\` ${commit.message}\n`;
     });
+    if (gitActivity.commits.length > 10) {
+      content += `- ... and ${gitActivity.commits.length - 10} more\n`;
+    }
     content += '\n';
+  } else if (isDelta) {
+    content += '### No new commits since last save\n\n';
   }
   
   if (gitActivity.filesChanged.length > 0) {
@@ -275,58 +348,14 @@ function saveDelta() {
   
   if (!lastSave) {
     console.log('⚠️  No previous save found, performing full save');
-    return saveSession('delta');
+    return saveSession('initial', { delta: false });
   }
   
   console.log('\n📝 Saving delta since last save...');
   console.log(`Last save: ${lastSave.date} at ${lastSave.time}`);
   
-  const sessionDir = getSessionDirectory();
-  const sessionNum = getNextSessionNumber(sessionDir);
-  const timestamp = getTimeString();
-  const filename = `session-${sessionNum}-${timestamp}-delta.txt`;
-  const filepath = path.join(sessionDir, filename);
-  
-  // Get metadata
-  const metadata = getClaudeMetadata();
-  
-  // Create delta file with metadata header
-  const header = `# Claude Code Session Delta - ${getDateString()}
-
-## Metadata
-- **Date**: ${getDateString()}
-- **Time**: ${new Date().toTimeString().split(' ')[0]}
-- **Claude Version**: ${metadata.claudeVersion}
-- **Environment**: ${metadata.environment}
-- **Session Number**: ${sessionNum}
-- **Save Type**: delta
-- **Previous Save**: ${lastSave ? lastSave.file : 'none'}
-- **Timestamp**: ${metadata.timestamp}
-
-## Delta Content (since ${lastSave.date} ${lastSave.time})
-[Delta transcript will be added here by Claude]
-`;
-  
-  // Write the header to the file
-  fs.writeFileSync(filepath, header);
-  
-  console.log('\n📝 Delta file created with metadata header');
-  console.log(`Claude Version: ${metadata.claudeVersion}`);
-  
-  // Update last save info
-  updateLastSaveInfo({
-    date: getDateString(),
-    time: timestamp,
-    file: filepath,
-    sessionNumber: sessionNum,
-    isDelta: true,
-    previousSave: lastSave.file
-  });
-  
-  console.log('\n✅ Delta save prepared');
-  console.log(`📁 Location: ${filepath}`);
-  
-  return filepath;
+  // Use the new saveSession with delta option
+  return saveSession('', { delta: true });
 }
 
 function listSessions() {
@@ -508,7 +537,11 @@ if (require.main === module) {
   // Export for testing
   module.exports = {
     saveSession,
+    saveDelta,
     listSessions,
-    archiveSessions
+    archiveSessions,
+    detectSessionType,
+    getLastCommitFromSave,
+    captureGitActivity
   };
 }
