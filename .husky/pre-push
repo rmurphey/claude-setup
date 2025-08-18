@@ -1,28 +1,39 @@
-#!/bin/sh
-. "$(dirname "$0")/_/husky.sh"
+#!/bin/bash
 
 # Check CI status before push
 echo "🔍 Checking CI status before push..."
 
+# Check if gh CLI is available
+if ! command -v gh &> /dev/null; then
+  echo "⚠️  GitHub CLI not installed - skipping CI check"
+  exit 0
+fi
+
 # Get recent CI status
 CI_STATUS=$(gh run list --limit 1 --json conclusion,name 2>/dev/null)
 
-if [ $? -eq 0 ] && [ ! -z "$CI_STATUS" ]; then
+if [ $? -eq 0 ] && [ ! -z "$CI_STATUS" ] && [ "$CI_STATUS" != "[]" ]; then
   # Check if the latest run failed
   FAILED=$(echo "$CI_STATUS" | grep -c '"conclusion":"failure"')
   
   if [ "$FAILED" -gt 0 ]; then
     echo "❌ CI is currently failing!"
     echo ""
-    echo "$CI_STATUS" | jq -r '.[] | "   Failed: \(.name)"'
+    if command -v jq &> /dev/null; then
+      echo "$CI_STATUS" | jq -r '.[] | "   Failed: \(.name)"'
+    else
+      echo "   (Install jq for detailed failure info)"
+    fi
     echo ""
     echo "⚠️  Push blocked due to CI failures"
     echo "   Use 'git push --no-verify' to override (not recommended)"
-    echo "   Or fix the CI issues first with 'npm run quality:fix'"
+    echo "   Or fix the CI issues first"
     exit 1
   else
     echo "✅ CI is passing - proceeding with push"
   fi
 else
-  echo "⚠️  Could not verify CI status - proceeding with push"
+  echo "ℹ️  No CI runs found or unable to check - proceeding with push"
 fi
+
+exit 0
