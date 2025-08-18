@@ -1,25 +1,20 @@
-#!/bin/bash
-
+#!/bin/sh
 # Run quality checks before commit
 echo "🔍 Running pre-commit quality checks..."
 
 # Run linting
 npm run lint:check --silent
 LINT_EXIT=$?
-
 if [ $LINT_EXIT -ne 0 ]; then
-  echo "❌ Lint checks failed. Fix issues and try again."
-  echo "   Run 'npm run lint:check' for details"
+  echo "❌ Lint checks failed. Run 'npm run lint:check' for details"
   exit 1
 fi
 
 # Run tests
 npm run test:check --silent
 TEST_EXIT=$?
-
 if [ $TEST_EXIT -ne 0 ]; then
-  echo "❌ Tests failed. Fix issues and try again."
-  echo "   Run 'npm test' for details"
+  echo "❌ Tests failed. Run 'npm test' for details"
   exit 1
 fi
 
@@ -33,12 +28,16 @@ if [ "$STAGED_COUNT" -gt 3 ]; then
   
   # Check if we're in an interactive terminal
   if [ -t 0 ]; then
-    read -p "   Continue anyway? (y/n): " -n 1 -r
+    printf "   Continue anyway? (y/n): "
+    read -r REPLY
     echo
-    if [[ ! $REPLY =~ ^[Yy]$ ]]; then
-      echo "📝 Use 'git reset HEAD <file>' to unstage files"
-      exit 1
-    fi
+    case "$REPLY" in
+      [Yy]* ) ;;
+      * ) 
+        echo "📝 Use 'git reset HEAD <file>' to unstage files"
+        exit 1
+        ;;
+    esac
   else
     echo "   (Non-interactive mode - continuing with $STAGED_COUNT files)"
   fi

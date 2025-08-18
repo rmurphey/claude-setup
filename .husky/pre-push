@@ -1,10 +1,9 @@
-#!/bin/bash
-
+#!/bin/sh
 # Check CI status before push
 echo "🔍 Checking CI status before push..."
 
 # Check if gh CLI is available
-if ! command -v gh &> /dev/null; then
+if ! command -v gh >/dev/null 2>&1; then
   echo "⚠️  GitHub CLI not installed - skipping CI check"
   exit 0
 fi
@@ -12,14 +11,12 @@ fi
 # Get recent CI status
 CI_STATUS=$(gh run list --limit 1 --json conclusion,name 2>/dev/null)
 
-if [ $? -eq 0 ] && [ ! -z "$CI_STATUS" ] && [ "$CI_STATUS" != "[]" ]; then
-  # Check if the latest run failed
-  FAILED=$(echo "$CI_STATUS" | grep -c '"conclusion":"failure"')
-  
-  if [ "$FAILED" -gt 0 ]; then
+if [ -n "$CI_STATUS" ] && [ "$CI_STATUS" != "[]" ]; then
+  # Check for failures
+  if echo "$CI_STATUS" | grep -q '"conclusion":"failure"'; then
     echo "❌ CI is currently failing!"
     echo ""
-    if command -v jq &> /dev/null; then
+    if command -v jq >/dev/null 2>&1; then
       echo "$CI_STATUS" | jq -r '.[] | "   Failed: \(.name)"'
     else
       echo "   (Install jq for detailed failure info)"
