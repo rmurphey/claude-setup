@@ -35,6 +35,8 @@ coverage/
 .monitor-status.json
 .monitor-status-*.json
 .monitor-history.json
+.monitor-previous.json
+.monitor-config.json
 
 # OS files
 .DS_Store

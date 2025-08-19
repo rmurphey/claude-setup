@@ -12,6 +12,7 @@ const DEFAULT_INTERVAL = 5 * 60 * 1000; // 5 minutes
 const STATUS_FILE = '.monitor-status.json';
 const HISTORY_FILE = '.monitor-history.json';
 const CONFIG_FILE = '.monitor-config.json';
+const PREVIOUS_STATE_FILE = '.monitor-previous.json';
 const MAX_HISTORY_ENTRIES = 50;
 
 /**
@@ -171,6 +172,92 @@ function isNewFailure(failure) {
     h.headBranch === failure.headBranch &&
     h.name === failure.name
   );
+}
+
+/**
+ * Detect changes between current and previous state
+ * @param {Object} current - Current state
+ * @param {Object} previous - Previous state
+ * @returns {Object} Changes detected
+ */
+function detectChanges(current, previous) {
+  const changes = {
+    newPRs: [],
+    closedPRs: [],
+    newFailures: [],
+    fixedFailures: [],
+    hasChanges: false
+  };
+  
+  if (!previous) {
+    // First run - everything is new but don't notify
+    return changes;
+  }
+  
+  // Compare PRs
+  const prevPRNumbers = new Set((previous.pullRequests || []).map(pr => pr.number));
+  const currPRNumbers = new Set((current.pullRequests || []).map(pr => pr.number));
+  
+  changes.newPRs = (current.pullRequests || []).filter(pr => !prevPRNumbers.has(pr.number));
+  changes.closedPRs = (previous.pullRequests || []).filter(pr => !currPRNumbers.has(pr.number));
+  
+  // Compare failures (only track actual failures, not in-progress)
+  const prevFailures = new Set(
+    (previous.workflows || [])
+      .filter(w => w.conclusion === 'failure')
+      .map(w => `${w.workflowName}-${w.headBranch}`)
+  );
+  
+  const currFailures = new Set(
+    (current.workflows || [])
+      .filter(w => w.conclusion === 'failure')
+      .map(w => `${w.workflowName}-${w.headBranch}`)
+  );
+  
+  const currFailureDetails = (current.workflows || []).filter(w => w.conclusion === 'failure');
+  const prevFailureDetails = (previous.workflows || []).filter(w => w.conclusion === 'failure');
+  
+  changes.newFailures = currFailureDetails.filter(
+    w => !prevFailures.has(`${w.workflowName}-${w.headBranch}`)
+  );
+  
+  changes.fixedFailures = prevFailureDetails.filter(
+    w => !currFailures.has(`${w.workflowName}-${w.headBranch}`)
+  );
+  
+  changes.hasChanges = changes.newPRs.length > 0 || 
+                       changes.closedPRs.length > 0 || 
+                       changes.newFailures.length > 0 || 
+                       changes.fixedFailures.length > 0;
+  
+  return changes;
+}
+
+/**
+ * Load previous state from file
+ * @returns {Object|null} Previous state or null
+ */
+function loadPreviousState() {
+  try {
+    if (fs.existsSync(PREVIOUS_STATE_FILE)) {
+      return JSON.parse(fs.readFileSync(PREVIOUS_STATE_FILE, 'utf8'));
+    }
+  } catch {
+    // Return null if can't read
+  }
+  return null;
+}
+
+/**
+ * Save current state as previous for next comparison
+ * @param {Object} state - State to save
+ */
+function savePreviousState(state) {
+  try {
+    fs.writeFileSync(PREVIOUS_STATE_FILE, JSON.stringify(state, null, 2));
+  } catch {
+    // Silently fail if can't write
+  }
 }
 
 /**
@@ -336,118 +423,92 @@ function startMonitoring(interval = DEFAULT_INTERVAL, dryRun = false) {
   
   async function performCheck() {
     const config = loadConfig();
+    
+    // Get current state
     const status = {
       timestamp: new Date().toISOString(),
       workflows: await checkWorkflowStatus({ testsOnly: config.watchTestsOnly }),
       pullRequests: await checkPullRequests()
     };
     
-    // Check for new failures
-    const failures = status.workflows.filter(w => w.conclusion === 'failure');
-    const testFailures = failures.filter(w => 
-      w.workflowName?.toLowerCase().includes('test') || 
-      w.name?.toLowerCase().includes('test')
-    );
-    
-    // Track new failures
-    status.newFailures = [];
-    for (const failure of failures) {
-      if (isNewFailure(failure)) {
-        status.newFailures.push(failure.databaseId);
-        saveToHistory(failure);
-      }
-    }
-    
-    // Calculate statistics
-    const history = loadHistory();
-    const recentRuns = history.slice(0, 20);
-    status.stats = {
-      consecutiveFailures: 0,
-      failureRate: recentRuns.length > 0 ? 
-        recentRuns.filter(r => r.conclusion === 'failure').length / recentRuns.length : 0
-    };
-    
-    // Count consecutive failures
-    for (const run of history) {
-      if (run.conclusion === 'failure') {
-        status.stats.consecutiveFailures++;
-      } else {
-        break;
-      }
-    }
-    
-    // Write status file
+    // Save current status for reference
     fs.writeFileSync(STATUS_FILE, JSON.stringify(status, null, 2));
     
-    // Alert if issues found
-    const openPRs = status.pullRequests.length;
-    if (testFailures.length > 0 || (failures.length > 0 && !config.watchTestsOnly) || openPRs > 0) {
-      // Enhanced notification for new failures
-      const hasNewFailures = status.newFailures.length > 0;
-      if (hasNewFailures && config.notifications.enabled) {
-        // Visual alert
-        console.log('\n' + '='.repeat(60));
-        console.log('🚨 ' + ' NEW FAILURES DETECTED '.padStart(38).padEnd(56) + ' 🚨');
-        console.log('='.repeat(60));
-        
-        // Terminal bell if sound enabled
+    // Detect changes
+    const previous = loadPreviousState();
+    const changes = detectChanges(status, previous);
+    
+    // Save state for next comparison
+    savePreviousState(status);
+    
+    // Only report if there are changes
+    if (!changes.hasChanges) {
+      return; // Silent when no changes
+    }
+    
+    // Report changes
+    console.log(`\n🔄 Repository Changes at ${new Date().toLocaleTimeString()}`);
+    console.log('─'.repeat(50));
+    
+    // Good news first
+    if (changes.fixedFailures.length > 0) {
+      console.log('\n✅ FIXED (' + changes.fixedFailures.length + '):');
+      changes.fixedFailures.forEach(w => {
+        console.log(`   • ${w.workflowName} now passing on ${w.headBranch}`);
+      });
+    }
+    
+    if (changes.closedPRs.length > 0) {
+      console.log('\n✅ CLOSED PRs (' + changes.closedPRs.length + '):');
+      changes.closedPRs.forEach(pr => {
+        console.log(`   • #${pr.number}: ${pr.title}`);
+      });
+    }
+    
+    // New issues
+    if (changes.newFailures.length > 0) {
+      console.log('\n❌ NEW FAILURES (' + changes.newFailures.length + '):');
+      changes.newFailures.forEach(w => {
+        console.log(`   • ${w.workflowName} failing on ${w.headBranch}`);
+        if (w.url) {
+          console.log(`     ${w.url}`);
+        }
+      });
+      
+      // Save to history for tracking
+      changes.newFailures.forEach(failure => {
+        saveToHistory(failure);
+      });
+    }
+    
+    if (changes.newPRs.length > 0) {
+      console.log('\n🆕 NEW PRs (' + changes.newPRs.length + '):');
+      changes.newPRs.forEach(pr => {
+        const draft = pr.isDraft ? ' [DRAFT]' : '';
+        console.log(`   • #${pr.number}: ${pr.title}${draft}`);
+        console.log(`     by @${pr.author.login}`);
+      });
+    }
+    
+    console.log('');
+    
+    // Send notifications if enabled
+    if (config.notifications.enabled) {
+      if (changes.newFailures.length > 0) {
         if (config.notifications.sound) {
           process.stdout.write('\x07');
         }
-        
-        // Desktop notification
-        if (config.notifications.desktop) {
-          const failureCount = status.newFailures.length;
-          sendNotification(
-            '🚨 CI Failures Detected',
-            `${failureCount} new workflow failure${failureCount > 1 ? 's' : ''} detected`
-          );
-        }
+        sendNotification(
+          '❌ New CI Failures',
+          `${changes.newFailures.length} workflow${changes.newFailures.length > 1 ? 's' : ''} started failing`
+        );
       }
       
-      console.log(`\n⚠️  Repository Alert at ${new Date().toLocaleTimeString()}`);
-      
-      // Highlight new test failures
-      if (testFailures.length > 0) {
-        const newTestFailures = testFailures.filter(f => status.newFailures.includes(f.databaseId));
-        if (newTestFailures.length > 0) {
-          console.log(`  🆕 NEW Test Failures (${newTestFailures.length}):`);
-          newTestFailures.forEach(w => {
-            console.log(`     • ${w.name} on ${w.headBranch || 'unknown'}`);
-            console.log(`       ${w.url || ''}`);
-          });
-        }
-        
-        const existingTestFailures = testFailures.filter(f => !status.newFailures.includes(f.databaseId));
-        if (existingTestFailures.length > 0) {
-          console.log(`  🧪 Ongoing Test Failures (${existingTestFailures.length}):`);
-          existingTestFailures.forEach(w => {
-            console.log(`     • ${w.name} on ${w.headBranch || 'unknown'}`);
-          });
-        }
-      }
-      
-      // Show other failures if not in test-only mode
-      if (!config.watchTestsOnly) {
-        const otherFailures = failures.filter(f => !testFailures.includes(f));
-        if (otherFailures.length > 0) {
-          console.log(`  🔴 Other Failures (${otherFailures.length}):`);
-          otherFailures.forEach(w => {
-            console.log(`     • ${w.name} on ${w.headBranch || 'unknown'}`);
-          });
-        }
-      }
-      
-      if (openPRs > 0) {
-        console.log(`  🔵 ${openPRs} open pull request(s)`);
-        status.pullRequests.forEach(pr => {
-          console.log(`     • #${pr.number}: ${pr.title}`);
-        });
-      }
-      
-      // Show statistics if concerning
-      if (status.stats.consecutiveFailures >= config.alertThresholds.consecutiveFailures) {
-        console.log(`\n  ⚠️  Alert: ${status.stats.consecutiveFailures} consecutive failures!`);
+      if (changes.newPRs.length > 0) {
+        sendNotification(
+          '🔵 New Pull Request' + (changes.newPRs.length > 1 ? 's' : ''),
+          `${changes.newPRs.length} new PR${changes.newPRs.length > 1 ? 's' : ''} opened`
+        );
       }
     }
   }
@@ -550,6 +611,117 @@ if (require.main === module) {
       console.log('Edit .monitor-config.json to change settings');
       break;
     }
+    
+    case '--diff':
+    case 'diff': {
+      const current = checkStatus();
+      const previous = loadPreviousState();
+      
+      if (!current) {
+        console.log('No current status found. Run monitor first.');
+        break;
+      }
+      
+      const changes = detectChanges(current, previous);
+      
+      if (changes.hasChanges) {
+        console.log('\n🔄 Changes since last check:');
+        console.log('─'.repeat(50));
+        
+        if (changes.fixedFailures.length > 0) {
+          console.log('\n✅ Fixed failures:');
+          changes.fixedFailures.forEach(w => {
+            console.log(`   • ${w.workflowName} on ${w.headBranch}`);
+          });
+        }
+        
+        if (changes.closedPRs.length > 0) {
+          console.log('\n✅ Closed PRs:');
+          changes.closedPRs.forEach(pr => {
+            console.log(`   • #${pr.number}: ${pr.title}`);
+          });
+        }
+        
+        if (changes.newFailures.length > 0) {
+          console.log('\n❌ New failures:');
+          changes.newFailures.forEach(w => {
+            console.log(`   • ${w.workflowName} on ${w.headBranch}`);
+          });
+        }
+        
+        if (changes.newPRs.length > 0) {
+          console.log('\n🆕 New PRs:');
+          changes.newPRs.forEach(pr => {
+            console.log(`   • #${pr.number}: ${pr.title}`);
+          });
+        }
+      } else {
+        console.log('No changes since last check.');
+      }
+      break;
+    }
+    
+    case '--reset':
+    case 'reset': {
+      try {
+        if (fs.existsSync(PREVIOUS_STATE_FILE)) {
+          fs.unlinkSync(PREVIOUS_STATE_FILE);
+        }
+        console.log('✅ Reset change tracking. Next check will not report changes.');
+      } catch (error) {
+        console.error('Error resetting:', error.message);
+      }
+      break;
+    }
+    
+    case '--once':
+    case 'once': {
+      // Run a single check and exit
+      (async () => {
+        const config = loadConfig();
+        const status = {
+          timestamp: new Date().toISOString(),
+          workflows: await checkWorkflowStatus({ testsOnly: config.watchTestsOnly }),
+          pullRequests: await checkPullRequests()
+        };
+        
+        // Save status
+        fs.writeFileSync(STATUS_FILE, JSON.stringify(status, null, 2));
+        
+        // Detect and report changes
+        const previous = loadPreviousState();
+        const changes = detectChanges(status, previous);
+        
+        if (changes.hasChanges) {
+          console.log(`\n🔄 Repository Changes at ${new Date().toLocaleTimeString()}`);
+          console.log('─'.repeat(50));
+          
+          if (changes.newFailures.length > 0) {
+            console.log(`\n❌ NEW FAILURES (${changes.newFailures.length}):`);
+            changes.newFailures.forEach(w => {
+              console.log(`   • ${w.workflowName} on ${w.headBranch}`);
+            });
+          }
+          
+          if (changes.newPRs.length > 0) {
+            console.log(`\n🆕 NEW PRs (${changes.newPRs.length}):`);
+            changes.newPRs.forEach(pr => {
+              console.log(`   • #${pr.number}: ${pr.title}`);
+            });
+          }
+          
+          console.log('');
+        } else if (!previous) {
+          console.log('✅ Initial state captured. Run again to detect changes.');
+        } else {
+          console.log('✅ No changes detected.');
+        }
+        
+        // Save state for next comparison
+        savePreviousState(status);
+      })();
+      break;
+    }
       
     case '--help':
     case 'help':
@@ -557,7 +729,10 @@ if (require.main === module) {
       console.log('');
       console.log('Usage:');
       console.log('  node monitor-repo.js              Start monitoring');
+      console.log('  node monitor-repo.js once         Run single check and exit');
       console.log('  node monitor-repo.js status       Check current status');
+      console.log('  node monitor-repo.js diff         Show changes since last check');
+      console.log('  node monitor-repo.js reset        Reset change tracking');
       console.log('  node monitor-repo.js failures     Show test failures with details');
       console.log('  node monitor-repo.js history      Show failure history');
       console.log('  node monitor-repo.js clear        Clear all monitoring data');

@@ -59,6 +59,8 @@
     "monitor:start": "node scripts/monitor-repo.js &",
     "monitor:status": "node scripts/monitor-repo.js status",
     "monitor:stop": "pkill -f 'node scripts/monitor-repo.js' || echo 'Monitor not running'",
+    "monitor:diff": "node scripts/monitor-repo.js diff",
+    "monitor:reset": "node scripts/monitor-repo.js reset",
     "monitor:failures": "node scripts/monitor-repo.js failures",
     "monitor:history": "node scripts/monitor-repo.js history",
     "monitor:clear": "node scripts/monitor-repo.js clear",
