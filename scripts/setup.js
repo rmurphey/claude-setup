@@ -62,7 +62,7 @@ function checkGitStatus(filepath) {
     }
     
     return 'CLEAN';
-  } catch (error) {
+  } catch {
     // If git commands fail, assume file is safe to modify
     return 'UNKNOWN';
   }
@@ -302,9 +302,9 @@ const ESSENTIAL_SCRIPTS = {
   'learn': 'node scripts/learn.js',
   'tdd': 'node scripts/tdd.js',
   'docs': 'node scripts/docs.js',
-  'lint:check': "if [ -f 'eslint.config.js' ] || [ -f '.eslintrc.js' ]; then npx eslint . --max-warnings 10 2>/dev/null || echo '❌ Lint issues found'; else echo '⚠️ No linter configured'; fi",
-  'test:check': "if grep -q '\"test\"' package.json 2>/dev/null; then npm test 2>/dev/null || echo '❌ Tests failing'; else echo '⚠️ No tests configured'; fi",
-  'git:status:summary': "echo \"Branch: $(git branch --show-current 2>/dev/null || echo 'unknown') | Changes: $(git status --porcelain | wc -l | xargs) files\""
+  'lint:check': 'if [ -f \'eslint.config.js\' ] || [ -f \'.eslintrc.js\' ]; then npx eslint . --max-warnings 10 2>/dev/null || echo \'❌ Lint issues found\'; else echo \'⚠️ No linter configured\'; fi',
+  'test:check': 'if grep -q \'"test"\' package.json 2>/dev/null; then npm test 2>/dev/null || echo \'❌ Tests failing\'; else echo \'⚠️ No tests configured\'; fi',
+  'git:status:summary': 'echo "Branch: $(git branch --show-current 2>/dev/null || echo \'unknown\') | Changes: $(git status --porcelain | wc -l | xargs) files"'
 };
 
 // Merge package.json scripts
@@ -313,9 +313,6 @@ async function mergePackageJson(sourcePackagePath, targetPackagePath, options) {
   if (!fs.existsSync(sourcePackagePath)) {
     return { added: 0, skipped: 0, conflicts: [] };
   }
-  
-  // Read source package.json
-  const sourcePackage = JSON.parse(fs.readFileSync(sourcePackagePath, 'utf8'));
   
   // Check if target package.json exists
   if (!fs.existsSync(targetPackagePath)) {
@@ -467,7 +464,7 @@ async function mergePackageJson(sourcePackagePath, targetPackagePath, options) {
     if (added > 0 && targetPackage.scripts['git:status:summary']) {
       try {
         execSync('npm run git:status:summary', { stdio: 'ignore' });
-      } catch (e) {
+      } catch {
         console.log('   ⚠️  Some scripts may need additional setup to work properly');
       }
     }
@@ -483,7 +480,7 @@ async function mergePackageJson(sourcePackagePath, targetPackagePath, options) {
 }
 
 // Copy scripts directory
-function copyScriptsDirectory(sourceDir, targetDir, existingScripts) {
+function copyScriptsDirectory(sourceDir, targetDir) {
   const scriptsNeeded = new Set();
   
   // Extract script file references from ESSENTIAL_SCRIPTS
@@ -554,7 +551,7 @@ function displayDryRunResults() {
   console.log('───────────────');
   console.log(`• ${dryRunData.newFiles.length} new files in .claude/commands/`);
   console.log(`• ${dryRunData.newFiles.filter(f => f.path.includes('.claude/agents')).length} new files in .claude/agents/`);
-  console.log(`• Configuration files: CLAUDE.md, AGENTS.md`);
+  console.log('• Configuration files: CLAUDE.md, AGENTS.md');
   
   if (dryRunData.packageJsonChanges) {
     console.log('\n📦 PACKAGE.JSON CHANGES:');
@@ -580,7 +577,7 @@ function displayDryRunResults() {
       console.log('\nNew files to create:');
       dryRunData.newFiles.forEach(file => {
         console.log(`  ${file.path}`);
-        console.log(`    Status: NEW_FILE ✅`);
+        console.log('    Status: NEW_FILE ✅');
         console.log(`    Size: ${(file.size / 1024).toFixed(1)}KB`);
       });
     }
