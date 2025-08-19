@@ -36,15 +36,28 @@ jobs:
       run: |
         echo "🤖 Running Agent Audit with Claude Code..."
         
+        # Debug: Check if API key is set
+        if [ -z "$ANTHROPIC_API_KEY" ]; then
+          echo "❌ Error: ANTHROPIC_API_KEY is not set"
+          exit 1
+        fi
+        echo "✅ API key is configured"
+        
         # Extract the agent content without YAML frontmatter
         # The sed command removes everything between the --- markers
-        AGENT_PROMPT=$(sed '1,/^---$/d; 1,/^---$/d' .claude/agents/agent-auditor.md)
+        sed '1,/^---$/d; 1,/^---$/d' .claude/agents/agent-auditor.md > /tmp/agent-prompt.txt
         
         # Run the agent auditor using Claude Code CLI
-        # The CLI reads the API key from the environment variable
-        echo "$AGENT_PROMPT" | claude --print \
+        # Using a file to avoid shell escaping issues with the multiline prompt
+        cat /tmp/agent-prompt.txt | ANTHROPIC_API_KEY="$ANTHROPIC_API_KEY" claude --print \
           --allowedTools "Read Glob Grep Write" \
           > reports/agent-audit-$(date +%Y%m%d).md
+        
+        # Check if report was created and has content
+        if [ ! -s reports/agent-audit-$(date +%Y%m%d).md ]; then
+          echo "❌ Error: Report file is empty or not created"
+          exit 1
+        fi
         
         echo "✅ Audit complete"
     
