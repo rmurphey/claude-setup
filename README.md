@@ -24,19 +24,28 @@ npx claude-setup docs                # Analyze documentation
 npx claude-setup monitor status      # Check repo health
 ```
 
-**🎯 NPX Setup Features:**
-- **Automatic npm scripts integration** - Adds essential Claude commands to your package.json
-- **Smart conflict resolution** - Detects existing scripts and offers prefix/skip/replace options
-- **Script file installation** - Copies required scripts for npm commands to work
-- **Backup safety** - Creates backups before modifying package.json
+**🎯 What NPX Setup Installs:**
+- **Claude command templates** (.claude/commands/) - 15+ battle-tested workflow commands
+- **AI agents** (.claude/agents/) - Intelligent automation for complex tasks
+- **Configuration files** (CLAUDE.md, AGENTS.md) - Project guidelines and agent documentation
+- **NPM scripts integration** - Adds essential commands to your package.json (hygiene, todo, commit, etc.)
+- **Script utilities** - Installs helper scripts for learn, tdd, docs, and monitoring features
 
 **Setup Options:**
 ```bash
-npx claude-setup --skip         # Skip existing files
-npx claude-setup --backup       # Backup before replacing
-npx claude-setup --force        # Replace all files
-npx claude-setup --skip-scripts # Don't modify package.json
+npx claude-setup                # Interactive setup (recommended)
+npx claude-setup --skip         # Preserve all existing files
+npx claude-setup --backup       # Backup existing files before replacing
+npx claude-setup --force        # Replace all files without prompting
+npx claude-setup --skip-scripts # Install commands only, don't modify package.json
 ```
+
+**Conflict Resolution:**
+When existing files are detected, the interactive mode offers:
+- Skip - Keep your customizations
+- Backup - Save originals and install fresh
+- Merge - Add only non-conflicting files
+- Prefix - Add scripts with `claude:` prefix to avoid conflicts
 
 ### Method 2: Global Installation
 ```bash
