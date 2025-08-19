@@ -13,7 +13,9 @@ const options = {
   backup: args.includes('--backup'),
   help: args.includes('--help') || args.includes('-h'),
   'skip-scripts': args.includes('--skip-scripts'),
-  interactive: !args.some(arg => ['--force', '--skip', '--backup'].includes(arg))
+  'dry-run': args.includes('--dry-run'),
+  verbose: args.includes('-v') || args.includes('--verbose'),
+  interactive: !args.some(arg => ['--force', '--skip', '--backup', '--dry-run'].includes(arg))
 };
 
 // Show help if requested
@@ -24,6 +26,8 @@ if (options.help) {
   console.log('Usage: npx claude-setup [options]');
   console.log('');
   console.log('Options:');
+  console.log('  --dry-run      Preview changes without modifying files');
+  console.log('  -v, --verbose  Show detailed information (use with --dry-run)');
   console.log('  --skip         Skip existing files (preserve customizations)');
   console.log('  --backup       Backup existing files before replacing');
   console.log('  --force        Replace all files (creates backup)');
@@ -34,8 +38,54 @@ if (options.help) {
   process.exit(0);
 }
 
-console.log('🤖 Claude Code Commands Setup');
-console.log('==============================');
+// Check git status of a file
+function checkGitStatus(filepath) {
+  try {
+    // Check if file exists
+    if (!fs.existsSync(filepath)) {
+      return 'NEW_FILE';
+    }
+    
+    // Check if file is tracked by git
+    try {
+      execSync(`git ls-files --error-unmatch "${filepath}"`, { stdio: 'ignore' });
+    } catch {
+      return 'UNTRACKED';
+    }
+    
+    // Check for uncommitted changes
+    const diffOutput = execSync(`git diff --name-only "${filepath}"`, { encoding: 'utf8' });
+    const stagedOutput = execSync(`git diff --staged --name-only "${filepath}"`, { encoding: 'utf8' });
+    
+    if (diffOutput.trim() || stagedOutput.trim()) {
+      return 'UNCOMMITTED';
+    }
+    
+    return 'CLEAN';
+  } catch (error) {
+    // If git commands fail, assume file is safe to modify
+    return 'UNKNOWN';
+  }
+}
+
+// Dry run data collector
+const dryRunData = {
+  safetyWarnings: [],
+  newFiles: [],
+  modifiedFiles: [],
+  skippedFiles: [],
+  packageJsonChanges: null,
+  totalSize: 0
+};
+
+// Initialize setup
+if (!options['dry-run']) {
+  console.log('🤖 Claude Code Commands Setup');
+  console.log('==============================');
+} else {
+  console.log('🔍 DRY RUN - Analyzing impact on your repository...');
+  console.log('');
+}
 
 // Check if we're in a git repository
 function isGitRepo() {
@@ -140,7 +190,7 @@ async function determineStrategy(conflicts, options) {
 // Copy directory recursively
 function copyRecursive(source, target, skipExisting = false) {
   // Create target directory if it doesn't exist
-  if (!fs.existsSync(target)) {
+  if (!options['dry-run'] && !fs.existsSync(target)) {
     fs.mkdirSync(target, { recursive: true });
   }
   
@@ -157,10 +207,32 @@ function copyRecursive(source, target, skipExisting = false) {
       copied += result.copied;
       skipped += result.skipped;
     } else {
+      const gitStatus = checkGitStatus(targetPath);
+      const fileSize = fs.statSync(sourcePath).size;
+      
       if (skipExisting && fs.existsSync(targetPath)) {
         skipped++;
+        if (options['dry-run']) {
+          dryRunData.skippedFiles.push({ path: targetPath, reason: 'exists', gitStatus });
+        }
       } else {
-        fs.copyFileSync(sourcePath, targetPath);
+        if (options['dry-run']) {
+          // Collect data for dry run
+          if (gitStatus === 'NEW_FILE') {
+            dryRunData.newFiles.push({ path: targetPath, size: fileSize });
+          } else if (gitStatus === 'UNCOMMITTED') {
+            dryRunData.safetyWarnings.push(`${targetPath} has uncommitted changes`);
+            dryRunData.modifiedFiles.push({ path: targetPath, gitStatus, size: fileSize });
+          } else if (gitStatus === 'UNTRACKED') {
+            dryRunData.safetyWarnings.push(`${targetPath} exists but is not in version control`);
+            dryRunData.modifiedFiles.push({ path: targetPath, gitStatus, size: fileSize });
+          } else {
+            dryRunData.modifiedFiles.push({ path: targetPath, gitStatus, size: fileSize });
+          }
+          dryRunData.totalSize += fileSize;
+        } else {
+          fs.copyFileSync(sourcePath, targetPath);
+        }
         copied++;
       }
     }
@@ -261,11 +333,20 @@ async function mergePackageJson(sourcePackagePath, targetPackagePath, options) {
     return { added: Object.keys(ESSENTIAL_SCRIPTS).length, skipped: 0, conflicts: [] };
   }
   
-  // Read and backup target package.json
+  // Read target package.json
   const targetPackage = JSON.parse(fs.readFileSync(targetPackagePath, 'utf8'));
   const backupPath = targetPackagePath + '.backup-' + new Date().toISOString().replace(/[:.]/g, '-').slice(0, -5);
-  fs.writeFileSync(backupPath, JSON.stringify(targetPackage, null, 2));
-  console.log(`   📦 Backed up package.json to ${path.basename(backupPath)}`);
+  
+  // Check git status of package.json
+  const pkgGitStatus = checkGitStatus(targetPackagePath);
+  if (options['dry-run'] && pkgGitStatus === 'UNCOMMITTED') {
+    dryRunData.safetyWarnings.push('package.json has uncommitted changes (would be backed up)');
+  }
+  
+  if (!options['dry-run']) {
+    fs.writeFileSync(backupPath, JSON.stringify(targetPackage, null, 2));
+    console.log(`   📦 Backed up package.json to ${path.basename(backupPath)}`);
+  }
   
   // Initialize scripts if not present
   if (!targetPackage.scripts) {
@@ -288,6 +369,9 @@ async function mergePackageJson(sourcePackagePath, targetPackagePath, options) {
       strategy = 'skip';
     } else if (options.force) {
       strategy = 'replace';
+    } else if (options['dry-run']) {
+      // In dry-run, assume prefix strategy for conflicts
+      strategy = 'prefix';
     } else if (options.interactive) {
       console.log('');
       console.log(`⚠️  Found ${conflicts.length} conflicting npm script(s):`);
@@ -358,6 +442,19 @@ async function mergePackageJson(sourcePackagePath, targetPackagePath, options) {
     }
   }
   
+  // In dry-run mode, just collect the changes
+  if (options['dry-run']) {
+    dryRunData.packageJsonChanges = {
+      added,
+      skipped,
+      conflicts,
+      strategy,
+      wouldBackup: fs.existsSync(targetPackagePath),
+      backupName: path.basename(backupPath)
+    };
+    return { added, skipped, conflicts, strategy };
+  }
+  
   // Write updated package.json
   fs.writeFileSync(targetPackagePath, JSON.stringify(targetPackage, null, 2));
   
@@ -401,7 +498,7 @@ function copyScriptsDirectory(sourceDir, targetDir, existingScripts) {
   }
   
   // Create scripts directory if it doesn't exist
-  if (!fs.existsSync(targetDir)) {
+  if (!options['dry-run'] && !fs.existsSync(targetDir)) {
     fs.mkdirSync(targetDir, { recursive: true });
   }
   
@@ -414,18 +511,111 @@ function copyScriptsDirectory(sourceDir, targetDir, existingScripts) {
     const targetPath = path.join(targetDir, scriptFile);
     
     if (fs.existsSync(sourcePath)) {
+      const gitStatus = checkGitStatus(targetPath);
+      const fileSize = fs.statSync(sourcePath).size;
+      
       if (!fs.existsSync(targetPath)) {
-        fs.copyFileSync(sourcePath, targetPath);
-        // Make script executable
-        fs.chmodSync(targetPath, '755');
+        if (options['dry-run']) {
+          dryRunData.newFiles.push({ path: targetPath, size: fileSize });
+        } else {
+          fs.copyFileSync(sourcePath, targetPath);
+          // Make script executable
+          fs.chmodSync(targetPath, '755');
+        }
         copied++;
       } else {
+        if (options['dry-run']) {
+          dryRunData.skippedFiles.push({ path: targetPath, reason: 'exists', gitStatus });
+          if (gitStatus === 'UNTRACKED') {
+            dryRunData.safetyWarnings.push(`${targetPath} exists but is not in version control`);
+          }
+        }
         skipped++;
       }
     }
   }
   
   return { copied, skipped };
+}
+
+// Display dry run results
+function displayDryRunResults() {
+  console.log('\n⚠️  SAFETY WARNINGS:');
+  console.log('────────────────────');
+  if (dryRunData.safetyWarnings.length > 0) {
+    dryRunData.safetyWarnings.forEach(warning => {
+      console.log(`• ${warning}`);
+    });
+  } else {
+    console.log('• None - repository is clean ✅');
+  }
+  
+  console.log('\n✅ SAFE TO ADD:');
+  console.log('───────────────');
+  console.log(`• ${dryRunData.newFiles.length} new files in .claude/commands/`);
+  console.log(`• ${dryRunData.newFiles.filter(f => f.path.includes('.claude/agents')).length} new files in .claude/agents/`);
+  console.log(`• Configuration files: CLAUDE.md, AGENTS.md`);
+  
+  if (dryRunData.packageJsonChanges) {
+    console.log('\n📦 PACKAGE.JSON CHANGES:');
+    console.log('───────────────────────');
+    const changes = dryRunData.packageJsonChanges;
+    console.log(`• Would add ${changes.added} new scripts`);
+    if (changes.conflicts && changes.conflicts.length > 0) {
+      console.log(`• Would conflict with ${changes.conflicts.length} existing scripts:`);
+      changes.conflicts.forEach(script => {
+        console.log(`  - ${script}: would ${changes.strategy === 'prefix' ? 'add claude: prefix' : changes.strategy}`);
+      });
+    }
+    if (changes.wouldBackup) {
+      console.log(`• Would create backup: ${changes.backupName}`);
+    }
+  }
+  
+  if (options.verbose) {
+    console.log('\n📄 DETAILED FILE LIST:');
+    console.log('──────────────────────');
+    
+    if (dryRunData.newFiles.length > 0) {
+      console.log('\nNew files to create:');
+      dryRunData.newFiles.forEach(file => {
+        console.log(`  ${file.path}`);
+        console.log(`    Status: NEW_FILE ✅`);
+        console.log(`    Size: ${(file.size / 1024).toFixed(1)}KB`);
+      });
+    }
+    
+    if (dryRunData.modifiedFiles.length > 0) {
+      console.log('\nFiles to modify:');
+      dryRunData.modifiedFiles.forEach(file => {
+        console.log(`  ${file.path}`);
+        const statusIcon = file.gitStatus === 'UNCOMMITTED' ? '⚠️' : 
+                          file.gitStatus === 'UNTRACKED' ? '⚠️' : '✅';
+        console.log(`    Status: ${file.gitStatus} ${statusIcon}`);
+        console.log(`    Size: ${(file.size / 1024).toFixed(1)}KB`);
+      });
+    }
+    
+    if (dryRunData.skippedFiles.length > 0) {
+      console.log('\nFiles to skip:');
+      dryRunData.skippedFiles.forEach(file => {
+        console.log(`  ${file.path} (${file.reason})`);
+      });
+    }
+  }
+  
+  console.log('\n📊 SUMMARY:');
+  console.log('──────────');
+  console.log(`Files to create: ${dryRunData.newFiles.length}`);
+  console.log(`Files to modify: ${dryRunData.modifiedFiles.length}`);
+  console.log(`Files to skip: ${dryRunData.skippedFiles.length}`);
+  console.log(`Space required: ~${(dryRunData.totalSize / 1024).toFixed(0)}KB`);
+  
+  if (dryRunData.safetyWarnings.length > 0) {
+    console.log('\n⚠️  Run \'git status\' to review uncommitted changes before proceeding');
+  }
+  
+  console.log('\n✨ Run \'npx claude-setup\' without --dry-run to apply these changes.\n');
 }
 
 // Main setup function
@@ -444,8 +634,10 @@ async function main() {
   
   // Create .claude directory if it doesn't exist
   if (!fs.existsSync('.claude')) {
-    fs.mkdirSync('.claude', { recursive: true });
-    console.log('✅ Created .claude directory');
+    if (!options['dry-run']) {
+      fs.mkdirSync('.claude', { recursive: true });
+      console.log('✅ Created .claude directory');
+    }
   }
   
   // Detect conflicts
@@ -457,43 +649,58 @@ async function main() {
   const strategy = await determineStrategy(allConflicts, options);
   
   // Copy commands
-  console.log('\n📦 Installing Claude commands...');
-  const commandResult = safeCopy(sourceCommands, targetCommands, strategy, 'commands');
-  if (commandResult.copied > 0) {
-    console.log(`   ✅ Installed ${commandResult.copied} command files`);
+  if (!options['dry-run']) {
+    console.log('\n📦 Installing Claude commands...');
   }
-  if (commandResult.skipped > 0) {
-    console.log(`   ⏭️  Skipped ${commandResult.skipped} existing files`);
+  const commandResult = safeCopy(sourceCommands, targetCommands, strategy, 'commands');
+  if (!options['dry-run']) {
+    if (commandResult.copied > 0) {
+      console.log(`   ✅ Installed ${commandResult.copied} command files`);
+    }
+    if (commandResult.skipped > 0) {
+      console.log(`   ⏭️  Skipped ${commandResult.skipped} existing files`);
+    }
   }
   
   // Copy agents
   let agentResult = { copied: 0, skipped: 0, backedUp: null };
   if (fs.existsSync(sourceAgents)) {
-    console.log('\n📦 Installing Claude agents...');
-    agentResult = safeCopy(sourceAgents, targetAgents, strategy, 'agents');
-    if (agentResult.copied > 0) {
-      console.log(`   ✅ Installed ${agentResult.copied} agent files`);
+    if (!options['dry-run']) {
+      console.log('\n📦 Installing Claude agents...');
     }
-    if (agentResult.skipped > 0) {
-      console.log(`   ⏭️  Skipped ${agentResult.skipped} existing files`);
+    agentResult = safeCopy(sourceAgents, targetAgents, strategy, 'agents');
+    if (!options['dry-run']) {
+      if (agentResult.copied > 0) {
+        console.log(`   ✅ Installed ${agentResult.copied} agent files`);
+      }
+      if (agentResult.skipped > 0) {
+        console.log(`   ⏭️  Skipped ${agentResult.skipped} existing files`);
+      }
     }
   }
   
   // Copy essential root files (only if they don't exist)
-  console.log('\n📦 Setting up configuration files...');
+  if (!options['dry-run']) {
+    console.log('\n📦 Setting up configuration files...');
+  }
   const filesToCopy = ['CLAUDE.md', 'AGENTS.md'];
   let configCopied = 0;
   
   filesToCopy.forEach(file => {
     const sourcePath = path.join(__dirname, '..', file);
     if (fs.existsSync(sourcePath) && !fs.existsSync(file)) {
-      fs.copyFileSync(sourcePath, file);
-      console.log(`   ✅ Created ${file}`);
+      if (options['dry-run']) {
+        const fileSize = fs.statSync(sourcePath).size;
+        dryRunData.newFiles.push({ path: file, size: fileSize });
+      } else {
+        fs.copyFileSync(sourcePath, file);
+        console.log(`   ✅ Created ${file}`);
+      }
       configCopied++;
     }
   });
   
-  if (configCopied === 0) {
+  if (!options['dry-run'] && configCopied === 0) {
     console.log('   ℹ️  Configuration files already exist');
   }
   
@@ -502,36 +709,50 @@ async function main() {
   let scriptsResult = { copied: 0, skipped: 0 };
   
   if (!options['skip-scripts']) {
-    console.log('\n📦 Setting up npm scripts...');
+    if (!options['dry-run']) {
+      console.log('\n📦 Setting up npm scripts...');
+    }
     const sourcePackagePath = path.join(__dirname, '..', 'package.json');
     const targetPackagePath = 'package.json';
     
     packageResult = await mergePackageJson(sourcePackagePath, targetPackagePath, options);
     
-    if (packageResult.added > 0) {
-      console.log(`   ✅ Added ${packageResult.added} npm scripts`);
-    }
-    if (packageResult.skipped > 0) {
-      console.log(`   ⏭️  Skipped ${packageResult.skipped} conflicting scripts`);
+    if (!options['dry-run']) {
+      if (packageResult.added > 0) {
+        console.log(`   ✅ Added ${packageResult.added} npm scripts`);
+      }
+      if (packageResult.skipped > 0) {
+        console.log(`   ⏭️  Skipped ${packageResult.skipped} conflicting scripts`);
+      }
     }
     
     // Copy required script files
     if (packageResult.added > 0) {
-      console.log('\n📦 Installing script files...');
+      if (!options['dry-run']) {
+        console.log('\n📦 Installing script files...');
+      }
       const sourceScripts = path.join(__dirname, '../scripts');
       const targetScripts = 'scripts';
       
       scriptsResult = copyScriptsDirectory(sourceScripts, targetScripts);
-      if (scriptsResult.copied > 0) {
-        console.log(`   ✅ Installed ${scriptsResult.copied} script files`);
-      }
-      if (scriptsResult.skipped > 0) {
-        console.log(`   ⏭️  Skipped ${scriptsResult.skipped} existing script files`);
+      if (!options['dry-run']) {
+        if (scriptsResult.copied > 0) {
+          console.log(`   ✅ Installed ${scriptsResult.copied} script files`);
+        }
+        if (scriptsResult.skipped > 0) {
+          console.log(`   ⏭️  Skipped ${scriptsResult.skipped} existing script files`);
+        }
       }
     }
   }
   
-  // Final message
+  // Display results
+  if (options['dry-run']) {
+    displayDryRunResults();
+    return;
+  }
+  
+  // Final message for actual installation
   console.log('');
   console.log('🎉 Setup complete!');
   console.log('');
