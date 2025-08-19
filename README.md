@@ -82,6 +82,7 @@ This repository demonstrates balanced approaches to Claude Code commands, optimi
 ### 🚀 Release & Quality
 - **`/push`** - Push with quality checks ([view command](.claude/commands/push.md))
 - **`/tdd`** - Test-driven development workflow ([view command](.claude/commands/tdd.md))
+- **`feature:check`** - Verify new features have tests & docs ([documentation](docs/FEATURE_CHECK.md))
 
 ## 🤖 Claude Code Agents
 
