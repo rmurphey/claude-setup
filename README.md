@@ -24,6 +24,29 @@ npx claude-setup docs                # Analyze documentation
 npx claude-setup monitor status      # Check repo health
 ```
 
+**🎯 What NPX Setup Installs:**
+- **Claude command templates** (.claude/commands/) - 15+ battle-tested workflow commands
+- **AI agents** (.claude/agents/) - Intelligent automation for complex tasks
+- **Configuration files** (CLAUDE.md, AGENTS.md) - Project guidelines and agent documentation
+- **NPM scripts integration** - Adds essential commands to your package.json (hygiene, todo, commit, etc.)
+- **Script utilities** - Installs helper scripts for learn, tdd, docs, and monitoring features
+
+**Setup Options:**
+```bash
+npx claude-setup                # Interactive setup (recommended)
+npx claude-setup --skip         # Preserve all existing files
+npx claude-setup --backup       # Backup existing files before replacing
+npx claude-setup --force        # Replace all files without prompting
+npx claude-setup --skip-scripts # Install commands only, don't modify package.json
+```
+
+**Conflict Resolution:**
+When existing files are detected, the interactive mode offers:
+- Skip - Keep your customizations
+- Backup - Save originals and install fresh
+- Merge - Add only non-conflicting files
+- Prefix - Add scripts with `claude:` prefix to avoid conflicts
+
 ### Method 2: Global Installation
 ```bash
 # Install globally for frequent use
