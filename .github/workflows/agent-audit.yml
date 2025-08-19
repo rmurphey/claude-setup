@@ -47,6 +47,18 @@ jobs:
         # The sed command removes everything between the --- markers
         sed '1,/^---$/d; 1,/^---$/d' .claude/agents/agent-auditor.md > /tmp/agent-prompt.txt
         
+        # Debug: Check if prompt file has content
+        echo "Prompt file size: $(wc -c < /tmp/agent-prompt.txt) bytes"
+        if [ ! -s /tmp/agent-prompt.txt ]; then
+          echo "❌ Error: Agent prompt file is empty"
+          echo "Checking if agent file exists:"
+          ls -la .claude/agents/agent-auditor.md
+          echo "First 10 lines of agent file:"
+          head -10 .claude/agents/agent-auditor.md
+          exit 1
+        fi
+        echo "First 100 chars of prompt: $(head -c 100 /tmp/agent-prompt.txt)"
+        
         # Run the agent auditor using Claude Code CLI
         # Using a file to avoid shell escaping issues with the multiline prompt
         cat /tmp/agent-prompt.txt | ANTHROPIC_API_KEY="$ANTHROPIC_API_KEY" claude --print \
