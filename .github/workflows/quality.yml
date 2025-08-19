@@ -41,6 +41,11 @@ jobs:
         echo "🏥 Checking project hygiene..."
         npm run hygiene:quick
     
+    - name: Validate markdown syntax
+      run: |
+        echo "📝 Validating markdown syntax..."
+        npm run markdown:lint
+    
     - name: Validate documentation
       run: |
         echo "📚 Validating documentation..."

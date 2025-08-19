@@ -66,6 +66,27 @@ Examples of honest responses:
 - **Integration tests for confidence** - real-world validation (<30s)
 - **Performance budgets** - enforce time limits to prevent hanging tests
 
+## Markdown Standards
+**All markdown files must pass validation before commit**
+
+- **Syntax validation** - Uses remark-lint to ensure valid markdown syntax
+- **Consistent formatting** - Enforces consistent list markers, emphasis, and code blocks
+- **Link validation** - Checks that internal links point to existing files
+- **Auto-fix available** - Run `npm run markdown:fix` to auto-correct formatting issues
+
+### Markdown Quality Checks
+- `npm run markdown:lint` - Validate all markdown files
+- `npm run markdown:fix` - Auto-fix formatting issues
+- Included in `hygiene:quick` and `commit:check` scripts
+- CI validates markdown on every push/PR
+
+### Markdown Style Guidelines
+- Use `-` for unordered lists
+- Use `*` for emphasis, `**` for strong emphasis
+- Use fenced code blocks with language tags
+- Use `.` for ordered list markers
+- Ensure all internal links are valid
+
 ## Commands
 - `/hygiene` - Project health check
 - `/todo` - Task management
