@@ -126,6 +126,15 @@ jobs:
         console.log('✅ All ' + hashes.size + ' commit references are valid');
         "
     
+    - name: Check features have tests and docs
+      run: |
+        echo "🔍 Checking that new features have tests and documentation..."
+        if [ "${{ github.event_name }}" = "pull_request" ]; then
+          # For PRs, check against base branch
+          export GITHUB_BASE_REF="${{ github.base_ref }}"
+        fi
+        node scripts/feature-check.js || exit 1
+    
     - name: Summary
       if: always()
       run: |
@@ -137,3 +146,4 @@ jobs:
         echo "✅ Documentation: Valid"
         echo "✅ Links: No broken links"
         echo "✅ Commits: All references valid"
+        echo "✅ Features: Have tests and docs"

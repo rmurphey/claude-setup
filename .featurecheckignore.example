@@ -1,0 +1,23 @@
+# Feature Check Ignore Patterns
+# Add patterns for files that should not be considered features
+
+# Experimental or WIP code
+scripts/experimental-*.js
+wip/**/*.js
+
+# Generated files
+*.generated.js
+dist/**/*.js
+build/**/*.js
+
+# Vendor/third-party code
+lib/vendor/**
+node_modules/**
+
+# Migration scripts
+scripts/migrate-*.js
+migrations/**/*.js
+
+# Development tools
+scripts/dev-*.js
+tools/**/*.js
