@@ -110,7 +110,7 @@ Create `.claude/agents/reports/session-insights-[date].md`:
    - Average completion time: Y hours
 
 2. **Bug Fix Pattern**
-   - /hygiene → /atomic-commit
+   - /hygiene → /commit
    - Used in X% of sessions
 
 ## Development Insights

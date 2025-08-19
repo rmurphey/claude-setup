@@ -157,7 +157,7 @@ npm run docs:validate
 
 4. **Atomic Commits from Start**
    - NEVER start work without clear commit plan (prevents scope creep and ensures atomic commits)
-   - Use `/atomic-commit` command proactively
+   - Use `/commit` command proactively
    - Break features into <200 line commits
 
 5. **Document in Real-Time**

@@ -26,7 +26,7 @@
     "core": ["hygiene", "todo", "commit", "next"],
     "planning": ["design", "estimate", "defer", "issue"],
     "documentation": ["docs", "learn", "reflect", "update-docs"],
-    "quality": ["push", "version-tag", "maintainability", "atomic-commit"],
+    "quality": ["push", "version-tag", "maintainability"],
     "utilities": ["archive", "edit-not-create", "find-working-equivalent"],
     "new": ["tdd", "context-manage"],
     "detailed": ["detailed/hygiene", "detailed/commit", "detailed/todo", "detailed/maintainability"]
