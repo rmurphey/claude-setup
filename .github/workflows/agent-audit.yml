@@ -36,10 +36,14 @@ jobs:
       run: |
         echo "🤖 Running Agent Audit with Claude Code..."
         
+        # Extract the agent content without YAML frontmatter
+        # The sed command removes everything between the --- markers
+        AGENT_PROMPT=$(sed '1,/^---$/d; 1,/^---$/d' .claude/agents/agent-auditor.md)
+        
         # Run the agent auditor using Claude Code CLI
         # The CLI reads the API key from the environment variable
-        claude -p "$(cat .claude/agents/agent-auditor.md)" \
-          --max-tokens 8000 \
+        claude -p "$AGENT_PROMPT" \
+          --allowedTools "Read Glob Grep Write" \
           > reports/agent-audit-$(date +%Y%m%d).md
         
         echo "✅ Audit complete"
