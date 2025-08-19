@@ -24,6 +24,20 @@ npx claude-setup docs                # Analyze documentation
 npx claude-setup monitor status      # Check repo health
 ```
 
+**🎯 NPX Setup Features:**
+- **Automatic npm scripts integration** - Adds essential Claude commands to your package.json
+- **Smart conflict resolution** - Detects existing scripts and offers prefix/skip/replace options
+- **Script file installation** - Copies required scripts for npm commands to work
+- **Backup safety** - Creates backups before modifying package.json
+
+**Setup Options:**
+```bash
+npx claude-setup --skip         # Skip existing files
+npx claude-setup --backup       # Backup before replacing
+npx claude-setup --force        # Replace all files
+npx claude-setup --skip-scripts # Don't modify package.json
+```
+
 ### Method 2: Global Installation
 ```bash
 # Install globally for frequent use
