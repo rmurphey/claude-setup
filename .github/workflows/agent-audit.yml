@@ -42,7 +42,7 @@ jobs:
         
         # Run the agent auditor using Claude Code CLI
         # The CLI reads the API key from the environment variable
-        claude -p "$AGENT_PROMPT" \
+        echo "$AGENT_PROMPT" | claude --print \
           --allowedTools "Read Glob Grep Write" \
           > reports/agent-audit-$(date +%Y%m%d).md
         
