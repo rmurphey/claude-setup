@@ -44,8 +44,8 @@ jobs:
         echo "✅ API key is configured"
         
         # Extract the agent content without YAML frontmatter
-        # The sed command removes everything between the --- markers
-        sed '1,/^---$/d; 1,/^---$/d' .claude/agents/agent-auditor.md > /tmp/agent-prompt.txt
+        # Use awk for better portability between BSD and GNU systems
+        awk 'BEGIN {front=0} /^---$/ {front++; next} front>=2 {print}' .claude/agents/agent-auditor.md > /tmp/agent-prompt.txt
         
         # Debug: Check if prompt file has content
         echo "Prompt file size: $(wc -c < /tmp/agent-prompt.txt) bytes"
