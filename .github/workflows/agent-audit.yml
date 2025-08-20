@@ -97,34 +97,172 @@ jobs:
         name: agent-audit-${{ github.run_number }}
         path: reports/agent-audit-*.md
     
-    - name: Create Issue if Critical Issues Found
-      if: steps.check.outputs.has_critical == 'true' && github.event_name == 'schedule'
+    - name: Create or Update Issue for Audit Findings
+      if: steps.check.outputs.has_critical == 'true' || steps.check.outputs.has_warnings == 'true'
       uses: actions/github-script@v7
       with:
         script: |
           const fs = require('fs');
-          const glob = require('glob');
           
-          // Find the report file
-          const reportFiles = glob.sync('reports/agent-audit-*.md');
+          // Find the report file using native fs instead of glob
+          const reportFiles = fs.readdirSync('reports')
+            .filter(f => f.startsWith('agent-audit-') && f.endsWith('.md'))
+            .map(f => `reports/${f}`);
+          
           if (reportFiles.length === 0) {
             console.log('No report file found');
             return;
           }
           
-          const report = fs.readFileSync(reportFiles[0], 'utf8');
+          const reportPath = reportFiles[0];
+          const report = fs.readFileSync(reportPath, 'utf8');
           
-          // Extract critical issues section
-          const criticalMatch = report.match(/## Critical Issues[\s\S]*?(?=##|$)/);
-          const criticalSection = criticalMatch ? criticalMatch[0] : 'See full report';
+          // Extract issues from report
+          const extractIssues = (content) => {
+            const issues = [];
+            
+            // Extract critical issues
+            const criticalMatch = content.match(/## Critical Issues[\s\S]*?(?=\n##|$)/);
+            if (criticalMatch) {
+              const criticalLines = criticalMatch[0].split('\n');
+              criticalLines.forEach(line => {
+                if (line.match(/^[0-9]+\.|^###|^-/) && line.includes('.md')) {
+                  issues.push({
+                    type: 'critical',
+                    text: line.trim(),
+                    id: line.replace(/[^a-zA-Z0-9]/g, '').substring(0, 20)
+                  });
+                }
+              });
+            }
+            
+            // Extract warnings
+            const warningsMatch = content.match(/## Warnings[\s\S]*?(?=\n##|$)/);
+            if (warningsMatch) {
+              const warningLines = warningsMatch[0].split('\n');
+              warningLines.forEach(line => {
+                if (line.match(/^[0-9]+\.|^###|^-/) && line.includes('.md')) {
+                  issues.push({
+                    type: 'warning',
+                    text: line.trim(),
+                    id: line.replace(/[^a-zA-Z0-9]/g, '').substring(0, 20)
+                  });
+                }
+              });
+            }
+            
+            return issues;
+          };
           
-          await github.rest.issues.create({
+          const currentIssues = extractIssues(report);
+          
+          // Check for existing open agent-audit issues
+          const existingIssues = await github.rest.issues.listForRepo({
             owner: context.repo.owner,
             repo: context.repo.repo,
-            title: '🚨 Agent Audit: Critical Issues Found',
-            body: `The weekly agent audit found critical issues that need attention:\n\n${criticalSection}\n\n[View full report](https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId})`,
-            labels: ['agents', 'maintenance', 'automated', 'critical']
+            state: 'open',
+            labels: 'agent-audit'
           });
+          
+          if (existingIssues.data.length > 0) {
+            const existingIssue = existingIssues.data[0];
+            
+            // Extract previously reported issue IDs from hidden comment
+            const previousIdsMatch = existingIssue.body.match(/<!-- REPORTED_ISSUES: (.*?) -->/);
+            const previousIds = previousIdsMatch ? JSON.parse(previousIdsMatch[1]) : [];
+            
+            // Find new issues not previously reported
+            const newIssues = currentIssues.filter(issue => 
+              !previousIds.includes(issue.id)
+            );
+            
+            if (newIssues.length > 0) {
+              // Format comment with only new issues
+              let commentBody = '## 🔍 New Issues Found\n\n';
+              
+              const newCritical = newIssues.filter(i => i.type === 'critical');
+              const newWarnings = newIssues.filter(i => i.type === 'warning');
+              
+              if (newCritical.length > 0) {
+                commentBody += '### ❌ New Critical Issues\n';
+                newCritical.forEach(issue => {
+                  commentBody += `${issue.text}\n`;
+                });
+                commentBody += '\n';
+              }
+              
+              if (newWarnings.length > 0) {
+                commentBody += '### ⚠️ New Warnings\n';
+                newWarnings.forEach(issue => {
+                  commentBody += `${issue.text}\n`;
+                });
+                commentBody += '\n';
+              }
+              
+              commentBody += `[View full report](https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId})\n`;
+              
+              // Add comment to existing issue
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: existingIssue.number,
+                body: commentBody
+              });
+              
+              console.log(`Added comment with ${newIssues.length} new issues to existing issue #${existingIssue.number}`);
+            } else {
+              console.log('No new issues found. Skipping comment.');
+            }
+          } else {
+            // Create new issue with all findings
+            const summaryMatch = report.match(/## Summary[\s\S]*?(?=\n##|$)/);
+            const summarySection = summaryMatch ? summaryMatch[0] : '';
+            
+            const criticalMatch = report.match(/## Critical Issues[\s\S]*?(?=\n##|$)/);
+            const criticalSection = criticalMatch ? criticalMatch[0] : '';
+            
+            const warningsMatch = report.match(/## Warnings[\s\S]*?(?=\n##|$)/);
+            const warningsSection = warningsMatch ? warningsMatch[0] : '';
+            
+            let issueBody = '# 🤖 Agent Audit Report\n\n';
+            
+            if (summarySection) {
+              issueBody += summarySection + '\n\n';
+            }
+            
+            if (criticalSection) {
+              issueBody += criticalSection + '\n\n';
+            }
+            
+            if (warningsSection) {
+              issueBody += warningsSection + '\n\n';
+            }
+            
+            issueBody += `---\n\n`;
+            issueBody += `📊 **Run Details**\n`;
+            issueBody += `- Trigger: ${context.eventName}\n`;
+            issueBody += `- Run ID: ${context.runId}\n`;
+            issueBody += `- [View full report](https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId})\n\n`;
+            
+            // Add hidden comment with issue IDs for tracking
+            const issueIds = currentIssues.map(i => i.id);
+            issueBody += `<!-- REPORTED_ISSUES: ${JSON.stringify(issueIds)} -->`;
+            
+            const labels = ['agent-audit', 'maintenance', 'automated'];
+            if (steps.check.outputs.has_critical === 'true') {
+              labels.push('critical');
+            }
+            
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: '🚨 Agent Audit: Issues Found',
+              body: issueBody,
+              labels: labels
+            });
+            
+            console.log('Created new agent-audit issue');
+          }
     
     - name: Add Summary to GitHub Actions
       if: always()
